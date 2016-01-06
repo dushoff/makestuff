@@ -113,6 +113,10 @@ lestdir: $(Sources) $(wildcard local.*)
 	$(lcopy)
 	$(testdir)
 
+subclone_dir: $(Sources) 
+	$(subclone)
+	$(testdir)
+
 maketest: $(Sources)
 define maketest
 	-/bin/rm -rf .$@
@@ -127,12 +131,12 @@ lcopy = -/bin/cp local.* $@/$(notdir $(CURDIR))
 
 testdir = cd $@/$(notdir $(CURDIR)) && $(MAKE) newdir && $(MAKE)
 
-subclone:
+define subclone
 	$(MAKE) push
 	-/bin/rm -rf subclone_dir
-	mkdir subclone_dir
-	cd subclone_dir && grep url ../.git/config | perl -npe "s/url =/git clone/; s/.git$$//" | sh
-	cd subclone_dir/* && $(MAKE) Makefile && $(MAKE)
+	mkdir $@
+	cd $@ $* && grep url ../.git/config | perl -npe "s/url =/git clone/; s/.git$$//" | sh
+endef
 
 ##################################################################
 
