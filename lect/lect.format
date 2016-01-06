@@ -193,14 +193,14 @@ draft final: \end{columns}
 HFIG \includegraphics[height=%\textheight]{%}
 outline: %!
 
-LFIG \includegraphics[height=%\textheight,angle=90]{%}
+LFIG \includegraphics[height=%\textheight,angle=270]{%}
 outline: %!
 
 FIG ^HFIG 0.4 %%
 draft final: ^HFIG 0.8 %%
 
 LANDFIG ^LFIG 0.4 %%
-draft final: ^LFIG 0.8 %%
+draft final: ^LFIG 0.75 %%
 
 PAUSE %!
 final: \pause

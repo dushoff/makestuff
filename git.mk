@@ -82,10 +82,11 @@ remove:
 forget:
 	git reset --hard
 
-# Clean all unSourced files (files with extensions only) from directory or repo
+# Clean all unSourced files (files with extensions only) from directory and repo
 clean_repo:
-	git rm --cached --ignore-unmatch $(filter-out $(Sources), $(wildcard *.*))
+	git rm --cached --ignore-unmatch $(filter-out $(Sources) $(Archive), $(wildcard *.*))
 
+# Just from directory (also cleans Archive files)
 clean_dir:
 	-$(RMR) .$@
 	mkdir .$@
@@ -104,14 +105,27 @@ $(Outside):
 ### Testing
 
 testdir: $(Sources)
+	$(maketest)
+	$(testdir)
+
+lestdir: $(Sources) $(wildcard local.*)
+	$(maketest)
+	$(lcopy)
+	$(testdir)
+
+maketest: $(Sources)
+define maketest
 	-/bin/rm -rf .$@
 	-/bin/mv -f $@ .$@
 	mkdir $@
 	mkdir $@/$(notdir $(CURDIR))
 	tar czf $@/$(notdir $(CURDIR))/export.tgz $(Sources)
 	cd $@/$(notdir $(CURDIR)) && tar xzf export.tgz
-	-/bin/cp local.* $@/$(notdir $(CURDIR))
-	cd $@/$(notdir $(CURDIR)) && $(MAKE)
+endef
+
+lcopy = -/bin/cp local.* $@/$(notdir $(CURDIR))
+
+testdir = cd $@/$(notdir $(CURDIR)) && $(MAKE) newdir && $(MAKE)
 
 subclone:
 	$(MAKE) push
