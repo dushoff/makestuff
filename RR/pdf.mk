@@ -58,4 +58,3 @@
 %-9.pdf: %.pdf
 	pdftk $< cat 10 output $@
 
-

@@ -10,6 +10,7 @@ LN = /bin/ln -s
 TGZ = tar czf $@ $^
 MD = mkdir
 CAT = cat
+ZIP = zip $@ $^
 
 # Generic
 link = $(LN) $< $@
