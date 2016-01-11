@@ -22,3 +22,5 @@ cat = $(CAT) $^ > $@
 # What?
 convert = convert $< $@
 shell_execute = sh < $@
+# pdfcat = pdftk $(filter %.pdf, $^) cat output $@
+pdfcat = pdfjoin --outfile $@ $(filter %.pdf, $^) 
