@@ -130,6 +130,10 @@ handouts: ^%%
 HOLD ^%%
 handouts outline: %!
 
+# NOTESONLY May go with stuff that's withheld, but not really an answer
+CHANGE %!
+draft: ^{\color{shortcolor}%%}
+
 # CLASS is something only for class (like a picture). 
 CLASS %!
 draft final: ^%%
