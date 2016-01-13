@@ -9,3 +9,5 @@ PUSHSTAR = perl -wf $(filter %.pl, $^) $* $(filter-out %.pl, $^) > $@
 
 # Pushon appends (pushes onto the file that's already there)
 PUSHON = perl -wf $(filter %.pl, $^) $(filter-out %.pl, $^) >> $@
+
+PPUSH = perl -00 -wf $(filter %.pl, $^) $(filter-out %.pl, $^) > $@
