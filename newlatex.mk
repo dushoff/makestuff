@@ -4,6 +4,7 @@
 
 latex = pdflatex
 
+include $(ms)/perl.def
 include $(wildcard .deps/*.d)
 
 define ltx

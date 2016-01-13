@@ -107,6 +107,9 @@ handouts: NULLSLIDE
 draft final: ^DEFHEAD {\sl %%}
 webnotes complete: ^DEFHEAD {\underline{Comment slide}: \sl %%}
 
+# Activate when preparing new slides
+CHANGE %!
+
 # Slide for notes only (e.g., resource information)
 NSLIDE ^DEFHEAD %%
 draft final: NULLSLIDE
