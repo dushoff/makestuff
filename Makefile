@@ -3,7 +3,7 @@
 ### Hooks for the editor to set the default target
 current: target
 
-target pngtarget pdftarget vtarget acrtarget: perltest.out 
+target pngtarget pdftarget vtarget acrtarget: test.account.tsv 
 
 ##################################################################
 
@@ -29,6 +29,15 @@ Sources += makefile.mk hooks.mk
 	$(CP) $< $@
 
 Sources += unix.mk linux.mk windows.mk up.mk
+
+######################################################################
+
+# Accounts 
+
+Sources += accounts.mk accounts.pl
+
+### TEMP
+include accounts.mk
 
 ######################################################################
 
