@@ -197,31 +197,41 @@ draft final: \end{columns}
 
 # Pictures
 
+## Use height for scale
 HFIG \includegraphics[height=%\textheight]{%}
 outline: %!
 
-LFIG \includegraphics[height=%\textheight,angle=270]{%}
-outline: %!
+HIGHFIG ^HFIG 1.0 %%
 
 FIG ^HFIG 0.4 %%
 draft final: ^HFIG 0.8 %%
 
+## Landscape version
+LFIG \includegraphics[height=%\textheight,angle=270]{%}
+outline: %!
+
 LANDFIG ^LFIG 0.4 %%
 draft final: ^LFIG 0.75 %%
 
-PAUSE %!
-final: \pause
+## Width for scale
 
+WFIG \includegraphics[width=%\textwidth]{%}
+
+WIDEFIG ^WFIG 1 %%
+
+# A figure on one side of a two-column presentation
 SIDEFIG %!
-draft final: \includegraphics[width=%\textwidth]{%}
+draft final: ^WIDEFIG %%
 
-WIDEFIG ^SIDEFIG 1.0 %%
-
+# Figures next to each other
 DOUBLEFIG \begin{minipage}{\dfwidth} \centering \n\includegraphics[height=\dfheight]{%} \end{minipage} \hspace{\dfsep} \begin{minipage}{\dfwidth} \centering \n\includegraphics[height=\dfheight]{%} \end{minipage}
 webnotes: \includegraphics[height=0.5\textheight]{%}\n\n\includegraphics[height=0.5\textheight]{%}
 outline: %!
 
 DOUBLEPDF ^DOUBLEFIG %+-0.pdf %-1.pdf
+
+PAUSE %!
+final: \pause
 
 INPUT \input{%} %%
 outline: %!
