@@ -28,7 +28,7 @@ Sources += makefile.mk hooks.mk
 %.mk: %.mk.template
 	$(CP) $< $@
 
-Sources += unix.mk linux.mk windows.mk up.mk
+Sources += os.mk unix.mk linux.mk windows.mk up.mk
 
 ######################################################################
 

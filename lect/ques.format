@@ -1,0 +1,66 @@
+# Rules for .format files
+## Lines starting with # are comments
+## General rules follow identifiers and are associated generally with the identifier
+## Specific rules follow a list of format names ended by a colon
+## A general rule with no colon need not be preceded by a blank line
+
+# Formatting rules for .fmt
+## %% Takes whole rest of P.
+## %+ Uses P. without taking
+## %! Discards whole rest of P.
+## %| Takes "sentence"
+## %_ Takes optional line
+## %^ Takes optional word
+## % Takes word
+
+# Title stuff (not very clear)
+ASN \subsection*{Population ecology assignment: %%}
+WK \subsection*{Population ecology worksheet %%}
+
+# Subtitle explaining when and how it is "due"
+DUE \emph{%%}
+key rub: %!
+
+# Question (use vfill in the assignment, except before the first question)
+Q \vfill\vspace{1.0ex plus 1.0 ex}\noindent\stepcounter{question}\arabic{question}.~%%
+key rub: ^FQ %%
+
+# First question (see above)
+FQ \vspace{1.0ex plus 1.0 ex}\noindent\stepcounter{question}\arabic{question}.~%%
+
+# Sub-question
+SQ \vspace{0.8ex plus 0.8ex}\noindent\stepcounter{qpart}\alph{qpart}.~%%
+
+# ANS appears on key and rubric, but not on assignment
+ANS %!
+key rub: \vspace{1.5ex}{\sf %%}
+
+# RUB is rubric-only information
+RUB %!
+rub: \vspace{1.5ex}{\noindent\textbf{\small %%}}
+
+# Note
+NOTE \vspace{1.5ex}{\noindent\sl %%}
+
+# Comment goes only on keys
+COMMENT %!
+key rub: \vspace{1.5ex}{\sl %%}
+
+SQUEEZE %!
+asn: \vspace{-1.5ex}
+
+
+# General and generic figure
+HFIG \includegraphics[height=%\textheight]{%}
+
+FIG ^HFIG 0.4 %%
+
+# Figure for answer key only
+AFIG %!
+key rub: ^FIG %%
+
+# Double figure
+DFIG \begin{minipage}{0.5\linewidth}\centering \n\includegraphics[height=0.4\textheight]{%}\end{minipage}\hspace{0.5cm}\begin{minipage}{0.5\linewidth}\centering\n\includegraphics[height=0.4\textheight]{%}\end{minipage}
+
+ADFIG ^DFIG %%
+asn: %!

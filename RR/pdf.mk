@@ -1,60 +1,60 @@
 %.0.pdf: %.pdf
-	pdftk $< cat 1 output $@
+	pdfjam $< 1 --outfile $@
 
 %.1.pdf: %.pdf
-	pdftk $< cat 2 output $@
+	pdfjam $< 2 --outfile $@
 
 %.2.pdf: %.pdf
-	pdftk $< cat 3 output $@
+	pdfjam $< 3 --outfile $@
 
 %.3.pdf: %.pdf
-	pdftk $< cat 4 output $@
+	pdfjam $< 4 --outfile $@
 
 %.4.pdf: %.pdf
-	pdftk $< cat 5 output $@
+	pdfjam $< 5 --outfile $@
 
 %.5.pdf: %.pdf
-	pdftk $< cat 6 output $@
+	pdfjam $< 6 --outfile $@
 
 %.6.pdf: %.pdf
-	pdftk $< cat 7 output $@
+	pdfjam $< 7 --outfile $@
 
 %.7.pdf: %.pdf
-	pdftk $< cat 8 output $@
+	pdfjam $< 8 --outfile $@
 
 %.8.pdf: %.pdf
-	pdftk $< cat 9 output $@
+	pdfjam $< 9 --outfile $@
 
 %.9.pdf: %.pdf
-	pdftk $< cat 10 output $@
+	pdfjam $< 10 --outfile $@
 
 %-0.pdf: %.pdf
-	pdftk $< cat 1 output $@
+	pdfjam $< 1 --outfile $@
 
 %-1.pdf: %.pdf
-	pdftk $< cat 2 output $@
+	pdfjam $< 2 --outfile $@
 
 %-2.pdf: %.pdf
-	pdftk $< cat 3 output $@
+	pdfjam $< 3 --outfile $@
 
 %-3.pdf: %.pdf
-	pdftk $< cat 4 output $@
+	pdfjam $< 4 --outfile $@
 
 %-4.pdf: %.pdf
-	pdftk $< cat 5 output $@
+	pdfjam $< 5 --outfile $@
 
 %-5.pdf: %.pdf
-	pdftk $< cat 6 output $@
+	pdfjam $< 6 --outfile $@
 
 %-6.pdf: %.pdf
-	pdftk $< cat 7 output $@
+	pdfjam $< 7 --outfile $@
 
 %-7.pdf: %.pdf
-	pdftk $< cat 8 output $@
+	pdfjam $< 8 --outfile $@
 
 %-8.pdf: %.pdf
-	pdftk $< cat 9 output $@
+	pdfjam $< 9 --outfile $@
 
 %-9.pdf: %.pdf
-	pdftk $< cat 10 output $@
+	pdfjam $< 10 --outfile $@
 
