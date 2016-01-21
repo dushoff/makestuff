@@ -11,6 +11,12 @@ date.png: date.txt
 date.%.png: date.png
 	convert -scale $*% $< $@
 
+date.jpg: date.txt
+	convert -crop 90x28+36+32 $< $@
+
+date.%.jpg: date.png
+	convert -scale $*% $< $@
+
 name.pdf: name.txt
 	pdfroff $< > $@
 
