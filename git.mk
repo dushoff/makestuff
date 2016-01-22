@@ -10,6 +10,9 @@ BRANCH = $(shell cat .git/HEAD | perl -npE "s|.*/||;")
 
 ### Push and pull
 
+branch:
+	@echo $(BRANCH)
+
 newpush: commit.time
 	git push -u origin master
 
@@ -148,11 +151,6 @@ endef
 
 %.branch: sync
 	git checkout $*
-
-%.newbranch: sync
-	-git branch -d $*
-	git checkout -b $*
-	$(MAKE) newpush
 
 update: sync
 	git rebase $(cmain) 
