@@ -55,6 +55,8 @@ Sources += talk.def talk.mk $(wildcard talk/*.*)
 
 Sources += lect.mk $(wildcard lect/*.*)
 
+Sources += pandoc.mk
+
 ######################################################################
 
 # RR scripts
