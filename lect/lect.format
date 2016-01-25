@@ -223,6 +223,9 @@ WIDEFIG ^WFIG 1 %%
 SIDEFIG %!
 draft final: ^WIDEFIG %%
 
+HIDEFIG %!
+draft final: ^HFIG 0.45 %%
+
 # Figures next to each other
 DOUBLEFIG \begin{minipage}{\dfwidth} \centering \n\includegraphics[height=\dfheight]{%} \end{minipage} \hspace{\dfsep} \begin{minipage}{\dfwidth} \centering \n\includegraphics[height=\dfheight]{%} \end{minipage}
 webnotes: \includegraphics[height=0.5\textheight]{%}\n\n\includegraphics[height=0.5\textheight]{%}
