@@ -109,6 +109,8 @@ foreach(@tex){
 				}
 			}
 		}
+
+		s/^[*]/$spec{STAR}/ if defined $spec{STAR};
  
 		# Find "command" word
 		my ($lead, $head) = /(\s*)([\w*]*)/;

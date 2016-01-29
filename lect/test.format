@@ -1,0 +1,102 @@
+# Rules for .format files
+## Lines starting with # are comments
+## General rules follow identifiers and are associated generally with the identifier
+## Specific rules follow a list of format names ended by a colon
+## A general rule with no colon need not be preceded by a blank line
+
+# Formatting rules for .fmt
+## %% Takes whole rest of P.
+## %+ Uses P. without taking
+## %! Discards whole rest of P.
+## %| Takes "sentence" (up to "." or suppressed "|")
+## %_ Takes optional line
+## %^ Takes optional word
+## % Takes word
+
+################################################################
+
+# Document formatting
+
+!SLIDESEP -{60,}
+!ESL \n\n
+
+################################################################
+
+# Sectioning (for preparing only)
+
+SEC %!
+
+# Titles
+
+TOP \subsection*{%%}
+exam: %!
+
+# Question formatting
+
+Q \vspace{2.0ex plus 8.0ex}\pagebreak[3]\noindent\stepcounter{question}{\arabic{question}.}~%%\vspace{1.0ex}
+exam test: \vspace{2.0ex plus 8.0ex}\pagebreak[3]\noindent\stepcounter{question}{\bf\arabic{question}.}~%%\vspace{1.0ex}
+
+PRE %%
+
+FQ \vspace{2.0ex}\noindent\stepcounter{question}\arabic{question}.~%%
+
+# What do do if there is no command
+DEFCOMM \stepcounter{mc}{\Alph{mc}.}~%%
+exam test: \stepcounter{mc}{\bf\Alph{mc}.}~%%
+
+SQ \vspace{1.5ex}\noindent\stepcounter{qpart}\alph{qpart})~%%
+
+COMMENT \vspace{2.0ex plus 12.0ex}\pagebreak[3]\noindent{\sl %|} %%
+
+INTRO %%
+key rub: %!
+
+NOCOMMENT \vspace{2.0ex plus 8.0ex}\pagebreak[3]%%
+
+OPT ^STAR %%
+
+STAR ^DEFCOMM %%
+key rub: ^DEFCOMM {\bf %%}
+
+KEY %!
+key rub: {\bf ANS: %%}
+
+ASPACE \vspace{%%}
+key rub: %!
+
+CLEAR \clearpage
+BLANK \mbox{}
+VSPACE \vfill
+key rub: %!
+
+ANS %!
+key rub: \vspace{1.5ex}{\sf %%}
+
+TEST %!
+test: ^%%
+
+APIC ^%%
+test: %!
+
+################################################################
+
+# Figures
+
+HFIG \includegraphics[height=%\textheight]{%}
+FIG ^HFIG 0.25 %%
+PageFIG ^HFIG 0.4 %%
+DOUBLEFIG \begin{minipage}{\dfwidth} \centering \n\includegraphics[height=\dfheight]{%} \end{minipage} \hspace{\dfsep} \begin{minipage}{\dfwidth} \centering \n\includegraphics[height=\dfheight]{%} \end{minipage}
+DOUBLEPDF ^DOUBLEFIG %+-0.pdf %+-1.pdf
+
+# Deprecated
+DFIG ^DOUBLEFIG %%
+
+# Rubric only
+RUB %!
+rub: \textsl{%%}
+
+# Separate the two sections of an MC/SA test; ENDMC is pulled by  scramble.pl script, but it's still not obvious which of these is really needed
+ENDMC %!
+
+STARTSA \cleardoublepage\renewcommand{\myhead}{\bf Name:\hrulefill\hrulefill{}Student number:  \hrulefill Tutorial: \hrulefill\hrule\testver} \noindent Answer questions at the bottom/next page.  \emph{Briefly} show necessary work and equations.
+key rub: %!
