@@ -24,6 +24,7 @@
 
 ################################################################
 
+<<<<<<< HEAD
 # Choosing questions
 
 Zero NULLSLIDE
@@ -34,6 +35,17 @@ midterm1 bank: %!
 Omega NULLSLIDE
 bank: %!
 
+=======
+## Selecting
+Zero NULLSLIDE
+
+Omega NULLSLIDE
+bank: %!
+
+Alpha NULLSLIDE
+bank midterm1: %!
+
+>>>>>>> Autocommit (makestuff)
 # Sectioning (for preparing only)
 
 SEC %!
