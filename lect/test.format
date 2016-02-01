@@ -17,10 +17,22 @@
 
 # Document formatting
 
-!SLIDESEP -{60,}
+!SLIDESEP -{40,}
 !ESL \n\n
 
+!STAR STAR
+
 ################################################################
+
+# Choosing questions
+
+Zero NULLSLIDE
+
+Alpha NULLSLIDE
+midterm1 bank: %!
+
+Omega NULLSLIDE
+bank: %!
 
 # Sectioning (for preparing only)
 
@@ -32,6 +44,8 @@ TOP \subsection*{%%}
 exam: %!
 
 # Question formatting
+
+NOTE %!
 
 Q \vspace{2.0ex plus 8.0ex}\pagebreak[3]\noindent\stepcounter{question}{\arabic{question}.}~%%\vspace{1.0ex}
 exam test: \vspace{2.0ex plus 8.0ex}\pagebreak[3]\noindent\stepcounter{question}{\bf\arabic{question}.}~%%\vspace{1.0ex}

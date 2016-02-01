@@ -9,6 +9,7 @@ undef $/;
 # What is input file type?
 my $inftype = $ARGV[0];
 $inftype =~ s/.*\.//;
+print "$inftype\n";
 
 # Read files into file hash:
 foreach my $fn (@ARGV){

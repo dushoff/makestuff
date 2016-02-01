@@ -6,7 +6,7 @@ my %files;
  
 undef $/;
  
-# What is input file type?
+# The input file type is the type of the first prereq; this can be fragile if you have multiple make rules
 my $inftype = $ARGV[0];
 $inftype =~ s/.*\.//;
  

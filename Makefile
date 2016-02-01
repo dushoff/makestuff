@@ -49,7 +49,7 @@ Sources += git.mk git.def repos.mk
 
 Sources += visual.mk oldlatex.mk RR.mk wrapR.mk perl.def compare.mk
 
-Sources += newlatex.mk latexdeps.pl RR/pdf.mk forms.mk
+Sources += newlatex.mk latexdeps.pl RR/pdf.mk forms.mk RR/up.mk
 
 Sources += talk.def talk.mk $(wildcard talk/*.*)
 
