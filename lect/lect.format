@@ -118,6 +118,10 @@ draft final: NULLSLIDE
 RSLIDE NULLSLIDE
 webnotes draft final: ^DEFHEAD {\sl %%}
 
+# "Side" slides: similar to RSLIDE, but not actually repetitive 
+SSLIDE NULLSLIDE
+webnotes draft final: ^DEFHEAD {\color{shortcolor}%%}
+
 # Short version for class, should go with NOTES
 SHORT {\color{shortcolor}%%}
 handouts complete: %!
