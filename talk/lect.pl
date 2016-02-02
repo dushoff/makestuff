@@ -34,10 +34,12 @@ foreach (split /\n+/, $files{fmt}){
 		$com{$1}=$_;
 	}
 }
+
+$spec{PERC} = "\\%" unless defined $spec{PERC};
  
 # Top of template file
 my @tmp = split(/----------------------+\s+/, $files{tmp});
-print $tmp[0];
+print $tmp[0] if defined $tmp[0];
  
 # Split input file
 $files{$inftype} =~ s/.*$spec{START}//s if defined $spec{START};
@@ -128,7 +130,7 @@ foreach(@tex){
 		$first=0 if $head;
  
 		# Replace % with an illegal string (whether or not we're doing pattern processing)
-		s/%/@#/gs;
+		s/%/@#PERC/gs;
  
 		# Replace lines by appropriate patterns
 		if ($pat){
@@ -187,7 +189,7 @@ foreach(@tex){
 				# Otherwise, % requires next word
 				else{
 					$str =~ s/\s*([^\s|]+)\s*//
-						or die "% doesn't match $str in $_\n";
+						or die "% doesn't match $str in $_\n (head $head)";
 					my $p = $1;
 					s/%/$p/;
 				}
@@ -199,7 +201,7 @@ foreach(@tex){
 		redo if  s/^(\s*)\^/$1/;
  
 		# Hack (tex only, for now)
-		s/@#/\\%/gs;
+		s/@#PERC/$spec{PERC}/gs;
  
 		# Leading tabs
 		s/\s+$//;
@@ -249,4 +251,4 @@ foreach(@tex){
 }
  
 # Bottom of template file
-print "\n$tmp[1]";
+print "\n$tmp[1]" if defined $tmp[1];

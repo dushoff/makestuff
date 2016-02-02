@@ -36,7 +36,8 @@ psync:
 	$(MAKE) pull
 	$(MAKE) push
 
-## The archive thing is confusing ... don't want to remake them all the time, but don't want to crash if they're not present. 
+## Use Archive with wildcard, for things that it will archive if they are there
+## Other things that you want in the repo (things you want to have made automatically) are sources
 commit.time: $(Sources)
 	git add -f $^ $(Archive)
 	echo "Autocommit ($(notdir $(CURDIR)))" > $@

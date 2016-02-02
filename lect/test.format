@@ -15,6 +15,10 @@
 
 ################################################################
 
+# Outputs: key, rub, test
+
+################################################################
+
 # Document formatting
 
 !SLIDESEP -{40,}
@@ -24,28 +28,6 @@
 
 ################################################################
 
-<<<<<<< HEAD
-# Choosing questions
-
-Zero NULLSLIDE
-
-Alpha NULLSLIDE
-midterm1 bank: %!
-
-Omega NULLSLIDE
-bank: %!
-
-=======
-## Selecting
-Zero NULLSLIDE
-
-Omega NULLSLIDE
-bank: %!
-
-Alpha NULLSLIDE
-bank midterm1: %!
-
->>>>>>> Autocommit (makestuff)
 # Sectioning (for preparing only)
 
 SEC %!
@@ -53,22 +35,21 @@ SEC %!
 # Titles
 
 TOP \subsection*{%%}
-exam: %!
 
 # Question formatting
 
 NOTE %!
 
 Q \vspace{2.0ex plus 8.0ex}\pagebreak[3]\noindent\stepcounter{question}{\arabic{question}.}~%%\vspace{1.0ex}
-exam test: \vspace{2.0ex plus 8.0ex}\pagebreak[3]\noindent\stepcounter{question}{\bf\arabic{question}.}~%%\vspace{1.0ex}
+test: \vspace{2.0ex plus 8.0ex}\pagebreak[3]\noindent\stepcounter{question}{\bf\arabic{question}.}~%%\vspace{1.0ex}
 
 PRE %%
 
 FQ \vspace{2.0ex}\noindent\stepcounter{question}\arabic{question}.~%%
 
-# What do do if there is no command
+# What to do if there is no command
 DEFCOMM \stepcounter{mc}{\Alph{mc}.}~%%
-exam test: \stepcounter{mc}{\bf\Alph{mc}.}~%%
+test: \stepcounter{mc}{\bf\Alph{mc}.}~%%
 
 SQ \vspace{1.5ex}\noindent\stepcounter{qpart}\alph{qpart})~%%
 
@@ -121,8 +102,8 @@ DFIG ^DOUBLEFIG %%
 RUB %!
 rub: \textsl{%%}
 
-# Separate the two sections of an MC/SA test; ENDMC is pulled by  scramble.pl script, but it's still not obvious which of these is really needed
+# Separate the two sections of an MC/SA test; ENDMC should be obsolete
 ENDMC %!
 
-STARTSA \cleardoublepage\renewcommand{\myhead}{\bf Name:\hrulefill\hrulefill{}Student number:  \hrulefill Tutorial: \hrulefill\hrule\testver} \noindent Answer questions at the bottom/next page.  \emph{Briefly} show necessary work and equations.
+STARTSA \cleardoublepage\renewcommand{\myhead}{\bf Name:\hrulefill\hrulefill{}Student number:  \hrulefill Tutorial: \hrulefill\testver} \noindent Answer questions on this page.  \emph{Briefly} show necessary work and equations.
 key rub: %!

@@ -1,0 +1,36 @@
+# Rules for .format files
+## Lines starting with # are comments
+## General rules follow identifiers and are associated generally with the identifier
+## Specific rules follow a list of format names ended by a colon
+## A general rule with no colon need not be preceded by a blank line
+
+# Formatting rules for .fmt
+## %% Takes whole rest of P.
+## %+ Uses P. without taking
+## %! Discards whole rest of P.
+## %| Takes "sentence" (up to "." or suppressed "|")
+## %_ Takes optional line
+## %^ Takes optional word
+## % Takes word
+
+################################################################
+
+# Document formatting
+
+!SLIDESEP -{40,}
+!PERC %
+!ESL ----------------------------------------
+
+################################################################
+
+Zero NULLSLIDE
+
+Alpha NULLSLIDE
+midterm1 bank: %!
+
+Beta NULLSLIDE
+midterm2 bank: %!
+
+Omega NULLSLIDE
+bank: %!
+
