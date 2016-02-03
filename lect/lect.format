@@ -182,7 +182,7 @@ draft final: %%
 # Comments are shown in class, but not in the notes
 COMMENT %!
 webnotes complete: {\em\underline{Comment}: }%%
-draft final: {\sl %%}
+draft final: {\color{shortcolor}\sl %%}
 
 ########################################
 
@@ -227,6 +227,7 @@ WIDEFIG ^WFIG 1 %%
 SIDEFIG %!
 draft final: ^WIDEFIG %%
 
+## High sidefig?
 HIDEFIG %!
 draft final: ^HFIG 0.45 %%
 
