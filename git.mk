@@ -112,7 +112,7 @@ testdir: $(Sources)
 	$(maketest)
 	$(testdir)
 
-lestdir: $(Sources) $(wildcard local.*)
+localdir: $(Sources) $(wildcard local.*)
 	$(maketest)
 	$(lcopy)
 	$(testdir)
@@ -133,7 +133,7 @@ endef
 
 lcopy = -/bin/cp local.* $@/$(notdir $(CURDIR))
 
-testdir = cd $@/$(notdir $(CURDIR)) && $(MAKE) newdir && $(MAKE)
+testdir = cd $@/$(notdir $(CURDIR)) && $(MAKE) Makefile && $(MAKE)
 
 define subclone
 	$(MAKE) push
