@@ -71,11 +71,6 @@ README.md:
 LICENSE.md:
 	touch $@
 
-local.mk:
-	-/bin/cp $(gitroot)/local/local.mk .
-	touch $@
-
-
 ##################################################################
 
 ### Cleaning
