@@ -18,3 +18,6 @@ bdraft.fmt: beamer.fmt $(talkdir)/bd.pl
 .PRECIOUS: %.outline.tex
 %.outline.tex: %.txt outline.tmp outline.fmt $(talkdir)/lect.pl
 	$(PUSH)
+
+beamer.tmp beamer.fmt: %: $(talkdir)/%
+	/bin/cp -f $< $@
