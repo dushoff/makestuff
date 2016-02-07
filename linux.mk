@@ -1,4 +1,4 @@
--include $(gitroot)/makestuff/unix.mk
+-include $(ms)/unix.mk
 
 %.go:
 	$(MAKE) $*
