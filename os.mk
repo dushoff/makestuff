@@ -4,3 +4,6 @@ include $(ms)/linux.mk
 else
 include $(ms)/unix.mk
 endif
+
+%.var:
+	$(MAKE) $($*)
