@@ -47,7 +47,9 @@ Sources += git.mk git.def repos.mk
 
 # Makefiles and resources for other projects
 
-Sources += visual.mk oldlatex.mk RR.mk wrapR.mk perl.def compare.mk
+Sources += visual.mk oldlatex.mk RR.mk wrapR.mk compare.mk
+
+Sources += perl.def python.def
 
 Sources += newlatex.mk latexdeps.pl RR/pdf.mk forms.mk RR/up.mk
 
