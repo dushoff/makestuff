@@ -7,6 +7,7 @@ DIFF = diff
 EDIT = gvim
 RMR = /bin/rm -rf
 LN = /bin/ln -s
+LNF = /bin/ln -fs
 TGZ = tar czf $@ $^
 MD = mkdir
 CAT = cat
@@ -18,6 +19,9 @@ copy = $(CP) $< $@
 ccrib = $(CP) $(crib)/$@ .
 mkdir = $(MD) $@
 cat = $(CAT) $^ > $@
+ln = $(LN) $< $@
+lnf = $(LNF) $< $@
+
 
 # What?
 convert = convert $< $@
