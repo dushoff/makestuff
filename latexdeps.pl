@@ -47,7 +47,7 @@ if (%inputs){
 }
 
 if (%graphics){
-	say "$basename.pdf: ", join " ", keys %graphics, "\n";
+	say "$basename.tex: ", join " ", keys %graphics, "\n";
 }
 
 if (%bibs){
