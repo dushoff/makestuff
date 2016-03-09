@@ -3,7 +3,7 @@
 ### Hooks for the editor to set the default target
 current: target
 
-target pngtarget pdftarget vtarget acrtarget: test.account.tsv 
+target pngtarget pdftarget vtarget acrtarget: csv2html.py 
 
 ##################################################################
 

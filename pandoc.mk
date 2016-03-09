@@ -6,3 +6,7 @@
 
 %.out: %.md
 	pandoc -t plain -o $@ $<
+
+%.html: %.csv
+	csv2html -o $@ $<
+
