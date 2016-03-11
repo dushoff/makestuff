@@ -39,6 +39,8 @@ key rub: \vspace{1.5ex}{\sf %%}
 RUB %!
 rub: \vspace{1.5ex}{\noindent\textbf{\small %%}}
 
+SUPPRESS %!
+
 # Note
 NOTE \vspace{1.5ex}{\noindent\sl %%}
 
