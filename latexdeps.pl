@@ -38,7 +38,7 @@ while ($f =~ s/\\bibliography\s*{(.*?)}//){
 }
 
 if (%inputs){
-	say "$basename.tex: ", join " ", keys %inputs;
+	say "$basename.pdf: ", join " ", keys %inputs;
 	# my @deps = map {s|^|.deps/|; s|$|.d|; $_} keys %inputs;
 	my @deps = map {s|$|.deps|; $_} keys %inputs;
 	@deps = grep(!/\//, @deps); 
