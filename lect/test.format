@@ -31,7 +31,8 @@
 # Sectioning (for preparing only)
 
 SEC %!
-SUPPRESS %!
+
+CHANGE %!
 
 # Titles
 

@@ -3,13 +3,14 @@ RRd = $(ms)/RR
 include $(RRd)/pdf.mk
 include $(RRd)/up.mk
 
-wrapR = $(wrapRd)/wrapR.pl
+wrapR = $(wrapRd)/wrapper.pl
 Rtrim = $(RRd)/Rtrim.pl
+pdfcheck = $(RRd)/pdfcheck.pl
 
 define run-R 
 	perl -f $(wrapR) $@ $^ > $(@:.Rout=.wrapR.r)
-	( (R --vanilla < $(@:.Rout=.wrapR.r) > $(@:.Rout=.wrapR.rout)) 2> $(@:.Rout=.Rlog) && cat $(@:.Rout=.Rlog) ) || ! cat $(@:.Rout=.Rlog)
-	perl -wf $(Rtrim) $(@:.Rout=.wrapR.rout) > $@
+	( (R --vanilla < $(@:.Rout=.wrapR.r) > $(@:%.Rout=.%.wrapR.rout)) 2> $(@:%.Rout=.%.Rlog) && cat $(@:%.Rout=.%.Rlog) ) || ! cat $(@:%.Rout=.%.Rlog)
+	perl -wf $(Rtrim) $(@:%.Rout=.%.wrapR.rout) > $@
 endef
 
 .PRECIOUS: %.Rlib.R
@@ -35,7 +36,11 @@ endef
 %.Rout.csv: %.Rout ;
 
 .PRECIOUS: %.Rout.pdf
-%.Rout.pdf: %.Rout ;
+%.Rout.pdf: %.Rout
+	touch .$@
+	perl -wf $(pdfcheck) .$@
+	$(MVF) .$@ $@
+	touch $@
 
 %.Rout.png: %.Rout.pdf
 	/bin/rm -f $@
