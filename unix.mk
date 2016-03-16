@@ -22,7 +22,6 @@ cat = $(CAT) $^ > $@
 ln = $(LN) $< $@
 lnf = $(LNF) $< $@
 
-
 # What?
 convert = convert $< $@
 imageconvert = convert -density 200 -trim $< -quality 100 -sharpen 0x1.0 $@
