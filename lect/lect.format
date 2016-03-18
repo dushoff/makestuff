@@ -206,6 +206,7 @@ HFIG \includegraphics[height=%\textheight]{%}
 outline: %!
 
 HIGHFIG ^HFIG 1.0 %%
+FRAMEFIG ^HFIG 0.9 %%
 
 FIG ^HFIG 0.4 %%
 draft final: ^HFIG 0.8 %%

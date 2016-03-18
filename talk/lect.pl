@@ -85,7 +85,7 @@ foreach(@tex){
 		# E.g. !EM \emph{%}
 		if (defined $spec{EM}){
 			my @em = split /%/, $spec{EM};
-			s/_([A-Za-z0-9 .,;-]*)_/$em[0]$1$em[1]/g;
+			s/\b_([A-Za-z0-9 .,;-]*)_\b/$em[0]$1$em[1]/g;
 		}
  
 		# Square brackets
