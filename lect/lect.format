@@ -205,8 +205,10 @@ draft final: \end{columns}
 HFIG \includegraphics[height=%\textheight]{%}
 outline: %!
 
+# FIGHFIG to fit in the frame
 HIGHFIG ^HFIG 1.0 %%
 FRAMEFIG ^HFIG 0.9 %%
+FIGHFIG ^HFIG 0.9 %%
 
 FIG ^HFIG 0.4 %%
 draft final: ^HFIG 0.8 %%
