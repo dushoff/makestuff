@@ -21,21 +21,24 @@ my $target = shift(@ARGV);
 die "ERROR -- wrapR.pl: Illegal target $target (does not end with .Rout) \n" unless $target =~ s/.Rout$//;
 die "ERROR -- wrapR.pl: No input files received, nothing to do.  A rule, script or dependency is probably missing from the project directory \n" unless @ARGV>0;
 
+my $dottarget = $target;
+$dottarget =~ s/[^\/]*$/.$&/;
+
 say "# This file was generated automatically by wrapR.pl";
 say "# You probably don't want to edit it";
 
-my $savetext = "save.image(file=\".$target.RData\")";
+my $savetext = "save.image(file=\"$dottarget.RData\")";
 my $save = $savetext;
 
 foreach(@ARGV){
-	s/(.*)\.Rout$/.$1.RData/;
+	s/([^\/]*)\.Rout$/.$1.RData/;
 	if ((/\.RData$/) or (/\.rda$/) or (/.R.env$/) or (/.Rdata/)){
 		push @env, $_;
 	} elsif (/\.R$/){
 		push @R, $_;
 	} elsif (/\.envir$/){
 		s/.envir//;
-		s/(.*)\.Rout$/.$1.RData/;
+		s/([^\/]*)\.Rout$/.$1.RData/;
 		push @envir, "\"$_\"";
 	} else {
 		push @input, "\"$_\"";
@@ -54,7 +57,7 @@ if (@input){
 }
 
 say "rtargetname <- \"$target\"";
-say "pdfname <- \".$target.Rout.pdf\"";
+say "pdfname <- \"$dottarget.Rout.pdf\"";
 say "csvname <- \"$target.Rout.csv\"";
 
 if (@envir){
@@ -79,7 +82,7 @@ foreach my $f (@R){
 			$save = $_;
 			$save =~ s/^# *//;
 			if ($save =~/^#/) {$save=$savetext} else{
-				$save =~ s/rdsave\s*\(/save(file=".$target.RData", / or die("Problem with special statement $save");
+				$save =~ s/rdsave\s*\(/save(file="$dottarget.RData", / or die("Problem with special statement $save");
 			}
 		}
 
