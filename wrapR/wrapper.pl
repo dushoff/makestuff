@@ -59,6 +59,7 @@ if (@input){
 say "rtargetname <- \"$target\"";
 say "pdfname <- \"$dottarget.Rout.pdf\"";
 say "csvname <- \"$target.Rout.csv\"";
+say "rdsname <- \"$target.Rds\"";
 
 if (@envir){
 	print "\nenvir_list <- list(); ";

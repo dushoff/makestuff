@@ -49,8 +49,11 @@ endef
 %.Routput: %.Rout
 	perl -f $(RRd)/Rcalc.pl $< > $@ 
 
-.PRECIOUS: %.RData
-%.RData: %.Rout ;
+.PRECIOUS: %.Rds
+%.Rds: %.Rout ;
+
+.PRECIOUS: .%.RData
+.%.RData: %.Rout ;
 
 .PRECIOUS: %.envir
 %.envir: %
