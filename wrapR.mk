@@ -37,9 +37,10 @@ endef
 
 .PRECIOUS: %.Rout.pdf
 %.Rout.pdf: %.Rout
+	$(RM) $@
 	touch .$@
 	perl -wf $(pdfcheck) .$@
-	$(MVF) .$@ $@
+	$(LN) .$@ $@
 	touch $@
 
 %.Rout.png: %.Rout.pdf

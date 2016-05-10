@@ -1,8 +1,5 @@
-up_date:
-	/bin/rm -f date.txt
-
-date.txt: 
-	date +"%d %b %Y" > $@
+up_date: 
+	date +"%d %b %Y" > date.txt
 
 date.pdf: date.txt
 	pdfroff $< > $@
