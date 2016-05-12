@@ -13,6 +13,8 @@ MD = mkdir
 CAT = cat
 ZIP = zip $@ $^
 
+hide = $(MVF) $1 $(dir $1).$(notdir $1)
+
 # Generic
 link = $(LN) $< $@
 copy = $(CP) $< $@

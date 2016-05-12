@@ -9,8 +9,10 @@ pdfcheck = $(RRd)/pdfcheck.pl
 
 define run-R 
 	perl -f $(wrapR) $@ $^ > $(@:.Rout=.wrapR.r)
-	( (R --vanilla < $(@:.Rout=.wrapR.r) > $(@:%.Rout=.%.wrapR.rout)) 2> $(@:%.Rout=.%.Rlog) && cat $(@:%.Rout=.%.Rlog) ) || ! cat $(@:%.Rout=.%.Rlog)
-	perl -wf $(Rtrim) $(@:%.Rout=.%.wrapR.rout) > $@
+	( (R --vanilla < $(@:.Rout=.wrapR.r) > $(@:%.Rout=%.wrapR.rout)) 2> $(@:%.Rout=%.Rlog) && cat $(@:%.Rout=%.Rlog) ) || ! cat $(@:%.Rout=%.Rlog)
+	perl -wf $(Rtrim) $(@:%.Rout=%.wrapR.rout) > $@
+	$(call hide,  $(@:%.Rout=%.Rlog))
+	$(call hide,  $(@:%.Rout=%.wrapR.rout))
 endef
 
 .PRECIOUS: %.Rlib.R
