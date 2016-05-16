@@ -99,6 +99,19 @@ $(Outside):
 	echo Please get $@ from outside the repo and try again.
 	exit 1
 
+##### Annihilation
+%.annihilate: sync
+	git filter-branch --force --index-filter 'git rm --cached --ignore-unmatch $*' --prune-empty --tag-name-filter cat -- --all
+
+forcepush:
+	git push origin --force --all
+	git push origin --force --tags
+
+gitprune:
+	git for-each-ref --format='delete %(refname)' refs/original | git update-ref --stdin
+	git reflog expire --expire=now --all
+	git gc --prune=now
+
 ##################################################################
 
 ### Testing
