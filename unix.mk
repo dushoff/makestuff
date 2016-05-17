@@ -17,6 +17,7 @@ hide = $(MVF) $1 $(dir $1).$(notdir $1)
 
 # Generic
 link = $(LN) $< $@
+hardlink = $(LNF) $< $@
 copy = $(CP) $< $@
 ccrib = $(CP) $(crib)/$@ .
 mkdir = $(MD) $@
