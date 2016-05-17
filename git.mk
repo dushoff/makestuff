@@ -107,6 +107,7 @@ forcepush:
 	git push origin --force --all
 	git push origin --force --tags
 
+## In theory you might want to check things out before doing this one.
 gitprune:
 	git for-each-ref --format='delete %(refname)' refs/original | git update-ref --stdin
 	git reflog expire --expire=now --all
