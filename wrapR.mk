@@ -58,6 +58,12 @@ endef
 .PRECIOUS: .%.RData
 .%.RData: %.Rout ;
 
+# How to make this work with subdirectories?
+.PRECIOUS: %.RData
+%.RData: .%.RData
+	$(link)
+
+# Why doesn't this seem to chain?
 .PRECIOUS: %.envir
 %.envir: %
 	touch $@
