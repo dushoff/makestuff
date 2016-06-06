@@ -57,7 +57,7 @@ Sources += talk.def talk.mk $(wildcard talk/*.*)
 
 Sources += lect.mk $(wildcard lect/*.*)
 
-Sources += pandoc.mk
+Sources += pandoc.mk compare.mk
 
 ######################################################################
 

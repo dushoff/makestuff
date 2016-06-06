@@ -1,9 +1,9 @@
-%.std: 
-	/bin/cp -f $* $@
+%.setgoal: %
+	/bin/cp $@ $*.goal
 
-%.compare: %.std
-	$(MAKE) $*
-	$(MVF) $* $*.new
-	$(MV) $< $*
-	$(DIFF) $*.new $* > $@
-	$(RM) $*.new $@
+%.goal: 
+	/bin/cp $* $@
+
+%.compare: % %.goal
+	diff $* $*.goal > $@
+
