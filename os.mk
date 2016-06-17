@@ -6,4 +6,7 @@ include $(ms)/unix.mk
 endif
 
 %.var:
+	@echo $($*)
+
+%.makevar:
 	$(MAKE) $($*)

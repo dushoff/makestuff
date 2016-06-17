@@ -10,11 +10,6 @@ target pngtarget pdftarget vtarget acrtarget: csv2html.py
 now:
 	@echo $(BRANCH)
 
-ms = ../makestuff
-
-perltest.out: perltest.pl
-	$(PUSH)
-
 # Base files
 
 Sources = Makefile LICENSE README.md .gitignore stuff.mk README.github.md todo.md
