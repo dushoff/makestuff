@@ -12,10 +12,11 @@ TGZ = tar czf $@ $^
 MD = mkdir
 CAT = cat
 ZIP = zip $@ $^
+readonly = chmod a-w $@
 
 hide = $(MVF) $1 $(dir $1).$(notdir $1)
 
-# Generic
+# Generic (vars that use the ones above)
 link = $(LN) $< $@
 forcelink = $(LNF) $< $@
 copy = $(CP) $< $@
