@@ -1,0 +1,43 @@
+
+\newcommand{\subt}[1]{\begin{center} \em #1 \end{center}\medskip}
+\newcommand{\nosubt}{\medskip}
+\newcommand{\sub}[1]{\medskip {\bf #1}}
+\newcommand{\heading}[1]{{\large \bf \begin{center} #1 \end{center}}}
+\newcommand{\oldhead}[1]{{\normalsize \bf \begin{center} #1 \end{center}}}
+\newcommand{\super}[1]{{\Large \blue \bf \begin{center} #1 \end{center}}}
+
+\newcommand{\portpsfig}[1]{\psfig{figure=#1,height=4in}}
+\newcommand{\portps}[1]{\psfig{figure=#1,height=\vsize}}
+\newcommand{\landps}[1]{\psfig{figure=#1,height=\hsize,angle=270}}
+
+\newcommand{\slip}[1]{\begin{slide}\large\input{/home/dushoff/academic/talk/figs/#1}\end{slide}}
+\newcommand{\oldslip}[1]{\begin{slide}\input{/home/dushoff/academic/talk/figs/#1}\end{slide}}
+\newcommand{\scape}[1]{\psfig{figure=/home/dushoff/academic/talk/figs/#1,height=\hsize,angle=270}}
+\newcommand{\port}[1]{\psfig{figure=/home/dushoff/academic/talk/figs/#1,height=\vsize}}
+\newcommand{\hiport}[2]{\psfig{figure=/home/dushoff/academic/talk/figs/#2,height=#1\vsize}}
+\newcommand{\sland}[1]{\begin{slide}\psfig{figure=/home/dushoff/academic/talk/figs/#1,height=\hsize,angle=270}\end{slide}}
+\newcommand{\hiland}[2]{\psfig{figure=/home/dushoff/academic/talk/figs/#2,height=#1\hsize,angle=270}}
+\newcommand{\hitland}[3]{#3\\ \vbox{\vspace{\slideparskip}}\psfig{figure=/home/dushoff/academic/talk/figs/#2,height=#1\hsize,angle=270}}
+\newcommand{\hitsland}[3]{\begin{slide}#3\\ \vbox{\vspace{\slideparskip}}\psfig{figure=/home/dushoff/academic/talk/figs/#2,height=#1\hsize,angle=270}\end{slide}}
+\newcommand{\hitsport}[3]{\begin{slide}#3\\ \vbox{\vspace{\slideparskip}}\psfig{figure=/home/dushoff/academic/talk/figs/#2,height=#1\vsize,angle=0}\end{slide}}
+\newcommand{\ssea}[1]{\begin{slide}\psfig{figure=/home/dushoff/academic/talk/figs/#1,width=\vsize,angle=90}\end{slide}}
+\newcommand{\sstar}[1]{\begin{slide}\psfig{figure=/home/dushoff/academic/talk/figs/#1,height=\vsize,angle=180}\end{slide}}
+\newcommand{\sport}[1]{\begin{slide}\psfig{figure=/home/dushoff/academic/talk/figs/#1,height=\vsize}\end{slide}}
+\newcommand{\sr}[1]{\sport{#1}}
+
+\newcommand{\dispfrac}[2]{\frac{\displaystyle #1}{\displaystyle #2}}
+\newcommand{\lfig}[2]{\begin{slide}\heading{#1}\vspace*{0.95\vsize}\special{psfile=/home/dushoff/academic/talk/figs/reverse/#2 angle=0 voffset=-105 hoffset=25 vscale=50 hscale=50}\end{slide}}
+
+% Figure positioning
+\newcommand{\vsp}{\vspace{0\parskip}} 
+% \newcommand{\pfsp}{\vspace{\figadjust}} 
+\newcommand{\pfsp}{\vspace{0\parskip}} 
+
+\newcommand{\bc}{\begin{center}}
+\newcommand{\ec}{\end{center}}
+
+\newcommand{\nrep}{\small\sl}
+\newcommand{\ndiv}{\bf}
+% \newcommand{\endmk}{\begin{itemstep}\item X \end{itemstep}}
+\newcommand{\sendmark}{{\gray\vspace{1ex}\noindent\hrule width 12pt height 1pt depth 0pt}}
+

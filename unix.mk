@@ -13,6 +13,7 @@ MD = mkdir
 CAT = cat
 ZIP = zip $@ $^
 readonly = chmod a-w $@
+RO = chmod a-w $@
 
 hide = $(MVF) $1 $(dir $1).$(notdir $1)
 

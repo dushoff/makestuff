@@ -9,6 +9,8 @@ $basename =~ s/\.tex$//;
 my $f = <>;
 my (%inputs, %packages, %graphics, %bibs, %dirs);
 
+$f =~ s/^%.*//;
+$f =~ s/\n%.*//g;
 while ($f =~ s/\\input\s*{(.*?)}//){
 	$inputs{$1}=0;
 }

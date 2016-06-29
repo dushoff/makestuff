@@ -1,0 +1,10 @@
+\documentclass[12pt]{article}
+\usepackage{graphicx,slidecomm,commands,xspace}
+
+\begin{document}
+
+\pagestyle{plain}
+
+----------------------------------------------------------------------
+
+\end{document}

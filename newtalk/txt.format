@@ -1,0 +1,187 @@
+# Rules for .format files
+## Lines starting with # are comments
+## General rules follow identifiers and are associated generally with the identifier
+## Specific rules follow a list of format names ended by a colon
+## A general rule with no colon need not be preceded by a blank line
+
+# Formatting rules for .fmt
+## %% Takes whole rest of P.
+## %+ Uses P. without taking
+## %! Discards whole rest of P.
+## %| Takes "sentence"
+## %_ Takes optional line
+## %^ Takes optional word
+## % Takes word
+
+# Input stuff (should never require specific rules)
+
+!SLIDESEP ----------------+
+!TAB \t
+outline: NULL
+
+# COLSEP does not work! Yet!
+# !COLSEP =====================+
+
+# Itemization
+
+!ITEM \item
+outline: NULL
+
+!BIZ \begin{itemize}
+final: \begin{itemize}[<+-| alert@+>]
+outline: NULL
+
+!EIZ \end{itemize}
+outline: NULL
+
+# Output slide separators
+!BSL \begin{frame}
+complete handouts: \pagebreak[3]
+outline: NULL
+
+!ESL \end{frame}
+complete handouts: \n\n
+final: \uncover<+->\mbox{}\end{frame}
+outline: \n
+
+########################################
+
+# Sectioning
+
+SEC \section{%%}
+draft final: NOFRAME \section{%%}
+
+SS \subsection{%%}
+draft final: NOFRAME \subsection{%%}
+
+SSS \subsubsection{%%}
+draft final: NOFRAME \subsection{%%}
+
+DEFHEAD \noindent {\large\bf %%}
+draft final:\frametitle{%%} 
+outline: \indent * %%
+
+DEFCOMM %%
+outline: %!
+
+## Reuse section name as frame title in presentation
+
+TSEC ^SEC %%
+draft final: \section{%+} SLIDESTART \frametitle{%%}
+outline: \section{%+} \indent * %%
+
+TSS ^SS %%
+draft final: \subsection{%+} SLIDESTART \frametitle{%%}
+outline: \subsection{%+} \indent * %%
+
+TSSS ^SSS %%
+draft final: \subsubsection{%+} SLIDESTART \frametitle{%%}
+outline: \subsubsection{%+} \indent * %%
+
+NOSEC ^DEFHEAD %%
+complete handouts: \hrule\paragraph{%%} 
+
+########################################
+# Logical content formatting
+
+ANS 
+handouts: \mbox{}%!
+complete: {\bf\underline{Answer}: }%%
+final: * \uncover<+->{\color{blue} %%}
+draft: * {\color{blue} %%}
+outline: %!
+
+# Comments are shown in class, but not in the notes
+COMMENT %!
+complete: {\em\underline{Comment}: }%%
+draft final: {\color{shortcolor}\sl %%}
+
+# For the future; show in draft only
+CHANGE %!
+draft: {\color{red}\textbf{%%}}
+
+########################################
+
+# Explicit content formatting
+
+# Slides with purely repetitive information (for classroom exposition)
+RSLIDE NULLSLIDE
+draft final: ^DEFHEAD {\sl %%}
+
+# Short version for class, should go with NOTES
+SHORT {\color{shortcolor}%%}
+handouts complete: %!
+
+NOTES ^%%
+draft final: %!
+
+# Pictures for presentation only
+PIC %!
+draft final: ^%%
+
+########################################
+
+# Columns
+
+BC %!
+draft final: \begin{columns}[c] \column{0.54\textwidth} \small
+
+NC %!
+draft final: \column{0.4\textwidth}
+
+EC %!
+draft final: \end{columns}
+
+########################################
+
+# Pictures
+
+## Use height for scale
+HFIG \includegraphics[height=%\textheight]{%}
+outline: %!
+
+HIGHFIG ^HFIG 1.0 %%
+FRAMEFIG ^HFIG 0.9 %%
+
+FIG ^HFIG 0.4 %%
+draft final: ^HFIG 0.8 %%
+
+## Landscape version
+LFIG \includegraphics[height=%\textheight,angle=270]{%}
+outline: %!
+
+LANDFIG ^LFIG 0.4 %%
+draft final: ^LFIG 0.75 %%
+
+## Width for scale
+## Is this the right thing for most columnar figures?
+
+WFIG \includegraphics[width=%\textwidth]{%}
+WIDEFIG ^WFIG 1 %%
+DIAGRAM \includegraphics[width=1\textwidth]{%}\vspace{-0.7in}
+
+# Figures next to each other
+DOUBLEFIG \begin{minipage}{\dfwidth} \centering \n\includegraphics[height=\dfheight]{%} \end{minipage} \hspace{\dfsep} \begin{minipage}{\dfwidth} \centering \n\includegraphics[height=\dfheight]{%} \end{minipage}
+outline: %!
+
+DOUBLEPDF ^DOUBLEFIG %+-0.pdf %-1.pdf
+
+PAUSE %!
+final: \pause
+draft: *
+
+INPUT \input{%} %%
+outline: %!
+
+### hyperlinks
+
+HLINK \url{%%}
+outline: %!
+
+HREF \href{%}{%%}
+draft final: \href{%}{\color{linkcolor}%%}
+outline: %!
+
+### Input
+
+INPUT \input{%%}

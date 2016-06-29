@@ -3,12 +3,14 @@
 ### Hooks for the editor to set the default target
 current: target
 
-target pngtarget pdftarget vtarget acrtarget: csv2html.py 
+target pngtarget pdftarget vtarget acrtarget:  notarget
 
 ##################################################################
 
 now:
 	@echo $(BRANCH)
+
+ms = ../makestuff
 
 # Base files
 
@@ -49,6 +51,8 @@ Sources += perl.def python.def
 Sources += newlatex.mk latexdeps.pl RR/pdf.mk forms.mk RR/up.mk
 
 Sources += talk.def talk.mk $(wildcard talk/*.*)
+
+Sources += newtalk.def newtalk.mk $(wildcard newtalk/*.*)
 
 Sources += lect.mk $(wildcard lect/*.*)
 
