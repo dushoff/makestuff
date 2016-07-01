@@ -1,6 +1,12 @@
 up_date: 
 	date +"%d %b %Y" > date.txt
 
+%.img.jpg: %.pdf
+	$(imageconvert)
+
+%.img.png: %.pdf
+	$(imageconvert)
+
 date.pdf: date.txt
 	pdfroff $< > $@
 
@@ -22,10 +28,10 @@ name.pdf: name.txt
 name.%.png: name.png
 	convert -scale $*% $< $@
 
-sig.%.jpg: sig.jpg
+sig.%.jpg: $(gitroot)/Correspondence/sig.jpg
 	convert -scale $*% $< $@
 
-sig.%.png: sig.png
+sig.%.png: $(gitroot)/Correspondence/sig.png
 	convert -scale $*% $< $@
 
 %.ppmed.png: %.pdf

@@ -102,7 +102,13 @@ draft: {\color{red}\textbf{%%}}
 
 ########################################
 
-# Explicit content formatting
+## Content switching
+
+EXTRA NULLSLIDE
+
+# Presentation-only slides
+PSLIDE NULLSLIDE
+draft final: ^DEFHEAD {%%}
 
 # Slides with purely repetitive information (for classroom exposition)
 RSLIDE NULLSLIDE
@@ -115,9 +121,19 @@ handouts complete: %!
 NOTES ^%%
 draft final: %!
 
-# Pictures for presentation only
-PIC %!
+# Presentation only
+PRESENT %!
 draft final: ^%%
+
+# Mark as repetitive
+REP ^PRESENT %%
+
+# Mark as a picture
+PIC ^PRESENT %%
+
+# Repetitive slide heading
+RHEAD %!
+draft final: ^DEFHEAD %%
 
 ########################################
 
@@ -137,7 +153,7 @@ draft final: \end{columns}
 # Pictures
 
 ## Use height for scale
-HFIG \includegraphics[height=%\textheight]{%}
+HFIG \hfill\includegraphics[height=%\textheight]{%}\hfill\mbox{}
 outline: %!
 
 HIGHFIG ^HFIG 1.0 %%
@@ -147,22 +163,31 @@ FIG ^HFIG 0.4 %%
 draft final: ^HFIG 0.8 %%
 
 ## Landscape version
-LFIG \includegraphics[height=%\textheight,angle=270]{%}
+LFIG \hfill\includegraphics[height=%\textheight,angle=270]{%}\hfill\mbox{}
 outline: %!
 
 LANDFIG ^LFIG 0.4 %%
 draft final: ^LFIG 0.75 %%
 
 ## Width for scale
-## Is this the right thing for most columnar figures?
 
-WFIG \includegraphics[width=%\textwidth]{%}
+WFIG \hfill\includegraphics[width=%\textwidth]{%}\hfill\mbox{}
 WIDEFIG ^WFIG 1 %%
 DIAGRAM \includegraphics[width=1\textwidth]{%}\vspace{-0.7in}
 
+SIDEFIG %!
+draft final: ^WIDEFIG %%
+
+# Column figure by default is wide in presentations only
+CFIG ^FIG %%
+draft final: ^WIDEFIG %%
+
 # Figures next to each other
-DOUBLEFIG \begin{minipage}{\dfwidth} \centering \n\includegraphics[height=\dfheight]{%} \end{minipage} \hspace{\dfsep} \begin{minipage}{\dfwidth} \centering \n\includegraphics[height=\dfheight]{%} \end{minipage}
 outline: %!
+
+DBFIG \begin{minipage}{\dfwidth} \centering \n\includegraphics[height=%\dfheight]{%} \end{minipage} \hspace{\dfsep} \begin{minipage}{\dfwidth} \centering \n\includegraphics[height=%\dfheight]{%} \end{minipage}
+
+DOUBLEFIG ^DBFIG 1 % 1 %
 
 DOUBLEPDF ^DOUBLEFIG %+-0.pdf %-1.pdf
 

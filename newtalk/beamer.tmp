@@ -26,6 +26,11 @@
 \newlength{\hfsize}
 \setlength{\hfsize}{1.3\vfsize}
 
+\newlength{\dfwidth}\setlength{\dfwidth}{0.45\linewidth}
+\newlength{\dfheight}\setlength{\dfheight}{0.6\textheight}
+\newlength{\dfsep}\setlength{\dfsep}{0.0cm}
+
+
 \begin{document}
 
 ----------------------------------------------------------------------
