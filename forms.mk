@@ -10,14 +10,11 @@ up_date:
 date.pdf: date.txt
 	pdfroff $< > $@
 
-date.png: date.txt Makefile
-	convert -density 300 -crop 340x76+20+35 $< $@
+date.png: date.pdf
+	$(imageconvert)
 
 date.%.png: date.png
 	convert -scale $*% $< $@
-
-date.jpg: date.txt
-	convert -crop 90x28+36+32 $< $@
 
 date.%.jpg: date.jpg
 	convert -scale $*% $< $@
