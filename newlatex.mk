@@ -43,7 +43,7 @@ endef
 %.bbl: %.tex 
 	$(ltx)
 	/bin/rm -f $@
-	bibtex $*
+	$(bibtex) $*
 
 reset_deps:
 	$(RMR) .deps/*.d *.deps

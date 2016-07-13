@@ -1,9 +1,9 @@
 ## Use fancy make-y stuff to make this prettier someday
 ## Make another file that can download these repos when they are needed!
 
-gitdirs = Birth_death_models Disease_data Latent_incidence_fitting Exponential_figures SIR_model_family talkfigs fitting_code hybrid_fitting SIR_simulations
+gitdirs = Birth_death_models Disease_data Latent_incidence_fitting Exponential_figures SIR_model_family fitting_code hybrid_fitting SIR_simulations Generation_distributions WA_Ebola_Outbreak Ebola_sims
 
-dropdirs = Lecture_images htmp curves tbincome
+dropdirs = Lecture_images htmp curves tbincome talkfigs 
 
 rdirs = $(gitdirs) $(dropdirs)
 
@@ -17,14 +17,17 @@ Lecture_images:
 htmp:
 	$(LN) $(Drop)/ICI3D/WorkingWiki-export/Heterogeneity_lecture $@
 
+HIV_model_data: 
+	$(LN) $(Drop)/ICI3D/$@ .
+
 curves:
 	$(LN) $(Drop)/ICI3D/WorkingWiki-export/Endemic_curves_with_heterogeneity $@
 
 tbincome:
 	$(LN) $(Drop)/ICI3D/WorkingWiki-export/TB_and_income $@
 
-images:
-	$(LN) $(Drop)/
+talkfigs:
+	$(LN) $(Drop)/$@ .
 
 maketouch = cd $$(dir $$@) && $$(MAKE) $$* && touch $$*
 

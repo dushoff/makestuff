@@ -45,10 +45,13 @@ Sources += git.mk git.def repos.mk
 # Makefiles and resources for other projects
 
 Sources += visual.mk oldlatex.mk RR.mk wrapR.mk compare.mk
+Sources += visual.mk oldlatex.mk RR.mk wrapR.mk compare.mk
 
 Sources += perl.def python.def
 
-Sources += newlatex.mk latexdeps.pl RR/pdf.mk forms.mk RR/up.mk
+Sources += newlatex.mk latexdeps.pl biber.def newlatex.def
+
+Sources += RR/pdf.mk forms.mk RR/up.mk
 
 Sources += talk.def talk.mk $(wildcard talk/*.*)
 

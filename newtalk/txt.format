@@ -100,6 +100,8 @@ draft final: {\color{shortcolor}\sl %%}
 CHANGE %!
 draft: {\color{red}\textbf{%%}}
 
+CREDIT {\small\emph{%%}}
+
 ########################################
 
 ## Content switching
@@ -148,6 +150,14 @@ draft final: \column{0.4\textwidth}
 EC %!
 draft final: \end{columns}
 
+BCC %!
+draft final: \begin{columns}[c] \column{0.47\textwidth} \small
+
+NCC %!
+draft final: \column{0.47\textwidth}
+
+ECC ^EC
+
 ########################################
 
 # Pictures
@@ -195,9 +205,6 @@ PAUSE %!
 final: \pause
 draft: *
 
-INPUT \input{%} %%
-outline: %!
-
 ### hyperlinks
 
 HLINK \url{%%}
@@ -209,4 +216,5 @@ outline: %!
 
 ### Input
 
-INPUT \input{%%}
+INPUT \input{%} %%
+outline: %!
