@@ -5,7 +5,7 @@ gitdirs = Birth_death_models Disease_data Latent_incidence_fitting Exponential_f
 
 githomes = $(gitdirs:%=$(gitroot)/%)
 
-dropdirs = Lecture_images htmp curves tbincome talkfigs 
+dropdirs = Lecture_images htmp curves tbincome talkfigs HIV_model_data
 
 rdirs = $(gitdirs) $(dropdirs)
 

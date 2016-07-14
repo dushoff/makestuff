@@ -9,3 +9,7 @@ $(dushoff_github):
 Bio3SS = Bio3SS.github.io Bio3SS_content Population_time_series Lecture_images Exponential_figures Grading_scripts Assignments Birth_death_models Compensation_models Life_tables Life_history Age_distributions Structured_models 3SS Competition_models Exploitation_models
 $(Bio3SS):
 	git clone $(github)/Bio3SS/$@.git
+
+theobio_group = Serodiscordance_Champredon_2013 DHS_downloads Condom_awareness generation_interval_moments Disease_data HIV_treatment_Africa Awareness_TMB AnnualFlu DHS_convert Orthogonality DHS_new
+$(theobio_group):
+	git clone $(github)/mac-theobio/$@.git
