@@ -3,12 +3,11 @@
 
 gitdirs = Birth_death_models Disease_data Latent_incidence_fitting Exponential_figures SIR_model_family fitting_code hybrid_fitting SIR_simulations Generation_distributions WA_Ebola_Outbreak Ebola_sims
 
-githomes = $(gitdirs:%=$(gitroot)/%)
-
-dropdirs = Lecture_images htmp curves tbincome talkfigs HIV_model_data
+dropdirs = Lecture_images htmp curves tbincome talkfigs HIV_model_data my_images
 
 rdirs = $(gitdirs) $(dropdirs)
 
+githomes = $(gitdirs:%=$(gitroot)/%)
 $(githomes):
 	cd $(gitroot) && $(MAKE) -f makestuff/repos.mk $(notdir $@)
 
@@ -20,6 +19,9 @@ $(gitdirs):
 
 Lecture_images:
 	$(LN) $(Drop)/courses/$@ .
+
+my_images:
+	$(LN) $(Drop)/$@ .
 
 ## Developing on Taiwan MRT. Get rid of this when you can
 htmp:
