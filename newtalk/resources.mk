@@ -3,12 +3,20 @@
 
 gitdirs = Birth_death_models Disease_data Latent_incidence_fitting Exponential_figures SIR_model_family fitting_code hybrid_fitting SIR_simulations Generation_distributions WA_Ebola_Outbreak Ebola_sims
 
+githomes = $(gitdirs:%=$(gitroot)/%)
+
 dropdirs = Lecture_images htmp curves tbincome talkfigs 
 
 rdirs = $(gitdirs) $(dropdirs)
 
+$(githomes):
+	cd $(gitroot) && $(MAKE) -f makestuff/repos.mk $(notdir $@)
+
 $(gitdirs):
-	$(LN) $(gitroot)/$@ .
+	$(MAKE) $(gitroot)/$@
+	$(LNF) $(gitroot)/$@ .
+	echo "gitroot=../" > $@/local.mk
+	cd $@ && $(MAKE) Makefile
 
 Lecture_images:
 	$(LN) $(Drop)/courses/$@ .
