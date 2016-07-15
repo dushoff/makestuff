@@ -95,6 +95,12 @@ clean_dir:
 ### Not clear whether these rules actually play well together!
 clean_both: clean_repo clean_dir
 
+# Fixes untracked files - if you have files included in .gitignore that are present in the repo on github
+fix_repo:
+	git rm -r --cached .
+	git add .
+	git commit -m "Fixed untracked files"
+
 $(Outside):
 	echo Please get $@ from outside the repo and try again.
 	exit 1
