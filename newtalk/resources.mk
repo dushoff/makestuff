@@ -58,7 +58,6 @@ Philosophy_lecture:
 ## Need to talk to Pulliam (or Williams) about githubbing this. Or share it on Dropbox?
 HIV_model_data:
 	$(LN) $(Drop)/ICI3D/$@ .
->>>>>>> Autocommit (makestuff)
 
 maketouch = cd $$(dir $$@) && $$(MAKE) $$* && touch $$*
 
