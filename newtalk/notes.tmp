@@ -1,8 +1,9 @@
 \documentclass[12pt]{article}
-\usepackage{graphicx,talkdir/slidecomm,talkdir/commands}
-\usepackage{xspace}
-\usepackage{grffile,url}
-\usepackage{hyperref}
+
+\usepackage{graphicx,grffile,xspace}
+\usepackage{amsmath}
+\usepackage{talkdir/slidecomm,talkdir/commands}
+\usepackage{hyperref,url}
 
 \newlength{\dfwidth}\setlength{\dfwidth}{0.5\linewidth}
 \newlength{\dfheight}\setlength{\dfheight}{0.4\textheight}

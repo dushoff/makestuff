@@ -13,8 +13,17 @@ local.txt.format:
 	$(CP) $(talkdir)/$@ .
 	$(RO)
 
+copy.tex:
+	$(MAKE) talkdir
+	$(CP) $(talkdir)/$@ .
+	$(RO)
+
 talkdir:
 	/bin/ln -fs $(talkdir) $@
+
+.PRECIOUS: %.final.tex
+%.final.tex: %.txt beamer.tmp final.txt.fmt $(talkdir)/lect.pl
+	$(PUSH)
 
 .PRECIOUS: %.draft.tex
 %.draft.tex: %.txt beamer.tmp draft.txt.fmt $(talkdir)/lect.pl

@@ -91,6 +91,8 @@ final: * \uncover<+->{\color{blue} %%}
 draft: * {\color{blue} %%}
 outline: %!
 
+CREDIT {\small\textsl{%%}}
+
 # Comments are shown in class, but not in the notes
 COMMENT %!
 complete: {\em\underline{Comment}: }%%
@@ -113,6 +115,7 @@ PSLIDE NULLSLIDE
 draft final: ^DEFHEAD {%%}
 
 # Slides with purely repetitive information (for classroom exposition)
+# Slanted header to remind us we've seen it
 RSLIDE NULLSLIDE
 draft final: ^DEFHEAD {\sl %%}
 
