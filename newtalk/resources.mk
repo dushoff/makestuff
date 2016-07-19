@@ -45,7 +45,6 @@ curves:
 tbincome:
 	$(LN) $(Drop)/ICI3D/WorkingWiki-export/TB_and_income $@
 
-
 talkfigs:
 	$(LN) $(Drop)/$@ .
 
@@ -54,10 +53,6 @@ CI_diagrams:
 
 Philosophy_lecture:
 	$(LN) $(Drop)/ICI3D/WorkingWiki-export/Philosophy_lecture $@
-
-## Need to talk to Pulliam (or Williams) about githubbing this. Or share it on Dropbox?
-HIV_model_data:
-	$(LN) $(Drop)/ICI3D/$@ .
 
 maketouch = cd $$(dir $$@) && $$(MAKE) $$* && touch $$*
 
