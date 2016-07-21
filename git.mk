@@ -3,7 +3,7 @@
 
 cmain = NULL
 
-BRANCH = $(shell cat .git/HEAD | perl -npE "s|.*/||;")
+BRANCH = $(shell cat .git/HEAD 2>/dev/null | perl -npE "s|.*/||;")
 -include $(BRANCH).mk
 
 ##################################################################
