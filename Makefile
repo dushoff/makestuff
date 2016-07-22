@@ -46,7 +46,11 @@ Sources += visual.mk oldlatex.mk RR.mk wrapR.mk compare.mk
 
 Sources += perl.def python.def
 
-Sources += newlatex.mk latexdeps.pl biber.def newlatex.def
+Sources += newlatex.mk latexdeps.pl
+
+Sources += newlatex.mk latexdeps.pl biber.def bibtex.def
+
+Sources += flextex.mk flextex.pl
 
 Sources += RR/pdf.mk forms.mk RR/up.mk
 
