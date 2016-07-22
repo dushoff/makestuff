@@ -3,6 +3,10 @@
 
 cmain = NULL
 
+ifndef BRANCH
+BRANCH=master
+endif
+
 -include $(BRANCH).mk
 
 ##################################################################

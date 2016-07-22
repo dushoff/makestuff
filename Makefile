@@ -7,9 +7,6 @@ target pngtarget pdftarget vtarget acrtarget:  notarget
 
 ##################################################################
 
-now:
-	@echo $(BRANCH)
-
 ms = ../makestuff
 
 # Base files
