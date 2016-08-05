@@ -15,7 +15,7 @@ bibtex = biber
 	$(latex) $*
 	$(call difftouch, $<)
 
-%.bbl: %.tex 
+%.bbl: %.aux 
 	/bin/rm -f $@
 	$(bibtex) $*
 
