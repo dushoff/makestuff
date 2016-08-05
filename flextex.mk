@@ -1,7 +1,5 @@
 include $(ms)/perl.def
 
-Sources += deps.mk
-
 # You can change these variables after including this file, if you like
 latex = pdflatex -interaction=nonstopmode
 bibtex = biber
@@ -9,7 +7,7 @@ bibtex = biber
 .PRECIOUS: %.aux
 %.aux: /proc/uptime %.tex
 	- $(MAKE) $*.reqs
-	- $(MAKE) -f $(ms)/deps.mk $@
+	- $(MAKE) -f $(ms)/texdeps.mk $@
 
 %.pdf: %.aux
 	touch $<

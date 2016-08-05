@@ -50,13 +50,13 @@ Sources += newlatex.mk latexdeps.pl
 
 Sources += newlatex.mk latexdeps.pl biber.def bibtex.def
 
-Sources += flextex.mk flextex.pl
+Sources += flextex.mk flextex.pl texdeps.mk
 
 Sources += RR/pdf.mk forms.mk RR/up.mk
 
 Sources += talk.def talk.mk $(wildcard talk/*.*)
 
-Sources += newtalk.def newtalk.mk $(wildcard newtalk/*.*)
+Sources += linkdirs.mk newtalk.def newtalk.mk $(wildcard newtalk/*.*)
 
 Sources += lect.mk $(wildcard lect/*.*)
 
