@@ -33,4 +33,4 @@ talkdir:
 %.handouts.tex: %.txt notes.tmp handouts.txt.fmt $(talkdir)/lect.pl
 	$(PUSH)
 
-include $(talkdir)/resources.mk
+include $(ms)/resources.mk

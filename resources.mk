@@ -1,3 +1,5 @@
+# Try to deprecate this; it is from the original version of newtalk. Working now on linkdirs.mk
+
 ## Use fancy make-y stuff to make this prettier someday
 ## Make another file that can download these repos when they are needed!
 
