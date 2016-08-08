@@ -36,7 +36,7 @@ while ($f =~ s/\\includegraphics\s*\[[^\]]*]\s*{(.*?)}//){
 }
 
 ## Bib
-while ($f =~ s/\\bibliography\s*{(.*?)}//){
+while ($f =~ s/\\(?:bibliography|addbibresource)\s*{(.*?)}//){
 	my @biblist = split /,\s*/, $1;
 	@biblist= map {s/\.bib$//; s/$/.bib/; $_} @biblist;
 	foreach (@biblist){
@@ -44,8 +44,10 @@ while ($f =~ s/\\bibliography\s*{(.*?)}//){
 	}
 }
 
-### Write makefile stuff)
-say "$basename.aux: $basename.tex $basename.reqs; ", '$(latex) ', $basename;
+### Write makefile stuff
+
+## These rules are needed to _override_ more probing rules in flextex.mk
+say "$basename.aux: $basename.tex; ", '$(latex) ', $basename;
 say "$basename.reqs: ;", 'touch $@', "\n";
 
 if (%graphics){

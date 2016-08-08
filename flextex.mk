@@ -6,10 +6,10 @@ bibtex = biber
 
 .PRECIOUS: %.aux
 %.aux: /proc/uptime %.tex
-	- $(MAKE) $*.reqs
-	- $(MAKE) -f $(ms)/texdeps.mk -f Makefile $@
+	- $(MAKE) -f $(ms)/texdeps.mk -f Makefile $*.reqs $@
 
 %.pdf: %.aux
+	- $(MAKE) -f $(ms)/texdeps.mk -f Makefile $*.reqs
 	touch $<
 	$(call hide, $<)
 	$(latex) $*

@@ -7,6 +7,12 @@ up_date:
 %.img.png: %.pdf
 	$(imageconvert)
 
+%.txt.ps: %.txt
+	groff $< > $@
+
+%.txt.pdf: %.txt.ps
+	ps2pdf $< > $@
+
 date.pdf: date.txt
 	pdfroff $< > $@
 
