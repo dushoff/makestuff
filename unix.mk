@@ -16,6 +16,7 @@ readonly = chmod a-w $@
 RO = chmod a-w $@
 
 hide = $(MVF) $1 $(dir $1).$(notdir $1)
+hcopy = $(CPF) $1 $(dir $1).$(notdir $1)
 difftouch = diff $1 $(dir $1).$(notdir $1) > /dev/null || touch $1
 
 # Generic (vars that use the ones above)

@@ -11,7 +11,7 @@ bibtex = biber
 %.pdf: %.aux
 	- $(MAKE) -f $(ms)/texdeps.mk -f Makefile $*.reqs
 	touch $<
-	$(call hide, $<)
+	$(call hcopy, $<)
 	$(latex) $*
 	$(call difftouch, $<)
 
