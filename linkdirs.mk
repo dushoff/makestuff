@@ -9,7 +9,7 @@ gitdirs = Birth_death_models Disease_data Latent_incidence_fitting Exponential_f
 $(gitdirs):
 	cd $(gitroot) && $(MAKE) -f makestuff/repos.mk $@
 	$(LNF) $(gitroot)/$@ .
-	cp local.mk $@/
+	-cp local.mk $@/
 	echo "gitroot=../" >> $@/local.mk
 	cd $@ && $(MAKE) Makefile
 
