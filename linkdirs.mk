@@ -6,6 +6,7 @@
 gitdirs = Birth_death_models Disease_data Latent_incidence_fitting Exponential_figures SIR_model_family fitting_code hybrid_fitting SIR_simulations Generation_distributions WA_Ebola_Outbreak Ebola_sims autorefs
 
 ## A directory that's already there might have its own local.mk, but if we make the directory, we want to control it
+## Need to split this into two rules! If we _clone_ the directory we want to control it; but not if we just find it.
 $(gitdirs):
 	cd $(gitroot) && $(MAKE) -f makestuff/repos.mk $@
 	$(LNF) $(gitroot)/$@ .
