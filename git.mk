@@ -49,6 +49,15 @@ commit.time: $(Sources)
 	-git commit -F $@
 	date >> $@
 
+## If you make things in git_products, they should be remade and archived each time. To remove them, use git rm. If you want them out of the loop, tag them and then use git rm
+
+git_products += $(wildcard git_products/*)
+commit.time: $(git_products)
+git_products/%: % git_products
+	$(copy)
+git_products:
+	$(mkdir)
+
 ##################################################################
 
 ### Rebase
@@ -56,6 +65,7 @@ commit.time: $(Sources)
 continue: $(Sources)
 	git add $(Sources)
 	git rebase --continue
+	git push
 
 abort:
 	git rebase --abort

@@ -7,6 +7,8 @@ PUSHOUT = perl -wf $(filter %.pl, $^) $@ $(filter-out %.pl, $^) > $@
 # Pushstar adds $*
 PUSHSTAR = perl -wf $(filter %.pl, $^) $* $(filter-out %.pl, $^) > $@
 
+PUSHARGS = perl -wf $(filter %.pl, $^) $1 $(filter-out %.pl, $^) > $@
+
 # Pushon appends (pushes onto the file that's already there)
 PUSHON = perl -wf $(filter %.pl, $^) $(filter-out %.pl, $^) >> $@
 
