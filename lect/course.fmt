@@ -14,3 +14,5 @@ SECT {\subsection*{%%}}
 NOTE {\small \em %_} %%
 TOPIC {\bf %_:} %%
 SUBTOPIC {\sl %_:} %%
+
+COMMENT %!
