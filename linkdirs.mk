@@ -8,8 +8,11 @@ gitdirs = Birth_death_models Disease_data Latent_incidence_fitting Exponential_f
 ## A directory that's already there might have its own local.mk, but if we make the directory, we want to control it
 ## Need to split this into two rules! If we _clone_ the directory we want to control it; but not if we just find it.
 $(gitdirs):
-	cd $(gitroot) && $(MAKE) -f makestuff/repos.mk $@
+	$(MAKE) $(gitroot)/$@
 	$(LNF) $(gitroot)/$@ .
+
+$(gitroot)/%:
+	cd $(gitroot) && $(MAKE) -f makestuff/repos.mk $*
 	-cp local.mk $@/
 	echo "gitroot=../" >> $@/local.mk
 	cd $@ && $(MAKE) Makefile
