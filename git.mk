@@ -49,7 +49,7 @@ commit.time: $(Sources)
 	-git commit -F $@
 	date >> $@
 
-## If you make things in git_products, they should be remade and archived each time. To remove them, use git rm. If you want them out of the loop, tag them and then use git rm
+## If you make things in git_products, they will be remade and archived each time you update the repo. 
 
 git_products += $(wildcard git_products/*)
 commit.time: $(git_products)
