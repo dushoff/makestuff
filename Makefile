@@ -43,6 +43,9 @@ Sources += git.mk git.def repos.mk
 
 Sources += visual.mk oldlatex.mk RR.mk wrapR.mk compare.mk
 
+Sources += stepR.mk stepR.md
+Sources += rstep.pl
+
 Sources += resources.mk
 
 Sources += perl.def python.def
@@ -51,7 +54,8 @@ Sources += newlatex.mk latexdeps.pl
 
 Sources += newlatex.mk latexdeps.pl biber.def bibtex.def
 
-Sources += flextex.mk flextex.pl texdeps.mk
+Sources += flextex.mk flextex.pl deps.mk
+Sources += flextex.md
 
 Sources += RR/pdf.mk forms.mk RR/up.mk
 
