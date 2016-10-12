@@ -150,6 +150,8 @@ subclone_dir: $(Sources)
 	$(testdir)
 
 maketest: $(Sources)
+	$(maketest)
+
 define maketest
 	-/bin/rm -rf .$@
 	-/bin/mv -f $@ .$@

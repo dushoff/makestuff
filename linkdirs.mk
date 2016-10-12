@@ -17,11 +17,14 @@ $(gitroot)/%:
 	echo "gitroot=../" >> $@/local.mk
 	cd $@ && $(MAKE) Makefile
 
+autorefs/inc.mk: ;
+
 ## To make things in these directories;
 #### make the directory
 #### go there and make and touch
 maketouch = cd $$(dir $$@) && $$(MAKE) $$* && touch $$*
 define dirmake
+$(1)/%.mk: ;
 $(1)/%: $(1)
 	$(maketouch)
 endef
