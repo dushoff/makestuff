@@ -7,6 +7,9 @@
 %.out: %.md
 	pandoc -t plain -o $@ $<
 
+%.html: %.wikitext
+	pandoc -f mediawiki -o $@ $<
+
 %.html: %.csv
 	csv2html -o $@ $<
 
