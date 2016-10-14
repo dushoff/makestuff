@@ -49,13 +49,36 @@ commit.time: $(Sources)
 	-git commit -F $@
 	date >> $@
 
-## If you make things in git_products, they will be remade and archived each time you update the repo. 
+######################################################################
 
-git_products += $(wildcard git_products/*)
+## Don't like git_products; makes it hard to make and sync
+## Deprecate
+
+## If you make things in git_products, they will be remade and archived each time you update the repo. 
+## Use rm to stop the process
+## Use git rm to take something out of the repo version
+## Should be improved, obviously
+
+git_products = $(wildcard git_products/*)
 commit.time: $(git_products)
 git_products/%: % git_products
 	$(copy)
 git_products:
+	$(mkdir)
+
+######################################################################
+
+## git push; make things and add them to the repo
+
+%.gp:
+	$(MAKE) git_push/$*
+	git add -f git_push/$*
+	touch Makefile
+
+git_push/%: % git_push
+	$(copy)
+
+git_push:
 	$(mkdir)
 
 ##################################################################
@@ -146,6 +169,9 @@ localdir: $(Sources) $(wildcard local.*)
 	$(testdir)
 
 subclone_dir: $(Sources) 
+	$(subclone)
+
+subclone: $(Sources) 
 	$(subclone)
 	$(testdir)
 
