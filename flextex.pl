@@ -9,6 +9,7 @@ $basename =~ s/\.tex$//;
 ### Read and parse
 my $f = <>;
 my (%inputs, %packages, %graphics, %bibs, %dirs);
+$f =~ s/.*%.*no_flextex.*//;
 
 # Inputs (add include!)
 $f =~ s/^%.*//;

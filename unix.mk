@@ -28,10 +28,11 @@ mkdir = $(MD) $@
 cat = $(CAT) $^ > $@
 ln = $(LN) $< $@
 lnf = $(LNF) $< $@
+rm = $(RM) $@
 
 # What?
 convert = convert $< $@
-imageconvert = convert -density 300 -trim $< -quality 100 -sharpen 0x1.0 $@
+imageconvert = convert -density 600 -trim $< -quality 100 -sharpen 0x1.0 $@
 shell_execute = sh < $@
 # pdfcat = pdftk $(filter %.pdf, $^) cat output $@
 pdfcat = pdfjoin --outfile $@ $(filter %.pdf, $^) 
