@@ -39,3 +39,9 @@ pdfcat = pdfjoin --outfile $@ $(filter %.pdf, $^)
 
 %.push: %
 	$(CP) $< $(pushdir)
+
+%.log: 
+	$(RM) $*
+	$(MAKE) $* > $*.makelog
+
+%.makelog: %.log ;
