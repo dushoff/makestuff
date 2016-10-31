@@ -1,6 +1,9 @@
 %.html: %.md
 	pandoc -s -o $@ $<
 
+%.html: %.mkd
+	pandoc -s -o $@ $<
+
 %.txt: %.md
 	pandoc -o $@ $<
 
