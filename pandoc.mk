@@ -25,3 +25,7 @@
 %.tex: %.md
 	pandoc -s -S -t latex -V documentclass=tufte-handout $*.md -o $*.tex
 
+## This is becoming pretty random
+%.pdf: %.mkd
+	pandoc -o $@ --variable fontsize=12pt $<
+
