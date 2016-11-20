@@ -189,7 +189,7 @@ endef
 
 lcopy = -/bin/cp local.* $@/$(notdir $(CURDIR))
 
-testdir = cd $@/$(notdir $(CURDIR)) && $(MAKE) Makefile && $(MAKE) && $(MAKE) vtarget
+testdir = cd $@/$(notdir $(CURDIR)) && $(MAKE) Makefile || $(MAKE) Makefile && $(MAKE) && $(MAKE) vtarget
 
 define subclone
 	$(MAKE) push

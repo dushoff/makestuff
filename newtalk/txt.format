@@ -61,6 +61,10 @@ DEFHEAD \noindent {\large\bf %%}
 draft final:\frametitle{%%} 
 outline: \indent * %%
 
+SUBH \noindent {\bf %%}
+draft final:\framesubtitle{%%} 
+outline: \indent * %%
+
 DEFCOMM %%
 outline: %!
 

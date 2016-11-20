@@ -13,6 +13,7 @@ local.txt.format:
 	$(CP) $(talkdir)/$@ .
 	$(RO)
 
+## What is this?
 copy.tex:
 	$(MAKE) talkdir
 	$(CP) $(talkdir)/$@ .
