@@ -3,10 +3,10 @@
 ## There's also something from the newtalk development named resources.mk
 ## Should this have a JD-specific name? Should we break out rules that do shit from rules that say where things are?
 
-gitdirs = Birth_death_models Disease_data Latent_incidence_fitting Exponential_figures SIR_model_family fitting_code hybrid_fitting SIR_simulations Generation_distributions WA_Ebola_Outbreak Ebola_sims autorefs
+gitdirs = Birth_death_models Disease_data Latent_incidence_fitting Exponential_figures SIR_model_family fitting_code hybrid_fitting SIR_simulations Generation_distributions WA_Ebola_Outbreak Ebola_sims autorefs dushoff.github.io
 
 ## A directory that's already there might have its own local.mk, but if we make the directory, we want to control it
-## Need to split this into two rules! If we _clone_ the directory we want to control it; but not if we just find it.
+## If we _clone_ the directory we want to control it; but not if we just find it.
 $(gitdirs):
 	$(MAKE) $(gitroot)/$@
 	$(LNF) $(gitroot)/$@ .
