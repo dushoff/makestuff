@@ -11,6 +11,8 @@ $(gitdirs):
 	$(MAKE) $(gitroot)/$@
 	$(LNF) $(gitroot)/$@ .
 
+$(gitroot)/local.mk: ;
+
 $(gitroot)/%:
 	cd $(gitroot) && $(MAKE) -f makestuff/repos.mk $*
 	-cp local.mk $@/
