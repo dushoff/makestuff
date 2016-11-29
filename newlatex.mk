@@ -3,6 +3,7 @@
 ## Need to decide what to do about inclusions from other directories before we address this. I'm thinking now to simply change latexdeps to get the right (indirect) dependency, but _only_ when no path is given.
 
 latex = pdflatex -interaction=nonstopmode
+bibtex = bibtex
 
 include $(ms)/perl.def
 include $(wildcard .deps/*.d)
