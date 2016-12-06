@@ -19,6 +19,8 @@ hide = $(MVF) $1 $(dir $1).$(notdir $1)
 hcopy = $(CPF) $1 $(dir $1).$(notdir $1)
 difftouch = diff $1 $(dir $1).$(notdir $1) > /dev/null || touch $1
 
+diff = $(DIFF) $^ > $@
+
 # Generic (vars that use the ones above)
 link = $(LN) $< $@
 forcelink = $(LNF) $< $@
