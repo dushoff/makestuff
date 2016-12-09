@@ -4,6 +4,7 @@
 \usepackage{amsmath}
 \usepackage{talkdir/slidecomm,talkdir/commands}
 \usepackage{hyperref,url}
+\usepackage[margin=1in]{geometry}
 
 \newlength{\dfwidth}\setlength{\dfwidth}{0.5\linewidth}
 \newlength{\dfheight}\setlength{\dfheight}{0.4\textheight}
