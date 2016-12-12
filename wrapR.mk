@@ -10,6 +10,7 @@ pdfcheck = $(RRd)/pdfcheck.pl
 define run-R 
 	perl -f $(wrapR) $@ $^ > $(@:.Rout=.wrapR.r)
 	( (R --vanilla < $(@:.Rout=.wrapR.r) > $(@:%.Rout=%.wrapR.rout)) 2> $(@:%.Rout=%.Rlog) && cat $(@:%.Rout=%.Rlog) ) || ! cat $(@:%.Rout=%.Rlog)
+	$(RM) $@.pdf
 	perl -wf $(Rtrim) $(@:%.Rout=%.wrapR.rout) > $@
 	$(call hide,  $(@:%.Rout=%.Rlog))
 	$(call hide,  $(@:%.Rout=%.wrapR.rout))
@@ -40,9 +41,9 @@ endef
 .PRECIOUS: %.Rout.pdf
 %.Rout.pdf: %.Rout
 	$(RM) $@
-	touch .$@
-	perl -wf $(pdfcheck) .$@
-	$(LN) .$@ $@
+	touch $(call hiddenfile, $@)
+	perl -wf $(pdfcheck) $(call hiddenfile, $@)
+	$(CP) $(call hiddenfile, $@) $@
 	touch $@
 
 %.Rout.png: %.Rout.pdf
