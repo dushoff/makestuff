@@ -37,6 +37,9 @@ sig.%.jpg: $(gitroot)/Correspondence/sig.jpg
 sig.%.png: $(gitroot)/Correspondence/sig.png
 	convert -scale $*% $< $@
 
+sig.%.pdf: sig.%.jpg
+	convert $< $@
+
 %.ppmed.png: %.pdf
 	convert -density 400x400 $< $@
 
