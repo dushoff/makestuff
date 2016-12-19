@@ -1,5 +1,7 @@
 \documentclass{beamer}
+\setbeamertemplate{footline}[frame number]
 \usetheme{boxes}
+\setbeamertemplate{footline}[frame number]
 \usepackage{graphicx,xspace}
 \usepackage{talkdir/slidecomm,talkdir/commands}
 \usepackage{grffile}

@@ -170,17 +170,13 @@ localdir: $(Sources) $(wildcard local.*)
 
 subclone_dir: $(Sources) 
 	$(subclone)
-
-subclone: $(Sources) 
-	$(subclone)
 	$(testdir)
 
 maketest: $(Sources)
 	$(maketest)
 
 define maketest
-	-/bin/rm -rf .$@
-	-/bin/mv -f $@ .$@
+	-/bin/rm -rf $@
 	mkdir $@
 	mkdir $@/$(notdir $(CURDIR))
 	tar czf $@/$(notdir $(CURDIR))/export.tgz $(Sources)
@@ -193,7 +189,7 @@ testdir = cd $@/$(notdir $(CURDIR)) && $(MAKE) Makefile || $(MAKE) Makefile && $
 
 define subclone
 	$(MAKE) push
-	-/bin/rm -rf subclone_dir
+	-/bin/rm -rf $@
 	mkdir $@
 	cd $@ $* && grep url ../.git/config | perl -npe "s/url =/git clone/; s/.git$$//" | sh
 endef
