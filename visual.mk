@@ -13,6 +13,9 @@ vtarget:
 acrtarget:
 	$(MAKE) $<.acr
 
+gptarget:
+	$(MAKE) $<.gp
+
 pushtarget:
 	$(MAKE) $<.push
 
