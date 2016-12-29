@@ -169,7 +169,7 @@ localdir: $(Sources) $(wildcard local.*)
 	$(testdir)
 
 subclone_dir: $(Sources) 
-	$(subclone)
+	$(makesub)
 	$(testdir)
 
 maketest: $(Sources)
@@ -183,11 +183,14 @@ define maketest
 	cd $@/$(notdir $(CURDIR)) && tar xzf export.tgz
 endef
 
+testclean:
+	-/bin/rm -rf localdir testdir subclone_dir
+
 lcopy = -/bin/cp local.* $@/$(notdir $(CURDIR))
 
 testdir = cd $@/$(notdir $(CURDIR)) && $(MAKE) Makefile || $(MAKE) Makefile && $(MAKE) && $(MAKE) vtarget
 
-define subclone
+define makesub
 	$(MAKE) push
 	-/bin/rm -rf $@
 	mkdir $@
