@@ -1,7 +1,7 @@
 msrepo = https://github.com/dushoff
 gitroot = ./gitroot
 export ms = $(gitroot)/makestuff
-Drop = ~/Dropbox
+Drop = ./Dropbox
 
 -include local.mk
 -include $(gitroot)/local.mk

@@ -17,6 +17,7 @@ gitdirs = Birth_death_models Disease_data Latent_incidence_fitting Exponential_f
 
 ## We had trouble with the first recipe line here spiralling before we added -f.
 ## That broke the chaining until we added the variable!
+$(gitdirs):
 	$(MAKE) gitroot=$(gitroot) -f $(gitroot)/makestuff/linkdirs.mk $(gitroot)/$@
 	$(LNF) $(gitroot)/$@ .
 
