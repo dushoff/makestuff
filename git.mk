@@ -7,7 +7,8 @@ ifndef BRANCH
 BRANCH=master
 endif
 
--include $(BRANCH).mk
+## Made a strange loop _once_ (doesn't seem to be used anyway).
+# -include $(BRANCH).mk
 
 ##################################################################
 
