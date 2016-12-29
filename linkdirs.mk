@@ -16,8 +16,9 @@ gitdirs = Birth_death_models Disease_data Latent_incidence_fitting Exponential_f
 ## A directory that's already there might have its own local.mk, but if we _clone_ the directory we want to control it
 
 ## We had trouble with the first recipe line here spiralling before we added -f.
-$(gitdirs):
-	$(MAKE) -f $(gitroot)/makestuff/linkdirs.mk $(gitroot)/$@
+$(gitdirs). 
+## That broke the chaining until we added the variable!
+	$(MAKE) gitroot=$(gitroot) -f $(gitroot)/makestuff/linkdirs.mk $(gitroot)/$@
 	$(LNF) $(gitroot)/$@ .
 
 $(gitroot)/local.mk: ;
