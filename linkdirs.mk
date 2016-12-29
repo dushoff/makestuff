@@ -11,7 +11,7 @@ Lecture_images:
 my_images:
 	$(LN) $(Drop)/$@ .
 
-gitdirs = Birth_death_models Disease_data Latent_incidence_fitting Exponential_figures SIR_model_family fitting_code hybrid_fitting SIR_simulations Generation_distributions WA_Ebola_Outbreak Ebola_sims autorefs dushoff.github.io DHS_overview DHS_convert DHS_downloads
+gitdirs = Birth_death_models Disease_data Latent_incidence_fitting Exponential_figures SIR_model_family fitting_code hybrid_fitting SIR_simulations Generation_distributions WA_Ebola_Outbreak Ebola_sims autorefs dushoff.github.io DHS_overview DHS_convert DHS_downloads Country_lists
 
 ## A directory that's already there might have its own local.mk, but if we _clone_ the directory we want to control it
 $(gitdirs):
@@ -37,3 +37,13 @@ $(1)/%: $(1)
 endef
 
 $(foreach dir,$(gitdirs),$(eval $(call dirmake,$(dir))))
+
+%_drop: $(Drop)
+	$(MAKE) $(Drop)/$*
+	$(LNF) $(Drop)/$* $@
+
+$(Drop)/%:
+	$(mkdir) $@
+
+$(Drop):
+	$(mkdir) $@
