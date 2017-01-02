@@ -2,7 +2,7 @@
 
 %.go:
 	$(MAKE) $*
-	echo "xdg-open $* &" | tcsh
+	echo "xdg-open $* &" | sh
 
 %.acr:
 	$(MAKE) $*
