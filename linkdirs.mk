@@ -41,7 +41,7 @@ endef
 
 $(foreach dir,$(gitdirs),$(eval $(call dirmake,$(dir))))
 
-%_drop: $(Drop) $(Drop)/$*
+%_drop: $(Drop) $(Drop)/%
 	$(LNF) $(Drop)/$* $@
 
 $(Drop)/%: 

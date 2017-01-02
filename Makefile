@@ -13,7 +13,7 @@ ms = ../makestuff
 
 Sources = Makefile LICENSE README.md .gitignore stuff.mk todo.md
 
-# Starting makefile for other projects
+# Starting makefile for other projectcs
 
 Sources += makefile.mk hooks.mk
 
