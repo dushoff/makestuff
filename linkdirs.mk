@@ -26,7 +26,7 @@ $(gitroot)/local.mk: ;
 $(gitroot)/%:
 	cd $(gitroot) && $(MAKE) -f makestuff/repos.mk $*
 	-cp local.mk $@/
-	echo "gitroot=../" >> $@/local.mk
+	echo "gitroot=$$PWD" >> $@/local.mk
 	cd $@ && $(MAKE) Makefile
 
 ## To make things in these directories;
@@ -41,12 +41,11 @@ endef
 
 $(foreach dir,$(gitdirs),$(eval $(call dirmake,$(dir))))
 
-%_drop: $(Drop)
-	$(MAKE) $(Drop)/$*
+%_drop: $(Drop) $(Drop)/$*
 	$(LNF) $(Drop)/$* $@
 
-$(Drop)/%:
-	$(mkdir)
+$(Drop)/%: 
+	-$(mkdir) $@
 
 $(Drop):
-	$(mkdir)
+	-$(mkdir) $@
