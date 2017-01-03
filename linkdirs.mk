@@ -41,8 +41,11 @@ endef
 
 $(foreach dir,$(gitdirs),$(eval $(call dirmake,$(dir))))
 
+## A problem here. If we use dependencies it will re-link; if we use recursive make we can have loops
 .PRECIOUS: %_drop
-%_drop: $(Drop) $(Drop)/%
+%_drop:
+	$(MAKE) $(Drop)
+	$(MAKE) $(Drop)/$*
 	$(LNF) $(Drop)/$* $@
 
 $(Drop)/%: 
