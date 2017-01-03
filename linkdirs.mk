@@ -46,7 +46,7 @@ $(foreach dir,$(gitdirs),$(eval $(call dirmake,$(dir))))
 	$(LNF) $(Drop)/$* $@
 
 $(Drop)/%: 
-	-$(mkdir) $@
+	-$(mkdir)
 
 $(Drop):
-	-$(mkdir) $@
+	-$(mkdir)
