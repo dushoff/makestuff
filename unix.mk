@@ -28,6 +28,7 @@ diff = $(DIFF) $^ > $@
 link = $(LN) $< $@
 forcelink = $(LNF) $< $@
 copy = $(CP) $< $@
+allcopy =  $(CP) $^ $@
 ccrib = $(CP) $(crib)/$@ .
 mkdir = $(MD) $@
 cat = $(CAT) $^ > $@
