@@ -59,6 +59,9 @@ endef
 .PRECIOUS: .%.RData
 .%.RData: %.Rout ;
 
+rclean:
+	$(RM) *.Rout
+
 # Why doesn't this seem to chain?
 # Make implicit-rule recursion seems poorly documented; try to make a toy example. For now, put stepping stones in the Makefile.
 .PRECIOUS: %.envir
