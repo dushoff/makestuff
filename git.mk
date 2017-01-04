@@ -46,7 +46,7 @@ commit.time: $(Sources)
 	git add -f $^ $(Archive)
 	echo "Autocommit ($(notdir $(CURDIR)))" > $@
 	-git commit --dry-run >> $@
-	gvim -f $@
+	$(EDIT) $@
 	-git commit -F $@
 	date >> $@
 
