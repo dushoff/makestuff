@@ -194,6 +194,12 @@ draft final: \begin{columns}[c] \column{0.54\textwidth} \small
 NC %!
 draft final: \column{0.4\textwidth}
 
+BCC %!
+draft final: \begin{columns}[c] \column{0.47\textwidth} \small
+
+NCC %!
+draft final: \column{0.47\textwidth}
+
 EC %!
 draft final: \end{columns}
 
