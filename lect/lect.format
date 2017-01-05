@@ -118,6 +118,10 @@ draft final: NULLSLIDE
 RSLIDE NULLSLIDE
 webnotes draft final: ^DEFHEAD {\sl %%}
 
+# Continue a slide with the same heading
+CONT %!
+webnotes draft final: ^DEFHEAD {\sl %%}
+
 # "Side" slides: similar to RSLIDE, but not actually repetitive 
 SSLIDE NULLSLIDE
 webnotes draft final: ^DEFHEAD {\color{shortcolor}%%}
