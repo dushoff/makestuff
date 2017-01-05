@@ -83,7 +83,7 @@ wrapRpl = $(wildcard wrapR/*.pl)
 
 Sources += $(wrapRR) $(wrapRpl)
 
-include local.mk
+-include local.mk
 include git.mk
 
 ######################################################################

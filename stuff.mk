@@ -1,5 +1,6 @@
 msrepo = https://github.com/dushoff
 gitroot = ./gitroot
+EDIT = pico
 export ms = $(gitroot)/makestuff
 Drop = ./Dropbox
 
