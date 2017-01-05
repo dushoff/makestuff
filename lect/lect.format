@@ -107,9 +107,6 @@ handouts: NULLSLIDE
 draft final: ^DEFHEAD {\sl %%}
 webnotes complete: ^DEFHEAD {\underline{Comment slide}: \sl %%}
 
-# Activate when preparing new slides
-CHANGE %!
-
 # Slide for notes only (e.g., resource information)
 NSLIDE ^DEFHEAD %%
 draft final: NULLSLIDE
@@ -143,7 +140,10 @@ handouts outline: %!
 
 # NOTESONLY May go with stuff that's withheld, but not really an answer
 CHANGE %!
-draft: ^{\color{shortcolor}%%}
+draft: ^{\color{shortcolor}Cchange: %%}
+
+ADD %!
+draft: ^{\color{shortcolor}Aadd: %%}
 
 # CLASS is something only for class (like a picture). 
 CLASS %!
