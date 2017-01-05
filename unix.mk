@@ -35,6 +35,8 @@ cat = $(CAT) $^ > $@
 ln = $(LN) $< $@
 lnf = $(LNF) $< $@
 rm = $(RM) $@
+pandoc = pandoc -o $@ $<
+pandocs = pandoc -s -o $@ $<
 
 # What?
 convert = convert $< $@
