@@ -53,7 +53,7 @@ remotesync: commit.default
 commit.time: $(Sources)
 	git add -f $^ $(Archive)
 	echo "Autocommit ($(notdir $(CURDIR)))" > $@
-	-git commit --dry-run >> $@
+	-git commit --dry-run | perl -pe 's/^/#/' >> $@
 	$(EDIT) $@
 	-git commit -F $@
 	date >> $@
