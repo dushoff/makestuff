@@ -44,7 +44,11 @@ psync:
 	$(MAKE) pull
 	$(MAKE) push
 
-## Use Archive with wildcard, for things that it will archive if they are there
+remotesync: commit.default
+	git pull
+	git push -u origin $(BRANCH)
+
+## Archive is _deprecated_; see .gp:
 ## Other things that you want in the repo (things you want to have made automatically) are sources
 commit.time: $(Sources)
 	git add -f $^ $(Archive)
@@ -53,6 +57,12 @@ commit.time: $(Sources)
 	$(EDIT) $@
 	-git commit -F $@
 	date >> $@
+
+## commit.default should be part of the repo, usually (or pushed from outside)
+commit.default: $(Sources)
+	git add -f $^ 
+	-git commit -m Pushed from remote directory
+	touch $@
 
 ######################################################################
 
