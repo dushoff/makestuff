@@ -61,7 +61,7 @@ commit.time: $(Sources)
 ## commit.default should be part of the repo, usually (or pushed from outside)
 commit.default: $(Sources)
 	git add -f $^ 
-	-git commit -m Pushed from remote directory
+	-git commit -m "Pushed from remote directory"
 	touch $@
 
 ######################################################################
