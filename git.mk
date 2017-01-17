@@ -55,6 +55,7 @@ commit.time: $(Sources)
 	echo "Autocommit ($(notdir $(CURDIR)))" > $@
 	-git commit --dry-run | perl -pe 's/^/#/' >> $@
 	$(EDIT) $@
+	perl -i -ne 'print unless /#/' $@
 	-git commit -F $@
 	date >> $@
 
