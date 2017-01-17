@@ -49,7 +49,7 @@ remotesync: commit.default
 	git push -u origin $(BRANCH)
 
 ## Archive is _deprecated_; see .gp:
-## Other things that you want in the repo (things you want to have made automatically) are sources
+## If you really want something remade and archived automatically, it can be a source
 commit.time: $(Sources)
 	git add -f $^ $(Archive)
 	echo "Autocommit ($(notdir $(CURDIR)))" > $@
@@ -59,7 +59,6 @@ commit.time: $(Sources)
 	-git commit -F $@
 	date >> $@
 
-## commit.default should be part of the repo, usually (or pushed from outside)
 commit.default: $(Sources)
 	git add -f $^ 
 	-git commit -m "Pushed from remote directory"
