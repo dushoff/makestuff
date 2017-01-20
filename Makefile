@@ -7,6 +7,8 @@ target pngtarget pdftarget vtarget acrtarget: transco
 
 ##################################################################
 
+include stuff.mk
+
 ms = ../makestuff
 
 # Base files
