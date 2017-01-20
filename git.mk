@@ -36,13 +36,15 @@ tsync:
 	touch Makefile
 	$(MAKE) sync
 
-sync:
+rbsync:
 	$(MAKE) rebase
 	$(MAKE) push
 
 psync:
 	$(MAKE) pull
 	$(MAKE) push
+
+sync: psync ;
 
 remotesync: commit.default
 	git pull
