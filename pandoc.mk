@@ -1,5 +1,10 @@
+## -S is “smart”
 %.html: %.md
-	pandoc -s -o $@ $<
+	pandoc -s -S -o $@ $<
+
+## Not tested; may cause trouble with mathjax? Just shut up and test it.
+%.emb.html: %.md
+	pandoc --self-contained -S -o $@ $<
 
 %.html: %.mkd
 	pandoc -s -o $@ $<
@@ -22,8 +27,11 @@
 %.md: %.rmd
 	Rscript -e "library(\"knitr\"); knit(\"$<\")"
 
-%.tex: %.md
+%.th.tex: %.md
 	pandoc -s -S -t latex -V documentclass=tufte-handout $*.md -o $*.tex
+
+%.md: %.tex
+	pandoc -o $@ $<
 
 ## This is becoming pretty random
 %.pdf: %.mkd

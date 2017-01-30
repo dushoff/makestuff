@@ -34,4 +34,10 @@ talkdir:
 %.handouts.tex: %.txt notes.tmp handouts.txt.fmt $(talkdir)/lect.pl
 	$(PUSH)
 
+%.note: %
+	$(CP) $< $(gitroot)/notebook/materials/
+
+%.notebook: %.note
+	cd $(gitroot)/notebook/ && make remotesync
+
 # include $(ms)/resources.mk

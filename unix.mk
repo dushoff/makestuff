@@ -48,12 +48,17 @@ pdfcat = pdfjoin --outfile $@ $(filter %.pdf, $^)
 %.push: %
 	$(CP) $< $(pushdir)
 
+%.pushpush: %
+	$(CP) $< $(pushdir)
+	cd $(pushdir) && make remotesync
+
 %.log: 
 	$(RM) $*
 	$(MAKE) $* > $*.makelog
 
 %.makelog: %.log ;
 
+## Confused by this now
 serve:
 	bundle exec jekyll serve &
 
