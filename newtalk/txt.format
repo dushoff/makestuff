@@ -108,9 +108,9 @@ draft: {\color{red}\textbf{%%}}
 
 CREDIT {\small\emph{%%}}
 
-########################################
+######################################## Content switching
 
-## Content switching
+### Slide level
 
 EXTRA NULLSLIDE
 
@@ -122,6 +122,11 @@ draft final: ^DEFHEAD {%%}
 # Slanted header to remind us we've seen it
 RSLIDE NULLSLIDE
 draft final: ^DEFHEAD {\sl %%}
+
+NSLIDE NULLSLIDE
+handouts: ^DEFHEAD %%
+
+### Paragraph level
 
 # Short version for class, should go with NOTES
 SHORT {\color{shortcolor}%%}
@@ -225,3 +230,8 @@ outline: %!
 
 INPUT \input{%} %%
 outline: %!
+
+## End of newtalk content
+
+## Begin local content
+
