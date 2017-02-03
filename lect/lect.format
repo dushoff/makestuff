@@ -273,8 +273,13 @@ NEWFIG %!
 ## NEWPOLL needs to be displayed, because I might push the question to notes before I make it into a real poll
 NEWPOLL %%
 
-POLL \href{%}{%%}
+## Not used; eliminate
+OLDPOLL \href{%}{%%}
 draft final: Poll: \href{https://www.polleverywhere.com/%}{\color{pollcolor}%%}
+outline: %!
+
+POLL \href{%}{%|}%!
+draft final: Poll: \href{https://www.polleverywhere.com/%}{\color{pollcolor}%|}%!
 outline: %!
 
 INPUT \input{%%}
