@@ -38,6 +38,13 @@ endef
 .PRECIOUS: %.Rout.csv
 %.Rout.csv: %.Rout ;
 
+%.Rout.pdf.excessive: %.Rout
+	$(RM) $@
+	touch $(call hiddenfile, $@)
+	perl -wf $(pdfcheck) $(call hiddenfile, $@)
+	$(CP) $(call hiddenfile, $@) $@
+	touch $@
+
 .PRECIOUS: %.Rout.pdf
 %.Rout.pdf: %.Rout
 	$(RM) $@
@@ -45,6 +52,9 @@ endef
 	perl -wf $(pdfcheck) $(call hiddenfile, $@)
 	$(CP) $(call hiddenfile, $@) $@
 	touch $@
+
+%.RData: %.Rout
+	$(CP) $(call hiddenfile, $@) $@
 
 %.Rout.png: %.Rout.pdf
 	/bin/rm -f $@
