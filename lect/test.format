@@ -107,5 +107,5 @@ rub: \textsl{%%}
 # Separate the two sections of an MC/SA test; ENDMC should be obsolete
 ENDMC %!
 
-STARTSA \cleardoublepage\renewcommand{\myhead}{\bf Name:\hrulefill\hrulefill{}Student number:  \hrulefill Tutorial: \hrulefill\testver} \noindent Answer questions on this page.  \emph{Briefly} show necessary work and equations.
-key rub: %!
+STARTSA \cleardoublepage\renewcommand{\myhead}{\bf Name \hrulefill\hrulefill\  Student number \hrulefill\ Tutorial time \hrulefill\ V\testver} \noindent Answer questions on this page.  \emph{Briefly} show necessary work and equations.
+KEY RUB: %!
