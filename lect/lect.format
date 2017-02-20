@@ -99,13 +99,17 @@ webnotes complete handouts: \hrule\paragraph{%%}
 ASLIDE %!
 handouts: NULLSLIDE
 draft final: ^DEFHEAD {\sl \underline{%%}}
-webnotes complete: ^DEFHEAD {\underline{Extra slide}: \sl %%}
+webnotes complete: ^DEFHEAD {\underline{Answer slide}: \sl %%}
 
-# Comment slide for class only (and complete notes)
+# Comment slide (like an answer slide, but less important)
 CSLIDE %!
 handouts: NULLSLIDE
 draft final: ^DEFHEAD {\sl %%}
 webnotes complete: ^DEFHEAD {\underline{Comment slide}: \sl %%}
+
+# Question slide for class and _incomplete_ notes
+QSLIDE %%
+complete: NULLSLIDE
 
 # Slide for notes only (e.g., resource information)
 NSLIDE ^DEFHEAD %%
@@ -137,6 +141,9 @@ handouts: ^%%
 # NOTESONLY May go with stuff that's withheld, but not really an answer
 HOLD ^%%
 handouts outline: %!
+
+REMARK %!
+draft: ^{\color{shortcolor}Remarkk: %%}
 
 CHANGE %!
 draft: ^{\color{shortcolor}Cchange: %%}
