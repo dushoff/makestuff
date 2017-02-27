@@ -28,7 +28,7 @@ Q \vfill\vspace{1.0ex plus 1.0 ex}\noindent\stepcounter{question}\arabic{questio
 key rub: ^FQ %%
 
 # First question (see above)
-FQ \vspace{1.0ex plus 1.0 ex}\noindent\stepcounter{question}\arabic{question}.~%%
+FQ \vspace{2.0ex plus 1.0 ex}\noindent\stepcounter{question}\arabic{question}.~%%
 
 # Sub-question
 SQ \vspace{0.8ex plus 0.8ex}\noindent\stepcounter{qpart}\alph{qpart}.~%%

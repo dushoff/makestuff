@@ -1,2 +1,5 @@
+## Don't escape % yet
+!PERC %
+
 CODE ```{R include = FALSE}\n\n%%\n\n```
 COMMENT %!
