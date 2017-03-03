@@ -1,6 +1,6 @@
 include $(ms)/perl.def
 
-# You can change these variables after including this file, if you like
+# You can change these variables _after_ including 
 latex = pdflatex -interaction=nonstopmode
 bibtex = biber
 
@@ -26,5 +26,5 @@ bibtex = biber
 %.deps: %.tex $(ms)/flextex.pl
 	$(PUSH)
 
-tclean:
+texclean:
 	$(RM) *.aux *.bbl *.bcf *.blg *.reqs *.deps

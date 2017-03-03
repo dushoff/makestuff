@@ -186,6 +186,9 @@ localdir: $(Sources) $(wildcard local.*)
 	$(lcopy)
 	$(testdir)
 
+subclone: $(Sources) 
+	$(makesub)
+
 subclone_dir: $(Sources) 
 	$(makesub)
 	$(testdir)
