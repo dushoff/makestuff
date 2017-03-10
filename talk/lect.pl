@@ -144,7 +144,6 @@ foreach(@tex){
 			s/\\t /\t/gs;
 			s/\\t\b/\t/gs;
  
- 
 			while (/%/){
 				# Replace %% with whole remaining string
 				if (/^[^%]*%%/){

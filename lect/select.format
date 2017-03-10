@@ -25,24 +25,32 @@
 
 # Original Alphas used for midterm1 2016
 Alpha NULLSLIDE
-bank: %!
+bank: HEAD Alpha %!
 
 # Original Betas used for midterm2 2016
 Beta NULLSLIDE
-midterm2 bank: %!
+bank: HEAD Beta %!
 
 # Original Gamma used for final 2016
 Gamma NULLSLIDE
-final bank: %!
+final: %!
+bank: HEAD Gamma %!
 
 # Delta now used for midterm1 2017
 Delta NULLSLIDE
-midterm1 bank: %!
+midterm1: %!
+bank: HEAD Delta %!
+
+# Better terminology?
+S17 NULLSLIDE
+bank: HEAD S17 %!
+midterm2: %!
 
 ## Questions with problems, maybe delete?
 Zero NULLSLIDE
+bank: HEAD Zero %!
 
 ## Unsorted, and often repetitive
 Omega NULLSLIDE
-bank: %!
+bank: HEAD Omega %!
 

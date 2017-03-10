@@ -57,6 +57,8 @@ SQ \vspace{1.5ex}\noindent\stepcounter{qpart}\alph{qpart})~%%
 
 COMMENT \vspace{2.0ex plus 12.0ex}\pagebreak[3]\noindent{\sl %|} %%
 
+HEAD \subsection*{%%}
+
 INTRO %%
 key rub: %!
 

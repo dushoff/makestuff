@@ -98,6 +98,14 @@ git_push/%: % git_push
 git_push:
 	$(mkdir)
 
+%.pages:
+	$(MAKE) pages/$*
+	cd pages && git add -f $* && git commit -m "Pushed from parent" && git pull && git push
+
+pages/%: % pages
+	$(copy)
+
+pages:
 
 ##################################################################
 
