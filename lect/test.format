@@ -40,6 +40,8 @@ TOP \subsection*{%%}
 
 # Question formatting
 
+CODE ```{R include = FALSE}\n\n%%\n\n```
+
 NOTE %!
 
 Q \vspace{2.0ex plus 8.0ex}\pagebreak[3]\noindent\stepcounter{question}{\arabic{question}.}~%%\vspace{1.0ex}
