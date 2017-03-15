@@ -23,6 +23,8 @@ $(gitdirs):
 
 $(gitroot)/local.mk: ;
 
+$(gitroot)/Makefile: ;
+
 $(gitroot)/%:
 	cd $(gitroot) && $(MAKE) -f makestuff/repos.mk $*
 	-cp local.mk $@/
