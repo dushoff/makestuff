@@ -46,6 +46,11 @@ S17 NULLSLIDE
 bank: HEAD S17 %!
 midterm2: %!
 
+# Alternative for the injured kid
+S17a NULLSLIDE
+bank: HEAD S17a %!
+midterm2: %!
+
 ## Questions with problems, maybe delete?
 Zero NULLSLIDE
 bank: HEAD Zero %!
