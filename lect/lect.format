@@ -172,6 +172,7 @@ outline: %!
 
 ## An answer space in the notes only (answer uncertain or not specified yet in lecture)  
 NOANS ^ANS %%
+complete: ^ANS (open-ended)
 final draft: %!
 
 ## An answer space in the slides only (short answers)
