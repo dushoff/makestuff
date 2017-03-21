@@ -8,6 +8,7 @@ $basename =~ s/\.R$//;
 
 ### Read and parse
 my $f = <>;
+	say "";
 
 # Sources
 my (%sources);
@@ -17,8 +18,10 @@ while ($f =~ s/source.*"(.*?)"//){
 	$sources{$1}=0;
 }
 if (%sources){
-	say "$basename.reqs: ", join " ", keys %sources;
-	say"";
+	say "$basename.Rout $basename.rdeps: "
+		, join " ", keys %sources
+		, join " ", map {s|.R$|.rdeps|; $_} keys %sources;
+	say "";
 }
 
 # Loads
@@ -29,12 +32,6 @@ while ($f =~ s/load.*"(.*?)"//){
 	$loads{$1}=0;
 }
 if (%loads){
-	say "$basename.reqs: ", join " ", map {s|.RData$|.Rout|; $_} keys %loads;
-	my @deps = map {s|.RData$|.reqs|; $_} keys %loads;
-	say "$basename.reqs: ", join " ", @deps if @deps;
+	say "$basename.rdeps: ", join " ", map {s|.RData$|.RData|; $_} keys %loads;
 	say"";
 }
-
-## Needed to _override_ more probing rules in stepR.mk
-say "$basename.reqs: ;", 'touch $@', "\n";
-
