@@ -14,7 +14,7 @@ my $f = <>;
 my (%sources);
 $f =~ s/^#.*//;
 $f =~ s/\n#.*//g;
-while ($f =~ s/source.*"(.*?)"//){
+while ($f =~ s/\<source\s*\(\s*"(.*?)"//){
 	$sources{$1}=0;
 }
 if (%sources){
@@ -26,12 +26,10 @@ if (%sources){
 
 # Loads
 my (%loads);
-$f =~ s/^#.*//;
-$f =~ s/\n#.*//g;
-while ($f =~ s/load.*"(.*?)"//){
+while ($f =~ s/\<read\s*\(\s*"(.*?)"//){
 	$loads{$1}=0;
 }
 if (%loads){
-	say "$basename.rdeps: ", join " ", map {s|.RData$|.RData|; $_} keys %loads;
+	say "$basename.rdeps: ", join " ", keys %loads;
 	say"";
 }
