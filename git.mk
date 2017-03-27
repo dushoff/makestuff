@@ -143,7 +143,7 @@ remove:
 forget:
 	git reset --hard
 
-# Clean all unSourced files (files with extensions only) from directory and repo
+# Clean all unSourced files (files with extensions only) from directory and repo!!!!
 clean_repo:
 	git rm --cached --ignore-unmatch $(filter-out $(Sources) $(Archive), $(wildcard *.*))
 
@@ -152,7 +152,6 @@ clean_dir:
 	-$(RMR) .$@
 	mkdir .$@
 	$(MV) $(filter-out $(Sources) local.mk $(wildcard *.makestuff), $(wildcard *.*)) .$@
-
 
 ### Not clear whether these rules actually play well together!
 clean_both: clean_repo clean_dir
