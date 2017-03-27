@@ -98,6 +98,7 @@ test: %!
 HFIG \includegraphics[height=%\textheight]{%}
 FIG ^HFIG 0.4 %%
 PageFIG ^HFIG 0.5 %%
+WIDEFIG \includegraphics[width=0.9\textwidth]{%}
 DOUBLEFIG \begin{minipage}{\dfwidth} \centering \n\includegraphics[height=\dfheight]{%} \end{minipage} \hspace{\dfsep} \begin{minipage}{\dfwidth} \centering \n\includegraphics[height=\dfheight]{%} \end{minipage}
 DOUBLEPDF ^DOUBLEFIG %+-0.pdf %+-1.pdf
 

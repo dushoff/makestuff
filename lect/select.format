@@ -23,33 +23,34 @@
 
 ################################################################
 
-# Original Alphas used for midterm1 2016
-Alpha NULLSLIDE
-bank: HEAD Alpha %!
+DEFHEAD NULLSLIDE
+bank: HEAD %%
 
-# Original Betas used for midterm2 2016
-Beta NULLSLIDE
-bank: HEAD Beta %!
-
-# Original Gamma used for final 2016
-Gamma NULLSLIDE
-final: %!
-bank: HEAD Gamma %!
-
-# Delta now used for midterm1 2017
-Delta NULLSLIDE
+FIRST NULLSLIDE
+bank: HEAD FIRST %!
 midterm1: %!
-bank: HEAD Delta %!
 
-# Better terminology?
-S17 NULLSLIDE
-bank: HEAD S17 %!
+SECOND NULLSLIDE
+bank: HEAD SECOND %!
 midterm2: %!
 
-# Alternative for the injured kid
-S17a NULLSLIDE
-bank: HEAD S17a %!
-# midterm2: %!
+EXAM NULLSLIDE
+bank: HEAD EXAM %!
+final: %!
+
+# Original Alphas used for midterm1 2016
+
+# Original Betas used for midterm2 2016
+
+# Original Gamma used for final 2016
+
+# Delta now used for midterm1 2017
+
+# S17 Second midterm 2017 (S17a, alternative questions for an injured kid)
+# Future: Use FIRST, SECOND and EXAM
+# Append suffixes when editing for next year
+# Don't use F (final or first???)
+# 
 
 ## Questions with problems, maybe delete?
 Zero NULLSLIDE
