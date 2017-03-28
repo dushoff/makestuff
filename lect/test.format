@@ -82,6 +82,8 @@ BLANK \mbox{}
 VSPACE \vfill
 key rub: %!
 
+VADJ \vspace{%%}
+
 ANS %!
 key rub: \vspace{1.5ex}{\sf %%}
 
