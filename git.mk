@@ -66,11 +66,6 @@ commit.default: $(Sources)
 	-git commit -m "Pushed from remote directory"
 	touch $@
 
-sleeping homing: $(Sources)
-	git add -f $^ 
-	-git commit -m "$@"
-	touch $@
-
 ######################################################################
 
 ## Don't like git_products; makes it hard to make and sync

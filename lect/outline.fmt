@@ -8,6 +8,7 @@ SS \subsection{%%}
 SSS \subsubsection{%%}
 DEFHEAD \indent * %%
 DEFCOMM %!
+CONT %!
 TSEC \section{%+} \indent * %%
 TSS \subsection{%+} \indent * %%
 TSSS \subsubsection{%+} \indent * %%
