@@ -57,8 +57,7 @@ commit.time: $(Sources)
 	echo "Autocommit ($(notdir $(CURDIR)))" > $@
 	-git commit --dry-run | perl -pe 's/^/#/' >> $@
 	$(EDIT) $@
-	perl -i -ne 'print unless /#/' $@
-	-git commit -F $@
+	perl -ne 'print unless /#/' $@ | git commit -F -
 	date >> $@
 
 commit.default: $(Sources)
@@ -252,3 +251,8 @@ upmerge:
 	git merge $(BRANCH)
 	git push -u origin $(cmain)
 	$(MAKE) $(BRANCH).nuke
+
+upstream:
+	grep url .git/config | perl -pe "s|:|/|; s|[^@]*@|go https://|; s/\.git.*//" | bash
+
+# https://github.com/dushoff/makestuff

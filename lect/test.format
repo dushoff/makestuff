@@ -82,11 +82,7 @@ BLANK \mbox{}
 VSPACE \vfill
 key rub: %!
 
-<<<<<<< HEAD
-VADJ \vspace{%%}
-=======
 VADJ \vspace{%}
->>>>>>> df4bdbc1bdd619d3dcd9e7722a69533eac5c490c
 
 ANS %!
 key rub: \vspace{1.5ex}{\sf %%}
