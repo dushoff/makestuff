@@ -105,6 +105,9 @@ pages/%: % pages
 	$(copy)
 
 pages:
+	mkdir $@
+	cp -r .git $@
+	cd $@ && git checkout --orphan gh-pages
 
 ##################################################################
 
