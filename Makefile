@@ -7,9 +7,7 @@ target pngtarget pdftarget vtarget acrtarget: upstream
 
 ##################################################################
 
-include stuff.mk
-
-ms = ../makestuff
+include makestuff.mk
 
 # Base files
 
@@ -17,7 +15,7 @@ Sources = Makefile LICENSE README.md .gitignore stuff.mk todo.md
 
 # Starting makefile for other projectcs
 
-Sources += makefile.mk hooks.mk
+Sources += makefile.mk hooks.mk makestuff.mk
 
 # Bootstrap stuff
 # Want to be able to change this stuff locally
