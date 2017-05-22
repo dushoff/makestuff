@@ -13,7 +13,7 @@ include makestuff.mk
 
 Sources = Makefile LICENSE README.md .gitignore stuff.mk todo.md
 
-# Starting makefile for other projectcs
+# Starting makefile for other projects
 
 Sources += makefile.mk hooks.mk makestuff.mk
 

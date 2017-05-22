@@ -217,7 +217,7 @@ define makesub
 	$(MAKE) push
 	-/bin/rm -rf $@
 	mkdir $@
-	cd $@ $* && grep url ../.git/config | perl -npe "s/url =/git clone/; s/.git$$//" | sh
+	cd $@ $* && grep url ../.git/config | head -1 | perl -npe "s/url =/git clone/; s/.git$$//" | sh
 endef
 
 ##################################################################
