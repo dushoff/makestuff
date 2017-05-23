@@ -107,7 +107,7 @@ pages/%: % pages
 pages:
 	mkdir $@
 	cp -r .git $@
-	cd $@ && git checkout --orphan gh-pages
+	cd $@ && (git checkout gh-pages || git checkout --orphan gh-pages)
 
 ##################################################################
 
@@ -217,7 +217,7 @@ define makesub
 	$(MAKE) push
 	-/bin/rm -rf $@
 	mkdir $@
-	cd $@ $* && grep url ../.git/config | perl -npe "s/url =/git clone/; s/.git$$//" | sh
+	cd $@ $* && grep url ../.git/config | head -1 | perl -npe "s/url =/git clone/; s/.git$$//" | sh
 endef
 
 ##################################################################
