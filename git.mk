@@ -50,6 +50,15 @@ remotesync: commit.default
 	git pull
 	git push -u origin $(BRANCH)
 
+%.master: %
+	cd $< && git checkout master
+
+%.sync: %
+	cd $< && $(MAKE) sync
+
+%.autosync: %
+	cd $< && $(MAKE) remotesync
+
 ## Archive is _deprecated_; see .gp:
 ## If you really want something remade and archived automatically, it can be a source
 commit.time: $(Sources)
@@ -62,7 +71,7 @@ commit.time: $(Sources)
 
 commit.default: $(Sources)
 	git add -f $^ 
-	-git commit -m "Pushed from remote directory"
+	-git commit -m "Pushed automatically"
 	touch $@
 
 ######################################################################
