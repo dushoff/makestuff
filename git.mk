@@ -107,7 +107,7 @@ pages/%: % pages
 pages:
 	mkdir $@
 	cp -r .git $@
-	cd $@ && git checkout --orphan gh-pages
+	cd $@ && (git checkout gh-pages || git checkout --orphan gh-pages)
 
 ##################################################################
 
