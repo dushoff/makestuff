@@ -11,7 +11,7 @@ $(ICI3D):
 
 # Worried about infinite loops; will touch command help with time stamp?
 # Do I need a sleep?
-$(remotefiles)/Makefile: %/Makefile: %
+$(remotefiles): %/Makefile: %
 	git submodule init $<
 	git submodule update $<
 	touch $@
