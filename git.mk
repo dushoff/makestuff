@@ -231,6 +231,9 @@ endef
 %.branch: sync
 	git checkout $*
 
+%.master:
+	cd $* && git checkout master
+
 update: sync
 	git rebase $(cmain) 
 	git push origin --delete $*
