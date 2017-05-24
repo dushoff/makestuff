@@ -4,6 +4,7 @@ ms = makestuff
 
 Sources += $(ms)
 
+Makefile: $(ms)
 $(ms):
 	git submodule add git@github.com:dushoff/$@.git
 
