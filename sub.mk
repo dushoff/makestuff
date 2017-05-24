@@ -11,4 +11,5 @@ $(ms):
 $(ms)/%.mk: 
 	git submodule init $(ms) 
 	git submodule update $(ms) 
+	touch $@
 
