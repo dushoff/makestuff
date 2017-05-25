@@ -59,6 +59,9 @@ remotesync: commit.default
 %.autosync: %
 	cd $< && $(MAKE) remotesync
 
+%.status: %
+	cd $< && git status
+
 ## Archive is _deprecated_; see .gp:
 ## If you really want something remade and archived automatically, it can be a source
 commit.time: $(Sources)
