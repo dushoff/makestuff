@@ -11,7 +11,7 @@ include makestuff.mk
 
 # Base files
 
-Sources = Makefile LICENSE README.md .gitignore sub.mk stuff.mk todo.md
+Sources = Makefile LICENSE README.md .gitignore sub.mk sub.mk todo.md
 
 # Starting makefile for other projects
 
@@ -37,7 +37,7 @@ include accounts.mk
 
 # Git makefile for this and other projects
 
-Sources += git.mk git.def repos.def repos.mk modules.mk drops.mk notarget.mk
+Sources += git.mk git.def repos.def repos.mk modules.mk drops.mk target.mk
 
 # Makefiles and resources for other projects
 
