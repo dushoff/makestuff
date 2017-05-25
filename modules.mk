@@ -28,8 +28,7 @@ $(repofiles): %/Makefile: %
 maketouch = cd $$(dir $$@) && $$(MAKE) $$* && touch $$*
 define dirmake
 $(1)/%.mk: ;
-$(1)/%: $(1)
-	$(maketouch)
+$(1)/%: $(1)/Makefile ;
 endef
 
 $(foreach dir,$(repodirs),$(eval $(call dirmake,$(dir))))
