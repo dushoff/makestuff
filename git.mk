@@ -263,7 +263,6 @@ upmerge:
 	git push -u origin $(cmain)
 	$(MAKE) $(BRANCH).nuke
 
+## Open an attached repo; tested for github ssh (modular and regular)
 upstream:
 	git remote get-url origin | perl -pe "s|:|/|; s|[^@]*@|go https://|; s/\.git.*//" | bash
-
-# https://github.com/dushoff/makestuff
