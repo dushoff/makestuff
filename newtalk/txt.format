@@ -48,7 +48,7 @@ outline: \n
 
 # Sectioning
 
-TOP NOSLIDE
+TOP NULLSLIDE
 draft final: NOFRAME
 
 SEC \section{%%}
@@ -199,6 +199,7 @@ draft final: ^LFIG 0.75 %%
 WFIG \hfill\includegraphics[width=%\textwidth]{%}\hfill\mbox{}
 WIDEFIG ^WFIG 1 %%
 DIAGRAM \includegraphics[width=1\textwidth]{%}\vspace{-0.7in}
+handouts: ^WIDEFIG %%
 
 SIDEFIG %!
 draft final: ^WIDEFIG %%
