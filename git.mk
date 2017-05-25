@@ -59,6 +59,9 @@ remotesync: commit.default
 %.autosync: %
 	cd $< && $(MAKE) remotesync
 
+%.status: %
+	cd $< && git status
+
 ## Archive is _deprecated_; see .gp:
 ## If you really want something remade and archived automatically, it can be a source
 commit.time: $(Sources)
@@ -225,7 +228,8 @@ define makesub
 	$(MAKE) push
 	-/bin/rm -rf $@
 	mkdir $@
-	cd $@ $* && grep url ../.git/config | head -1 | perl -npe "s/url =/git clone/; s/.git$$//" | sh
+	cd $@ $* && echo git clone `git remote get-url origin` | sh
+	-cp target.mk $@/*/
 endef
 
 ##################################################################
@@ -238,6 +242,9 @@ endef
 
 %.branch: sync
 	git checkout $*
+
+%.master:
+	cd $* && git checkout master
 
 update: sync
 	git rebase $(cmain) 
