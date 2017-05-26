@@ -59,9 +59,6 @@ remotesync: commit.default
 %.autosync: %
 	cd $< && $(MAKE) remotesync
 
-%.status: %
-	cd $< && git status
-
 ## Archive is _deprecated_; see .gp:
 ## If you really want something remade and archived automatically, it can be a source
 commit.time: $(Sources)
@@ -117,7 +114,8 @@ pages/%: % pages
 	$(copy)
 
 pages:
-	git clone . $@
+	mkdir $@
+	cp -r .git $@
 	cd $@ && (git checkout gh-pages || git checkout --orphan gh-pages)
 
 ##################################################################
@@ -270,9 +268,7 @@ upmerge:
 	git push -u origin $(cmain)
 	$(MAKE) $(BRANCH).nuke
 
-## Open an attached repo; tested for github ssh (modular and regular)
 upstream:
-	git remote get-url origin | perl -pe "s|:|/|; s|[^@]*@|go https://|; s/\.git.*//" | bash
+	grep url .git/config | perl -pe "s|:|/|; s|[^@]*@|go https://|; s/\.git.*//" | bash
 
-LICENSE.md README.md:
-	touch $@
+# https://github.com/dushoff/makestuff
