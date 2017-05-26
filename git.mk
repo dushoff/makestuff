@@ -197,10 +197,10 @@ localdir: $(Sources) $(wildcard local.*)
 	$(lcopy)
 	$(testdir)
 
-subclone: $(Sources) 
+dot_dir: $(Sources) 
 	$(makesub)
 
-subclone_dir: $(Sources) 
+dot_test: $(Sources) 
 	$(makesub)
 	$(testdir)
 
@@ -221,6 +221,13 @@ testclean:
 lcopy = -/bin/cp local.* $@/$(notdir $(CURDIR))
 
 testdir = cd $@/$(notdir $(CURDIR)) && $(MAKE) Makefile || $(MAKE) Makefile && $(MAKE) && $(MAKE) vtarget
+
+define makedot
+	$(MAKE) commit.time
+	-/bin/rm -rf $@
+	git clone . $@
+	-cp target.mk $@/*/
+endef
 
 define makesub
 	$(MAKE) push
