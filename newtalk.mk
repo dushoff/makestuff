@@ -19,6 +19,9 @@ copy.tex:
 	$(CP) $(talkdir)/$@ .
 	$(RO)
 
+talkdir/%:
+	$(MAKE) talkdir
+
 talkdir:
 	/bin/ln -fs $(talkdir) $@
 
