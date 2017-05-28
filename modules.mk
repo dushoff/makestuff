@@ -15,11 +15,10 @@ $(Bio3SS):
 $(theobio_group):
 	git submodule add git@github.com:mac-theobio/$@.git || mkdir $@
 
-# Worried about infinite loops; will touch command help with time stamp?
-# Do I need a sleep?
-$(repofiles): %/Makefile: %
-	git submodule init $<
-	git submodule update $<
+$(repofiles): %/Makefile: 
+	$(MAKE) $*
+	git submodule init $*
+	git submodule update $*
 	touch $@
 
 ## To make things in these directories;
