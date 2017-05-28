@@ -13,6 +13,9 @@ local.txt.format:
 	$(CP) $(talkdir)/$@ .
 	$(RO)
 
+ici3d:
+	/bin/ln -fs talkdir/ici3d.tmp beamer.tmp
+
 ## What is this?
 copy.tex:
 	$(MAKE) talkdir
