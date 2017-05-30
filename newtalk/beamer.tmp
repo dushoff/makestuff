@@ -12,13 +12,7 @@
 \usepackage{times}
 \usepackage[T1]{fontenc}
 
-\AtBeginSection[]
-{
-\begin{frame}
-		\frametitle{Outline}
-		\tableofcontents[currentsection]
-	\end{frame}
-}
+\input{talkdir/section.tex}
 
 \input{talkdir/lengths.tex}
 
