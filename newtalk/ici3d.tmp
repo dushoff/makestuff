@@ -9,6 +9,7 @@
 \usepackage{hyperref}
 \usepackage{url}
 
+\input{talkdir/section.tex}
 \input{talkdir/lengths.tex}
 
 \begin{document}
@@ -18,4 +19,3 @@
 \input{LatexTemplates/ici3dClose.tex}
 
 \end{document}
-
