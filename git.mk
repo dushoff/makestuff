@@ -134,7 +134,7 @@ abort:
 
 # Special files
 
-.gitignore:
+.gitignore README.md LICENSE.md:
 	-/bin/cp $(ms)/$@ .
 
 ##################################################################
