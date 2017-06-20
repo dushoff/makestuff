@@ -137,6 +137,9 @@ abort:
 .gitignore:
 	-/bin/cp $(ms)/$@ .
 
+README.md LICENSE.md:
+	touch $@
+
 ##################################################################
 
 ### Cleaning
@@ -260,6 +263,5 @@ upmerge:
 	$(MAKE) $(BRANCH).nuke
 
 upstream:
-	grep url .git/config | perl -pe "s|:|/|; s|[^@]*@|go https://|; s/\.git.*//" | bash
+	git remote get-url origin | perl -pe "s|:|/|; s|[^@]*@|go https://|; s/\.git.*//" | bash
 
-# https://github.com/dushoff/makestuff
