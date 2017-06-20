@@ -189,20 +189,10 @@ gitprune:
 ### Testing
 
 testdir: $(Sources)
-	$(maketest)
-	$(testdir)
+	$(makedot)
+	$(dirtest)
 
-localdir: $(Sources) $(wildcard local.*)
-	$(maketest)
-	$(lcopy)
-	$(testdir)
-
-dot_dir: $(Sources) 
-	$(makesub)
-
-dot_test: $(Sources) 
-	$(makesub)
-	$(testdir)
+localdir: $(Sources) 
 
 maketest: $(Sources)
 	$(maketest)
@@ -213,6 +203,7 @@ define maketest
 	mkdir $@/$(notdir $(CURDIR))
 	tar czf $@/$(notdir $(CURDIR))/export.tgz $(Sources)
 	cd $@/$(notdir $(CURDIR)) && tar xzf export.tgz
+	-cp target.mk $@/$(notdir $(CURDIR))
 endef
 
 testclean:
@@ -220,7 +211,7 @@ testclean:
 
 lcopy = -/bin/cp local.* $@/$(notdir $(CURDIR))
 
-testdir = cd $@/$(notdir $(CURDIR)) && $(MAKE) Makefile || $(MAKE) Makefile && $(MAKE) && $(MAKE) vtarget
+dirtest = cd $@/$(notdir $(CURDIR)) && $(MAKE) Makefile || $(MAKE) Makefile && $(MAKE) && $(MAKE) vtarget
 
 define makedot
 	$(MAKE) commit.time
