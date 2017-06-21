@@ -111,11 +111,16 @@ git_push:
 	cd pages && git add -f $* && git commit -m "Pushed from parent" && git pull && git push
 
 pages/%: % pages
+	cd pages && git checkout gh-pages
 	$(copy)
 
 pages:
 	$(makesub)
-	cd $@ && (git checkout gh-pages || (git checkout --orphan gh-pages && git rm -rf * && touch ../README.md && cp ../README.md . && git add README.md && git commit -m "Orphan pages branch" && git push --set-upstream origin gh-pages ))
+	cd $@ && (git checkout gh-pages || $(orphanpages)
+
+define orphanpages
+	(git checkout --orphan gh-pages && git rm -rf * && touch ../README.md && cp ../README.md . && git add README.md && git commit -m "Orphan pages branch" && git push --set-upstream origin gh-pages ))
+endef
 
 ##################################################################
 
