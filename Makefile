@@ -50,7 +50,7 @@ Sources += resources.mk
 
 Sources += perl.def python.def
 
-Sources += newlatex.mk latexdeps.pl
+Sources += newlatex.mk latexdeps.pl images.mk
 
 Sources += newlatex.mk latexdeps.pl biber.def bibtex.def
 
