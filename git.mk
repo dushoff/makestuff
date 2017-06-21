@@ -265,3 +265,6 @@ upmerge:
 upstream:
 	git remote get-url origin | perl -pe "s|:|/|; s|[^@]*@|go https://|; s/\.git.*//" | bash
 
+hupstream:
+	echo go `git remote get-url origin` | bash
+
