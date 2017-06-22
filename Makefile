@@ -83,9 +83,6 @@ wrapRpl = $(wildcard wrapR/*.pl)
 
 Sources += $(wrapRR) $(wrapRpl)
 
--include local.mk
-include git.mk
-
 ######################################################################
 
 ## Missing image tags
@@ -97,6 +94,9 @@ personal.pdf:
 	echo "This personal image is not found" | groff | ps2pdf - > $@
 
 ######################################################################
+
+-include local.mk
+include git.mk
 
 # Developing newlatex
 
