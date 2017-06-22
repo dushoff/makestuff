@@ -12,12 +12,11 @@ web_drop: Lecture_images
 	$(LNF) $</files $@
 
 Sources += personal.txt
-my_images/%: my_images personal.pdf
+my_images/%: my_images $(ms)/personal.pdf
 	(cd $< && $(MAKE) $*) || convert $(word 2, $^) $@
 
 my_images: 
 	$(LN) $(Drop)/my_images . || $(mkdir)
-
 
 %.txt.ps: %.txt
 	groff $< > $@
