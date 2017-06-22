@@ -88,6 +88,16 @@ include git.mk
 
 ######################################################################
 
+## Missing image tags
+Sources += missing.pdf personal.pdf
+missing.pdf:
+	echo "This image is not found in its original documented location" | groff | ps2pdf - > $@
+
+personal.pdf:
+	echo "This personal image is not found" | groff | ps2pdf - > $@
+
+######################################################################
+
 # Developing newlatex
 
 include perl.def
