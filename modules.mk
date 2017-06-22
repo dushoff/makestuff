@@ -7,19 +7,19 @@ repodirs = $(dushoff_github) $(ICI3D) $(Bio3SS) $(theobio_group) $(outbreak_gith
 repofiles = $(repodirs:%=%/Makefile)
 
 $(dushoff_github):
-	git submodule add git@github.com:dushoff/$@.git || mkdir $@
+	git submodule add https://github.com/dushoff/$@.git || mkdir $@
 
 $(outbreak_github):
-	git submodule add git@github.com:Outbreak-analysis/$@.git || mkdir $@
+	git submodule add https://github.com/Outbreak-analysis/$@.git || mkdir $@
 
 $(ICI3D):
-	git submodule add git@github.com:ICI3D/$@.git || mkdir $@
+	git submodule add https://github.com/ICI3D/$@.git || mkdir $@
 
 $(Bio3SS):
-	git submodule add git@github.com:Bio3SS/$@.git || mkdir $@
+	git submodule add https://github.com/Bio3SS/$@.git || mkdir $@
 
 $(theobio_group):
-	git submodule add git@github.com:mac-theobio/$@.git || mkdir $@
+	git submodule add https://github.com/mac-theobio/$@.git || mkdir $@
 
 $(repofiles): %/Makefile: 
 	$(MAKE) $*

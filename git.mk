@@ -111,12 +111,16 @@ git_push:
 	cd pages && git add -f $* && git commit -m "Pushed from parent" && git pull && git push
 
 pages/%: % pages
+	cd pages && git checkout gh-pages
 	$(copy)
 
 pages:
-	mkdir $@
-	cp -r .git $@
-	cd $@ && (git checkout gh-pages || git checkout --orphan gh-pages)
+	$(makesub)
+	cd $@ && (git checkout gh-pages || $(orphanpages)
+
+define orphanpages
+	(git checkout --orphan gh-pages && git rm -rf * && touch ../README.md && cp ../README.md . && git add README.md && git commit -m "Orphan pages branch" && git push --set-upstream origin gh-pages ))
+endef
 
 ##################################################################
 
@@ -193,6 +197,7 @@ gitprune:
 
 testdir: $(Sources)
 	$(makedot)
+	-cp target.mk $@/*/
 	$(dirtest)
 
 localdir: $(Sources) 
@@ -220,15 +225,12 @@ define makedot
 	$(MAKE) commit.time
 	-/bin/rm -rf $@
 	git clone . $@
-	-cp target.mk $@/*/
 endef
 
 define makesub
 	$(MAKE) push
 	-/bin/rm -rf $@
-	mkdir $@
-	cd $@ $* && echo git clone `git remote get-url origin` | sh
-	-cp target.mk $@/*/
+	git clone `git remote get-url origin` $@
 endef
 
 ##################################################################
