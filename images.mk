@@ -5,7 +5,7 @@
 
 web_drop/%: $(ms)/missing.pdf
 	$(MAKE) web_drop
-	(cd Lecture_images && $(MAKE) files/$*) || convert $(word 2, $^) $@
+	(cd Lecture_images && $(MAKE) files/$*) || convert $^ $@
 
 web_drop: Lecture_images
 	$(MAKE) Lecture_images/Makefile
