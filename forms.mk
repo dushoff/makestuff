@@ -14,7 +14,10 @@ up_date:
 	ps2pdf $< > $@
 
 date.pdf: date.txt
-	pdfroff $< > $@
+	pdfroff $< | cpdf -crop "0.9in 10.8in 0.9in 0.2in" -stdin -o $@ 
+
+date_%.pdf: date.pdf
+	cpdf -scale-page "$* $*" -o $@ $<
 
 date.png: date.pdf
 	$(imageconvert)
