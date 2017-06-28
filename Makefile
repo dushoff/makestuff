@@ -50,7 +50,7 @@ Sources += resources.mk
 
 Sources += perl.def python.def
 
-Sources += newlatex.mk latexdeps.pl
+Sources += newlatex.mk latexdeps.pl images.mk
 
 Sources += newlatex.mk latexdeps.pl biber.def bibtex.def
 
@@ -85,10 +85,20 @@ wrapRpl = $(wildcard wrapR/*.pl)
 
 Sources += $(wrapRR) $(wrapRpl)
 
--include local.mk
-include git.mk
+######################################################################
+
+## Missing image tags
+Sources += missing.pdf personal.pdf
+missing.pdf:
+	echo "This image is not found in its original documented location" | groff | ps2pdf - > $@
+
+personal.pdf:
+	echo "This personal image is not found" | groff | ps2pdf - > $@
 
 ######################################################################
+
+-include local.mk
+include git.mk
 
 # Developing newlatex
 

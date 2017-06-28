@@ -111,12 +111,16 @@ git_push:
 	cd pages && git add -f $* && git commit -m "Pushed from parent" && git pull && git push
 
 pages/%: % pages
+	cd pages && git checkout gh-pages
 	$(copy)
 
 pages:
-	mkdir $@
-	cp -r .git $@
-	cd $@ && (git checkout gh-pages || git checkout --orphan gh-pages)
+	$(makesub)
+	cd $@ && (git checkout gh-pages || $(orphanpages)
+
+define orphanpages
+	(git checkout --orphan gh-pages && git rm -rf * && touch ../README.md && cp ../README.md . && git add README.md && git commit -m "Orphan pages branch" && git push --set-upstream origin gh-pages ))
+endef
 
 ##################################################################
 
@@ -134,8 +138,11 @@ abort:
 
 # Special files
 
-.gitignore README.md LICENSE.md:
+.gitignore:
 	-/bin/cp $(ms)/$@ .
+
+README.md LICENSE.md:
+	touch $@
 
 ##################################################################
 
@@ -189,20 +196,11 @@ gitprune:
 ### Testing
 
 testdir: $(Sources)
-	$(maketest)
-	$(testdir)
+	$(makedot)
+	-cp target.mk $@/*/
+	$(dirtest)
 
-localdir: $(Sources) $(wildcard local.*)
-	$(maketest)
-	$(lcopy)
-	$(testdir)
-
-dot_dir: $(Sources) 
-	$(makesub)
-
-dot_test: $(Sources) 
-	$(makesub)
-	$(testdir)
+localdir: $(Sources) 
 
 maketest: $(Sources)
 	$(maketest)
@@ -213,6 +211,7 @@ define maketest
 	mkdir $@/$(notdir $(CURDIR))
 	tar czf $@/$(notdir $(CURDIR))/export.tgz $(Sources)
 	cd $@/$(notdir $(CURDIR)) && tar xzf export.tgz
+	-cp target.mk $@/$(notdir $(CURDIR))
 endef
 
 testclean:
@@ -220,21 +219,18 @@ testclean:
 
 lcopy = -/bin/cp local.* $@/$(notdir $(CURDIR))
 
-testdir = cd $@/$(notdir $(CURDIR)) && $(MAKE) Makefile || $(MAKE) Makefile && $(MAKE) && $(MAKE) vtarget
+dirtest = cd $@/$(notdir $(CURDIR)) && $(MAKE) Makefile || $(MAKE) Makefile && $(MAKE) && $(MAKE) vtarget
 
 define makedot
 	$(MAKE) commit.time
 	-/bin/rm -rf $@
 	git clone . $@
-	-cp target.mk $@/*/
 endef
 
 define makesub
 	$(MAKE) push
 	-/bin/rm -rf $@
-	mkdir $@
-	cd $@ $* && echo git clone `git remote get-url origin` | sh
-	-cp target.mk $@/*/
+	git clone `git remote get-url origin` $@
 endef
 
 ##################################################################
@@ -270,4 +266,7 @@ upmerge:
 
 upstream:
 	git remote get-url origin | perl -pe "s|:|/|; s|[^@]*@|go https://|; s/\.git.*//" | bash
+
+hupstream:
+	echo go `git remote get-url origin` | bash
 
