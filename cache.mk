@@ -1,4 +1,4 @@
-Sources += $(wildcard git_cache/*)
+Sources += $(wildcard git_cache/* git_cache/.*.RData)
 
 git_cache/%.Rout:
 	$(MAKE) git_cache

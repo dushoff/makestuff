@@ -2,10 +2,15 @@
 
 ### Hooks for the editor to set the default target
 current: target
-
-target pngtarget pdftarget vtarget acrtarget: upstream
+-include target.mk
 
 ##################################################################
+
+## Work on documentation!!!
+
+cache.html: cache.md
+
+######################################################################
 
 include makestuff.mk
 
@@ -101,6 +106,8 @@ personal.pdf:
 
 -include local.mk
 include git.mk
+include pandoc.mk
+include visual.mk
 
 # Developing newlatex
 
