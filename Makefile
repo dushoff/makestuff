@@ -52,6 +52,8 @@ Sources += perl.def python.def
 
 Sources += newlatex.mk latexdeps.pl images.mk
 
+Sources += latexdiff.pl
+
 Sources += newlatex.mk latexdeps.pl biber.def bibtex.def
 
 Sources += flextex.mk flextex.pl deps.mk

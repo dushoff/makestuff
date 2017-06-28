@@ -1,3 +1,5 @@
+include $(ms)/forms.def
+
 up_date: 
 	date +"%d %b %Y" > date.txt
 
