@@ -16,3 +16,5 @@ This means that `sump.Rout` depends on `sum.Rout`, in more or less the usual way
 	* `cache.mk` should be included _before_ `git.mk` if you want makestuff to automatically add git_cache files.
 
 Not sure how or whether this is going to work with Junling's stuff. Wanted to make it work first.
+
+Currently implemented in [my horrible scratch repo](https://github.com/dushoff/scratch) (only check if you really find this unclear, you could also just complain).
