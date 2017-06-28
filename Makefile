@@ -67,6 +67,8 @@ Sources += lect.mk $(wildcard lect/*.*)
 
 Sources += pandoc.mk compare.mk
 
+Sources += cache.mk nocache.mk
+
 ######################################################################
 
 # RR scripts
