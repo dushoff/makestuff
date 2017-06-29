@@ -27,8 +27,6 @@ Here is some example code that seems to be working for me (in a repo with makest
 git_cache/test.out: test.pl
 	$(PUSH)
 
-slow/test.out: 
-
 test.print: slow/test.out
 	cat $< > $@
 

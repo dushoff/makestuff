@@ -75,7 +75,7 @@ Sources += lect.mk $(wildcard lect/*.*)
 
 Sources += pandoc.mk compare.mk
 
-Sources += cache.mk nocache.mk rcache.mk cache.md
+Sources += cache.mk nocache.mk rcache.mk cache.md rcache.md
 
 ######################################################################
 
