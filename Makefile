@@ -9,6 +9,7 @@ current: target
 ## Work on documentation!!!
 
 cache.html: cache.md
+rcache.html: rcache.md
 
 ######################################################################
 

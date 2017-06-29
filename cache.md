@@ -1,5 +1,15 @@
 Use `-include $(ms)/cache.mk` to enable simple caching. `cache.mk` is intended for files which are expensive to make, but not expensive to track.
 
+# Basic idea
+
+Slow targets are:
+* made automatically, but not remade automatically
+* added to the repo, so that they can be reverted, or shared between platforms
+* designated using make rules
+
+by having rules to _make_ them in one directory (`$(cachedir)`, `git_cache` by default) and rules to _use_ them in another (`$(slowdir)`, `slow` by default)
+* `make` should just work as normal when slow targets don't exist
+
 __Currently implemented only for `wrapR` targets; should be easy to extend__
 
 To cache a file, require a cached version in a make rule:
