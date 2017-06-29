@@ -15,7 +15,7 @@ $(slowdir)/%:
 	$(MAKE) $(slowdir)
 	$(MAKE) $(cachedir)
 	$(MAKE) $(cachedir)/$*
-	ls $@ || $(LNF) $(realpath .)/$(cachedir)/$* $(slowdir)
+	(ls $@ > /dev/null 2>&1) || $(LNF) $(realpath .)/$(cachedir)/$* $(slowdir)
 
 $(slowdir) $(cachedir):
 	$(mkdir)

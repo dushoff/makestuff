@@ -7,24 +7,34 @@ Slow targets are:
 * added to the repo, so that they can be reverted, or shared between platforms
 * designated using make rules
 
-by having rules to _make_ them in one directory (`$(cachedir)`, `git_cache` by default) and rules to _use_ them in another (`$(slowdir)`, `slow` by default)
-* `make` should just work as normal when slow targets don't exist
+In the make file, slow targets should be:
+* _made_ in the cache directory (`$(cachedir)`, `git_cache` by default) 
+* _used_ them from the slow directory (`$(slowdir)`, `slow` by default)
 
-__Currently implemented only for `wrapR` targets; should be easy to extend__
-
-To cache a file, require a cached version in a make rule:
-
-```make
-sump.Rout: git_cache/sum.Rout sump.R
+To do a complete make (not respecting the cache), say:
+``` bash
+make <target>.nocache
 ```
 
-This means that `sump.Rout` depends on `sum.Rout`, in more or less the usual way, but via `git_cache`:
+This seals up the breakpoint in your make logic (between the slow directory and the cache directory). It should always work within a local session, but I'm worried about time stamps when the repo is pushed and pulled. Will investigate further.
 
-* If a cached version of `sum.Rout` does not exist, it will be made the normal way and cached
-* If the cached version does exist, it will not be remade as a step to making sump.Rout, unless you override the cache (do this with `make sump.Rout.nocache`)
-* The cached version is meant to be pushed and pulled with the git repo
-	* `cache.mk` should be included _before_ `git.mk` if you want makestuff to automatically add git_cache files.
+Here is some example code that seems to be working for me (in a repo with makestuff as a submodule):
 
-Not sure how or whether this is going to work with Junling's stuff. Wanted to make it work first.
+```make
+## Not very relevant, but maybe you're curious about PUSH
+-include $(ms)/perl.def
 
-Currently implemented in [my horrible scratch repo](https://github.com/dushoff/scratch) (only check if you really find this unclear, you could also just complain).
+git_cache/test.out: test.pl
+	$(PUSH)
+
+slow/test.out: 
+
+test.print: slow/test.out
+	cat $< > $@
+
+# Rename cache directories before you include cache.mk
+# slowdir = datadir
+-include $(ms)/cache.mk
+
+# Include cache.mk before git.mk, if you want to auto-cache git cache (and conversely, I guess)
+-include $(ms)/git.mk
