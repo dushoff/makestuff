@@ -1,4 +1,4 @@
-Sources += $(wildcard $(cachedir)/*)
+Archive += $(wildcard $(cachedir)/*)
 
 ifndef slowdir
 slowdir = slow
