@@ -1,13 +1,26 @@
-Sources += $(wildcard git_cache/* git_cache/.*.RData)
+Sources += $(wildcard $(cachedir)/*)
 
-git_cache/%.Rout:
-	$(MAKE) git_cache
-	$(MAKE) $*.Rout
-	$(CPF) $*.Rout .$*.RData git_cache
+ifndef slowdir
+slowdir = slow
+endif
 
-git_cache:
-	$(mkdir)
+ifndef cachedir
+cachedir = git_cache
+endif
 
 %.nocache:
-	$(MAKE) -f Makefile -f $(ms)/nocache.mk $*
+	$(MAKE) nocache=TRUE $*
+
+$(slowdir)/%:
+	$(MAKE) $(slowdir)
+	$(MAKE) $(cachedir)
+	$(MAKE) $(cachedir)/$*
+	ls $@ || $(LNF) $(realpath .)/$(cachedir)/$* $(slowdir)
+
+$(slowdir) $(cachedir):
+	$(mkdir)
+
+ifdef nocache
+$(foreach target,$(notdir $(wildcard $(cachedir)/*)),$(eval $(slowdir)/$(target): $(cachedir)/$(target)))
+endif
 
