@@ -18,6 +18,8 @@ make <target>.nocache
 
 This seals up the breakpoint in your make logic (between the slow directory and the cache directory). It should always work within a local session, but I'm worried about time stamps when the repo is pushed and pulled. Will investigate further.
 
+I think the solution (not implemented) is to disable automatic pushing. You _don't_ want to push slow files if they're not up-to-date. So a special rule for making and adding slow files. __But__ it's still not reliable, since git doesn't seem to respect anything about time stamps (fresh clone of a big repo, every single file has the same time).
+
 Here is some example code that seems to be working for me (in a repo with makestuff as a submodule):
 
 ```make
