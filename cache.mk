@@ -1,4 +1,6 @@
-Archive += $(wildcard $(cachedir)/*)
+
+now:
+	@echo $(now)
 
 ifndef slowdir
 slowdir = slow
@@ -7,6 +9,12 @@ endif
 ifndef cachedir
 cachedir = git_cache
 endif
+
+## Automatically add already up-to-date cachefiles to repo
+cachefiles = $(wildcard $(cachedir)/*)
+commit.time: $(cachefiles:%=%.addup)
+%.addup:
+	$(MAKE) -q $*.nocache && git add $*
 
 %.nocache:
 	$(MAKE) nocache=TRUE $*
