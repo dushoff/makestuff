@@ -16,7 +16,7 @@ cachefiles = $(wildcard $(cachedir)/*)
 add_cache: $(cachefiles:%=%.addup)
 
 %.addup:
-	! $(MAKE) -q nocache=TRUE $* || git add $*
+	! $(MAKE) -q $* || git add $*
 
 %.nocache:
 	$(MAKE) nocache=TRUE $*
