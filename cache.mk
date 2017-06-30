@@ -13,8 +13,8 @@ endif
 ## Automatically add already up-to-date cachefiles to repo
 
 cachefiles = $(wildcard $(cachedir)/*)
-## Can't make commit.time depend directly on this!
-sync: $(cachefiles:%=%.addup)
+commit.time: $(cachefiles:%=%.addup)
+
 # This rule does not work if nocache is called recursively; make doesn't pass the -q along!
 %.addup:
 	($(MAKE) -q nocache=TRUE $* && git add $*) || ! $(MAKE) -q nocache=TRUE $*
