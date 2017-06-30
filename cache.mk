@@ -10,15 +10,13 @@ ifndef cachedir
 cachedir = git_cache
 endif
 
-## Automatically add already up-to-date cachefiles to repo
-
+## Add updated cache files to staging area
+# Recipe does not work if nocache is called recursively; make doesn't pass the -q along!
 cachefiles = $(wildcard $(cachedir)/*)
+add_cache: $(cachefiles:%=%.addup)
 
-Archive = $(cachefiles:%=%.addup)
-
-# This rule does not work if nocache is called recursively; make doesn't pass the -q along!
 %.addup:
-	($(MAKE) -q nocache=TRUE $* && git add $*) || ! $(MAKE) -q nocache=TRUE $*
+	! $(MAKE) -q nocache=TRUE $* || git add $*
 
 %.nocache:
 	$(MAKE) nocache=TRUE $*
@@ -35,4 +33,3 @@ $(slowdir) $(cachedir):
 ifdef nocache
 $(foreach target,$(notdir $(wildcard $(cachedir)/*)),$(eval $(slowdir)/$(target): $(cachedir)/$(target)))
 endif
-

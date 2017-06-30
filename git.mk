@@ -32,6 +32,10 @@ rebase: commit.time
 	git rebase origin/$(BRANCH)
 	touch $<
 
+addsync: $(add_cache)
+	touch Makefile
+	$(MAKE) sync
+
 tsync:
 	touch Makefile
 	$(MAKE) sync
