@@ -62,7 +62,7 @@ remotesync: commit.default
 ## Archive is _deprecated_; see .gp:
 ## If you really want something remade and archived automatically, it can be a source
 commit.time: $(Sources)
-	-git add -f $^ $(Archive)
+	git add -f $^ $(Archive)
 	echo "Autocommit ($(notdir $(CURDIR)))" > $@
 	-git commit --dry-run | perl -pe 's/^/#/' >> $@
 	$(EDIT) $@
