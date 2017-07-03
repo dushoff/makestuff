@@ -30,7 +30,7 @@ $(repofiles): %/Makefile:
 ## To make things in these directories;
 #### make the directory
 #### go there and make and touch
-maketouch = cd $$(dir $$@) && $$(MAKE) $$* && touch $$*
+maketouch = cd $(1) && $$(MAKE) $$* && touch $$*
 define dirmake
 $(1)/%.mk: ;
 $(1)/%: $(1)/Makefile 

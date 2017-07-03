@@ -183,7 +183,16 @@ gitprune:
 
 ### Testing
 
-testdir: $(Sources)
+dotdir: $(Sources)
+	$(MAKE) commit.time
+	-/bin/rm -rf $@
+	git clone . $@
+	-cp target.mk $@
+
+%.dirtest: %
+	cd $< && $(MAKE) Makefile && $(MAKE) makestuff && $(MAKE) && $(MAKE) vtarget
+
+testdot: $(Sources)
 	$(makedot)
 	-cp target.mk $@/*/
 	$(dirtest)
@@ -206,14 +215,6 @@ testclean:
 	-/bin/rm -rf localdir testdir subclone_dir
 
 lcopy = -/bin/cp local.* $@/$(notdir $(CURDIR))
-
-dirtest = cd $@/$(notdir $(CURDIR)) && $(MAKE) Makefile || $(MAKE) Makefile && $(MAKE) && $(MAKE) vtarget
-
-define makedot
-	$(MAKE) commit.time
-	-/bin/rm -rf $@
-	git clone . $@
-endef
 
 define makesub
 	$(MAKE) push
