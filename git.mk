@@ -82,17 +82,18 @@ commit.default: $(Sources)
 ######################################################################
 
 ## git push; make things and add them to the repo
+## Testing streamlined version Jul 2017
 
-%.gp:
-	$(MAKE) git_push/$*
+%.gp: % git_push
+	cp $* git_push
 	git add -f git_push/$*
 	touch Makefile
 
-git_push/%: % git_push
-	$(copy)
-
 git_push:
 	$(mkdir)
+
+## Pages. Sort of like git_push, but for gh_pages (html, private repos)
+## May want to refactor as for git_push above (break link from pages/* to * for robustness)
 
 %.pages:
 	$(MAKE) pages/$*
@@ -189,38 +190,16 @@ dotdir: $(Sources)
 	git clone . $@
 	-cp target.mk $@
 
-%.dirtest: %
-	cd $< && $(MAKE) Makefile && $(MAKE) makestuff && $(MAKE) && $(MAKE) vtarget
-
-testdot: $(Sources)
-	$(makedot)
-	-cp target.mk $@/*/
-	$(dirtest)
-
-localdir: $(Sources) 
-
-maketest: $(Sources)
-	$(maketest)
-
-define maketest
-	-/bin/rm -rf $@
-	mkdir $@
-	mkdir $@/$(notdir $(CURDIR))
-	tar czf $@/$(notdir $(CURDIR))/export.tgz $(Sources)
-	cd $@/$(notdir $(CURDIR)) && tar xzf export.tgz
-	-cp target.mk $@/$(notdir $(CURDIR))
-endef
-
-testclean:
-	-/bin/rm -rf localdir testdir subclone_dir
-
-lcopy = -/bin/cp local.* $@/$(notdir $(CURDIR))
-
-define makesub
+clonedir: $(Sources)
 	$(MAKE) push
 	-/bin/rm -rf $@
 	git clone `git remote get-url origin` $@
-endef
+
+%.dirtest: %
+	cd $< && $(MAKE) Makefile && $(MAKE) makestuff && $(MAKE) && $(MAKE) vtarget
+
+testclean:
+	-/bin/rm -rf clonedir dotdir
 
 ##################################################################
 
