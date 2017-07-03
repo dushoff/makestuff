@@ -81,23 +81,6 @@ commit.default: $(Sources)
 
 ######################################################################
 
-## Don't like git_products; makes it hard to make and sync
-## Deprecate
-
-## If you make things in git_products, they will be remade and archived each time you update the repo. 
-## Use rm to stop the process
-## Use git rm to take something out of the repo version
-## Should be improved, obviously
-
-git_products = $(wildcard git_products/*)
-commit.time: $(git_products)
-git_products/%: % git_products
-	$(copy)
-git_products:
-	$(mkdir)
-
-######################################################################
-
 ## git push; make things and add them to the repo
 
 %.gp:
