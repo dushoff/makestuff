@@ -60,6 +60,9 @@ remotesync: commit.default
 %.pull: %
 	cd $< && $(MAKE) pull
 
+%.newpush: %
+	cd $< && $(MAKE) pull
+
 %.autosync: %
 	cd $< && $(MAKE) remotesync
 
