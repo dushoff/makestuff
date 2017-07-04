@@ -98,7 +98,6 @@ final: * \uncover<+->{\color{blue} %%}
 draft: * {\color{blue} %%}
 outline: %!
 
-CREDIT {\small\textsl{%%}}
 
 # Comments are shown in class, but not in the notes
 COMMENT %!
@@ -110,6 +109,7 @@ CHANGE %!
 draft: {\color{red}\textbf{%%}}
 
 CREDIT {\small\emph{%%}}
+outline: %!
 
 ######################################## Content switching
 
@@ -197,8 +197,10 @@ draft final: ^LFIG 0.75 %%
 ## Width for scale
 
 WFIG \hfill\includegraphics[width=%\textwidth]{%}\hfill\mbox{}
+outline: %!
+
 WIDEFIG ^WFIG 1 %%
-DIAGRAM \includegraphics[width=1\textwidth]{%}\vspace{-0.7in}
+DIAGRAM ^WIDEFIG % \vspace{-0.7in}
 handouts: ^WIDEFIG %%
 
 SIDEFIG %!
