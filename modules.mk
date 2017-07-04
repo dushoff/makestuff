@@ -2,7 +2,7 @@ include $(ms)/repos.def
 
 ## Add organizations to list, and make a rule
 
-repodirs = $(dushoff_github) $(ICI3D) $(Bio3SS) $(theobio_group) $(outbreak_github)
+repodirs = $(dushoff_github) $(ici3d_github) $(Bio3SS) $(theobio_group) $(outbreak_github)
 
 repofiles = $(repodirs:%=%/Makefile)
 
@@ -12,7 +12,7 @@ $(dushoff_github):
 $(outbreak_github):
 	git submodule add https://github.com/Outbreak-analysis/$@.git || mkdir $@
 
-$(ICI3D):
+$(ici3d_github):
 	git submodule add https://github.com/ICI3D/$@.git || mkdir $@
 
 $(Bio3SS):
