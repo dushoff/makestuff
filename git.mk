@@ -64,14 +64,13 @@ remotesync: commit.default
 	cd $< && $(MAKE) newpush
 
 %.sync: %
-	cd $< && $(MAKE) remotesync
+	cd $< && $(MAKE) sync
 
 %.autosync: %
 	cd $< && $(MAKE) remotesync
 
 ## Archive is _deprecated_; see .gp:
 ## If you really want something remade and archived automatically, it can be a source
-
 
 commit.time: $(Sources)
 	git add -f $(Sources) $(Archive)
