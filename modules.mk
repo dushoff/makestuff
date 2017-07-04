@@ -27,6 +27,9 @@ $(repofiles): %/Makefile:
 	git submodule update $*
 	touch $@
 
+%.subup:
+	git submodule update $*
+
 ## To make things in these directories;
 #### make the directory
 #### go there and make and touch
