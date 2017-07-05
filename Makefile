@@ -9,7 +9,6 @@ current: target
 ## Work on documentation!!!
 
 cache.html: cache.md
-rcache.html: rcache.md
 
 ######################################################################
 
@@ -75,7 +74,7 @@ Sources += lect.mk $(wildcard lect/*.*)
 
 Sources += pandoc.mk compare.mk
 
-Sources += cache.mk nocache.mk rcache.mk cache.md rcache.md
+Sources += cache.mk cache.md
 
 ######################################################################
 

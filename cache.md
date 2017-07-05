@@ -44,3 +44,11 @@ test.print: slow/test.out
 
 # Include cache.mk before git.mk, if you want to auto-cache git cache (and conversely, I guess)
 -include $(ms)/git.mk
+
+## Need a weirder rule for .Rout / RData, and it needs to come first
+$(slowdir)/%.Rout:
+	$(MAKE) $(slowdir)
+	$(MAKE) $(cachedir)
+	$(MAKE) $(cachedir)/$*.Rout
+	(ls $@ > /dev/null 2>&1) || $(LNF) $(realpath .)/$(cachedir)/$*.Rout $(call hiddenfile,  $(realpath .)/$(cachedir)/$*.RData) $(slowdir)
+
