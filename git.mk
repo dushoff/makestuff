@@ -37,6 +37,10 @@ rebase: commit.time
 	git rebase origin/$(BRANCH)
 	touch $<
 
+addsync: $(add_cache)
+	touch Makefile
+	$(MAKE) sync
+
 tsync:
 	touch Makefile
 	$(MAKE) sync
@@ -58,6 +62,12 @@ remotesync: commit.default
 %.master: %
 	cd $< && git checkout master
 
+%.pull: %
+	cd $< && $(MAKE) pull
+
+%.newpush: %
+	cd $< && $(MAKE) newpush
+
 %.sync: %
 	cd $< && $(MAKE) sync
 
@@ -66,8 +76,9 @@ remotesync: commit.default
 
 ## Archive is _deprecated_; see .gp:
 ## If you really want something remade and archived automatically, it can be a source
+
 commit.time: $(Sources)
-	-git add -f $^ $(Archive)
+	git add -f $(Sources) $(Archive)
 	echo "Autocommit ($(notdir $(CURDIR)))" > $@
 	-git commit --dry-run | perl -pe 's/^/#/' >> $@
 	$(EDIT) $@
@@ -81,47 +92,35 @@ commit.default: $(Sources)
 
 ######################################################################
 
-## Don't like git_products; makes it hard to make and sync
-## Deprecate
-
-## If you make things in git_products, they will be remade and archived each time you update the repo. 
-## Use rm to stop the process
-## Use git rm to take something out of the repo version
-## Should be improved, obviously
-
-git_products = $(wildcard git_products/*)
-commit.time: $(git_products)
-git_products/%: % git_products
-	$(copy)
-git_products:
-	$(mkdir)
-
-######################################################################
-
 ## git push; make things and add them to the repo
+## Testing streamlined version Jul 2017
 
-%.gp:
-	$(MAKE) git_push/$*
+%.gp: % git_push
+	cp $* git_push
 	git add -f git_push/$*
 	touch Makefile
 
-git_push/%: % git_push
-	$(copy)
-
 git_push:
 	$(mkdir)
+
+## Pages. Sort of like git_push, but for gh_pages (html, private repos)
+## May want to refactor as for git_push above (break link from pages/* to * for robustness)
 
 %.pages:
 	$(MAKE) pages/$*
 	cd pages && git add -f $* && git commit -m "Pushed from parent" && git pull && git push
 
 pages/%: % pages
+	cd pages && git checkout gh-pages
 	$(copy)
 
 pages:
-	mkdir $@
-	cp -r .git $@
-	cd $@ && (git checkout gh-pages || git checkout --orphan gh-pages)
+	$(makesub)
+	cd $@ && (git checkout gh-pages || $(orphanpages)
+
+define orphanpages
+	(git checkout --orphan gh-pages && git rm -rf * && touch ../README.md && cp ../README.md . && git add README.md && git commit -m "Orphan pages branch" && git push --set-upstream origin gh-pages ))
+endef
 
 ##################################################################
 
@@ -196,54 +195,22 @@ gitprune:
 
 ### Testing
 
-testdir: $(Sources)
-	$(maketest)
-	$(testdir)
-
-localdir: $(Sources) $(wildcard local.*)
-	$(maketest)
-	$(lcopy)
-	$(testdir)
-
-dot_dir: $(Sources) 
-	$(makesub)
-
-dot_test: $(Sources) 
-	$(makesub)
-	$(testdir)
-
-maketest: $(Sources)
-	$(maketest)
-
-define maketest
-	-/bin/rm -rf $@
-	mkdir $@
-	mkdir $@/$(notdir $(CURDIR))
-	tar czf $@/$(notdir $(CURDIR))/export.tgz $(Sources)
-	cd $@/$(notdir $(CURDIR)) && tar xzf export.tgz
-endef
-
-testclean:
-	-/bin/rm -rf localdir testdir subclone_dir
-
-lcopy = -/bin/cp local.* $@/$(notdir $(CURDIR))
-
-testdir = cd $@/$(notdir $(CURDIR)) && $(MAKE) Makefile || $(MAKE) Makefile && $(MAKE) && $(MAKE) vtarget
-
-define makedot
+dotdir: $(Sources)
 	$(MAKE) commit.time
 	-/bin/rm -rf $@
 	git clone . $@
-	-cp target.mk $@/*/
-endef
+	-cp target.mk $@
 
-define makesub
+clonedir: $(Sources)
 	$(MAKE) push
 	-/bin/rm -rf $@
-	mkdir $@
-	cd $@ $* && echo git clone `git remote get-url origin` | sh
-	-cp target.mk $@/*/
-endef
+	git clone `git remote get-url origin` $@
+
+%.dirtest: %
+	cd $< && $(MAKE) Makefile && $(MAKE) makestuff && $(MAKE) && $(MAKE) vtarget
+
+testclean:
+	-/bin/rm -rf clonedir dotdir
 
 ##################################################################
 
@@ -278,4 +245,7 @@ upmerge:
 
 upstream:
 	git remote get-url origin | perl -pe "s|:|/|; s|[^@]*@|go https://|; s/\.git.*//" | bash
+
+hupstream:
+	echo go `git remote get-url origin` | bash
 

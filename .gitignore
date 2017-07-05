@@ -1,7 +1,8 @@
 commit.time
 .*.sw*
 
-*.pdf
+*.Rout.pdf
+*.html
 
 *.log
 *.aux
