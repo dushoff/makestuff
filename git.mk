@@ -27,6 +27,11 @@ pull: commit.time
 	git pull
 	touch $<
 
+pullup: commit.time
+	git pull
+	-git submodule update
+	touch $<
+
 rebase: commit.time
 	git fetch
 	git rebase origin/$(BRANCH)

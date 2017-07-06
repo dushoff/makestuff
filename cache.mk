@@ -11,7 +11,6 @@ cachedir = git_cache
 endif
 
 ## Add updated cache files to staging area
-# Recipe does not work if nocache is called recursively; make doesn't pass the -q along!
 cachefiles = $(wildcard $(cachedir)/*)
 add_cache: $(cachefiles:%=%.addup)
 
@@ -21,6 +20,9 @@ add_cache: $(cachefiles:%=%.addup)
 %.nocache:
 	$(MAKE) nocache=TRUE $*
 
+## Make things in slow directory by linking to cache directory
+## But don't tell them about the dependency most of the time
+## Don't link if the file already exists; it creates confusion (at least in the editor)
 $(slowdir)/%:
 	$(MAKE) $(slowdir)
 	$(MAKE) $(cachedir)
@@ -30,6 +32,10 @@ $(slowdir)/%:
 $(slowdir) $(cachedir):
 	$(mkdir)
 
+$(cachedir)/%.RData: %.RData
+	$(copy)
+
+## Use nocache to turn on dependencies and un-break the link
 ifdef nocache
 $(foreach target,$(notdir $(wildcard $(cachedir)/*)),$(eval $(slowdir)/$(target): $(cachedir)/$(target)))
 endif
