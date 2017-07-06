@@ -1,0 +1,14 @@
+\usepackage{xpatch}
+\xpatchcmd{\itemize}
+{\def\makelabel}
+	{\ifnum\@itemdepth=1\relax
+		\setlength\itemsep{2ex plus 3ex minus 2ex}% separation for first level
+	\else
+	\ifnum\@itemdepth=2\relax
+		\setlength\itemsep{1ex plus 2ex minus 1ex}% separation for second level
+	\else
+	\ifnum\@itemdepth=3\relax
+		\setlength\itemsep{0.5ex plus 1ex minus 0.5ex}% separation for third level
+\fi\fi\fi\def\makelabel
+}{}{}
+
