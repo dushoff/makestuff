@@ -62,7 +62,7 @@ draft final: NOFRAME \subsection{%%}
 
 DEFHEAD \noindent {\large\bf %%}
 draft final:\frametitle{%%} 
-outline: \indent * %%
+outline: \noindent * %%
 
 SUBH \noindent {\bf %%}
 draft final:\framesubtitle{%%} 
@@ -75,15 +75,15 @@ outline: %!
 
 TSEC ^SEC %%
 draft final: \section{%+} SLIDESTART \frametitle{%%}
-outline: \section{%+} \indent * %%
+outline: \section{%+} \noindent * %%
 
 TSS ^SS %%
 draft final: \subsection{%+} SLIDESTART \frametitle{%%}
-outline: \subsection{%+} \indent * %%
+outline: \subsection{%+} \noindent * %%
 
 TSSS ^SSS %%
 draft final: \subsubsection{%+} SLIDESTART \frametitle{%%}
-outline: \subsubsection{%+} \indent * %%
+outline: \subsubsection{%+} \noindent * %%
 
 NOSEC ^DEFHEAD %%
 complete handouts: \hrule\paragraph{%%} 
