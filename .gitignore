@@ -1,4 +1,5 @@
 commit.time
+commit.default
 .*.sw*
 
 *.Rout.pdf

@@ -62,7 +62,7 @@ draft final: NOFRAME \subsection{%%}
 
 DEFHEAD \noindent {\large\bf %%}
 draft final:\frametitle{%%} 
-outline: \indent * %%
+outline: \noindent * %%
 
 SUBH \noindent {\bf %%}
 draft final:\framesubtitle{%%} 
@@ -75,15 +75,15 @@ outline: %!
 
 TSEC ^SEC %%
 draft final: \section{%+} SLIDESTART \frametitle{%%}
-outline: \section{%+} \indent * %%
+outline: \section{%+} \noindent * %%
 
 TSS ^SS %%
 draft final: \subsection{%+} SLIDESTART \frametitle{%%}
-outline: \subsection{%+} \indent * %%
+outline: \subsection{%+} \noindent * %%
 
 TSSS ^SSS %%
 draft final: \subsubsection{%+} SLIDESTART \frametitle{%%}
-outline: \subsubsection{%+} \indent * %%
+outline: \subsubsection{%+} \noindent * %%
 
 NOSEC ^DEFHEAD %%
 complete handouts: \hrule\paragraph{%%} 
@@ -98,7 +98,6 @@ final: * \uncover<+->{\color{blue} %%}
 draft: * {\color{blue} %%}
 outline: %!
 
-CREDIT {\small\textsl{%%}}
 
 # Comments are shown in class, but not in the notes
 COMMENT %!
@@ -110,6 +109,7 @@ CHANGE %!
 draft: {\color{red}\textbf{%%}}
 
 CREDIT {\small\emph{%%}}
+outline: %!
 
 ######################################## Content switching
 
@@ -197,8 +197,10 @@ draft final: ^LFIG 0.75 %%
 ## Width for scale
 
 WFIG \hfill\includegraphics[width=%\textwidth]{%}\hfill\mbox{}
+outline: %!
+
 WIDEFIG ^WFIG 1 %%
-DIAGRAM \includegraphics[width=1\textwidth]{%}\vspace{-0.7in}
+DIAGRAM ^WIDEFIG % \vspace{-0.7in}
 handouts: ^WIDEFIG %%
 
 SIDEFIG %!

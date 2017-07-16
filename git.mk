@@ -27,10 +27,19 @@ pull: commit.time
 	git pull
 	touch $<
 
+pullup: commit.time
+	git pull
+	-git submodule update
+	touch $<
+
 rebase: commit.time
 	git fetch
 	git rebase origin/$(BRANCH)
 	touch $<
+
+addsync: $(add_cache)
+	touch Makefile
+	$(MAKE) sync
 
 tsync:
 	touch Makefile
@@ -53,6 +62,12 @@ remotesync: commit.default
 %.master: %
 	cd $< && git checkout master
 
+%.pull: %
+	cd $< && $(MAKE) pull
+
+%.newpush: %
+	cd $< && $(MAKE) newpush
+
 %.sync: %
 	cd $< && $(MAKE) sync
 
@@ -61,12 +76,17 @@ remotesync: commit.default
 
 ## Archive is _deprecated_; see .gp:
 ## If you really want something remade and archived automatically, it can be a source
+
+## Check function (how to use??)
+
+git_check = git diff-index --quiet HEAD --
+
 commit.time: $(Sources)
-	-git add -f $^ $(Archive)
+	git add -f $(Sources) $(Archive)
 	echo "Autocommit ($(notdir $(CURDIR)))" > $@
 	-git commit --dry-run | perl -pe 's/^/#/' >> $@
 	$(EDIT) $@
-	perl -ne 'print unless /#/' $@ | git commit -F -
+	$(git_check) || (perl -ne 'print unless /#/' $@ | git commit -F -)
 	date >> $@
 
 commit.default: $(Sources)
@@ -76,35 +96,19 @@ commit.default: $(Sources)
 
 ######################################################################
 
-## Don't like git_products; makes it hard to make and sync
-## Deprecate
-
-## If you make things in git_products, they will be remade and archived each time you update the repo. 
-## Use rm to stop the process
-## Use git rm to take something out of the repo version
-## Should be improved, obviously
-
-git_products = $(wildcard git_products/*)
-commit.time: $(git_products)
-git_products/%: % git_products
-	$(copy)
-git_products:
-	$(mkdir)
-
-######################################################################
-
 ## git push; make things and add them to the repo
+## Testing streamlined version Jul 2017
 
-%.gp:
-	$(MAKE) git_push/$*
+%.gp: % git_push
+	cp $* git_push
 	git add -f git_push/$*
 	touch Makefile
 
-git_push/%: % git_push
-	$(copy)
-
 git_push:
 	$(mkdir)
+
+## Pages. Sort of like git_push, but for gh_pages (html, private repos)
+## May want to refactor as for git_push above (break link from pages/* to * for robustness)
 
 %.pages:
 	$(MAKE) pages/$*
@@ -195,43 +199,22 @@ gitprune:
 
 ### Testing
 
-testdir: $(Sources)
-	$(makedot)
-	-cp target.mk $@/*/
-	$(dirtest)
-
-localdir: $(Sources) 
-
-maketest: $(Sources)
-	$(maketest)
-
-define maketest
-	-/bin/rm -rf $@
-	mkdir $@
-	mkdir $@/$(notdir $(CURDIR))
-	tar czf $@/$(notdir $(CURDIR))/export.tgz $(Sources)
-	cd $@/$(notdir $(CURDIR)) && tar xzf export.tgz
-	-cp target.mk $@/$(notdir $(CURDIR))
-endef
-
-testclean:
-	-/bin/rm -rf localdir testdir subclone_dir
-
-lcopy = -/bin/cp local.* $@/$(notdir $(CURDIR))
-
-dirtest = cd $@/$(notdir $(CURDIR)) && $(MAKE) Makefile || $(MAKE) Makefile && $(MAKE) && $(MAKE) vtarget
-
-define makedot
+dotdir: $(Sources)
 	$(MAKE) commit.time
 	-/bin/rm -rf $@
 	git clone . $@
-endef
+	-cp target.mk $@
 
-define makesub
+clonedir: $(Sources)
 	$(MAKE) push
 	-/bin/rm -rf $@
 	git clone `git remote get-url origin` $@
-endef
+
+%.dirtest: %
+	cd $< && $(MAKE) Makefile && $(MAKE) makestuff && $(MAKE) && $(MAKE) vtarget
+
+testclean:
+	-/bin/rm -rf clonedir dotdir
 
 ##################################################################
 
