@@ -160,7 +160,7 @@ BC %!
 draft final: \begin{columns}[c] \column{0.54\textwidth} \small
 
 NC %!
-draft final: \column{0.4\textwidth}
+draft final: \column{0.4\textwidth} \small
 
 EC %!
 draft final: \end{columns}
@@ -169,7 +169,7 @@ BCC %!
 draft final: \begin{columns}[c] \column{0.47\textwidth} \small
 
 NCC %!
-draft final: \column{0.47\textwidth}
+draft final: \column{0.47\textwidth} \small
 
 ECC ^EC
 

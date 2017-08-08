@@ -248,8 +248,8 @@ upmerge:
 	$(MAKE) $(BRANCH).nuke
 
 upstream:
-	git remote get-url origin | perl -pe "s|:|/|; s|[^@]*@|go https://|; s/\.git.*//" | bash
+	git remote get-url origin | perl -pe "s|:|/|; s|[^@]*@|go https://|; s/\.git.*//" | bash --login
 
 hupstream:
-	echo go `git remote get-url origin` | bash
+	echo go `git remote get-url origin` | bash --login
 
