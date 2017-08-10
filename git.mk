@@ -223,6 +223,9 @@ testclean:
 %.branch: sync
 	git checkout $*
 
+%.checkbranch:
+	cd $* && git branch
+
 %.master:
 	cd $* && git checkout master
 
