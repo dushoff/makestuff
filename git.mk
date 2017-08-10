@@ -77,12 +77,16 @@ remotesync: commit.default
 ## Archive is _deprecated_; see .gp:
 ## If you really want something remade and archived automatically, it can be a source
 
+## Check function (how to use??)
+
+git_check = git diff-index --quiet HEAD --
+
 commit.time: $(Sources)
 	git add -f $(Sources) $(Archive)
 	echo "Autocommit ($(notdir $(CURDIR)))" > $@
 	-git commit --dry-run | perl -pe 's/^/#/' >> $@
 	$(EDIT) $@
-	perl -ne 'print unless /#/' $@ | git commit -F -
+	$(git_check) || (perl -ne 'print unless /#/' $@ | git commit -F -)
 	date >> $@
 
 commit.default: $(Sources)
@@ -247,8 +251,8 @@ upmerge:
 	$(MAKE) $(BRANCH).nuke
 
 upstream:
-	git remote get-url origin | perl -pe "s|:|/|; s|[^@]*@|go https://|; s/\.git.*//" | bash
+	git remote get-url origin | perl -pe "s|:|/|; s|[^@]*@|go https://|; s/\.git.*//" | bash --login
 
 hupstream:
-	echo go `git remote get-url origin` | bash
+	echo go `git remote get-url origin` | bash --login
 

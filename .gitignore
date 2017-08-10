@@ -1,4 +1,6 @@
 commit.time
+commit.default
+target.mk
 .*.sw*
 
 *.Rout.pdf
