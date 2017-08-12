@@ -33,11 +33,18 @@ $(repofiles): %/Makefile:
 ## To make things in these directories;
 #### make the directory
 #### go there and make and touch
+#### This rule can either be hot or cold, depending on whether there is a $(1) dependency. Hot right now. Should make a way to control it.
 maketouch = cd $(1) && $$(MAKE) $$* && touch $$*
-define dirmake
+define hotmake
+$(1)/%.mk: ;
+$(1)/%: $(1) $(1)/Makefile 
+	$(maketouch)
+endef
+
+define coldmake
 $(1)/%.mk: ;
 $(1)/%: $(1)/Makefile 
 	$(maketouch)
 endef
 
-$(foreach dir,$(repodirs),$(eval $(call dirmake,$(dir))))
+$(foreach dir,$(repodirs),$(eval $(call hotmake,$(dir))))
