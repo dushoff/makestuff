@@ -18,6 +18,9 @@ $(ici3d_github):
 $(Bio3SS):
 	git submodule add https://github.com/Bio3SS/$@.git || mkdir $@
 
+$(Bio1M):
+	git submodule add https://github.com/Bio1M/$@.git || mkdir $@
+
 $(theobio_group):
 	git submodule add https://github.com/mac-theobio/$@.git || mkdir $@
 
@@ -48,3 +51,26 @@ $(1)/%: $(1)/Makefile
 endef
 
 $(foreach dir,$(repodirs),$(eval $(call hotmake,$(dir))))
+
+######################################################################
+
+# How to make repos that haven't been initialized yet??
+%.init: 
+	- $(MAKE) $*
+	git checkout -b master
+	$(MAKE) $*/target.mk $*/sub.mk $*/Makefile
+	$(MAKE) $*/makestuff
+	cd $* && $(MAKE) newpush
+
+%/target.mk:
+	-cp $(ms)/target.mk $@
+
+%/sub.mk:
+	-cp $(ms)/sub.mk $@
+
+%/Makefile:
+	echo "# $*" > $@
+	cat $(ms)/hooks.mk >> $@
+	cat $(ms)/makefile.mk >> $@
+	cd $* && $(MAKE) Makefile
+

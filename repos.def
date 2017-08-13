@@ -4,7 +4,7 @@ dushoff_github = CIHR_Ebola Ebola_stochasticity make Planning rabies-SD RR autor
 
 outbreak_github = WA_Ebola_Outbreak OA_Planning Zika Ebola_presentation hybrid_fitting who_ebola OA_workspace Datsid Factorialtemplate Ebola_challenge_renewal
 
-Bio1M = Bio1M Bio1M.github.io Lectures
+Bio1M = 1M Bio1M.github.io
 
 Bio3SS = Bio3SS.github.io Bio3SS_content Population_time_series Lecture_images Exponential_figures Grading_scripts Assignments Birth_death_models Compensation_models Life_tables Life_history Age_distributions Structured_models 3SS Competition_models Exploitation_models bio3ss3 Grading Evaluation_materials Lectures Tests
 
