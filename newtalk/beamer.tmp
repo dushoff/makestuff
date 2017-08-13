@@ -11,6 +11,7 @@
 
 \input{talkdir/section.tex}
 \input{talkdir/lengths.tex}
+\input{talkdir/colors.tex}
 
 \begin{document}
 
