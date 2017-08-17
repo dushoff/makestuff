@@ -2,7 +2,7 @@ include $(ms)/repos.def
 
 ## Add organizations to list, and make a rule
 
-repodirs = $(dushoff_github) $(ici3d_github) $(Bio3SS) $(theobio_group) $(outbreak_github)
+repodirs = $(dushoff_github) $(ici3d_github) $(Bio1M) $(Bio3SS) $(theobio_group) $(outbreak_github)
 
 repofiles = $(repodirs:%=%/Makefile)
 
