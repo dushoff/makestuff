@@ -66,7 +66,7 @@ Sources += flextex.md
 
 Sources += RR/pdf.mk forms.def forms.mk RR/up.mk
 
-Sources += talk.def talk.mk $(wildcard talk/*.*)
+## Sources += oldtalk.def oldtalk.mk $(wildcard oldtalk/*.*)
 
 Sources += linkdirs.mk newtalk.def newtalk.mk $(wildcard newtalk/*.*)
 
