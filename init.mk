@@ -1,28 +1,18 @@
-msrepo = https://github.com/dushoff
-projectrepos = 
-
 gitroot = ./ 
 export ms = $(gitroot)/makestuff
 
--include local.mk
--include $(gitroot)/local.mk
-export ms = $(gitroot)/makestuff
--include $(ms)/os.mk
+%/target.mk:
+	-cp $(ms)/target.mk $@
 
-projectdirs = 
+%/sub.mk:
+	-cp $(ms)/sub.mk $@
 
-Makefile: $(ms) $(coursedirs)
+%/stuff.mk:
+	-cp $(ms)/stuff.mk $@
 
-$(ms):
-	cd $(dir $(ms)) && git clone $(msrepo)/$(notdir $(ms)).git
+%/Makefile:
+	echo "# $*" > $@
+	cat $(ms)/hooks.mk >> $@
+	cat $(ms)/makefile.mk >> $@
+	cd $* && $(MAKE) Makefile
 
-$(projectdirs): local.mk
-		$(MAKE) -f stuff.mk $(gitroot)
-		cd $(gitroot) && git clone $(projectrepo)/$notdir $@).git
-		cp local.mk $@
-
-local.mk:
-	echo gitroot = $(shell pwd) > $@
-
-$(gitroot):
-	mkdir $@
