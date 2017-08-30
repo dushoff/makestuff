@@ -56,6 +56,7 @@ $(foreach dir,$(repodirs),$(eval $(call hotmake,$(dir))))
 
 # How to make repos that haven't been initialized yet??
 # Still working on this (there's a conflict with the Makefile rule that may or may not turn out to matter)
+# Maybe it's the later making (before newpush?)
 %.init: 
 	- $(MAKE) $*
 	cd $* && git checkout -b master
