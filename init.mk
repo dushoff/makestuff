@@ -1,4 +1,4 @@
-gitroot = ./ 
+gitroot = ./
 export ms = $(gitroot)/makestuff
 
 %/target.mk:

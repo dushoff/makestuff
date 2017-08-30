@@ -55,12 +55,11 @@ $(foreach dir,$(repodirs),$(eval $(call hotmake,$(dir))))
 ######################################################################
 
 # How to make repos that haven't been initialized yet??
-# Still working on this (there's a conflict with the Makefile rule that may or may not turn out to matter)
-# Maybe it's the later making (before newpush?)
+# Semi-tested now. Worked with interruptions on 1M/
 %.init: 
 	- $(MAKE) $*
 	cd $* && git checkout -b master
-	$(MAKE) $*/target.mk $*/sub.mk $*/Makefile
+	$(MAKE) -f $(ms)/init.mk $*/target.mk $*/sub.mk $*/Makefile
 	$(MAKE) $*/makestuff
 	cd $* && $(MAKE) newpush
 
