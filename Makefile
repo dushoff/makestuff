@@ -76,6 +76,8 @@ Sources += pandoc.mk compare.mk
 
 Sources += cache.mk cache.md
 
+Sources += webpix.mk
+
 ######################################################################
 
 # RR scripts
