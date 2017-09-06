@@ -1,4 +1,5 @@
-include $(ms)/repos.def
+## Put repos.def near the top of your Makefile
+## include $(ms)/repos.def
 
 ## Add organizations to list, and make a rule
 
