@@ -62,6 +62,8 @@ remotesync: commit.default
 %.master: %
 	cd $< && git checkout master
 
+%.msync: %.master %.sync ;
+
 %.pull: %
 	cd $< && $(MAKE) pull
 
