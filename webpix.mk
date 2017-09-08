@@ -31,6 +31,10 @@ Makefile: files
 ## Include generated make rules for these files
 Makefile: allsteps.mk
 
+%.rmk:
+	$(RM) $*
+	$(MAKE) $*
+
 stepmks = $(steps:.step=.step.mk)
 allsteps.mk: $(stepmks)
 	$(cat)
