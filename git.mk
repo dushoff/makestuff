@@ -55,6 +55,10 @@ psync:
 
 sync: psync ;
 
+msync: commit.time
+	git checkout master
+	$(MAKE) sync
+
 remotesync: commit.default
 	git pull
 	git push -u origin $(BRANCH)
