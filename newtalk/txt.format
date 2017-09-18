@@ -121,6 +121,10 @@ EXTRA NULLSLIDE
 PSLIDE NULLSLIDE
 draft final: ^DEFHEAD {%%}
 
+# Just one pic (no header)
+PICSLIDE NULLSLIDE
+draft final: ^%%
+
 # Slides with purely repetitive information (for classroom exposition)
 # Slanted header to remind us we've seen it
 RSLIDE NULLSLIDE

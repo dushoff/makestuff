@@ -76,7 +76,9 @@ Sources += pandoc.mk compare.mk
 
 Sources += cache.mk cache.md
 
-Sources += webpix.mk
+## Moving Lecture_images machinery here, so it can be used by others
+Sources += webpix.mk webthumbs.mk
+Sources += webhtml.pl webmk.pl
 
 ######################################################################
 

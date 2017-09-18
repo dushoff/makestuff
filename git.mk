@@ -55,12 +55,18 @@ psync:
 
 sync: psync ;
 
+msync: commit.time
+	git checkout master
+	$(MAKE) sync
+
 remotesync: commit.default
 	git pull
 	git push -u origin $(BRANCH)
 
 %.master: %
 	cd $< && git checkout master
+
+%.msync: %.master %.sync ;
 
 %.pull: %
 	cd $< && $(MAKE) pull
@@ -256,3 +262,9 @@ upstream:
 hupstream:
 	echo go `git remote get-url origin` | bash --login
 
+## Cribbed from https://stackoverflow.com/questions/10168449/git-update-submodule-recursive
+## Doesn't seem to do what I want
+rupdate:
+	git submodule update --init --recursive
+	git submodule foreach --recursive git fetch
+	git submodule foreach --recursive git merge origin master
