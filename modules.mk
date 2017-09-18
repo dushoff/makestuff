@@ -1,5 +1,4 @@
-## Put repos.def near the top of your Makefile
-## include $(ms)/repos.def
+include $(ms)/repos.def
 
 ## Add organizations to list, and make a rule
 
@@ -57,7 +56,10 @@ $(foreach dir,$(repodirs),$(eval $(call hotmake,$(dir))))
 
 # How to make repos that haven't been initialized yet??
 # Semi-tested now. Worked with interruptions on 1M/
+# Craziness! Sunk and got moved backwards!
 %.init: 
+	- $(MAKE) $*
+	cd $* && git checkout -b master
 	$(MAKE) -f $(ms)/init.mk $*/target.mk $*/sub.mk $*/Makefile
 	$(MAKE) $*/makestuff
 	cd $* && $(MAKE) newpush
