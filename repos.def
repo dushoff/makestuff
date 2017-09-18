@@ -7,7 +7,7 @@ outbreak_github = WA_Ebola_Outbreak OA_Planning Zika Ebola_presentation hybrid_f
 Bio3SS = Bio3SS.github.io Bio3SS_content Population_time_series Lecture_images Exponential_figures Grading_scripts Assignments Birth_death_models Compensation_models Life_tables Life_history Age_distributions Structured_models 3SS Competition_models Exploitation_models bio3ss3 Grading Evaluation_materials Tests
 
 ## Put generically named repos in the same variable, but call it from elsewhere
-Bio1M += 1M Bio1M.github.io
+Bio1M = 1M Bio1M.github.io
 
 theobio_group = Serodiscordance_Champredon_2013 DHS_downloads Condom_awareness generation_interval_moments Disease_data HIV_treatment_Africa Awareness_TMB AnnualFlu DHS_convert Orthogonality DHS_new epidemic_speed Lab_meeting early_HIV_treatment_model MC_data QMEE QMEE_2017 Generation_papers shims_age_mixing Lab_materials
 
