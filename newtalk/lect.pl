@@ -101,6 +101,7 @@ foreach(@tex){
 		}
  
 		# Text following a |
+		# Special word DEL (to delete)
 		if (defined $spec{PIPE}){
 			if (s/[|](.*)//s){
 				my $pipe = $1;
