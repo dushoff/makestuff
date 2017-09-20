@@ -58,7 +58,7 @@ $(foreach dir,$(repodirs),$(eval $(call hotmake,$(dir))))
 # Semi-tested now. Worked with interruptions on 1M/
 %.init: 
 	- $(MAKE) $*
-	cd $* && git checkout -b master
+	- cd $* && (git checkout -b master || git checkout master)
 	$(MAKE) -f $(ms)/init.mk $*/target.mk $*/sub.mk $*/Makefile
 	$(MAKE) $*/makestuff
 	cd $* && $(MAKE) newpush
