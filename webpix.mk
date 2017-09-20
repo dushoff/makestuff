@@ -12,6 +12,10 @@ Sources += $(steps)
 	$(MAKE) -f $< -f $(ms)/webthumbs.mk thumbs
 	$(PUSHSTAR)
 
+## Generic transformations
+%.png: %.svg
+	convert $< $@
+
 ## Digest files
 htmls =  $(steps:.step=.html)
 
