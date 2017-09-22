@@ -16,6 +16,9 @@ Sources += $(steps)
 %.png: %.svg
 	convert $< $@
 
+%.png: %.gif
+	convert $< $@
+
 ## Digest files
 htmls =  $(steps:.step=.html)
 
