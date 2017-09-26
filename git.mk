@@ -59,6 +59,10 @@ msync: commit.time
 	git checkout master
 	$(MAKE) sync
 
+rmsync: makestuff.msync $(dirs:%=%.rmsync) commit.time
+	git checkout master
+	$(MAKE) sync
+
 remotesync: commit.default
 	git pull
 	git push -u origin $(BRANCH)
@@ -76,6 +80,9 @@ remotesync: commit.default
 
 %.sync: %
 	cd $< && $(MAKE) sync
+
+%.rmsync: %
+	cd $< && ($(MAKE) rmsync || $(MAKE) msync)
 
 %.autosync: %
 	cd $< && $(MAKE) remotesync
