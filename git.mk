@@ -59,6 +59,8 @@ msync: commit.time
 	git checkout master
 	$(MAKE) sync
 
+## Recursive sync everything to master. Be careful, I guess.
+## dirs variable looks like trouble
 rmsync: makestuff.msync $(dirs:%=%.rmsync) commit.time
 	git checkout master
 	$(MAKE) sync
