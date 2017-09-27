@@ -66,10 +66,11 @@ $(foreach dir,$(repodirs),$(eval $(call hotmake,$(dir))))
 	$(MAKE) -f $(ms)/init.mk $&/target.mk $&/sub.mk $&/Makefile
 	$(MAKE) $&/makestuff
 	cd $& && $(MAKE) newpush
-	$(MAKE) $*
-	$(MAKE) $*/Makefile
 	$(RMR) $@
 
+%.sub: % %/Makefile ;
+
+%.create: %.init %.sub ;
 
 %/target.mk:
 	-cp $(ms)/target.mk $@
