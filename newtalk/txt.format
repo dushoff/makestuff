@@ -108,6 +108,10 @@ draft final: {\color{shortcolor}\sl %%}
 CHANGE %!
 draft: {\color{red}\textbf{%%}}
 
+CORRECTION {\color{red}\textbf{%%}}
+
+STRIKE {\sout{%%}}
+
 CREDIT {\small\emph{%%}}
 outline: %!
 
