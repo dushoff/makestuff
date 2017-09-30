@@ -5,6 +5,7 @@
 
 \usepackage{talkdir/slidecomm,talkdir/commands}
 \usepackage{graphicx,xspace}
+\usepackage[normalem]{ulem}
 \usepackage{grffile}
 \usepackage{hyperref}
 \usepackage{url}
