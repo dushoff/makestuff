@@ -57,19 +57,18 @@ $(foreach dir,$(repodirs),$(eval $(call hotmake,$(dir))))
 # How to make repos that haven't been initialized yet??
 # Semi-tested now. Worked with interruptions on 1M/
 # Need to avoid rabbit hole of sort-of kind-of thinking this is the submodule version; need to _push_ the new directory, _then_ make it a submodule
-# Currently, _create_ into .init. Then we should be able to make it as a submodule
-# Very ambitious and experimental now (goes all the way through to deleting the .init version) — not tested.
+# The current .init rule _makes_ then _deletes_ the non-submodule version.
+# There was insane confusion with giving it a different name.
 %.init: 
 	- $(MAKE) $*
-	mv $* $@
-	- cd $& && (git checkout -b master || git checkout master)
-	$(MAKE) -f $(ms)/init.mk $&/target.mk $&/sub.mk $&/Makefile
-	$(MAKE) $&/makestuff
-	cd $& && $(MAKE) newpush
-	$(MAKE) $*
-	$(MAKE) $*/Makefile
-	$(RMR) $@
+	- cd $* && (git checkout -b master || git checkout master)
+	$(MAKE) -f $(ms)/init.mk $*/target.mk $*/sub.mk $*/Makefile
+	cd $* && $(MAKE) makestuff && $(MAKE) newpush
+	$(RMR) $*
 
+%.sub: % %/Makefile ;
+
+%.create: %.init %.sub ;
 
 %/target.mk:
 	-cp $(ms)/target.mk $@
