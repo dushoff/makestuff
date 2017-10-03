@@ -188,6 +188,9 @@ outline: %!
 HIGHFIG ^HFIG 1.0 %%
 FRAMEFIG ^HFIG 0.9 %%
 
+HIGHPIC ^PIC HIGHFIG %%
+WIDEPIC ^PIC WIDEFIG %%
+
 FIG ^HFIG 0.4 %%
 draft final: ^HFIG 0.8 %%
 
