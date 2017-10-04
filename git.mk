@@ -59,11 +59,15 @@ msync: commit.time
 	git checkout master
 	$(MAKE) sync
 
+######################################################################
+
 ## Recursive sync everything to master. Be careful, I guess.
 ## mdirs for subdirectories that should be synced to master branch
 rmsync: $(mdirs:%=%.rmsync) makestuff.msync commit.time
 	git checkout master
 	$(MAKE) sync
+
+rmpull: $(mdirs:%=%.rmpull) makestuff.mpull
 
 remotesync: commit.default
 	git pull
@@ -72,14 +76,15 @@ remotesync: commit.default
 %.master: %
 	cd $< && git checkout master
 
-%.msync: %.master %.sync ;
 
+%.mpull: %.master %.pull ;
 %.pull: %
 	cd $< && $(MAKE) pull
 
 %.newpush: %
 	cd $< && $(MAKE) newpush
 
+%.msync: %.master %.sync ;
 %.sync: %
 	cd $< && $(MAKE) sync
 
