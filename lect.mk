@@ -1,5 +1,6 @@
 
-lect/%: lect ;
+lect/%: 
+	$(MAKE) lect
 
 ## talk/%: talk ;
 
