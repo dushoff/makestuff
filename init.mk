@@ -14,5 +14,5 @@ export ms = $(gitroot)/makestuff
 	echo "# $*" > $@
 	cat $(ms)/hooks.mk >> $@
 	cat $(ms)/makefile.mk >> $@
-	cd $* && $(MAKE) Makefile
+		cd $* && $(MAKE) Makefile
 

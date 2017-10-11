@@ -1,7 +1,15 @@
 
 ## It would be cooler to use modular defs like in the old Dropbox version.
 
+ms = makestuff
+
 -include $(ms)/repos.def
+bitbucket = dushoff@bitbucket.org
+
+$(dushoff_bitbucket):
+	git clone $(bitbucket):dushoff/$@.git
+
+## Is anything below here tested? What's up with : vs /?
 
 $(dushoff_github):
 	git clone $(github)/dushoff/$@.git
