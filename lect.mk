@@ -1,4 +1,5 @@
 
+.PRECIOUS: lect/%
 lect/%: 
 	$(MAKE) lect
 
