@@ -1,5 +1,7 @@
 
-lect/%: lect ;
+.PRECIOUS: lect/%
+lect/%: 
+	$(MAKE) lect
 
 ## talk/%: talk ;
 
