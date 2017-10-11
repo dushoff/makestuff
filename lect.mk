@@ -1,9 +1,10 @@
 
 lect/%: lect ;
 
-talk/%: talk ;
+## talk/%: talk ;
 
-talk lect: 
+# talk lect: 
+lect: 
 	/bin/ln -s $(ms)/$@ .
 
 bdraft.fmt: beamer.fmt $(talkdir)/bd.pl
