@@ -76,7 +76,6 @@ remotesync: commit.default
 %.master: %
 	cd $< && git checkout master
 
-
 %.mpull: %.master %.pull ;
 %.pull: %
 	cd $< && $(MAKE) pull
