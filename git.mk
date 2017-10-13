@@ -274,9 +274,24 @@ upstream:
 hupstream:
 	echo go `git remote get-url origin` | bash --login
 
+######################################################################
+
+## Recursive updating with submodules
+
 ## Cribbed from https://stackoverflow.com/questions/10168449/git-update-submodule-recursive
 ## Doesn't seem to do what I want
+## The problem is branching, I guess
 rupdate:
 	git submodule update --init --recursive
 	git submodule foreach --recursive git fetch
 	git submodule foreach --recursive git merge origin master
+
+######################################################################
+
+## Old files
+
+%.oldfile:
+	$(call hide,  $(basename $*))
+	git checkout $(subst .,,$(suffix $*)) -- $(basename $*)
+	cp $(basename $*) $@
+	$(call unhide,  $(basename $*))
