@@ -55,7 +55,7 @@ FQ \vspace{2.0ex}\noindent\stepcounter{question}\arabic{question}.~%%
 DEFCOMM \stepcounter{mc}{\Alph{mc}.}~%%
 test: \stepcounter{mc}{\bf\Alph{mc}.}~%%
 
-SQ \vspace{1.5ex}\noindent\stepcounter{qpart}\alph{qpart})~%%
+SQ \vspace{1.ex}\noindent\stepcounter{qpart}\alph{qpart})~%%
 
 COMMENT \vspace{2.0ex plus 12.0ex}\pagebreak[3]\noindent{\sl %|} %%
 
@@ -114,5 +114,5 @@ rub: \textsl{%%}
 # Separate the two sections of an MC/SA test; ENDMC should be obsolete
 ENDMC %!
 
-STARTSA \cleardoublepage\renewcommand{\myhead}{\bf Name \hrulefill\hrulefill\ Student \# \hrulefill\ Tutorial time \hrulefill\ V\testver} \noindent Answer questions on this page.  \emph{Briefly} show necessary work and equations.
+STARTSA \cleardoublepage\input{sa_inst.tex}
 key rub: %!
