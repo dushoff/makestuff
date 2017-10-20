@@ -22,6 +22,7 @@ copy.tex:
 	$(CP) $(talkdir)/$@ .
 	$(RO)
 
+.PRECIOUS: talkdir/%
 talkdir/%:
 	$(MAKE) talkdir
 
