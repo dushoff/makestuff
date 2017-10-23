@@ -62,30 +62,30 @@ COMMENT \vspace{2.0ex plus 12.0ex}\pagebreak[3]\noindent{\sl %|} %%
 HEAD \subsection*{%%}
 
 INTRO %%
-key rub: %!
+key rub mark: %!
 
 NOCOMMENT \vspace{2.0ex plus 8.0ex}\pagebreak[3]%%
 
 OPT ^STAR %%
 
 STAR ^DEFCOMM %%
-key rub: ^DEFCOMM {\bf %%}
+key rub mark: ^DEFCOMM {\bf %%}
 
 KEY %!
-key rub: {\bf ANS: %%}
+key rub mark: {\bf ANS: %%}
 
 ASPACE \vspace{%%}
-key rub: %!
+key rub mark: %!
 
 CLEAR \clearpage
 BLANK \mbox{}
 VSPACE \vfill
-key rub: %!
+key rub mark: %!
 
 VADJ \vspace{%}
 
 ANS %!
-key rub: \vspace{1.5ex}{\sf %%}
+key rub mark: \vspace{1.5ex}{\sf %%}
 
 TEST %!
 test: ^%%
@@ -109,10 +109,10 @@ DFIG ^DOUBLEFIG %%
 
 # Rubric only
 RUB %!
-rub: \textsl{%%}
+rub key: \textsl{%%}
+SECRET %!
+rub: \uline{%%}
 
-# Separate the two sections of an MC/SA test; ENDMC should be obsolete
-ENDMC %!
-
+# Separate the two sections of an MC/SA test; ENDMC now obsoleted (but still around in Bio3SS)
 STARTSA \cleardoublepage\input{sa_inst.tex}
-key rub: %!
+key rub mark: %!
