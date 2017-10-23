@@ -74,11 +74,15 @@ key rub mark: ^DEFCOMM {\bf %%}
 KEY %!
 key rub mark: {\bf ANS: %%}
 
+AFIG %!
+key rub: ^FIG %%
+
 ASPACE \vspace{%%}
 key rub mark: %!
 
 CLEAR \clearpage
-rub: %! 
+key rub: %! 
+
 BLANK \mbox{}
 VSPACE \vfill
 key rub mark: %!
@@ -111,7 +115,8 @@ DFIG ^DOUBLEFIG %%
 # Rubric only
 RUB %!
 rub key: \textsl{%%}
-SECRET %!
+
+MARK %!
 rub: \uline{%%}
 
 # Separate the two sections of an MC/SA test; ENDMC now obsoleted (but still around in Bio3SS)
