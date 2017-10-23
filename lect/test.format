@@ -78,6 +78,7 @@ ASPACE \vspace{%%}
 key rub mark: %!
 
 CLEAR \clearpage
+rub: %! 
 BLANK \mbox{}
 VSPACE \vfill
 key rub mark: %!
