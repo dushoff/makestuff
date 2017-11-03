@@ -293,9 +293,19 @@ rupdate:
 ######################################################################
 
 ## Old files
+## Should be modified to:
+	## Clear out old ones by default
+	## Use tmp_ instead of $(hide)
 
 %.oldfile:
 	$(call hide,  $(basename $*))
 	git checkout $(subst .,,$(suffix $*)) -- $(basename $*)
 	cp $(basename $*) $@
 	$(call unhide,  $(basename $*))
+
+######################################################################
+
+## Git config (just to remind myself)
+
+store_all:
+	git config --global credential.helper 'store'
