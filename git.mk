@@ -298,10 +298,11 @@ rupdate:
 	## Use tmp_ instead of $(hide)
 
 %.oldfile:
-	$(call hide,  $(basename $*))
+	-$(RM) $(basename $*).*.oldfile
+	$(MVF) $(basename $*) tmp_$(basename $*)
 	git checkout $(subst .,,$(suffix $*)) -- $(basename $*)
 	cp $(basename $*) $@
-	$(call unhide,  $(basename $*))
+	$(MV) tmp_$(basename $*) $(basename $*)
 
 ######################################################################
 
