@@ -55,37 +55,42 @@ FQ \vspace{2.0ex}\noindent\stepcounter{question}\arabic{question}.~%%
 DEFCOMM \stepcounter{mc}{\Alph{mc}.}~%%
 test: \stepcounter{mc}{\bf\Alph{mc}.}~%%
 
-SQ \vspace{1.5ex}\noindent\stepcounter{qpart}\alph{qpart})~%%
+SQ \vspace{1.ex}\noindent\stepcounter{qpart}\alph{qpart})~%%
 
 COMMENT \vspace{2.0ex plus 12.0ex}\pagebreak[3]\noindent{\sl %|} %%
 
 HEAD \subsection*{%%}
 
 INTRO %%
-key rub: %!
+key rub mark: %!
 
 NOCOMMENT \vspace{2.0ex plus 8.0ex}\pagebreak[3]%%
 
 OPT ^STAR %%
 
 STAR ^DEFCOMM %%
-key rub: ^DEFCOMM {\bf %%}
+key rub mark: ^DEFCOMM {\bf %%}
 
 KEY %!
-key rub: {\bf ANS: %%}
+key rub mark: {\bf ANS: %%}
+
+AFIG %!
+key rub: ^FIG %%
 
 ASPACE \vspace{%%}
-key rub: %!
+key rub mark: %!
 
 CLEAR \clearpage
+key rub: %! 
+
 BLANK \mbox{}
 VSPACE \vfill
-key rub: %!
+key rub mark: %!
 
 VADJ \vspace{%}
 
 ANS %!
-key rub: \vspace{1.5ex}{\sf %%}
+key rub mark: \vspace{1.5ex}{\sf %%}
 
 TEST %!
 test: ^%%
@@ -109,10 +114,11 @@ DFIG ^DOUBLEFIG %%
 
 # Rubric only
 RUB %!
-rub: \textsl{%%}
+rub key: \textsl{%%}
 
-# Separate the two sections of an MC/SA test; ENDMC should be obsolete
-ENDMC %!
+MARK %!
+rub: \uline{%%}
 
-STARTSA \cleardoublepage\renewcommand{\myhead}{\bf Name \hrulefill\hrulefill\ Student \# \hrulefill\ Tutorial time \hrulefill\ V\testver} \noindent Answer questions on this page.  \emph{Briefly} show necessary work and equations.
-key rub: %!
+# Separate the two sections of an MC/SA test; ENDMC now obsoleted (but still around in Bio3SS)
+STARTSA \cleardoublepage\input{sa_inst.tex}
+key rub mark: %!

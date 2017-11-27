@@ -108,6 +108,10 @@ draft final: {\color{shortcolor}\sl %%}
 CHANGE %!
 draft: {\color{red}\textbf{%%}}
 
+CORRECTION {\color{red}\textbf{%%}}
+
+STRIKE {\sout{%%}}
+
 CREDIT {\small\emph{%%}}
 outline: %!
 
@@ -120,6 +124,10 @@ EXTRA NULLSLIDE
 # Presentation-only slides
 PSLIDE NULLSLIDE
 draft final: ^DEFHEAD {%%}
+
+# Just one pic (no header)
+PICSLIDE NULLSLIDE
+draft final: ^%%
 
 # Slides with purely repetitive information (for classroom exposition)
 # Slanted header to remind us we've seen it
@@ -183,6 +191,9 @@ outline: %!
 
 HIGHFIG ^HFIG 1.0 %%
 FRAMEFIG ^HFIG 0.9 %%
+
+HIGHPIC ^PIC HIGHFIG %%
+WIDEPIC ^PIC WIDEFIG %%
 
 FIG ^HFIG 0.4 %%
 draft final: ^HFIG 0.8 %%

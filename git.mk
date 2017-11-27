@@ -55,6 +55,20 @@ psync:
 
 sync: psync ;
 
+msync: commit.time
+	git checkout master
+	$(MAKE) sync
+
+######################################################################
+
+## Recursive sync everything to master. Be careful, I guess.
+## mdirs for subdirectories that should be synced to master branch
+rmsync: $(mdirs:%=%.rmsync) makestuff.msync commit.time
+	git checkout master
+	$(MAKE) sync
+
+rmpull: $(mdirs:%=%.rmpull) makestuff.mpull
+
 remotesync: commit.default
 	git pull
 	git push -u origin $(BRANCH)
@@ -62,14 +76,22 @@ remotesync: commit.default
 %.master: %
 	cd $< && git checkout master
 
+%.mpull: %.master %.pull ;
 %.pull: %
 	cd $< && $(MAKE) pull
 
 %.newpush: %
 	cd $< && $(MAKE) newpush
 
+%.msync: %.master %.sync ;
 %.sync: %
 	cd $< && $(MAKE) sync
+
+%.rmsync: %
+	cd $< && ($(MAKE) rmsync || $(MAKE) msync)
+
+%.rmpull: %
+	cd $< && ($(MAKE) rmpull || $(MAKE) msync)
 
 %.autosync: %
 	cd $< && $(MAKE) remotesync
@@ -256,3 +278,35 @@ upstream:
 hupstream:
 	echo go `git remote get-url origin` | bash --login
 
+######################################################################
+
+## Recursive updating with submodules
+
+## Cribbed from https://stackoverflow.com/questions/10168449/git-update-submodule-recursive
+## Doesn't seem to do what I want
+## The problem is branching, I guess
+rupdate:
+	git submodule update --init --recursive
+	git submodule foreach --recursive git fetch
+	git submodule foreach --recursive git merge origin master
+
+######################################################################
+
+## Old files
+## Should be modified to:
+	## Clear out old ones by default
+	## Use tmp_ instead of $(hide)
+
+%.oldfile:
+	-$(RM) $(basename $*).*.oldfile
+	$(MVF) $(basename $*) tmp_$(basename $*)
+	git checkout $(subst .,,$(suffix $*)) -- $(basename $*)
+	cp $(basename $*) $@
+	$(MV) tmp_$(basename $*) $(basename $*)
+
+######################################################################
+
+## Git config (just to remind myself)
+
+store_all:
+	git config --global credential.helper 'store'

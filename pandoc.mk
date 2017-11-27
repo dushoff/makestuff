@@ -9,7 +9,7 @@
 %.html: %.mkd
 	pandoc -s -o $@ $<
 
-%.txt: %.md
+%.md.txt: %.md
 	pandoc -o $@ $<
 
 %.out: %.md

@@ -101,6 +101,7 @@ foreach(@tex){
 		}
  
 		# Text following a |
+		# Special word DEL (to delete)
 		if (defined $spec{PIPE}){
 			if (s/[|](.*)//s){
 				my $pipe = $1;
@@ -164,7 +165,7 @@ foreach(@tex){
  
 				# %| gets next sentence (use | to avoid period)
 				elsif (/^[^%]*%[|]/){
-					$str =~ s/^([^|.!?]*[|.!?])\s*// or 
+					$str =~ s/^([^|.!?]*[|.!?]?)\s*// or 
 						die "%| doesn't match $str";
 					my $p = $1;
 					$p =~ s/[|]$//;
