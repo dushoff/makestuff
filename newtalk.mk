@@ -22,6 +22,7 @@ copy.tex:
 	$(CP) $(talkdir)/$@ .
 	$(RO)
 
+.PRECIOUS: talkdir/%
 talkdir/%:
 	$(MAKE) talkdir
 
@@ -38,6 +39,14 @@ talkdir:
 
 .PRECIOUS: %.handouts.tex
 %.handouts.tex: %.txt notes.tmp handouts.txt.fmt $(talkdir)/lect.pl
+	$(PUSH)
+
+.PRECIOUS: %.complete.tex
+%.complete.tex: %.txt notes.tmp complete.txt.fmt $(talkdir)/lect.pl
+	$(PUSH)
+
+.PRECIOUS: %.outline.tex
+%.outline.tex: %.txt notes.tmp outline.txt.fmt $(talkdir)/lect.pl
 	$(PUSH)
 
 %.note: %

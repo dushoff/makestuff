@@ -62,7 +62,7 @@ draft final: NOFRAME \subsection{%%}
 
 DEFHEAD \noindent {\large\bf %%}
 draft final:\frametitle{%%} 
-outline: \indent * %%
+outline: \noindent * %%
 
 SUBH \noindent {\bf %%}
 draft final:\framesubtitle{%%} 
@@ -75,15 +75,15 @@ outline: %!
 
 TSEC ^SEC %%
 draft final: \section{%+} SLIDESTART \frametitle{%%}
-outline: \section{%+} \indent * %%
+outline: \section{%+} \noindent * %%
 
 TSS ^SS %%
 draft final: \subsection{%+} SLIDESTART \frametitle{%%}
-outline: \subsection{%+} \indent * %%
+outline: \subsection{%+} \noindent * %%
 
 TSSS ^SSS %%
 draft final: \subsubsection{%+} SLIDESTART \frametitle{%%}
-outline: \subsubsection{%+} \indent * %%
+outline: \subsubsection{%+} \noindent * %%
 
 NOSEC ^DEFHEAD %%
 complete handouts: \hrule\paragraph{%%} 
@@ -98,7 +98,6 @@ final: * \uncover<+->{\color{blue} %%}
 draft: * {\color{blue} %%}
 outline: %!
 
-CREDIT {\small\textsl{%%}}
 
 # Comments are shown in class, but not in the notes
 COMMENT %!
@@ -109,7 +108,12 @@ draft final: {\color{shortcolor}\sl %%}
 CHANGE %!
 draft: {\color{red}\textbf{%%}}
 
+CORRECTION {\color{red}\textbf{%%}}
+
+STRIKE {\sout{%%}}
+
 CREDIT {\small\emph{%%}}
+outline: %!
 
 ######################################## Content switching
 
@@ -120,6 +124,10 @@ EXTRA NULLSLIDE
 # Presentation-only slides
 PSLIDE NULLSLIDE
 draft final: ^DEFHEAD {%%}
+
+# Just one pic (no header)
+PICSLIDE NULLSLIDE
+draft final: ^%%
 
 # Slides with purely repetitive information (for classroom exposition)
 # Slanted header to remind us we've seen it
@@ -160,7 +168,7 @@ BC %!
 draft final: \begin{columns}[c] \column{0.54\textwidth} \small
 
 NC %!
-draft final: \column{0.4\textwidth}
+draft final: \column{0.4\textwidth} \small
 
 EC %!
 draft final: \end{columns}
@@ -169,7 +177,7 @@ BCC %!
 draft final: \begin{columns}[c] \column{0.47\textwidth} \small
 
 NCC %!
-draft final: \column{0.47\textwidth}
+draft final: \column{0.47\textwidth} \small
 
 ECC ^EC
 
@@ -184,6 +192,9 @@ outline: %!
 HIGHFIG ^HFIG 1.0 %%
 FRAMEFIG ^HFIG 0.9 %%
 
+HIGHPIC ^PIC HIGHFIG %%
+WIDEPIC ^PIC WIDEFIG %%
+
 FIG ^HFIG 0.4 %%
 draft final: ^HFIG 0.8 %%
 
@@ -197,8 +208,10 @@ draft final: ^LFIG 0.75 %%
 ## Width for scale
 
 WFIG \hfill\includegraphics[width=%\textwidth]{%}\hfill\mbox{}
+outline: %!
+
 WIDEFIG ^WFIG 1 %%
-DIAGRAM \includegraphics[width=1\textwidth]{%}\vspace{-0.7in}
+DIAGRAM ^WIDEFIG % \vspace{-0.7in}
 handouts: ^WIDEFIG %%
 
 SIDEFIG %!

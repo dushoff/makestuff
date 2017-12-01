@@ -9,7 +9,7 @@
 %.html: %.mkd
 	pandoc -s -o $@ $<
 
-%.txt: %.md
+%.md.txt: %.md
 	pandoc -o $@ $<
 
 %.out: %.md
@@ -23,6 +23,9 @@
 
 %.html: %.rmd
 	Rscript -e "library(\"rmarkdown\"); render(\"$<\")"
+
+%.tex: %.Rnw
+	Rscript -e "library(\"knitr\"); knit(\"$<\")"
 
 %.md: %.rmd
 	Rscript -e "library(\"knitr\"); knit(\"$<\")"

@@ -2,16 +2,20 @@
 
 ### Hooks for the editor to set the default target
 current: target
-
-target pngtarget pdftarget vtarget acrtarget: upstream
+-include target.mk
 
 ##################################################################
+## Work on documentation!!!
+
+cache.html: cache.md
+
+######################################################################
 
 include makestuff.mk
 
 # Base files
 
-Sources = Makefile LICENSE README.md .gitignore sub.mk sub.mk todo.md
+Sources = Makefile LICENSE README.md .gitignore static.mk sub.mk todo.md
 
 # Starting makefile for other projects
 
@@ -37,7 +41,7 @@ include accounts.mk
 
 # Git makefile for this and other projects
 
-Sources += git.mk git.def repos.def repos.mk modules.mk drops.mk target.mk
+Sources += git.mk git.def repos.def repos.mk init.mk modules.mk drops.mk target.mk
 
 # Makefiles and resources for other projects
 
@@ -50,22 +54,30 @@ Sources += resources.mk
 
 Sources += perl.def python.def
 
-Sources += newlatex.mk latexdeps.pl
+Sources += newlatex.mk latexdeps.pl images.mk
+
+Sources += latexdiff.pl
 
 Sources += newlatex.mk latexdeps.pl biber.def bibtex.def
 
 Sources += flextex.mk flextex.pl deps.mk
 Sources += flextex.md
 
-Sources += RR/pdf.mk forms.mk RR/up.mk
+Sources += RR/pdf.mk forms.def forms.mk RR/up.mk
 
-Sources += talk.def talk.mk $(wildcard talk/*.*)
+## Sources += oldtalk.def oldtalk.mk $(wildcard oldtalk/*.*)
 
 Sources += linkdirs.mk newtalk.def newtalk.mk $(wildcard newtalk/*.*)
 
 Sources += lect.mk $(wildcard lect/*.*)
 
 Sources += pandoc.mk compare.mk
+
+Sources += cache.mk cache.md
+
+## Moving Lecture_images machinery here, so it can be used by others
+Sources += webpix.mk webthumbs.mk
+Sources += webhtml.pl webmk.pl
 
 ######################################################################
 
@@ -83,10 +95,22 @@ wrapRpl = $(wildcard wrapR/*.pl)
 
 Sources += $(wrapRR) $(wrapRpl)
 
--include local.mk
-include git.mk
+######################################################################
+
+## Missing image tags
+Sources += missing.pdf personal.pdf
+missing.pdf:
+	echo "This image is not found in its original documented location" | groff | ps2pdf - > $@
+
+personal.pdf:
+	echo "This personal image is not found" | groff | ps2pdf - > $@
 
 ######################################################################
+
+-include local.mk
+include git.mk
+include pandoc.mk
+include visual.mk
 
 # Developing newlatex
 
