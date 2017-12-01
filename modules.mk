@@ -1,6 +1,7 @@
 include $(ms)/repos.def
 
-## Add organizations to list, and make a rule
+## To add a new default organization, add to list, and make a rule. Below
+## First-level repo names should be in repos.def (above). Other can be there, or in master repo .m files
 
 repodirs = $(dushoff_github) $(ICI3D) $(Bio3SS) $(theobio_group) $(outbreak_github)
 
