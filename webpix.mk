@@ -1,5 +1,8 @@
 
 ### Rules for getting stuff
+### Sort of designed for a subdirectory (since it includes allsteps)
+### But subdirectory does not need to be a repo, I guess...
+### EXPERIMENTING: Don't include allsteps, but instead make a rule for when to use it
 
 steps = $(wildcard *.step)
 Sources += $(steps)
