@@ -1,5 +1,5 @@
+### Rules for getting images from the web
 
-### Rules for getting stuff
 ### Sort of designed for a subdirectory (since it includes allsteps)
 ### But subdirectory does not need to be a repo, I guess...
 ### EXPERIMENTING: Don't include allsteps, but instead make a rule for when to use it
@@ -38,14 +38,14 @@ $(Drop)/webpix:
 
 Makefile: files
 
-## Include generated make rules for these files
-Makefile: allsteps.mk
-
 %.rmk:
 	$(RM) $*
 	$(MAKE) $*
 
+
+## Use generated make rules appropriately
 stepmks = $(steps:.step=.step.mk)
+Makefile: allsteps.mk
 allsteps.mk: $(stepmks)
 	$(cat)
 
