@@ -24,6 +24,9 @@
 %.html: %.rmd
 	Rscript -e "library(\"rmarkdown\"); render(\"$<\")"
 
+%.tex: %.Rnw
+	Rscript -e "library(\"knitr\"); knit(\"$<\")"
+
 %.md: %.rmd
 	Rscript -e "library(\"knitr\"); knit(\"$<\")"
 
