@@ -30,18 +30,22 @@ all.html: $(htmls)
 	$(cat)
 
 ## Make a webpix directory (user should define or pay attention to Drop)
-files: $(Drop)/webpix
+## WARNING, files directory no longer supported!!
+## Eliminate from rule some time
+files webpix: $(Drop)/webpix
 	$(forcelink)
 
 $(Drop)/webpix:
 	$(mkdir)
 
-Makefile: files
+# 2017 Dec 02 (Sat)
+# Uncomment if this turns out to be necessary; otherwise delete
+# Makefile: webpix
 
+## Reload a figure if you messed up the link or something
 %.rmk:
 	$(RM) $*
 	$(MAKE) $*
-
 
 ## Use generated make rules appropriately
 stepmks = $(steps:.step=.step.mk)
@@ -49,4 +53,8 @@ Makefile: allsteps.mk
 allsteps.mk: $(stepmks)
 	$(cat)
 
--include allsteps.mk
+webpix/%: allsteps.mk
+	make -f $< $@
+
+# -include allsteps.mk
+
