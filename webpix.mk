@@ -40,7 +40,7 @@ $(Drop)/webpix:
 
 # 2017 Dec 02 (Sat)
 # Uncomment if this turns out to be necessary; otherwise delete
-# Makefile: webpix
+Makefile: webpix
 
 ## Reload a figure if you messed up the link or something
 %.rmk:
