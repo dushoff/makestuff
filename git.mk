@@ -295,8 +295,6 @@ rupdate:
 
 ## Old files
 ## Should be modified to:
-	## Clear out old ones by default
-	## Use tmp_ instead of $(hide)
 
 %.oldfile:
 	-$(RM) $(basename $*).*.oldfile
@@ -304,6 +302,9 @@ rupdate:
 	git checkout $(subst .,,$(suffix $*)) -- $(basename $*)
 	cp $(basename $*) $@
 	$(MV) tmp_$(basename $*) $(basename $*)
+
+%.olddiff: $(wildcard %*)
+	-$(DIFF) $* $*.*.oldfile > $@
 
 ######################################################################
 
