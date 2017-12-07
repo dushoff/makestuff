@@ -65,7 +65,7 @@ msync: commit.time
 ## mdirs for subdirectories that should be synced to master branch
 rmsync: $(mdirs:%=%.rmsync) makestuff.msync commit.time
 	git checkout master
-	$(MAKE) rmsync
+	$(MAKE) sync
 
 rmpull: $(mdirs:%=%.rmpull) makestuff.mpull
 
