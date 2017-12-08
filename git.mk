@@ -92,7 +92,7 @@ remotesync: commit.default
 %.sync: %
 	cd $< && $(MAKE) sync
 %.rmsync: %
-	cd $< && ($(MAKE) rmsync || (git checkout master && $(MAKE) sync && $(MAKE) makestuff.master && $(MAKE) makestuff.sync)
+	cd $< && ($(MAKE) rmsync || (git checkout master && $(MAKE) sync && $(MAKE) makestuff.master && $(MAKE) makestuff.sync))
 
 %.mpull: %.master %.pull ;
 %.pull: %
