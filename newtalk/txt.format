@@ -48,6 +48,11 @@ outline: \n
 
 # Sectioning
 
+
+ICI3D NOFRAME
+draft final: NOFRAME \date{\jddate} \title{\jdtitle} \subtitle{\jdsub} \author{\jdauth} {\topBar\maketitle}
+handouts: \noindent\includegraphics[width=\textwidth]{LatexTemplates/bar.pdf} {\centering \textsf{ \textbf{ {\Large\jdtitle} \\ {\large\jdsub} }} \\ {\large \jddate} \\ \mbox{} } }
+
 TOP NULLSLIDE
 draft final: NOFRAME
 
