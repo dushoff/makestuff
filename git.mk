@@ -68,6 +68,7 @@ msync: commit.time
 rmsync: $(mdirs:%=%.rmsync) makestuff.msync commit.time
 	git checkout master
 	$(MAKE) sync
+	git status
 
 rmpull: $(mdirs:%=%.rmpull) makestuff.mpull
 	git checkout master
