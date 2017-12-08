@@ -91,13 +91,13 @@ remotesync: commit.default
 %.sync: %
 	cd $< && $(MAKE) sync
 %.rmsync: %
-	cd $< && ($(MAKE) rmsync || $(MAKE) msync)
+	cd $< && ($(MAKE) rmsync || (git checkout master && $(MAKE) sync && $(MAKE) makestuff.master && $(MAKE) makestuff.sync)
 
 %.mpull: %.master %.pull ;
 %.pull: %
 	cd $< && $(MAKE) pull
 %.rmpull: %
-	cd $< && ($(MAKE) rmpull || $(MAKE) msync)
+	cd $< && ($(MAKE) rmpull || (git checkout master && $(MAKE) sync && $(MAKE) makestuff.master && $(MAKE) makestuff.sync)
 
 %.mpush: %.master %.push ;
 %.push: %
