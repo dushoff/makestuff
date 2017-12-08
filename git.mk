@@ -298,11 +298,19 @@ hupstream:
 
 ## Cribbed from https://stackoverflow.com/questions/10168449/git-update-submodule-recursive
 ## Doesn't seem to do what I want
-## The problem is branching, I guess
+## Sets lots of things to headless, or something.
+## Investigate more
 rupdate:
 	git submodule update --init --recursive
 	git submodule foreach --recursive git fetch
 	git submodule foreach --recursive git merge origin master
+
+## Remove a submodule
+%.rmsub:
+	git rm $*
+	rm -rf .git/modules/$*
+	git config -f .git/config --remove-section submodule.$*
+
 
 ######################################################################
 
