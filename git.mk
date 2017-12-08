@@ -71,7 +71,7 @@ rmpull: $(mdirs:%=%.rmpull) makestuff.mpull
 	git checkout master
 	$(MAKE) pull
 
-rmpush: $(mdirs:%=%.rmpull) makestuff.mpush
+rmpush: $(mdirs:%=%.rmpush) makestuff.mpush
 	git checkout master
 	$(MAKE) push
 
@@ -82,9 +82,6 @@ remotesync: commit.default
 %.master: %
 	cd $< && git checkout master
 
-%.mpull: %.master %.pull ;
-%.pull: %
-	cd $< && $(MAKE) pull
 
 %.newpush: %
 	cd $< && $(MAKE) newpush
@@ -92,11 +89,19 @@ remotesync: commit.default
 %.msync: %.master %.sync ;
 %.sync: %
 	cd $< && $(MAKE) sync
-
 %.rmsync: %
 	cd $< && ($(MAKE) rmsync || $(MAKE) msync)
 
+%.mpull: %.master %.pull ;
+%.pull: %
+	cd $< && $(MAKE) pull
 %.rmpull: %
+	cd $< && ($(MAKE) rmpull || $(MAKE) msync)
+
+%.mpush: %.master %.push ;
+%.push: %
+	cd $< && $(MAKE) push
+%.rmpush: %
 	cd $< && ($(MAKE) rmpull || $(MAKE) msync)
 
 %.autosync: %
