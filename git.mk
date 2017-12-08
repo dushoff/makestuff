@@ -307,7 +307,7 @@ rupdate:
 
 ## Remove a submodule
 %.rmsub:
-	git rm $*
+	-git rm $*
 	rm -rf .git/modules/$*
 	git config -f .git/config --remove-section submodule.$*
 
