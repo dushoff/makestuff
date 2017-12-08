@@ -68,6 +68,12 @@ rmsync: $(mdirs:%=%.rmsync) makestuff.msync commit.time
 	$(MAKE) sync
 
 rmpull: $(mdirs:%=%.rmpull) makestuff.mpull
+	git checkout master
+	$(MAKE) pull
+
+rmpush: $(mdirs:%=%.rmpull) makestuff.mpush
+	git checkout master
+	$(MAKE) push
 
 remotesync: commit.default
 	git pull
