@@ -1,10 +1,14 @@
+% \documentclass[12pt]{scrartcl}
 \documentclass[12pt]{article}
 
 \usepackage{graphicx,grffile,xspace}
+\usepackage{xcolor}
+\usepackage[normalem]{ulem}
 \usepackage{amsmath}
 \usepackage{talkdir/slidecomm,talkdir/commands}
 \usepackage{hyperref,url}
 \usepackage[margin=1in]{geometry}
+\usepackage{wallpaper}
 
 \newlength{\dfwidth}\setlength{\dfwidth}{0.5\linewidth}
 \newlength{\dfheight}\setlength{\dfheight}{0.4\textheight}

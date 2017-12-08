@@ -1,23 +1,24 @@
 \documentclass{beamer}
-\setbeamertemplate{footline}[frame number]
-\usetheme{boxes}
-\setbeamertemplate{footline}[frame number]
-\usepackage{graphicx,xspace}
+
+% \input{LatexTemplates/Template.tex}
+\input{talkdir/bulletspace.tex}
+
 \usepackage{talkdir/slidecomm,talkdir/commands}
+\usepackage{graphicx,xspace}
+\usepackage[normalem]{ulem}
 \usepackage{grffile}
 \usepackage{hyperref}
 \usepackage{url}
 
-\usepackage[latin1]{inputenc}
-\usepackage{times}
-\usepackage[T1]{fontenc}
-
 \input{talkdir/section.tex}
-
 \input{talkdir/lengths.tex}
+\input{talkdir/colors.tex}
 
 \begin{document}
 
 ----------------------------------------------------------------------
 
+% \input{LatexTemplates/templateClose.tex}
+
 \end{document}
+
