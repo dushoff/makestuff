@@ -213,7 +213,9 @@ outline: %!
 
 WIDEFIG ^WFIG 1 %%
 DIAGRAM ^WIDEFIG % \vspace{-0.7in}
-handouts: ^WIDEFIG % \vspace{-1.2in}
+
+# handouts: ^WIDEFIG % \vspace{-1.2in}
+
 
 SIDEFIG %!
 draft final: ^WIDEFIG %%
