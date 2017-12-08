@@ -29,7 +29,9 @@ pull: commit.time
 
 pullup: commit.time
 	git pull
-	-git submodule update
+	git submodule update --init --recursive
+	git submodule foreach --recursive git fetch
+	git submodule foreach --recursive git merge origin master
 	touch $<
 
 rebase: commit.time
