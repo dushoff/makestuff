@@ -1,7 +1,7 @@
 include $(ms)/repos.def
 
 ## To add a new default organization, add to list, and make a rule. Below
-## First-level repo names should be in repos.def (above). Other can be there, or in master repo .m files
+## First-level repo names should be in repos.def (above). Other can be there, or in master repo .mk files
 
 repofiles = $(repodirs:%=%/Makefile)
 
