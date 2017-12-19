@@ -26,8 +26,7 @@ $(Bio1M):
 $(theobio_group):
 	git submodule add https://github.com/mac-theobio/$@.git || mkdir $@
 
-$(repofiles): %/Makefile: 
-	$(MAKE) $*
+$(repofiles): %/Makefile: %
 	git submodule init $*
 	git submodule update $*
 	touch $@
