@@ -71,6 +71,7 @@ up.time: commit.time
 	date >> $@
 
 rmup: $(mdirs:%=%.rmup) makestuff.msync
+	$(MAKE) master
 	$(MAKE) up.time
 
 %.rmup: %
@@ -96,9 +97,6 @@ rmpush: $(mdirs:%=%.rmpush) makestuff.mpush
 remotesync: commit.default
 	git pull
 	git push -u origin $(BRANCH)
-
-%.master: %
-	cd $< && git checkout master
 
 %.newpush: %
 	cd $< && $(MAKE) newpush
@@ -282,8 +280,13 @@ testclean:
 %.checkbranch:
 	cd $* && git branch
 
+master:
+	git checkout master
 %.master:
 	cd $* && git checkout master
+## This one might chain more; reconsider some time
+## %.master: %
+## cd $< && git checkout master
 
 update: sync
 	git rebase $(cmain) 
