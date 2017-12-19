@@ -334,7 +334,6 @@ rupdate:
 	rm -rf .git/modules/$*
 	git config -f .git/config --remove-section submodule.$*
 
-
 ######################################################################
 
 ## Old files
