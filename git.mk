@@ -66,7 +66,7 @@ msync: commit.time
 
 ## Recursive syncing with some idea about up vs. down
 
-up.time: commit.time
+up.time: commit.time $(mdirs)
 	$(MAKE) sync
 	date >> $@
 
