@@ -103,9 +103,6 @@ remotesync: commit.default
 	git pull
 	git push -u origin $(BRANCH)
 
-%.master: %
-	cd $< && git checkout master
-
 %.newpush: %
 	cd $< && $(MAKE) newpush
 
@@ -290,6 +287,12 @@ testclean:
 
 %.master:
 	cd $* && git checkout master
+master: 
+	git checkout master
+
+## Try this stronger rule some time!
+# %.master: %
+#	cd $< && git checkout master
 
 update: sync
 	git rebase $(cmain) 
