@@ -70,7 +70,11 @@ up.time: commit.time $(mdirs)
 	$(MAKE) sync
 	date >> $@
 
-rmup: $(mdirs:%=%.rmup) makestuff.msync
+## Does this need a recipe?
+rmup: $(mdirs:%=%.rmup) makestuff.mup
+	$(MAKE) mup
+
+mup: 
 	$(MAKE) master
 	$(MAKE) up.time
 
