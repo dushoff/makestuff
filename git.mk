@@ -66,7 +66,7 @@ msync: commit.time
 
 ## Recursive syncing with some idea about up vs. down
 
-up.time: commit.time $(mdirs)
+up.time: commit.time
 	$(MAKE) sync
 	date > $@
 
@@ -137,8 +137,7 @@ git_check = git diff-index --quiet HEAD --
 commit.time: $(Sources)
 	-git add -f $^
 	echo "Autocommit ($(notdir $(CURDIR)))" > $@
-	-git commit --dry-run | perl -pe 's/^/#/' >> $@
-	$(EDIT) $@
+	(!git commit --dry-run | perl -pe 's/^/#/' >> $@) || $(EDIT) $@
 	$(git_check) || (perl -ne 'print unless /#/' $@ | git commit -F -)
 	date >> $@
 
