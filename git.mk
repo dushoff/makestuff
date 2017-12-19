@@ -3,12 +3,12 @@
 
 cmain = NULL
 
+## Made a strange loop _once_ (doesn't seem to be used anyway).
+# -include $(BRANCH).mk
+
 ifndef BRANCH
 BRANCH=master
 endif
-
-## Made a strange loop _once_ (doesn't seem to be used anyway).
-# -include $(BRANCH).mk
 
 ##################################################################
 
@@ -20,6 +20,7 @@ branch:
 newpush: commit.time
 	git push -u origin master
 
+## Deprecate this; we should always pull before push, right?
 push: commit.time
 	git push -u origin $(BRANCH)
 
@@ -53,13 +54,26 @@ rbsync:
 
 psync:
 	$(MAKE) pull
-	$(MAKE) push
+	git push -u origin $(BRANCH)
 
 sync: psync ;
 
 msync: commit.time
 	git checkout master
 	$(MAKE) sync
+
+######################################################################
+
+## Recursive syncing with some idea about up vs. down
+
+up.time: commit.time
+	$(MAKE) sync
+	date >> $@
+
+rmup: $(mdirs:%=%.rmup) makestuff.msync
+
+%.rmup: %
+	cd $< && $(MAKE) rmup
 
 ######################################################################
 
