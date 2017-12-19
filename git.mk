@@ -66,13 +66,17 @@ msync: commit.time
 
 ## Recursive syncing with some idea about up vs. down
 
-up.time: commit.time $(mdirs)
+up.time: commit.time
 	$(MAKE) sync
 	date >> $@
 
-rmup: $(mdirs:%=%.rmup) makestuff.msync
-	$(MAKE) master
-	$(MAKE) up.time
+## Do these really need recipes? Concern is phantom making
+rmup: $(mdirs:%=%.rmup) makestuff.msync mup
+
+mup: master commit.time
+
+%.mup: %
+	cd $< && $(MAKE) rmup
 
 %.rmup: %
 	cd $< && $(MAKE) rmup
@@ -97,6 +101,9 @@ rmpush: $(mdirs:%=%.rmpush) makestuff.mpush
 remotesync: commit.default
 	git pull
 	git push -u origin $(BRANCH)
+
+%.master: %
+	cd $< && git checkout master
 
 %.newpush: %
 	cd $< && $(MAKE) newpush
@@ -280,13 +287,8 @@ testclean:
 %.checkbranch:
 	cd $* && git branch
 
-master:
-	git checkout master
 %.master:
 	cd $* && git checkout master
-## This one might chain more; reconsider some time
-## %.master: %
-## cd $< && git checkout master
 
 update: sync
 	git rebase $(cmain) 
