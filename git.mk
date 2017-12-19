@@ -74,7 +74,7 @@ up.time: commit.time
 ## Do these really need recipes? Concern is phantom making
 rmup: $(mdirs:%=%.rmup) makestuff.msync mup
 
-mup: master commit.time
+mup: master up.time
 
 %.mup: %
 	cd $< && $(MAKE) rmup
