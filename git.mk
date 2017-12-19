@@ -137,7 +137,7 @@ git_check = git diff-index --quiet HEAD --
 commit.time: $(Sources)
 	-git add -f $^
 	echo "Autocommit ($(notdir $(CURDIR)))" > $@
-	!(git commit --dry-run | perl -pe 's/^/#/' >> $@) || $(EDIT) $@
+	!(git commit --dry-run >> $@) || (perl -pi -e 's/^/#/' $@ && $(EDIT) $@)
 	$(git_check) || (perl -ne 'print unless /#/' $@ | git commit -F -)
 	date >> $@
 
