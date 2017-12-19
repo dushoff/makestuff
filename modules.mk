@@ -26,7 +26,9 @@ $(Bio1M):
 $(theobio_group):
 	git submodule add https://github.com/mac-theobio/$@.git || mkdir $@
 
-$(repofiles): %/Makefile: %
+## Can't use $(MAKE) because loops. Can't use % because unwanted dependency.
+## Just have things that ask for Makefile ask for directory first?
+$(repofiles): %/Makefile:
 	git submodule init $*
 	git submodule update $*
 	touch $@

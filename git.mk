@@ -118,8 +118,9 @@ remotesync: commit.default
 %.mpush: %.master %.push ;
 %.push: %
 	cd $< && $(MAKE) push
+
 %.rmpush: %
-	cd $< && ($(MAKE) rmpull || $(MAKE) msync)
+	cd $< && ($(MAKE) rmpush || $(MAKE) msync)
 
 %.autosync: %
 	cd $< && $(MAKE) remotesync
