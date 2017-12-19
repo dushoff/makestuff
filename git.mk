@@ -66,10 +66,9 @@ msync: commit.time
 
 ## Recursive syncing with some idea about up vs. down
 
-up.time: commit.time
+up.time: commit.time $(mdirs)
 	$(MAKE) sync
 	date >> $@
-
 
 ## Do these really need recipes? Concern is phantom making
 rmup: $(mdirs:%=%.rmup) makestuff.msync mup
