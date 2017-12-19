@@ -71,6 +71,7 @@ up.time: commit.time
 	date >> $@
 
 rmup: $(mdirs:%=%.rmup) makestuff.msync
+	$(MAKE) up.time
 
 %.rmup: %
 	cd $< && $(MAKE) rmup
