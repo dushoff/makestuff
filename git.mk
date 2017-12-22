@@ -205,6 +205,9 @@ dotdir: $(Sources)
 	git clone . $@
 	-cp target.mk $@
 
+%.localdir: %
+	-$(CP) local.mk $*
+
 clonedir: $(Sources)
 	$(MAKE) push
 	-/bin/rm -rf $@
