@@ -48,6 +48,11 @@ outline: \n
 
 # Sectioning
 
+
+ICI3D NOFRAME
+draft final: NOFRAME \date{\jddate} \title{\jdtitle} \subtitle{\jdsub} \author{\jdauth} {\topBar\maketitle}
+handouts: \noindent\includegraphics[width=\textwidth]{LatexTemplates/bar.pdf} {\centering \textsf{ \textbf{ {\Large\jdtitle} \\ {\large\jdsub} }} \\ {\large \jddate} \\ \mbox{} } }
+
 TOP NULLSLIDE
 draft final: NOFRAME
 
@@ -108,6 +113,10 @@ draft final: {\color{shortcolor}\sl %%}
 CHANGE %!
 draft: {\color{red}\textbf{%%}}
 
+CORRECTION {\color{red}\textbf{%%}}
+
+STRIKE {\sout{%%}}
+
 CREDIT {\small\emph{%%}}
 outline: %!
 
@@ -120,6 +129,10 @@ EXTRA NULLSLIDE
 # Presentation-only slides
 PSLIDE NULLSLIDE
 draft final: ^DEFHEAD {%%}
+
+# Just one pic (no header)
+PICSLIDE NULLSLIDE
+draft final: ^%%
 
 # Slides with purely repetitive information (for classroom exposition)
 # Slanted header to remind us we've seen it
@@ -184,6 +197,9 @@ outline: %!
 HIGHFIG ^HFIG 1.0 %%
 FRAMEFIG ^HFIG 0.9 %%
 
+HIGHPIC ^PIC HIGHFIG %%
+WIDEPIC ^PIC WIDEFIG %%
+
 FIG ^HFIG 0.4 %%
 draft final: ^HFIG 0.8 %%
 
@@ -196,12 +212,15 @@ draft final: ^LFIG 0.75 %%
 
 ## Width for scale
 
-WFIG \hfill\includegraphics[width=%\textwidth]{%}\hfill\mbox{}
+## The %% is necessary here, since we might want to pass post-formatting
+WFIG \hfill\includegraphics[width=%\textwidth]{%}\hfill\mbox{} %%
 outline: %!
 
 WIDEFIG ^WFIG 1 %%
 DIAGRAM ^WIDEFIG % \vspace{-0.7in}
-handouts: ^WIDEFIG %%
+
+# handouts: ^WIDEFIG % \vspace{-1.2in}
+
 
 SIDEFIG %!
 draft final: ^WIDEFIG %%

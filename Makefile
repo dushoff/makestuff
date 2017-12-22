@@ -5,7 +5,6 @@ current: target
 -include target.mk
 
 ##################################################################
-
 ## Work on documentation!!!
 
 cache.html: cache.md
@@ -42,7 +41,7 @@ include accounts.mk
 
 # Git makefile for this and other projects
 
-Sources += git.mk git.def repos.def repos.mk modules.mk drops.mk target.mk
+Sources += git.mk git.def repos.def repos.mk init.mk modules.mk drops.mk target.mk
 
 # Makefiles and resources for other projects
 
@@ -66,7 +65,7 @@ Sources += flextex.md
 
 Sources += RR/pdf.mk forms.def forms.mk RR/up.mk
 
-Sources += talk.def talk.mk $(wildcard talk/*.*)
+## Sources += oldtalk.def oldtalk.mk $(wildcard oldtalk/*.*)
 
 Sources += linkdirs.mk newtalk.def newtalk.mk $(wildcard newtalk/*.*)
 
@@ -75,6 +74,10 @@ Sources += lect.mk $(wildcard lect/*.*)
 Sources += pandoc.mk compare.mk
 
 Sources += cache.mk cache.md
+
+## Moving Lecture_images machinery here, so it can be used by others
+Sources += webpix.mk webthumbs.mk
+Sources += webhtml.pl webmk.pl
 
 ######################################################################
 

@@ -19,3 +19,5 @@ gptarget:
 pushtarget:
 	$(MAKE) $<.push
 
+target.mk:
+	$(CP) $(ms)/$@ .

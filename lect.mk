@@ -1,10 +1,21 @@
+## Directory links
 
-lect/%: lect ;
+.PRECIOUS: lect/%
+lect/%: 
+	$(MAKE) lect
 
-talk/%: talk ;
+## talk/%: talk ;
 
-talk lect: 
+# talk lect: 
+lect: 
 	/bin/ln -s $(ms)/$@ .
+
+.PRECIOUS: talkdir/%
+talkdir/%:
+	$(MAKE) talkdir
+
+talkdir:
+	/bin/ln -fs $(talkdir) $@
 
 bdraft.fmt: beamer.fmt $(talkdir)/bd.pl
 	$(PUSH)

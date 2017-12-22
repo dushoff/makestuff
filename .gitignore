@@ -1,5 +1,6 @@
 commit.time
 commit.default
+target.mk
 .*.sw*
 
 *.Rout.pdf
@@ -21,8 +22,7 @@ commit.default
 
 local.mk
 
-testdir/
-.testdir/
-subclone_dir/
+dotdir/
+clonedir/
 
 *.makestuff

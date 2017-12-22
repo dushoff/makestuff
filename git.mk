@@ -3,12 +3,12 @@
 
 cmain = NULL
 
+## Made a strange loop _once_ (doesn't seem to be used anyway).
+# -include $(BRANCH).mk
+
 ifndef BRANCH
 BRANCH=master
 endif
-
-## Made a strange loop _once_ (doesn't seem to be used anyway).
-# -include $(BRANCH).mk
 
 ##################################################################
 
@@ -20,6 +20,7 @@ branch:
 newpush: commit.time
 	git push -u origin master
 
+## Deprecate this; we should always pull before push, right?
 push: commit.time
 	git push -u origin $(BRANCH)
 
@@ -29,7 +30,9 @@ pull: commit.time
 
 pullup: commit.time
 	git pull
-	-git submodule update
+	git submodule update --init --recursive
+	git submodule foreach --recursive git fetch
+	git submodule foreach --recursive git merge origin master
 	touch $<
 
 rebase: commit.time
@@ -51,25 +54,75 @@ rbsync:
 
 psync:
 	$(MAKE) pull
-	$(MAKE) push
+	git push -u origin $(BRANCH)
 
 sync: psync ;
+
+msync: commit.time
+	git checkout master
+	$(MAKE) sync
+
+######################################################################
+
+## Recursive syncing with some idea about up vs. down
+
+up.time: commit.time
+	$(MAKE) sync
+	date > $@
+
+## Do these really need recipes? Concern is phantom making
+rmup: $(mdirs:%=%.rmup) makestuff.msync mup
+
+mup: master up.time
+
+%.mup: %
+	cd $< && $(MAKE) rmup
+
+%.rmup: %
+	cd $< && $(MAKE) rmup
+
+######################################################################
+
+## Recursive sync everything to master. Be careful, I guess.
+## mdirs for subdirectories that should be synced to master branch
+rmsync: $(mdirs:%=%.rmsync) makestuff.msync commit.time
+	git checkout master
+	$(MAKE) sync
+	git status
+
+rmpull: $(mdirs:%=%.rmpull) makestuff.mpull
+	git checkout master
+	$(MAKE) pull
+
+rmpush: $(mdirs:%=%.rmpush) makestuff.mpush
+	git checkout master
+	$(MAKE) push
 
 remotesync: commit.default
 	git pull
 	git push -u origin $(BRANCH)
 
-%.master: %
-	cd $< && git checkout master
-
-%.pull: %
-	cd $< && $(MAKE) pull
-
 %.newpush: %
 	cd $< && $(MAKE) newpush
 
+%.msync: %.master %.sync ;
 %.sync: %
 	cd $< && $(MAKE) sync
+%.rmsync: %
+	cd $< && ($(MAKE) rmsync || (git checkout master && $(MAKE) sync && $(MAKE) makestuff.master && $(MAKE) makestuff.sync))
+
+%.mpull: %.master %.pull ;
+%.pull: %
+	cd $< && $(MAKE) pull
+%.rmpull: %
+	cd $< && ($(MAKE) rmpull || (git checkout master && $(MAKE) sync && $(MAKE) makestuff.master && $(MAKE) makestuff.sync))
+
+%.mpush: %.master %.push ;
+%.push: %
+	cd $< && $(MAKE) push
+
+%.rmpush: %
+	cd $< && ($(MAKE) rmpush || $(MAKE) msync)
 
 %.autosync: %
 	cd $< && $(MAKE) remotesync
@@ -82,10 +135,9 @@ remotesync: commit.default
 git_check = git diff-index --quiet HEAD --
 
 commit.time: $(Sources)
-	git add -f $(Sources) $(Archive)
+	-git add -f $^
 	echo "Autocommit ($(notdir $(CURDIR)))" > $@
-	-git commit --dry-run | perl -pe 's/^/#/' >> $@
-	$(EDIT) $@
+	!(git commit --dry-run >> $@) || (perl -pi -e 's/^/#/ unless /Autocommit/' $@ && $(EDIT) $@)
 	$(git_check) || (perl -ne 'print unless /#/' $@ | git commit -F -)
 	date >> $@
 
@@ -212,6 +264,7 @@ clonedir: $(Sources)
 	$(MAKE) push
 	-/bin/rm -rf $@
 	git clone `git remote get-url origin` $@
+	-cp target.mk $@
 
 %.dirtest: %
 	cd $< && $(MAKE) Makefile && $(MAKE) makestuff && $(MAKE) && $(MAKE) vtarget
@@ -230,8 +283,17 @@ testclean:
 %.branch: sync
 	git checkout $*
 
+%.checkbranch:
+	cd $* && git branch
+
 %.master:
 	cd $* && git checkout master
+master: 
+	git checkout master
+
+## Try this stronger rule some time!
+# %.master: %
+#	cd $< && git checkout master
 
 update: sync
 	git rebase $(cmain) 
@@ -251,8 +313,48 @@ upmerge:
 	$(MAKE) $(BRANCH).nuke
 
 upstream:
-	git remote get-url origin | perl -pe "s|:|/|; s|[^@]*@|go https://|; s/\.git.*//" | bash
+	git remote get-url origin | perl -pe "s|:|/|; s|[^@]*@|go https://|; s/\.git.*//" | bash --login
 
 hupstream:
-	echo go `git remote get-url origin` | bash
+	echo go `git remote get-url origin` | bash --login
 
+######################################################################
+
+## Recursive updating with submodules
+
+## Cribbed from https://stackoverflow.com/questions/10168449/git-update-submodule-recursive
+## Doesn't seem to do what I want
+## Sets lots of things to headless, or something.
+## Investigate more
+rupdate:
+	git submodule update --init --recursive
+	git submodule foreach --recursive git fetch
+	git submodule foreach --recursive git merge origin master
+
+## Remove a submodule
+%.rmsub:
+	-git rm $*
+	rm -rf .git/modules/$*
+	git config -f .git/config --remove-section submodule.$*
+
+######################################################################
+
+## Old files
+## Should be modified to:
+
+%.oldfile:
+	-$(RM) $(basename $*).*.oldfile
+	$(MVF) $(basename $*) tmp_$(basename $*)
+	git checkout $(subst .,,$(suffix $*)) -- $(basename $*)
+	cp $(basename $*) $@
+	$(MV) tmp_$(basename $*) $(basename $*)
+
+%.olddiff: $(wildcard %*)
+	-$(DIFF) $* $*.*.oldfile > $@
+
+######################################################################
+
+## Git config (just to remind myself)
+
+store_all:
+	git config --global credential.helper 'store'
