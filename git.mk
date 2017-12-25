@@ -269,7 +269,7 @@ clonedir: $(Sources)
 %.dirtest: %
 	cd $< && $(MAKE) Makefile && $(MAKE) makestuff && $(MAKE) && $(MAKE) vtarget
 
-%.localtest: % %.localdir %.dirtest
+%.localtest: % %.localdir %.dirtest ;
 
 testclean:
 	-/bin/rm -rf clonedir dotdir
