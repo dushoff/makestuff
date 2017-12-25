@@ -257,17 +257,19 @@ dotdir: $(Sources)
 	git clone . $@
 	-cp target.mk $@
 
-%.localdir: %
-	-$(CP) local.mk $*
-
 clonedir: $(Sources)
 	$(MAKE) push
 	-/bin/rm -rf $@
 	git clone `git remote get-url origin` $@
 	-cp target.mk $@
 
+%.localdir: %
+	-$(CP) local.mk $*
+
 %.dirtest: %
 	cd $< && $(MAKE) Makefile && $(MAKE) makestuff && $(MAKE) && $(MAKE) vtarget
+
+%.localtest: % %.localdir %.dirtest
 
 testclean:
 	-/bin/rm -rf clonedir dotdir
