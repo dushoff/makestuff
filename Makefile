@@ -54,7 +54,7 @@ Sources += resources.mk
 
 Sources += perl.def python.def
 
-Sources += newlatex.mk latexdeps.pl images.mk
+Sources += newlatex.mk latexdeps.pl images.mk talktex.mk
 
 Sources += latexdiff.pl
 
