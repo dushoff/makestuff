@@ -47,36 +47,43 @@ while ($f =~ s/\\(?:bibliography|addbibresource)\s*{(.*?)}//){
 	}
 }
 
-### Write makefile stuff
+######################################################################
+### Write rules
 
 say "$target: ; touch \$@";
 say"";
 
-if (%graphics){
-	say "$target: ", join " ", keys %graphics, "\n";
-	say"";
-}
-
-if (%inputs){
-	say "$target: ", join " ", keys %inputs;
-	my @deps = map {s|.tex$|.deps|; $_} keys %inputs;
-
-	# Some issue about crossing directories; maybe solved now? 
-	# @deps = grep(!/\//, @deps); 
-	say "$target: ", join " ", @deps if @deps;
-	say"";
-}
-
-if (%bibs){
-	say "$target: $basename.bbl";
-	say "$basename.bbl: " . join " ", keys %bibs, "\n";
-}
-
+## Directories
+## Needs to be above any dependencies that might look in the directories
+## makehere and makethere would need to be in your own make file
 foreach(keys %inputs, keys %packages, keys %graphics, keys %bibs)
 {
 	s|/*[^/]*$||;
 	$dirs{$_} = $_ if $_;
 }
+print "$target: ", join " ", keys %dirs, "\n\n" if %dirs;
 
-# Not clear why this was suppressed
-say "$target: ", join " ", keys %dirs;
+## Pictures
+if (%graphics){
+	say "$target: ", join " ", keys %graphics, "\n";
+	say"";
+}
+
+## Pictures
+if (%inputs){
+	say "$target: ", join " ", keys %inputs;
+	my @deps = map {s|.tex$|.deps|; $_} keys %inputs;
+
+	# Don't try to recursively deal with tex dependencies across directories
+	# Yet
+	@deps = grep(!/\//, @deps); 
+	say "$target: ", join " ", @deps if @deps;
+	say"";
+}
+
+## Bib stuff
+if (%bibs){
+	say "$target: $basename.bbl";
+	say "$basename.bbl: " . join " ", keys %bibs, "\n";
+	say"";
+}
