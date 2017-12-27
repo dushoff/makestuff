@@ -71,7 +71,7 @@ up.time: commit.time
 	git push -u origin $(BRANCH)
 	date > $@
 
-## Do these really need recipes? Concern is phantom making
+## Do these really need recipes?
 rmup: $(mdirs:%=%.rmup) makestuff.mup mup
 
 mup: master up.time
