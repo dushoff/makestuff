@@ -127,6 +127,8 @@ remotesync: commit.default
 %.msync: %.master %.sync ;
 %.sync: %
 	cd $< && $(MAKE) sync
+
+## Too loopy?
 %.rmsync: %
 	cd $< && ($(MAKE) rmsync || (git checkout master && $(MAKE) sync && $(MAKE) makestuff.master && $(MAKE) makestuff.sync))
 
