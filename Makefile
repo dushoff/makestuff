@@ -63,6 +63,8 @@ Sources += newlatex.mk latexdeps.pl biber.def bibtex.def
 Sources += flextex.mk flextex.pl deps.mk
 Sources += flextex.md
 
+Sources += texdeps.mk texdeps.pl
+
 Sources += RR/pdf.mk forms.def forms.mk RR/up.mk
 
 ## Sources += oldtalk.def oldtalk.mk $(wildcard oldtalk/*.*)
