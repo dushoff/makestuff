@@ -74,6 +74,7 @@ rmsync: $(mdirs:%=%.rmsync) makestuff.msync commit.time
 ##########
 ## Recursive syncing with some idea about up vs. down
 
+### Just pull! You need to worry yourself if you should have pushed
 ### pull
 rmpull: $(mdirs:%=%.rmpull) makestuff.mpull
 	git checkout master
