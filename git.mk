@@ -64,7 +64,32 @@ msync: commit.time
 
 ######################################################################
 
+## Recursive sync everything to master. Be careful, I guess.
+## mdirs for subdirectories that should be synced to master branch
+rmsync: $(mdirs:%=%.rmsync) makestuff.msync commit.time
+	git checkout master
+	$(MAKE) sync
+	git status
+
+##########
 ## Recursive syncing with some idea about up vs. down
+
+### pull
+rmpull: $(mdirs:%=%.rmpull) makestuff.mpull
+	git checkout master
+	$(MAKE) pull
+
+## Don't be scared of the or part. It's for legacies only.
+%.rmpull: %
+	cd $< && ($(MAKE) rmpull || (git checkout master && $(MAKE) pull && $(MAKE) makestuff.master && $(MAKE) makestuff.sync))
+
+%.mpull: %.master %.pull ;
+
+%.pull: %
+	cd $< && $(MAKE) pull
+
+### up
+### need to sync to push. up means only sync if you have something to push
 
 up.time: commit.time
 	git pull
@@ -80,22 +105,11 @@ mup: master up.time
 %.rmup: %
 	cd $< && $(MAKE) rmup
 
-######################################################################
-
-## Recursive sync everything to master. Be careful, I guess.
-## mdirs for subdirectories that should be synced to master branch
-rmsync: $(mdirs:%=%.rmsync) makestuff.msync commit.time
-	git checkout master
-	$(MAKE) sync
-	git status
-
-rmpull: $(mdirs:%=%.rmpull) makestuff.mpull
-	git checkout master
-	$(MAKE) pull
-
+## Deprecated?
 rmpush: $(mdirs:%=%.rmpush) makestuff.mpush
-	git checkout master
 	$(MAKE) push
+
+######################################################################
 
 remotesync: commit.default
 	git pull
@@ -104,10 +118,8 @@ remotesync: commit.default
 %.master: %
 	cd $< && git checkout master
 
-%.mpull: %.master %.pull ;
-
-%.pull: %
-	cd $< && $(MAKE) pull
+%.status: %
+	cd $< && git status
 
 %.newpush: %
 	cd $< && $(MAKE) newpush
@@ -117,19 +129,6 @@ remotesync: commit.default
 	cd $< && $(MAKE) sync
 %.rmsync: %
 	cd $< && ($(MAKE) rmsync || (git checkout master && $(MAKE) sync && $(MAKE) makestuff.master && $(MAKE) makestuff.sync))
-
-%.mpull: %.master %.pull ;
-%.pull: %
-	cd $< && $(MAKE) pull
-%.rmpull: %
-	cd $< && ($(MAKE) rmpull || (git checkout master && $(MAKE) sync && $(MAKE) makestuff.master && $(MAKE) makestuff.sync))
-
-%.mpush: %.master %.push ;
-%.push: %
-	cd $< && $(MAKE) push
-
-%.rmpush: %
-	cd $< && ($(MAKE) rmpush || $(MAKE) msync)
 
 %.autosync: %
 	cd $< && $(MAKE) remotesync
