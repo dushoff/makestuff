@@ -72,12 +72,12 @@ up.time: commit.time
 	date > $@
 
 ## Do these really need recipes? Concern is phantom making
-rmup: $(mdirs:%=%.rmup) makestuff.msync mup
+rmup: $(mdirs:%=%.rmup) makestuff.mup mup
 
 mup: master up.time
 
 %.mup: %
-	cd $< && $(MAKE) rmup
+	cd $< && $(MAKE) mup
 
 %.rmup: %
 	cd $< && $(MAKE) rmup
