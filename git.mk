@@ -77,6 +77,7 @@ remotesync: commit.default
 	cd $< && git checkout master
 
 %.mpull: %.master %.pull ;
+
 %.pull: %
 	cd $< && $(MAKE) pull
 
@@ -96,15 +97,10 @@ remotesync: commit.default
 %.autosync: %
 	cd $< && $(MAKE) remotesync
 
-## Archive is _deprecated_; see .gp:
-## If you really want something remade and archived automatically, it can be a source
-
-## Check function (how to use??)
-
 git_check = git diff-index --quiet HEAD --
 
 commit.time: $(Sources)
-	git add -f $(Sources) $(Archive)
+	git add -f $(Sources)
 	echo "Autocommit ($(notdir $(CURDIR)))" > $@
 	-git commit --dry-run | perl -pe 's/^/#/' >> $@
 	$(EDIT) $@

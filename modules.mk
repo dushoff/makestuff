@@ -2,8 +2,7 @@
 
 ## Add organizations to list, and make a rule
 
-
-
+repodirs = $(dushoff_github) $(ICI3D) $(Bio3SS) $(theobio_group) $(dushoff_bitbucket)
 repofiles = $(repodirs:%=%/Makefile)
 
 $(dushoff_github):
