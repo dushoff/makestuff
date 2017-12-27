@@ -77,7 +77,7 @@ rmsync: $(mdirs:%=%.rmsync) makestuff.msync commit.time
 ### pull
 rmpull: $(mdirs:%=%.rmpull) makestuff.mpull
 	git checkout master
-	$(MAKE) pull
+	git pull
 
 ## Don't be scared of the or part. It's for legacies only.
 %.rmpull: %
