@@ -5,7 +5,6 @@ current: target
 -include target.mk
 
 ##################################################################
-
 ## Work on documentation!!!
 
 cache.html: cache.md
@@ -55,7 +54,7 @@ Sources += resources.mk
 
 Sources += perl.def python.def
 
-Sources += newlatex.mk latexdeps.pl images.mk
+Sources += newlatex.mk latexdeps.pl images.mk talktex.mk
 
 Sources += latexdiff.pl
 
@@ -63,6 +62,8 @@ Sources += newlatex.mk latexdeps.pl biber.def bibtex.def
 
 Sources += flextex.mk flextex.pl deps.mk
 Sources += flextex.md
+
+Sources += texdeps.mk texdeps.pl
 
 Sources += RR/pdf.mk forms.def forms.mk RR/up.mk
 

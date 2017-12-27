@@ -48,6 +48,11 @@ outline: \n
 
 # Sectioning
 
+
+ICI3D NOFRAME
+draft final: NOFRAME \date{\jddate} \title{\jdtitle} \subtitle{\jdsub} \author{\jdauth} {\topBar\maketitle}
+handouts: \noindent\includegraphics[width=\textwidth]{LatexTemplates/bar.pdf} {\centering \textsf{ \textbf{ {\Large\jdtitle} \\ {\large\jdsub} }} \\ {\large \jddate} \\ \mbox{} } }
+
 TOP NULLSLIDE
 draft final: NOFRAME
 
@@ -207,12 +212,15 @@ draft final: ^LFIG 0.75 %%
 
 ## Width for scale
 
-WFIG \hfill\includegraphics[width=%\textwidth]{%}\hfill\mbox{}
+## The %% is necessary here, since we might want to pass post-formatting
+WFIG \hfill\includegraphics[width=%\textwidth]{%}\hfill\mbox{} %%
 outline: %!
 
 WIDEFIG ^WFIG 1 %%
 DIAGRAM ^WIDEFIG % \vspace{-0.7in}
-handouts: ^WIDEFIG %%
+
+# handouts: ^WIDEFIG % \vspace{-1.2in}
+
 
 SIDEFIG %!
 draft final: ^WIDEFIG %%

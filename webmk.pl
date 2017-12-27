@@ -11,7 +11,7 @@ while (<>){
 	next if /^#/;
 
 	my ($fn, $url) = split /\s+/;
-	$fn = "files/$fn";
+	$fn = "webpix/$fn";
 
 	my $ext="";
 	$ext = $url if $url;

@@ -3,6 +3,7 @@
 ## Add organizations to list, and make a rule
 
 repodirs = $(dushoff_github) $(ICI3D) $(Bio3SS) $(theobio_group) $(dushoff_bitbucket)
+
 repofiles = $(repodirs:%=%/Makefile)
 
 $(dushoff_github):
@@ -26,8 +27,9 @@ $(Bio1M):
 $(theobio_group):
 	git submodule add https://github.com/mac-theobio/$@.git || mkdir $@
 
-$(repofiles): %/Makefile: 
-	$(MAKE) $*
+## Can't use $(MAKE) because loops. Can't use % because unwanted dependency.
+## Just have things that ask for Makefile ask for directory first?
+$(repofiles): %/Makefile:
 	git submodule init $*
 	git submodule update $*
 	touch $@
