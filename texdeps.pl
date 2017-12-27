@@ -56,9 +56,11 @@ say"";
 ## Directories
 ## Needs to be above any dependencies that might look in the directories
 ## makehere and makethere would need to be in your own make file
+## Only first-level subdirectories should be handled here
 foreach(keys %inputs, keys %packages, keys %graphics, keys %bibs)
 {
 	s|/*[^/]*$||;
+	s|/.*||;
 	$dirs{$_} = $_ if $_;
 }
 print "$target: ", join " ", keys %dirs, "\n\n" if %dirs;
