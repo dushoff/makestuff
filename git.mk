@@ -67,7 +67,8 @@ msync: commit.time
 ## Recursive syncing with some idea about up vs. down
 
 up.time: commit.time
-	$(MAKE) sync
+	git pull
+	git push -u origin $(BRANCH)
 	date > $@
 
 ## Do these really need recipes? Concern is phantom making
