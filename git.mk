@@ -64,25 +64,6 @@ msync: commit.time
 
 ######################################################################
 
-## Recursive syncing with some idea about up vs. down
-
-up.time: commit.time
-	$(MAKE) sync
-	date > $@
-
-## Do these really need recipes? Concern is phantom making
-rmup: $(mdirs:%=%.rmup) makestuff.msync mup
-
-mup: master up.time
-
-%.mup: %
-	cd $< && $(MAKE) rmup
-
-%.rmup: %
-	cd $< && $(MAKE) rmup
-
-######################################################################
-
 ## Recursive sync everything to master. Be careful, I guess.
 ## mdirs for subdirectories that should be synced to master branch
 rmsync: $(mdirs:%=%.rmsync) makestuff.msync commit.time
@@ -90,17 +71,56 @@ rmsync: $(mdirs:%=%.rmsync) makestuff.msync commit.time
 	$(MAKE) sync
 	git status
 
+##########
+## Recursive syncing with some idea about up vs. down
+
+### Just pull! You need to worry yourself if you should have pushed
+### pull
 rmpull: $(mdirs:%=%.rmpull) makestuff.mpull
 	git checkout master
-	$(MAKE) pull
+	git pull
 
+## Don't be scared of the or part. It's for legacies only.
+%.rmpull: %
+	cd $< && ($(MAKE) rmpull || (git checkout master && $(MAKE) pull && $(MAKE) makestuff.master && $(MAKE) makestuff.sync))
+
+%.mpull: %.master %.pull ;
+
+%.pull: %
+	cd $< && $(MAKE) pull
+
+### up
+### need to sync to push. up means only sync if you have something to push
+
+up.time: commit.time
+	git pull
+	git push -u origin $(BRANCH)
+	date > $@
+
+rmup: $(mdirs:%=%.rmup) makestuff.mup mup
+mup: master up.time
+
+%.mup: %
+	cd $< && $(MAKE) mup
+
+%.rmup: %
+	cd $< && $(MAKE) rmup
+
+## Deprecated?
 rmpush: $(mdirs:%=%.rmpush) makestuff.mpush
-	git checkout master
 	$(MAKE) push
+
+######################################################################
 
 remotesync: commit.default
 	git pull
 	git push -u origin $(BRANCH)
+
+%.master: %
+	cd $< && git checkout master
+
+%.status: %
+	cd $< && git status
 
 %.newpush: %
 	cd $< && $(MAKE) newpush
@@ -108,34 +128,19 @@ remotesync: commit.default
 %.msync: %.master %.sync ;
 %.sync: %
 	cd $< && $(MAKE) sync
+
+## Too loopy?
 %.rmsync: %
 	cd $< && ($(MAKE) rmsync || (git checkout master && $(MAKE) sync && $(MAKE) makestuff.master && $(MAKE) makestuff.sync))
 
-%.mpull: %.master %.pull ;
-%.pull: %
-	cd $< && $(MAKE) pull
-%.rmpull: %
-	cd $< && ($(MAKE) rmpull || (git checkout master && $(MAKE) sync && $(MAKE) makestuff.master && $(MAKE) makestuff.sync))
-
-%.mpush: %.master %.push ;
-%.push: %
-	cd $< && $(MAKE) push
-
-%.rmpush: %
-	cd $< && ($(MAKE) rmpush || $(MAKE) msync)
-
 %.autosync: %
 	cd $< && $(MAKE) remotesync
-
-## Archive is _deprecated_; see .gp:
-## If you really want something remade and archived automatically, it can be a source
-
-## Check function (how to use??)
 
 git_check = git diff-index --quiet HEAD --
 
 commit.time: $(Sources)
 	-git add -f $^
+
 	echo "Autocommit ($(notdir $(CURDIR)))" > $@
 	!(git commit --dry-run >> $@) || (perl -pi -e 's/^/#/ unless /Autocommit/' $@ && $(EDIT) $@)
 	$(git_check) || (perl -ne 'print unless /#/' $@ | git commit -F -)

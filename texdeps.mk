@@ -10,6 +10,7 @@ endif
 	$(MAKE) .texdeps/$*.mk
 	-$(MAKE) $*.deps
 	$(MAKE) $*.ltx
+	sleep 1
 	@!(grep "Fatal error occurred" $*.log)
 	@(grep "Rerun to get" $*.log && touch $<) || touch $*.log
 	@(grep "Error:" $*.log && touch $<) || touch $*.log

@@ -15,7 +15,7 @@ include makestuff.mk
 
 # Base files
 
-Sources = Makefile LICENSE README.md .gitignore static.mk sub.mk todo.md
+Sources += Makefile LICENSE README.md .gitignore static.mk sub.mk todo.md
 
 # Starting makefile for other projects
 
@@ -45,7 +45,7 @@ Sources += git.mk git.def repos.def repos.mk init.mk modules.mk drops.mk target.
 
 # Makefiles and resources for other projects
 
-Sources += visual.mk oldlatex.mk RR.mk wrapR.mk compare.mk
+Sources += visual.mk compare.mk
 
 Sources += stepR.mk stepR.md
 Sources += rstep.pl
@@ -54,20 +54,29 @@ Sources += resources.mk
 
 Sources += perl.def python.def
 
-Sources += newlatex.mk latexdeps.pl images.mk talktex.mk
+######################################################################
 
-Sources += latexdiff.pl
+## Older attempts at latex. Should eliminate soon.
+
+Sources += newlatex.mk latexdeps.pl images.mk
 
 Sources += newlatex.mk latexdeps.pl biber.def bibtex.def
 
 Sources += flextex.mk flextex.pl deps.mk
 Sources += flextex.md
 
-Sources += texdeps.mk texdeps.pl
 
-Sources += RR/pdf.mk forms.def forms.mk RR/up.mk
+######################################################################
 
-## Sources += oldtalk.def oldtalk.mk $(wildcard oldtalk/*.*)
+## Current latex stuff
+
+Sources += latexdiff.pl
+Sources += texdeps.mk texdeps.pl texdeps.md
+Sources += simptex.mk
+
+######################################################################
+
+## Various talkish stuff. Need to find out what's hot, what's not.
 
 Sources += linkdirs.mk newtalk.def newtalk.mk $(wildcard newtalk/*.*)
 
@@ -75,27 +84,28 @@ Sources += lect.mk $(wildcard lect/*.*)
 
 Sources += pandoc.mk compare.mk
 
-Sources += cache.mk cache.md
+######################################################################
 
-## Moving Lecture_images machinery here, so it can be used by others
+## Talk images stuff
 Sources += webpix.mk webthumbs.mk
 Sources += webhtml.pl webmk.pl
 
 ######################################################################
 
-# RR scripts
+## Caching
+Sources += cache.mk cache.md
 
-RRR = $(wildcard RR/*.R)
-RRpl = $(wildcard RR/*.pl)
-
-Sources += $(RRR) $(RRpl)
+######################################################################
 
 # wrapR scripts
 
 wrapRR = $(wildcard wrapR/*.R)
 wrapRpl = $(wildcard wrapR/*.pl)
 
-Sources += $(wrapRR) $(wrapRpl)
+Sources += wrapR.mk $(wrapRR) $(wrapRpl)
+
+## pdf manipulation
+Sources += wrapR/pdf.mk forms.def forms.mk wrapR/up.mk
 
 ######################################################################
 
