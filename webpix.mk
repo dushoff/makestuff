@@ -11,8 +11,8 @@ Sources += $(steps)
 	$(PUSH)
 
 %.html: %.step.mk $(ms)/webhtml.pl
-	$(MAKE) -f $< -f $(ms)/webthumbs.mk images
-	$(MAKE) -f $< -f $(ms)/webthumbs.mk thumbs
+	$(MAKE) -f $< -f $(ms)/webtrans.mk images
+	$(MAKE) -f $< -f $(ms)/webtrans.mk thumbs
 	$(PUSHSTAR)
 
 ## Generic transformations
@@ -20,6 +20,9 @@ Sources += $(steps)
 	convert $< $@
 
 %.png: %.gif
+	convert $< $@
+
+%.png: %.pdf
 	convert $< $@
 
 ## Digest files
@@ -38,10 +41,6 @@ files webpix: $(Drop)/webpix
 $(Drop)/webpix:
 	$(mkdir)
 
-# 2017 Dec 02 (Sat)
-# Uncomment if this turns out to be necessary; otherwise delete
-Makefile: webpix
-
 ## Reload a figure if you messed up the link or something
 %.rmk:
 	$(RM) $*
@@ -54,7 +53,7 @@ allsteps.mk: $(stepmks)
 	$(cat)
 
 webpix/%: allsteps.mk
-	make -f $< $@
+	$(MAKE) -f $< $@
 
 # -include allsteps.mk
 
