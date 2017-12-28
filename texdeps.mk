@@ -8,7 +8,7 @@ endif
 
 %.pdf: %.tex .texdeps/%.out
 	$(MAKE) $*.deps
-	-$(MAKE) -f .texdeps/$*.mk -f Makefile .texdeps/$*.out
+	-$(MAKE) -f .texdeps/$*.mk -f Makefile .texdeps/$*.out >& .texdeps.$*.make.log
 	$(MAKE) $*.ltx
 	sleep 1
 	@!(grep "Fatal error occurred" $*.log)

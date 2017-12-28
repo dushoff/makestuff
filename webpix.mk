@@ -1,8 +1,9 @@
 ### Rules for getting images from the web
 
-### Sort of designed for a subdirectory (since it includes allsteps)
-### But subdirectory does not need to be a repo, I guess...
-### EXPERIMENTING: Don't include allsteps, but instead make a rule for when to use it
+### Currently developing together with 3SS/Lectures
+### Previously used with math_talks
+
+### Lives in main directory now … use allsteps only as needed
 
 steps = $(wildcard *.step)
 Sources += $(steps)
@@ -29,18 +30,25 @@ htmls =  $(steps:.step=.html)
 all.html: $(htmls)
 	$(cat)
 
+######################################################################
+
 ## Make a webpix directory (user should define or pay attention to Drop)
 ## WARNING, files directory no longer supported!!
-## Eliminate from rule some time
-files webpix: $(Drop)/webpix
-	$(forcelink)
+
+ifeq ($(Drop),)
+Drop = ~/Dropbox
+endif
+webpix: dir = $(Drop)
+webpix: $(Drop)/webpix
+	$(linkdir)
 
 $(Drop)/webpix:
 	$(mkdir)
 
 # 2017 Dec 02 (Sat)
+# 2017 Dec 27 (Wed)
 # Uncomment if this turns out to be necessary; otherwise delete
-Makefile: webpix
+# Makefile: webpix
 
 ## Reload a figure if you messed up the link or something
 %.rmk:
@@ -55,6 +63,4 @@ allsteps.mk: $(stepmks)
 
 webpix/%: allsteps.mk
 	make -f $< $@
-
-# -include allsteps.mk
 
