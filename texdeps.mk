@@ -10,11 +10,11 @@ endif
 	$(MAKE) .texdeps/$*.mk
 	-$(MAKE) $*.deps
 	$(MAKE) $*.ltx
-	sleep 1
 	@!(grep "Fatal error occurred" $*.log)
-	@(grep "Rerun to get" $*.log && touch $<) || touch $*.log
-	@(grep "Error:" $*.log && touch $<) || touch $*.log
-	@grep "Stop." .texdeps/$*.make.log || touch $*.log
+	sleep 1 ### Make sure time stamps are distinct
+	@(grep "Rerun to get" $*.log && touch $<) || :
+	@(grep "Error:" $*.log && touch $<) || :
+	@grep "Stop." .texdeps/$*.make.log || :
 
 %.bbl: %.ltx
 	$(bibtex)
@@ -40,7 +40,11 @@ endif
 # Update dependencies for a .tex file
 # A phony target
 %.deps: .texdeps/%.mk 
+<<<<<<< Updated upstream
 	$(MAKE) -f $< -f Makefile .texdeps/$*.out >& .texdeps/$*.make.log
+=======
+	-$(MAKE) -dr -f $< -f Makefile .texdeps/$*.out > .texdeps/$*.make.log 2>&1
+>>>>>>> Stashed changes
 
 ## Mystery ancient version
 ## -include $(wildcard *.deps)

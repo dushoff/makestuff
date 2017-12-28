@@ -2,7 +2,8 @@
 
 ## Add organizations to list, and make a rule
 
-repodirs = $(dushoff_github) $(ICI3D) $(Bio3SS) $(theobio_group) $(dushoff_bitbucket)
+## Does not work without repos.def (or some other repo definer)
+repodirs += $(dushoff_github) $(ICI3D) $(Bio3SS) $(theobio_group) $(dushoff_bitbucket)
 
 repofiles = $(repodirs:%=%/Makefile)
 
