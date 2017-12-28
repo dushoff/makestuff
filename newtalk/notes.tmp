@@ -10,6 +10,8 @@
 \usepackage[margin=1in]{geometry}
 \usepackage{wallpaper}
 
+\InputIfFileExists{./localcomm.tex}{}{}
+
 \newlength{\dfwidth}\setlength{\dfwidth}{0.5\linewidth}
 \newlength{\dfheight}\setlength{\dfheight}{0.4\textheight}
 \newlength{\dfsep}\setlength{\dfsep}{0.5cm}
