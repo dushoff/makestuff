@@ -7,16 +7,20 @@ bibtex = biber $* || bibtex $*
 endif
 
 %.pdf: %.tex .texdeps/%.out
-	$(MAKE) $*.deps
-	-$(MAKE) -f .texdeps/$*.mk -f Makefile .texdeps/$*.out >& .texdeps.$*.make.log
+	$(MAKE) .texdeps/$*.mk
+	-$(MAKE) $*.deps
 	$(MAKE) $*.ltx
 	sleep 1
 	@!(grep "Fatal error occurred" $*.log)
-	-@(grep "Rerun to get" $*.log && touch $<)
-	-@(grep "Error:" $*.log && touch $<)
+	@(grep "Rerun to get" $*.log && touch $<) || touch $*.log
+	@(grep "Error:" $*.log && touch $<) || touch $*.log
+	@grep "Stop." .texdeps/$*.make.log || touch $*.log
 
 %.bbl: %.ltx
 	$(bibtex)
+
+# 	$(MAKE) -q -f .texdeps/$*.mk -f Makefile .texdeps/$*.out || $(MAKE) -n
+#	-$(MAKE) -f .texdeps/$*.mk -f Makefile .texdeps/$*.out
 
 .texdeps/%.mk: %.tex .texdeps 
 	perl -wf $(ms)/texdeps.pl $< > $@
@@ -35,9 +39,8 @@ endif
 
 # Update dependencies for a .tex file
 # A phony target
-# Why is the error suppression here instead of above?
 %.deps: .texdeps/%.mk 
-	-$(MAKE) -f $< -f Makefile .texdeps/$*.out
+	$(MAKE) -f $< -f Makefile .texdeps/$*.out >& .texdeps/$*.make.log
 
 ## Mystery ancient version
 ## -include $(wildcard *.deps)
