@@ -40,11 +40,7 @@ endif
 # Update dependencies for a .tex file
 # A phony target
 %.deps: .texdeps/%.mk 
-<<<<<<< Updated upstream
-	$(MAKE) -f $< -f Makefile .texdeps/$*.out >& .texdeps/$*.make.log
-=======
 	-$(MAKE) -dr -f $< -f Makefile .texdeps/$*.out > .texdeps/$*.make.log 2>&1
->>>>>>> Stashed changes
 
 ## Mystery ancient version
 ## -include $(wildcard *.deps)
