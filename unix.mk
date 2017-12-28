@@ -27,6 +27,9 @@ diff = $(DIFF) $^ > $@
 
 # Generic (vars that use the ones above)
 link = $(LN) $< $@
+linkdir = ls $(dir)/$@ && $(LNF) $(dir)/$@ .
+linkdirname = ls $(dir) && $(LNF) $(dir) $@ 
+
 forcelink = $(LNF) $< $@
 copy = $(CP) $< $@
 allcopy =  $(CP) $^ $@

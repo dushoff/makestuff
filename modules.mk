@@ -1,7 +1,8 @@
-include $(ms)/repos.def
+# include $(ms)/repos.def
 
-## To add a new default organization, add to list, and make a rule. Below
-## First-level repo names should be in repos.def (above). Other can be there, or in master repo .mk files
+## Add organizations to list, and make a rule
+
+repodirs = $(dushoff_github) $(ICI3D) $(Bio3SS) $(theobio_group) $(dushoff_bitbucket)
 
 repofiles = $(repodirs:%=%/Makefile)
 
