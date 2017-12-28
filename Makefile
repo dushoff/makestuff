@@ -87,7 +87,7 @@ Sources += pandoc.mk compare.mk
 ######################################################################
 
 ## Talk images stuff
-Sources += webpix.mk webthumbs.mk
+Sources += webpix.mk webtrans.mk
 Sources += webhtml.pl webmk.pl
 
 ######################################################################
