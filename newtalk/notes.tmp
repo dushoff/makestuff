@@ -12,9 +12,9 @@
 
 \InputIfFileExists{./localcomm.tex}{}{}
 
-\newlength{\dfwidth}\setlength{\dfwidth}{0.5\linewidth}
+\newlength{\dfwidth}\setlength{\dfwidth}{0.35\linewidth}
 \newlength{\dfheight}\setlength{\dfheight}{0.4\textheight}
-\newlength{\dfsep}\setlength{\dfsep}{0.5cm}
+\newlength{\dfsep}\setlength{\dfsep}{0.3\linewidth}
 
 \newcommand{\pause}{}
 \raggedbottom

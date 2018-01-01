@@ -10,7 +10,8 @@
 ## %! Discards whole rest of P.
 ## %| Takes "sentence"
 ## %_ Takes optional line
-## %^ Takes optional word
+# %^ Takes optional word
+## %? Eats word
 ## % Takes word
 
 # Input stuff (should never require specific rules)

@@ -3,6 +3,7 @@
 
 txt.format: $(talkdir)/txt.format local.txt.format
 	$(cat)
+	$(RO)
 
 local.txt.format:
 	touch $@
