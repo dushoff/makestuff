@@ -106,10 +106,6 @@ mup: master up.time
 %.rmup: %
 	cd $< && $(MAKE) rmup
 
-## Deprecated?
-rmpush: $(mdirs:%=%.rmpush) makestuff.mpush
-	$(MAKE) push
-
 ######################################################################
 
 remotesync: commit.default
