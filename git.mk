@@ -342,7 +342,16 @@ rupdate:
 %.rmsub:
 	-git rm $*
 	rm -rf .git/modules/$*
-	git config -f .git/config --remove-section submodule.$*
+	git config --remove-section submodule.$*
+
+%.rmrsub:
+	-git rm -r $*
+	rm -rf .git/modules/$*
+	git config --remove-section submodule.$*
+
+## Force push a commit
+%.force:
+	git push -f origin  $*:master
 
 ######################################################################
 
