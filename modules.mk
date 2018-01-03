@@ -65,7 +65,7 @@ $(foreach dir,$(repodirs),$(eval $(call hotmake,$(dir))))
 # The current .init rule _makes_ then _deletes_ the non-submodule version.
 # There was insane confusion with giving it a different name.
 %.init: 
-	- $(MAKE) -f localrepos.def -f $(ms)/repos.def -f $(ms)/repos.mk $*
+	- $(MAKE) -f $(ms)/repos.mk $*
 	- cd $* && (git checkout -b master || git checkout master)
 	$(MAKE) -f $(ms)/init.mk $*/target.mk $*/sub.mk $*/Makefile
 	cd $* && $(MAKE) makestuff && $(MAKE) newpush

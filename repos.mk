@@ -4,8 +4,10 @@
 ms = makestuff
 
 -include $(ms)/repos.def
+-include localrepos.def
+
 bitbucket = dushoff@bitbucket.org
-github = https://github.com/dushoff
+github = https://github.com
 
 $(dushoff_bitbucket):
 	git clone $(bitbucket):dushoff/$@.git
