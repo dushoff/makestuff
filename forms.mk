@@ -48,4 +48,4 @@ sig.%.pdf: sig.%.jpg
 %.ppmed.png: %.pdf
 	convert -density 400x400 $< $@
 
--include $(ms)/RR/pdf.mk
+-include $(ms)/wrapR/pdf.mk
