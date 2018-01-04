@@ -96,8 +96,6 @@ rmpull: $(mdirs:%=%.rmpull) makestuff.mpull
 ### Loops with rmpull, but maybe OK if we don't rmpull much
 
 up.time: commit.time
-	git pull
-	git push -u origin $(BRANCH)
 	date > $@
 
 rmup: $(mdirs:%=%.rmup) makestuff.mup mup
