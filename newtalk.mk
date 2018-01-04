@@ -2,6 +2,7 @@
 	$(PUSHSTAR)
 
 txt.format: $(talkdir)/txt.format local.txt.format
+	$(rm)
 	$(cat)
 	$(RO)
 
