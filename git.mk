@@ -369,7 +369,6 @@ rupdate:
 ######################################################################
 
 ## Old files
-## Should be modified to:
 
 %.oldfile:
 	-$(RM) $(basename $*).*.oldfile
