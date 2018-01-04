@@ -41,6 +41,3 @@ endif
 # A phony target
 %.deps: .texdeps/%.mk 
 	-$(MAKE) -dr -f $< -f Makefile .texdeps/$*.out > .texdeps/$*.make.log 2>&1
-
-## Mystery ancient version
-## -include $(wildcard *.deps)
