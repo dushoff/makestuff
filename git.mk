@@ -371,13 +371,12 @@ rupdate:
 ## Old files
 ## Should be modified to:
 
-
 %.oldfile:
 	-$(RM) $(basename $*).*.oldfile
-	-$(MVF) $(basename $*) tmp_$(basename $*)
+	$(MVF) $(basename $*) tmp_$(basename $*)
 	git checkout $(subst .,,$(suffix $*)) -- $(basename $*)
 	cp $(basename $*) $@
-	-$(MV) tmp_$(basename $*) $(basename $*)
+	$(MV) tmp_$(basename $*) $(basename $*)
 
 %.olddiff: $(wildcard %*)
 	-$(DIFF) $* $*.*.oldfile > $@
