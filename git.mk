@@ -66,6 +66,7 @@ msync: commit.time
 
 ## Recursive sync everything to master. Be careful, I guess.
 ## mdirs for subdirectories that should be synced to master branch
+## This is pretty violently loopy
 rmsync: $(mdirs:%=%.rmsync) makestuff.msync commit.time
 	git checkout master
 	$(MAKE) sync
@@ -73,9 +74,10 @@ rmsync: $(mdirs:%=%.rmsync) makestuff.msync commit.time
 
 ##########
 ## Recursive syncing with some idea about up vs. down
+## Still too loopy
+## If we rmpull, then we have to repush every single makestuff when anything has changed
 
-### Just pull! You need to worry yourself if you should have pushed
-### pull
+### Potentially dangerous (may commit without pushing)
 rmpull: $(mdirs:%=%.rmpull) makestuff.mpull
 	git checkout master
 	git pull
@@ -91,6 +93,7 @@ rmpull: $(mdirs:%=%.rmpull) makestuff.mpull
 
 ### up
 ### need to sync to push. up means only sync if you have something to push
+### Loops with rmpull, but maybe OK if we don't rmpull much
 
 up.time: commit.time
 	git pull
@@ -104,6 +107,13 @@ mup: master up.time
 	cd $< && $(MAKE) mup
 
 %.rmup: %
+	cd $< && $(MAKE) rmup
+
+## Branch only
+
+rmaster: $(mdirs:%=%.rmaster) makestuff.master
+
+%.rmaster: %
 	cd $< && $(MAKE) rmup
 
 ######################################################################
@@ -329,10 +339,17 @@ hupstream:
 ## Doesn't seem to do what I want
 ## Sets lots of things to headless, or something.
 ## Investigate more
+
+## Improved a bit now … should be relatively reasonable for things that 
+## are all on master branch
 rupdate:
 	git submodule update --init --recursive
 	git submodule foreach --recursive git fetch
-	git submodule foreach --recursive git merge origin master
+	git submodule foreach --recursive git checkout master
+	## git submodule foreach --recursive git merge origin master
+
+## Ideal approach would be to have all submodules made with -b from now on.
+## In the meantime, we also need a recursive master thing that follows only mdirs, so I'll make that now.
 
 ## Remove a submodule
 %.rmsub:
