@@ -15,7 +15,7 @@ endif
 	@(grep "Rerun to get" $*.log && touch $<) || :
 	@(grep "Error:" $*.log && touch $<) || :
 	@grep "Stop." .texdeps/$*.make.log || :
-	@grep "failed$" .texdeps/$*.make.log || :
+	@grep "failed" .texdeps/$*.make.log || :
 
 %.bbl: %.ltx
 	$(bibtex)
