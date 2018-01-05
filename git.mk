@@ -302,10 +302,10 @@ rcheck:
 	(git submodule foreach --recursive git branch | grep -B1 detached) ||:
 
 newstuff:
-	git submodule foreach --recursive '(ls -d makestuff || git pull)'
+	git submodule foreach --recursive 'ls -d makestuff || git pull'
 
 comstuff:
-	git submodule foreach --recursive '(ls -d makestuff && make syncstuff)'
+	git submodule foreach --recursive '(ls -d makestuff && make syncstuff) ||: '
 
 getstuff: newstuff comstuff
 
