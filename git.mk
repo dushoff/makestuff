@@ -304,6 +304,15 @@ rcheck:
 newstuff:
 	git submodule foreach --recursive '(ls -d makestuff || git pull)'
 
+comstuff:
+	git submodule foreach --recursive '(ls -d makestuff && make syncstuff)'
+
+getstuff: newstuff comstuff
+
+syncstuff: makestuff
+	git add $< 
+	git commit -m $@
+
 ## Ideal approach would be to have all submodules made with -b from now on.
 ## In the meantime, we also need a recursive master thing that follows only mdirs, so I'll make that now.
 
