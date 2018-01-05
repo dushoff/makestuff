@@ -17,12 +17,9 @@ endif
 branch:
 	@echo $(BRANCH)
 
-newpush: commit.time
-	git push -u origin master
-
-## Deprecate this; we should always pull before push, right?
-push: commit.time
+up.time: commit.time
 	git push -u origin $(BRANCH)
+	touch $@
 
 pull: commit.time
 	git pull
@@ -94,9 +91,6 @@ rmpull: $(mdirs:%=%.rmpull) makestuff.mpull
 ### up
 ### need to sync to push. up means only sync if you have something to push
 ### Loops with rmpull, but maybe OK if we don't rmpull much
-
-up.time: commit.time
-	date > $@
 
 rmup: $(mdirs:%=%.rmup) makestuff.mup mup
 mup: master up.time
