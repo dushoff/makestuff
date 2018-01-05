@@ -280,6 +280,9 @@ hupstream:
 ## Improved from https://stackoverflow.com/questions/10168449/git-update-submodule-recursive
 ## Ideal approach would be to have all submodules made with -b from now on.
 
+## Get branch tracking and see how much it helps
+## Check https://stackoverflow.com/questions/1777854/git-submodules-specify-a-branch-tag/18799234#18799234 maybe?
+
 rum: rupdate rmaster
 ruc: rupdate rcheck
 
