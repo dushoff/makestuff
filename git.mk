@@ -17,13 +17,14 @@ endif
 branch:
 	@echo $(BRANCH)
 
-up.time: commit.time
-	git push -u origin $(BRANCH)
-	touch $@
-
 pull: commit.time
 	git pull
 	touch $<
+
+up.time: commit.time
+	git pull
+	git push -u origin $(BRANCH)
+	touch $@
 
 addsync: $(add_cache)
 	touch Makefile
