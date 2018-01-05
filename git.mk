@@ -53,7 +53,7 @@ psync:
 	$(MAKE) pull
 	git push -u origin $(BRANCH)
 
-sync: psync ;
+sync: up.time ;
 
 msync: commit.time
 	git checkout master
