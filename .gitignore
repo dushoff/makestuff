@@ -27,3 +27,4 @@ dotdir/
 clonedir/
 
 *.makestuff
+up.time
