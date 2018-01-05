@@ -285,16 +285,21 @@ hupstream:
 
 rum: rupdate rmaster
 ruc: rupdate rcheck
+rumfetch: rupdate rfetch rmaster
 
 rupdate:
 	git submodule update --init --recursive
-	git submodule foreach --recursive git fetch
 
 rmaster: 
 	git submodule foreach --recursive git checkout master
 
 rcheck: 
 	(git submodule foreach --recursive git branch | grep -B1 detached) ||:
+
+## Not sure what's good about this, nor why it apparently needs to be combined with rmaster
+## Should we be doing rum; rpull instead? Or nothing?
+rfetch:
+	git submodule foreach --recursive git fetch
 
 ######################################################################
 
