@@ -60,7 +60,7 @@ mup: master up.time
 	cd $< && $(MAKE) up.time
 
 %.rup: %
-	cd $< && ($(MAKE) rup || $(MAKE) pull)
+	cd $< && ($(MAKE) rup || $(MAKE) makestuff.pull)
 
 ######################################################################
 
@@ -289,6 +289,7 @@ hupstream:
 ## Improved a bit now … should be relatively reasonable for things that 
 ## are all on master branch
 rum: rupdate rmaster
+rum: rupdate rcheck
 
 rupdate:
 	git submodule update --init --recursive
