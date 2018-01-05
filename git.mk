@@ -342,11 +342,14 @@ hupstream:
 
 ## Improved a bit now … should be relatively reasonable for things that 
 ## are all on master branch
+rum: rupdate rmaster
+
 rupdate:
 	git submodule update --init --recursive
 	git submodule foreach --recursive git fetch
+
+rmaster: 
 	git submodule foreach --recursive git checkout master
-	## git submodule foreach --recursive git merge origin master
 
 ## Ideal approach would be to have all submodules made with -b from now on.
 ## In the meantime, we also need a recursive master thing that follows only mdirs, so I'll make that now.
