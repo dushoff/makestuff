@@ -309,20 +309,26 @@ rfetch:
 ## ls -d makestuff is a cheap test for "is this makestuff"?
 ## Should figure out the right way to test .==makestuff
 
-test:
+git_check:
 	$(git_check)
 
+## Push new makestuff (probably from this section) to all submodules
 newstuff:
 	git submodule foreach --recursive 'ls -d makestuff || git pull'
 
+## Clumsily sync after doing that
 comstuff:
 	git submodule foreach --recursive '(ls -d makestuff && make syncstuff) ||: '
 
-getstuff: newstuff comstuff
+getstuff: git_check newstuff comstuff
 
 syncstuff: makestuff
 	git add $< 
 	git commit -m $@
+
+## Better would be a hybrid approach.
+## A make rule that uses foreach (without --recursive) to recurse on itself
+## Keep newstuff to develop and push the more sophisticated stuff
 
 ######################################################################
 
