@@ -44,6 +44,7 @@ msync: commit.time
 
 ## Recursive make-based sync. 
 ## NOT TESTED (and not needed?)
+## Work on an autosync first and then recurse that?
 rmsync: $(mdirs:%=%.rmsync) makestuff.msync commit.time
 	git checkout master
 	$(MAKE) sync
@@ -66,6 +67,7 @@ mup: master up.time
 
 ######################################################################
 
+## This needs work. Should be autosync, I guess. Use git_check if it works.
 remotesync: commit.default
 	git pull
 	git push -u origin $(BRANCH)
@@ -306,6 +308,9 @@ rfetch:
 ## Keep makestuff up to date without pointless manual commits
 ## ls -d makestuff is a cheap test for "is this makestuff"?
 ## Should figure out the right way to test .==makestuff
+
+test:
+	$(git_check)
 
 newstuff:
 	git submodule foreach --recursive 'ls -d makestuff || git pull'
