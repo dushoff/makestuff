@@ -332,13 +332,10 @@ syncstuff: makestuff
 
 ######################################################################
 
+## Violence
+
 ## Remove a submodule
 %.rmsub:
-	-git rm $*
-	rm -rf .git/modules/$*
-	git config --remove-section submodule.$*
-
-%.rmfsub:
 	-git rm -f $*
 	rm -rf .git/modules/$*
 	git config --remove-section submodule.$*

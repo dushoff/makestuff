@@ -8,7 +8,7 @@ repodirs += $(dushoff_github) $(ICI3D) $(Bio3SS) $(theobio_group) $(dushoff_bitb
 repofiles = $(repodirs:%=%/Makefile)
 
 $(dushoff_github):
-	git submodule add https://github.com/dushoff/$@.git || mkdir $@
+	git submodule add -b master https://github.com/dushoff/$@.git || mkdir $@
 
 $(dushoff_bitbucket):
 	git submodule add https://bitbucket.org/dushoff/$@.git || mkdir $@
