@@ -297,6 +297,9 @@ rupdate:
 rmaster: 
 	git submodule foreach --recursive git checkout master
 
+rcheck: 
+	(git submodule foreach --recursive git branch | grep -B1 detached) ||:
+
 ## Ideal approach would be to have all submodules made with -b from now on.
 ## In the meantime, we also need a recursive master thing that follows only mdirs, so I'll make that now.
 
