@@ -327,8 +327,8 @@ syncstuff: makestuff
 	rm -rf .git/modules/$*
 	git config --remove-section submodule.$*
 
-%.rmrsub:
-	-git rm -r $*
+%.rmfsub:
+	-git rm -f $*
 	rm -rf .git/modules/$*
 	git config --remove-section submodule.$*
 
