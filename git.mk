@@ -42,15 +42,17 @@ msync: commit.time
 
 ######################################################################
 
-## Recursive sync everything to master. Be careful, I guess.
-## mdirs for subdirectories that should be synced to master branch
-## This is pretty violently loopy
+## Recursive make-based sync. 
+## NOT TESTED (and not needed?)
 rmsync: $(mdirs:%=%.rmsync) makestuff.msync commit.time
 	git checkout master
 	$(MAKE) sync
 	git status
 
 ### up
+### Why is this better than a foreach approach?
+### I guess because I control the order.
+### Probably some hybrid approach would be best...
 
 rup: $(mdirs:%=%.rup) makestuff.up up.time
 
@@ -74,30 +76,24 @@ remotesync: commit.default
 %.status: %
 	cd $< && git status
 
-%.newpush: %
-	cd $< && $(MAKE) newpush
-
 %.msync: %.master %.sync ;
 %.sync: %
 	cd $< && $(MAKE) sync
 
-## Too loopy?
-%.rmsync: %
-	cd $< && ($(MAKE) rmsync || (git checkout master && $(MAKE) sync && $(MAKE) makestuff.master && $(MAKE) makestuff.sync))
-
 %.autosync: %
 	cd $< && $(MAKE) remotesync
 
+## git_check is probably useful for some newer rules …
 git_check = git diff-index --quiet HEAD --
 
 commit.time: $(Sources)
 	-git add -f $^
-
 	echo "Autocommit ($(notdir $(CURDIR)))" > $@
 	!(git commit --dry-run >> $@) || (perl -pi -e 's/^/#/ unless /Autocommit/' $@ && $(EDIT) $@)
 	$(git_check) || (perl -ne 'print unless /#/' $@ | git commit -F -)
 	date >> $@
 
+## This logic could probably be integrated better with commit.time
 commit.default: $(Sources)
 	git add -f $^ 
 	-git commit -m "Pushed automatically"
@@ -279,17 +275,13 @@ hupstream:
 
 ######################################################################
 
-## Recursive updating with submodules
+## Recursive updating using git submodule functions
 
-## Cribbed from https://stackoverflow.com/questions/10168449/git-update-submodule-recursive
-## Doesn't seem to do what I want
-## Sets lots of things to headless, or something.
-## Investigate more
+## Improved from https://stackoverflow.com/questions/10168449/git-update-submodule-recursive
+## Ideal approach would be to have all submodules made with -b from now on.
 
-## Improved a bit now … should be relatively reasonable for things that 
-## are all on master branch
 rum: rupdate rmaster
-rum: rupdate rcheck
+ruc: rupdate rcheck
 
 rupdate:
 	git submodule update --init --recursive
@@ -300,6 +292,12 @@ rmaster:
 
 rcheck: 
 	(git submodule foreach --recursive git branch | grep -B1 detached) ||:
+
+######################################################################
+
+## Keep makestuff up to date without pointless manual commits
+## ls -d makestuff is a cheap test for "is this makestuff"?
+## Should figure out the right way to test .==makestuff
 
 newstuff:
 	git submodule foreach --recursive '(ls -d makestuff || git pull)'
@@ -313,8 +311,7 @@ syncstuff: makestuff
 	git add $< 
 	git commit -m $@
 
-## Ideal approach would be to have all submodules made with -b from now on.
-## In the meantime, we also need a recursive master thing that follows only mdirs, so I'll make that now.
+######################################################################
 
 ## Remove a submodule
 %.rmsub:
