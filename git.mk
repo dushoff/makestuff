@@ -92,10 +92,9 @@ rmpull: $(mdirs:%=%.rmpull) makestuff.mpull
 	cd $< && $(MAKE) pull
 
 ### up
-### need to sync to push. up means only sync if you have something to push
-### Loops with rmpull, but maybe OK if we don't rmpull much
 
 up.time: commit.time
+	git push
 	date > $@
 
 rmup: $(mdirs:%=%.rmup) makestuff.mup mup
@@ -105,13 +104,6 @@ mup: master up.time
 	cd $< && $(MAKE) mup
 
 %.rmup: %
-	cd $< && $(MAKE) rmup
-
-## Branch only
-
-rmaster: $(mdirs:%=%.rmaster) makestuff.master
-
-%.rmaster: %
 	cd $< && $(MAKE) rmup
 
 ######################################################################
