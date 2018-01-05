@@ -326,6 +326,8 @@ syncstuff: makestuff
 	git add $< 
 	git commit -m $@
 
+## Watch out for the danger of committing without syncing. The higher-level repos may be more up-to-date than the lower ones…
+
 ## Better would be a hybrid approach.
 ## A make rule that uses foreach (without --recursive) to recurse on itself
 ## Keep newstuff to develop and push the more sophisticated stuff
