@@ -60,7 +60,7 @@ mup: master up.time
 	cd $< && $(MAKE) up.time
 
 %.rup: %
-	cd $< && $(MAKE) rup
+	cd $< && ($(MAKE) rup || $(MAKE) pull)
 
 ######################################################################
 
