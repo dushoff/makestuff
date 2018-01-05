@@ -25,18 +25,6 @@ pull: commit.time
 	git pull
 	touch $<
 
-pullup: commit.time
-	git pull
-	git submodule update --init --recursive
-	git submodule foreach --recursive git fetch
-	git submodule foreach --recursive git merge origin master
-	touch $<
-
-rebase: commit.time
-	git fetch
-	git rebase origin/$(BRANCH)
-	touch $<
-
 addsync: $(add_cache)
 	touch Makefile
 	$(MAKE) sync
@@ -44,14 +32,6 @@ addsync: $(add_cache)
 tsync:
 	touch Makefile
 	$(MAKE) sync
-
-rbsync:
-	$(MAKE) rebase
-	$(MAKE) push
-
-psync:
-	$(MAKE) pull
-	git push -u origin $(BRANCH)
 
 sync: up.time ;
 
@@ -68,25 +48,6 @@ rmsync: $(mdirs:%=%.rmsync) makestuff.msync commit.time
 	git checkout master
 	$(MAKE) sync
 	git status
-
-##########
-## Recursive syncing with some idea about up vs. down
-## Still too loopy
-## If we rmpull, then we have to repush every single makestuff when anything has changed
-
-### Potentially dangerous (may commit without pushing)
-rmpull: $(mdirs:%=%.rmpull) makestuff.mpull
-	git checkout master
-	git pull
-
-## Don't be scared of the or part. It's for legacies only.
-%.rmpull: %
-	cd $< && ($(MAKE) rmpull || (git checkout master && $(MAKE) pull && $(MAKE) makestuff.master && $(MAKE) makestuff.sync))
-
-%.mpull: %.master %.pull ;
-
-%.pull: %
-	cd $< && $(MAKE) pull
 
 ### up
 ### need to sync to push. up means only sync if you have something to push
