@@ -51,24 +51,16 @@ rmsync: $(mdirs:%=%.rmsync) makestuff.msync commit.time
 	git status
 
 ### up
-### need to sync to push. up means only sync if you have something to push
-### Loops with rmpull, but maybe OK if we don't rmpull much
 
-rmup: $(mdirs:%=%.rmup) makestuff.mup mup
+rup: $(mdirs:%=%.rup) makestuff.up up.time
+
 mup: master up.time
 
-%.mup: %
-	cd $< && $(MAKE) mup
+%.up: %
+	cd $< && $(MAKE) up.time
 
-%.rmup: %
-	cd $< && $(MAKE) rmup
-
-## Branch only
-
-rmaster: $(mdirs:%=%.rmaster) makestuff.master
-
-%.rmaster: %
-	cd $< && $(MAKE) rmup
+%.rup: %
+	cd $< && $(MAKE) rup
 
 ######################################################################
 
@@ -296,11 +288,14 @@ hupstream:
 
 ## Improved a bit now … should be relatively reasonable for things that 
 ## are all on master branch
+rum: rupdate rmaster
+
 rupdate:
 	git submodule update --init --recursive
 	git submodule foreach --recursive git fetch
+
+rmaster: 
 	git submodule foreach --recursive git checkout master
-	## git submodule foreach --recursive git merge origin master
 
 ## Ideal approach would be to have all submodules made with -b from now on.
 ## In the meantime, we also need a recursive master thing that follows only mdirs, so I'll make that now.
