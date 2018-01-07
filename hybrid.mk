@@ -7,9 +7,11 @@
 	cd $* && make makestuff
 	cd $* && make newpush
 
-## Not good design. Need different Makefile (or same name for util file)
-%.newhybrid: % %/Makefile %/link.mk %/target.mk
-	cp $(ms)/hybrid/*.* $*
+## HOT
+%.newhybrid: % 
+	! ls $*.Makefile
+	cp $(ms)/makefile.mk $*/Makefile
+	cp $(ms)/hybrid/makestuff.mk $(ms)/target.mk $*
 	cd $* && make makestuff
 	cd $* && make newpush
 
