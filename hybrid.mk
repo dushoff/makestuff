@@ -9,7 +9,7 @@
 
 ## HOT
 %.newhybrid: % 
-	! ls $*.Makefile
+	! ls $*/Makefile || (echo newhybrid: Makefile exists; return 1)
 	cp $(ms)/makefile.mk $*/Makefile
 	cp $(ms)/hybrid/makestuff.mk $(ms)/target.mk $*
 	cd $* && make makestuff
