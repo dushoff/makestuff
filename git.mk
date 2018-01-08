@@ -129,7 +129,7 @@ pages/%: % pages
 	$(copy)
 
 pages:
-	$(makesub)
+	git clone `git remote get-url origin` $@
 	cd $@ && (git checkout gh-pages || $(orphanpages)
 
 define orphanpages
