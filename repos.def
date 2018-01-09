@@ -13,7 +13,7 @@ Bio1M = 1M Bio1M.github.io
 
 theobio_group = Serodiscordance_Champredon_2013 DHS_downloads Condom_awareness generation_interval_moments Disease_data HIV_treatment_Africa Awareness_TMB AnnualFlu DHS_convert Orthogonality DHS_new epidemic_speed Lab_meeting early_HIV_treatment_model MC_data QMEE QMEE_2017 Generation_papers shims_age_mixing Lab_materials spatialGenerations
 
-ici3d_github = Malaria ICI3D.github.io DAIDD2015 DAIDDparticipants MMED2015 MMED2016 MMED2016faculty cotrim MMEDparticipants coreFaculty DAIDD2016 DAIDD2016faculty LatexTemplates MMED2017 DAIDD2017
+ici3d_github = Malaria ICI3D.github.io DAIDD2015 DAIDDparticipants MMED2015 MMED2016 MMED2016faculty cotrim MMEDparticipants coreFaculty DAIDD2016 DAIDD2016faculty LatexTemplates MMED2017 DAIDD2017 ici3d-pkg
 
 ## Watch out for weird case changes (1m_2017 was 1M...)
 dushoff_bitbucket = talks nserc tutorial Vaccination_analysis TZ_pediatric_HIV zebra_movement Academic_CV Correspondence HIV_Project New_CV taxes Sandbox djd QMEE_private tick_math FIDO 1m_2017
