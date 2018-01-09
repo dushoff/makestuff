@@ -59,6 +59,9 @@ msync: commit.time
 
 ######################################################################
 
+## Older module based stuff
+## Need to make hybrid?
+
 ## Recursive make-based sync. 
 ## NOT TESTED (and not needed?)
 ## Work on an autosync first and then recurse that?
@@ -98,6 +101,9 @@ remotesync: commit.default
 %.msync: %.master %.sync ;
 %.sync: %
 	cd $< && $(MAKE) sync
+
+%.pull: %
+	cd $< && $(MAKE) pull
 
 %.autosync: %
 	cd $< && $(MAKE) remotesync
@@ -349,6 +355,23 @@ syncstuff: makestuff
 ## Better would be a hybrid approach.
 ## A make rule that uses foreach (without --recursive) to recurse on itself
 ## Keep newstuff to develop and push the more sophisticated stuff
+
+######################################################################
+
+## Clones and hybrids (HOT)
+
+%.cloneup:
+	cd $* && $(MAKE) cloneup
+
+cloneup: $(clonedirs:%=%.cloneup) up.time ;
+
+## Transitional, doesn't recurse (yet?)
+
+clonestuff: $(clonedirs:%=%.clonestuff) ;
+
+%.clonestuff: 
+	cd $* && $(MAKE) makestuff.sync
+
 
 ######################################################################
 
