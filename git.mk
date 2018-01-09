@@ -175,7 +175,7 @@ abort:
 # Special files
 
 .ignore:
-	-/bin/cp $(ms)/ignore.default .
+	-/bin/cp $(ms)/ignore.default $@
 
 README.md LICENSE.md:
 	touch $@
