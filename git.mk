@@ -26,6 +26,10 @@ up.time: commit.time
 	git push -u origin $(BRANCH)
 	touch $@
 
+sync: 
+	$(RM) up.time
+	$(MAKE) up.time
+
 newpush: commit.time
 	git push -u origin $(BRANCH)
 
@@ -36,8 +40,6 @@ addsync: $(add_cache)
 tsync:
 	touch Makefile
 	$(MAKE) sync
-
-sync: up.time ;
 
 msync: commit.time
 	git checkout master
