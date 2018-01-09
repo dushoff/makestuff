@@ -367,6 +367,11 @@ cloneup: $(clonedirs:%=%.cloneup) up.time ;
 
 ## Transitional, doesn't recurse (yet?)
 
+pullstuff: $(clonedirs:%=%.pullstuff) ;
+
+%.pullstuff: 
+	cd $* && $(MAKE) makestuff.pull
+
 clonestuff: $(clonedirs:%=%.clonestuff) ;
 
 %.clonestuff: 
