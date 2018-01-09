@@ -10,6 +10,17 @@ ifndef BRANCH
 BRANCH=master
 endif
 
+######################################################################
+
+## We don't want automatic gitignore rule to work in makestuff
+## the perl dependency should stop it
+
+export Ignore += up.time commit.time commit.default dotdir/ clonedir/ .gitignore
+
+.gitignore: .ignore $(SOURCES) $(ms)/ignore.pl
+	$(copy)
+	perl -wf $(ms)/ignore.pl >> $@
+
 ##################################################################
 
 ### Push and pull
@@ -154,7 +165,7 @@ abort:
 
 # Special files
 
-.gitignore:
+.ignore:
 	-/bin/cp $(ms)/$@ .
 
 README.md LICENSE.md:
