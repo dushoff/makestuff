@@ -372,6 +372,14 @@ clonestuff: $(clonedirs:%=%.clonestuff) ;
 %.clonestuff: 
 	cd $* && $(MAKE) makestuff.sync
 
+makeignore: $(clonedirs:%=%.makeignore) ;
+
+%.makeignore: 
+	cd $* && $(MAKE) Makefile.ignore
+
+Makefile.ignore:
+	perl -pi -e 's/(Sources.*).gitignore/$$1.ignore/' Makefile
+	git rm .gitignore
 
 ######################################################################
 
