@@ -386,6 +386,8 @@ Makefile.ignore:
 	perl -pi -e 's/(Sources.*).gitignore/$$1.ignore/' Makefile
 	git rm .gitignore
 
+Ignore += $(clonedirs)
+
 ######################################################################
 
 ## Violence
