@@ -18,7 +18,7 @@ endif
 export Ignore += up.time commit.time commit.default dotdir/ clonedir/ .gitignore
 
 .gitignore: .ignore $(SOURCES) $(ms)/ignore.pl
-	$(copy)
+	$(hardcopy)
 	perl -wf $(ms)/ignore.pl >> $@
 	$(RO)
 
@@ -106,6 +106,7 @@ remotesync: commit.default
 git_check = git diff-index --quiet HEAD --
 
 commit.time: $(Sources)
+	$(MAKE) .gitignore
 	-git add -f $^
 	echo "Autocommit ($(notdir $(CURDIR)))" > $@
 	!(git commit --dry-run >> $@) || (perl -pi -e 's/^/#/ unless /Autocommit/' $@ && $(EDIT) $@)
