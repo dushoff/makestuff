@@ -367,15 +367,15 @@ cloneup: $(clonedirs:%=%.cloneup) up.time ;
 
 ## Transitional, doesn't recurse (yet?)
 
-pullstuff: $(clonedirs:%=%.pullstuff) ;
+cpstuff: $(clonedirs:%=%.cpstuff) ;
 
-%.pullstuff: 
+%.cpstuff: 
 	cd $* && $(MAKE) makestuff.pull
 
 clonestuff: $(clonedirs:%=%.clonestuff) ;
 
 %.clonestuff: 
-	cd $* && $(MAKE) makestuff.sync
+	cd $* && $(MAKE) makestuff.msync
 
 makeignore: $(clonedirs:%=%.makeignore) ;
 
