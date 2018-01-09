@@ -367,7 +367,7 @@ cloneup: $(clonedirs:%=%.cloneup) up.time ;
 
 ## Transitional, doesn't recurse (yet?)
 
-cpstuff: $(clonedirs:%=%.cpstuff) ;
+cpstuff: makestuff.sync $(clonedirs:%=%.cpstuff) ;
 
 %.cpstuff: 
 	cd $* && $(MAKE) makestuff.pull
@@ -384,7 +384,7 @@ makeignore: $(clonedirs:%=%.makeignore) ;
 
 Makefile.ignore:
 	perl -pi -e 's/(Sources.*).gitignore/$$1.ignore/' Makefile
-	git rm .gitignore
+	-git rm .gitignore
 
 ######################################################################
 
