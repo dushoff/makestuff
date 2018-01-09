@@ -38,6 +38,7 @@ up.time: commit.time
 	git push -u origin $(BRANCH)
 	touch $@
 
+## Is this squeedled
 sync: 
 	$(RM) up.time
 	$(MAKE) up.time
