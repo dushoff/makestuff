@@ -375,7 +375,7 @@ cpstuff: $(clonedirs:%=%.cpstuff) ;
 clonestuff: $(clonedirs:%=%.clonestuff) ;
 
 %.clonestuff: 
-	cd $* && $(MAKE) makestuff.msync
+	cd $* && $(MAKE) makestuff.msync && $(MAKE) clonestuff
 
 makeignore: $(clonedirs:%=%.makeignore) ;
 
