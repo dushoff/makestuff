@@ -20,6 +20,7 @@ export Ignore += up.time commit.time commit.default dotdir/ clonedir/ .gitignore
 .gitignore: .ignore $(SOURCES) $(ms)/ignore.pl
 	$(copy)
 	perl -wf $(ms)/ignore.pl >> $@
+	$(RO)
 
 ##################################################################
 
