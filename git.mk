@@ -351,6 +351,9 @@ newstuff:
 comstuff:
 	git submodule foreach --recursive '(ls -d makestuff && make syncstuff) ||: '
 
+comcom:
+	git submodule foreach --recursive '(ls -d makestuff && make sync) ||: '
+
 getstuff: git_check newstuff comstuff
 
 syncstuff: makestuff
