@@ -17,7 +17,7 @@ endif
 
 export Ignore += up.time commit.time commit.default dotdir/ clonedir/ .gitignore
 
-.gitignore: .ignore $(SOURCES) $(ms)/ignore.pl
+.gitignore: .ignore $(Sources) $(ms)/ignore.pl
 	$(hardcopy)
 	perl -wf $(ms)/ignore.pl >> $@
 	$(RO)
@@ -107,7 +107,7 @@ remotesync: commit.default
 	cd $< && $(MAKE) pull
 
 %.push: %
-	cd $< && $(MAKE) pull
+	cd $< && $(MAKE) up.time
 
 %.autosync: %
 	cd $< && $(MAKE) remotesync
