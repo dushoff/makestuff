@@ -11,7 +11,7 @@ cache.html: cache.md
 
 ######################################################################
 
-include makestuff.mk
+include localstuff.mk
 
 # Base files
 
@@ -21,7 +21,7 @@ Sources += .ignore ignore.default ignore.pl
 
 # Starting makefile for other projects
 
-Sources += makefile.mk hooks.mk makestuff.mk
+Sources += makefile.mk hooks.mk makestuff.mk localstuff.mk
 
 # Bootstrap stuff
 # Want to be able to change this stuff locally
