@@ -22,7 +22,7 @@ Sources += .gitignore .ignore ignore.default ignore.pl
 
 # Starting makefile for other projects
 
-Sources += makefile.mk hooks.mk makestuff.mk localstuff.mk
+Sources += makefile.mk hooks.mk upstuff.mk localstuff.mk
 
 # Bootstrap stuff
 # Want to be able to change this stuff locally
