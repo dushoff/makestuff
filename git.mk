@@ -352,7 +352,7 @@ comstuff:
 	git submodule foreach --recursive '(ls -d makestuff && make syncstuff) ||: '
 
 comcom:
-	git submodule foreach --recursive '(ls -d makestuff && make sync) ||: '
+	git submodule foreach --recursive '(ls -d makestuff && make bump) ||: '
 
 getstuff: git_check newstuff comstuff
 
