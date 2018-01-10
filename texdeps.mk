@@ -1,3 +1,4 @@
+
 ifeq ($(latex),)
 latex = pdflatex -interaction=nonstopmode
 endif
@@ -44,3 +45,6 @@ endif
 	-$(MAKE) -dr -f $< -f Makefile .texdeps/$*.out | tee .texdeps/$*.make.log 2>&1
 
 Ignore += *.log *.aux .*.aux *.blg *.bbl
+
+## texfiles = $(wildcard *.tex)
+## Ignore += $(texfiles:tex=log) $(texfiles:tex=aux) $(texfiles:tex=blg) $(texfiles:tex=bbl)
