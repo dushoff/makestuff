@@ -7,17 +7,6 @@ make.log
 
 
 ## content from makestuff
-*.log
-*.aux
-.*.aux
-*.blg
-*.bbl
-*.RData
-*.Rlog
-*.r
-.Rhistory
-*.Rout*
-*.wrapR.*
 up.time
 commit.time
 commit.default
