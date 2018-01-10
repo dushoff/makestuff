@@ -15,7 +15,8 @@ endif
 ## We don't want automatic gitignore rule to work in makestuff
 ## the perl dependency should stop it
 
-export Ignore += up.time commit.time commit.default dotdir/ clonedir/ .gitignore
+export Ignore += up.time commit.time commit.default dotdir/ clonedir/
+## Put .gitignore into .ignore
 
 .gitignore: .ignore $(SOURCES) $(ms)/ignore.pl
 	$(hardcopy)
