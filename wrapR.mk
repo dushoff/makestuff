@@ -77,3 +77,5 @@ rclean:
 .PRECIOUS: %.envir
 %.envir: %
 	touch $@
+
+Ignore += *out *.RData *.Rlog *.r .Rhistory *.Rout.pdf *.wrapR.*

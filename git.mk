@@ -17,7 +17,7 @@ endif
 
 export Ignore += up.time commit.time commit.default dotdir/ clonedir/ .gitignore
 
-.gitignore: .ignore $(Sources) $(ms)/ignore.pl
+.gitignore: .ignore $(filter-out .gitignore, $(Sources)) $(ms)/ignore.pl
 	$(hardcopy)
 	perl -wf $(ms)/ignore.pl >> $@
 	$(RO)
