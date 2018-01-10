@@ -366,6 +366,11 @@ syncstuff: makestuff
 
 cloneup: $(clonedirs:%=%.cloneup) up.time ;
 
+%.makeclone: % 
+	cd $* && $(MAKE) makestuff && $(MAKE) makeclones
+
+makeclones: $(clonedirs:%=%.makeclone) ;
+
 ## Transitional, doesn't recurse (yet?)
 
 cpstuff: makestuff.sync $(clonedirs:%=%.cpstuff) ;
