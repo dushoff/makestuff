@@ -7,45 +7,6 @@ make.log
 
 
 ## content from makestuff
-*.log
-*.aux
-.*.aux
-*.blg
-*.bbl
-*.RData
-*.Rlog
-*.r
-.Rhistory
-*.Rout*
-*.wrapR.*
-<<<<<<< HEAD
-=======
-up.time
-commit.time
-commit.default
-dotdir/
-clonedir/
-*.oldfile
-caribou*.jpg
->>>>>>> dfcd4bc6645de99be18040090abb0d3ced9ca6f5
-up.time
-commit.time
-commit.default
-dotdir/
-clonedir/
-*.oldfile
-up.time
-commit.time
-commit.default
-dotdir/
-clonedir/
-*.oldfile
-*.RData
-*.Rlog
-*.r
-.Rhistory
-*.Rout*
-*.wrapR.*
 up.time
 commit.time
 commit.default
