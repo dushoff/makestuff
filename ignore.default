@@ -2,4 +2,4 @@
 local.mk
 target.mk
 .*.sw*
-
+make.log
