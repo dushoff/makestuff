@@ -7,6 +7,12 @@ make.log
 
 
 ## content from makestuff
+txt.format
+*.final.*
+*.draft.*
+*.handouts.*
+*.complete.*
+*.complete.*
 *.log
 *.aux
 .*.aux
