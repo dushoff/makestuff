@@ -18,7 +18,7 @@ endif
 export Ignore += up.time commit.time commit.default dotdir/ clonedir/
 ## Put .gitignore into .ignore
 
-.gitignore: .ignore $(SOURCES) $(ms)/ignore.pl
+.gitignore: .ignore $(filter-out .gitignore, $(Sources)) $(ms)/ignore.pl
 	$(hardcopy)
 	perl -wf $(ms)/ignore.pl >> $@
 	$(RO)
@@ -81,6 +81,8 @@ rup: $(mdirs:%=%.rup) makestuff.up up.time
 
 mup: master up.time
 
+bump: makestuff.up up.time
+
 %.up: %
 	cd $< && $(MAKE) up.time
 
@@ -106,6 +108,9 @@ remotesync: commit.default
 
 %.pull: %
 	cd $< && $(MAKE) pull
+
+%.push: %
+	cd $< && $(MAKE) up.time
 
 %.autosync: %
 	cd $< && $(MAKE) remotesync
@@ -176,7 +181,7 @@ abort:
 # Special files
 
 .ignore:
-	-/bin/cp $(ms)/ignore.default .
+	-/bin/cp $(ms)/ignore.default $@
 
 README.md LICENSE.md:
 	touch $@
@@ -367,17 +372,24 @@ syncstuff: makestuff
 
 cloneup: $(clonedirs:%=%.cloneup) up.time ;
 
+%.makeclone: % 
+	cd $* && $(MAKE) makestuff && $(MAKE) makeclones
+
+makeclones: $(clonedirs:%=%.makeclone) ;
+
 ## Transitional, doesn't recurse (yet?)
 
+## Just pull
 cpstuff: makestuff.sync $(clonedirs:%=%.cpstuff) ;
 
 %.cpstuff: 
 	cd $* && $(MAKE) makestuff.pull
 
-clonestuff: $(clonedirs:%=%.clonestuff) ;
+## Sync (works on older things than cpstuff will. I hope)
+csstuff: makestuff.push $(clonedirs:%=%.csstuff) ;
 
-%.clonestuff: 
-	cd $* && $(MAKE) makestuff.msync && $(MAKE) clonestuff
+%.csstuff: 
+	cd $* && $(MAKE) makestuff.msync && $(MAKE) csstuff
 
 makeignore: $(clonedirs:%=%.makeignore) ;
 
@@ -408,6 +420,7 @@ Ignore += $(clonedirs)
 
 ## Old files
 
+Ignore += *.oldfile
 %.oldfile:
 	-$(RM) $(basename $*).*.oldfile
 	$(MVF) $(basename $*) tmp_$(basename $*)
