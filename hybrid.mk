@@ -1,6 +1,7 @@
 
 # Can we make a good rule so we can just name names?
 # $(clonedirs):
+# Any reason for this whole file?
 
 ## Not tested
 %.newsub: % 
