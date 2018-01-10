@@ -396,7 +396,6 @@ cloneignore: $(clonedirs:%=%.cloneignore) ;
 modignore: $(mdirs:%=%.modignore) ;
 hybridignore: cloneignore modignore
 
-
 %.modignore: 
 	cd $* && $(MAKE) Makefile.ignore && $(MAKE) modignore
 

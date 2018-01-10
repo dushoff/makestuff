@@ -18,6 +18,16 @@ make.log
 .Rhistory
 *.Rout*
 *.wrapR.*
+<<<<<<< HEAD
+=======
+up.time
+commit.time
+commit.default
+dotdir/
+clonedir/
+*.oldfile
+caribou*.jpg
+>>>>>>> dfcd4bc6645de99be18040090abb0d3ced9ca6f5
 up.time
 commit.time
 commit.default
