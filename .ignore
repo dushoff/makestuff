@@ -28,16 +28,3 @@ clonedir/
 
 *.makestuff
 up.time
-## content from makestuff
-up.time
-commit.time
-commit.default
-dotdir/
-clonedir/
-.gitignore
-up.time
-commit.time
-commit.default
-dotdir/
-clonedir/
-.gitignore

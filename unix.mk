@@ -32,6 +32,7 @@ linkdirname = ls $(dir) && $(LNF) $(dir) $@
 
 forcelink = $(LNF) $< $@
 copy = $(CP) $< $@
+hardcopy = $(CPF) $< $@
 allcopy =  $(CP) $^ $@
 ccrib = $(CP) $(crib)/$@ .
 mkdir = $(MD) $@

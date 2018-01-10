@@ -10,6 +10,18 @@ ifndef BRANCH
 BRANCH=master
 endif
 
+######################################################################
+
+## We don't want automatic gitignore rule to work in makestuff
+## the perl dependency should stop it
+
+export Ignore += up.time commit.time commit.default dotdir/ clonedir/ .gitignore
+
+.gitignore: .ignore $(SOURCES) $(ms)/ignore.pl
+	$(hardcopy)
+	perl -wf $(ms)/ignore.pl >> $@
+	$(RO)
+
 ##################################################################
 
 ### Push and pull
@@ -26,6 +38,11 @@ up.time: commit.time
 	git push -u origin $(BRANCH)
 	touch $@
 
+## Is this squeedled
+sync: 
+	$(RM) up.time
+	$(MAKE) up.time
+
 newpush: commit.time
 	git push -u origin $(BRANCH)
 
@@ -37,13 +54,14 @@ tsync:
 	touch Makefile
 	$(MAKE) sync
 
-sync: up.time ;
-
 msync: commit.time
 	git checkout master
 	$(MAKE) sync
 
 ######################################################################
+
+## Older module based stuff
+## Need to make hybrid?
 
 ## Recursive make-based sync. 
 ## NOT TESTED (and not needed?)
@@ -85,6 +103,9 @@ remotesync: commit.default
 %.sync: %
 	cd $< && $(MAKE) sync
 
+%.pull: %
+	cd $< && $(MAKE) pull
+
 %.autosync: %
 	cd $< && $(MAKE) remotesync
 
@@ -92,6 +113,7 @@ remotesync: commit.default
 git_check = git diff-index --quiet HEAD --
 
 commit.time: $(Sources)
+	$(MAKE) .gitignore
 	-git add -f $^
 	echo "Autocommit ($(notdir $(CURDIR)))" > $@
 	!(git commit --dry-run >> $@) || (perl -pi -e 's/^/#/ unless /Autocommit/' $@ && $(EDIT) $@)
@@ -129,7 +151,7 @@ pages/%: % pages
 	$(copy)
 
 pages:
-	$(makesub)
+	git clone `git remote get-url origin` $@
 	cd $@ && (git checkout gh-pages || $(orphanpages)
 
 define orphanpages
@@ -152,8 +174,8 @@ abort:
 
 # Special files
 
-.gitignore:
-	-/bin/cp $(ms)/$@ .
+.ignore:
+	-/bin/cp $(ms)/ignore.default $@
 
 README.md LICENSE.md:
 	touch $@
@@ -334,6 +356,38 @@ syncstuff: makestuff
 ## Better would be a hybrid approach.
 ## A make rule that uses foreach (without --recursive) to recurse on itself
 ## Keep newstuff to develop and push the more sophisticated stuff
+
+######################################################################
+
+## Clones and hybrids (HOT)
+
+%.cloneup:
+	cd $* && $(MAKE) cloneup
+
+cloneup: $(clonedirs:%=%.cloneup) up.time ;
+
+## Transitional, doesn't recurse (yet?)
+
+cpstuff: makestuff.sync $(clonedirs:%=%.cpstuff) ;
+
+%.cpstuff: 
+	cd $* && $(MAKE) makestuff.pull
+
+clonestuff: $(clonedirs:%=%.clonestuff) ;
+
+%.clonestuff: 
+	cd $* && $(MAKE) makestuff.msync && $(MAKE) clonestuff
+
+makeignore: $(clonedirs:%=%.makeignore) ;
+
+%.makeignore: 
+	cd $* && $(MAKE) Makefile.ignore
+
+Makefile.ignore:
+	perl -pi -e 's/(Sources.*).gitignore/$$1.ignore/' Makefile
+	-git rm .gitignore
+
+Ignore += $(clonedirs)
 
 ######################################################################
 

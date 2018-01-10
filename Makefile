@@ -15,7 +15,9 @@ include makestuff.mk
 
 # Base files
 
-Sources += Makefile LICENSE README.md .gitignore static.mk sub.mk todo.md
+Sources += Makefile LICENSE README.md static.mk sub.mk todo.md
+
+Sources += .ignore ignore.default ignore.pl
 
 # Starting makefile for other projects
 
