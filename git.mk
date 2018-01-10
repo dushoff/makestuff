@@ -80,6 +80,8 @@ rup: $(mdirs:%=%.rup) makestuff.up up.time
 
 mup: master up.time
 
+bump: makestuff.up up.time
+
 %.up: %
 	cd $< && $(MAKE) up.time
 
@@ -417,6 +419,7 @@ Ignore += $(clonedirs)
 
 ## Old files
 
+Ignore += *.oldfile
 %.oldfile:
 	-$(RM) $(basename $*).*.oldfile
 	$(MVF) $(basename $*) tmp_$(basename $*)
