@@ -3,14 +3,16 @@
 ### Currently developing together with 3SS/Lectures
 ### Previously used with math_talks
 
-### Lives in main directory now … use allsteps only as needed
+Ignore += webpix
 
 steps = $(wildcard *.step)
 Sources += $(steps)
 
+Ignore += $(steps:%=%.mk)
 %.step.mk: %.step $(ms)/webmk.pl
 	$(PUSH)
 
+Ignore += $(steps:.step=.html)
 %.html: %.step.mk $(ms)/webhtml.pl
 	$(MAKE) -f $< -f $(ms)/webtrans.mk images
 	$(MAKE) -f $< -f $(ms)/webtrans.mk thumbs
