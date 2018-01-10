@@ -106,6 +106,9 @@ remotesync: commit.default
 %.pull: %
 	cd $< && $(MAKE) pull
 
+%.push: %
+	cd $< && $(MAKE) pull
+
 %.autosync: %
 	cd $< && $(MAKE) remotesync
 
@@ -379,11 +382,11 @@ cpstuff: makestuff.sync $(clonedirs:%=%.cpstuff) ;
 %.cpstuff: 
 	cd $* && $(MAKE) makestuff.pull
 
-## Sync
-clonestuff: $(clonedirs:%=%.clonestuff) ;
+## Sync (works on older things than cpstuff will)
+csstuff: makestuff.push $(clonedirs:%=%.csstuff) ;
 
-%.clonestuff: 
-	cd $* && $(MAKE) makestuff.msync && $(MAKE) clonestuff
+%.csstuff: 
+	cd $* && $(MAKE) makestuff.msync && $(MAKE) csstuff
 
 makeignore: $(clonedirs:%=%.makeignore) ;
 
