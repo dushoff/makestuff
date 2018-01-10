@@ -15,6 +15,7 @@ endif
 	@(grep "Rerun to get" $*.log && touch $<) || :
 	@(grep "Error:" $*.log && touch $<) || :
 	@grep "Stop." .texdeps/$*.make.log || :
+	@grep "failed" .texdeps/$*.make.log || :
 
 %.bbl: %.ltx
 	$(bibtex)
@@ -40,7 +41,4 @@ endif
 # Update dependencies for a .tex file
 # A phony target
 %.deps: .texdeps/%.mk 
-	-$(MAKE) -dr -f $< -f Makefile .texdeps/$*.out > .texdeps/$*.make.log 2>&1
-
-## Mystery ancient version
-## -include $(wildcard *.deps)
+	-$(MAKE) -dr -f $< -f Makefile .texdeps/$*.out | tee .texdeps/$*.make.log 2>&1

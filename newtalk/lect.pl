@@ -179,6 +179,12 @@ foreach(@tex){
 					s/%_/$p/;
 				}
  
+				# %? eats next word
+				elsif (/^[^%]*%\?/){
+					s/%\?//gs;
+					$str =~ s/\s*(\S*)\s*//;
+				}
+ 
 				# %^ optionally takes next word
 				elsif (/^[^%]*%\^/){
 					$str =~ s/\s*(\S*)\s*//;

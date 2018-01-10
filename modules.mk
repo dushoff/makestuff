@@ -8,7 +8,7 @@ repodirs += $(dushoff_github) $(ICI3D) $(Bio3SS) $(theobio_group) $(dushoff_bitb
 repofiles = $(repodirs:%=%/Makefile)
 
 $(dushoff_github):
-	git submodule add https://github.com/dushoff/$@.git || mkdir $@
+	git submodule add -b master https://github.com/dushoff/$@.git || mkdir $@
 
 $(dushoff_bitbucket):
 	git submodule add https://bitbucket.org/dushoff/$@.git || mkdir $@
@@ -65,7 +65,7 @@ $(foreach dir,$(repodirs),$(eval $(call hotmake,$(dir))))
 # The current .init rule _makes_ then _deletes_ the non-submodule version.
 # There was insane confusion with giving it a different name.
 %.init: 
-	- $(MAKE) -f localrepos.mk -f $(ms)/repos.mk $*
+	- $(MAKE) -f $(ms)/repos.mk $*
 	- cd $* && (git checkout -b master || git checkout master)
 	$(MAKE) -f $(ms)/init.mk $*/target.mk $*/sub.mk $*/Makefile
 	cd $* && $(MAKE) makestuff && $(MAKE) newpush

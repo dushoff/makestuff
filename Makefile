@@ -15,7 +15,9 @@ include makestuff.mk
 
 # Base files
 
-Sources += Makefile LICENSE README.md .gitignore static.mk sub.mk todo.md
+Sources += Makefile LICENSE README.md static.mk sub.mk todo.md
+
+Sources += .ignore ignore.default ignore.pl
 
 # Starting makefile for other projects
 
@@ -41,7 +43,7 @@ include accounts.mk
 
 # Git makefile for this and other projects
 
-Sources += git.mk git.def repos.def repos.mk init.mk modules.mk drops.mk target.mk
+Sources += git.mk git.def repos.def repos.mk init.mk modules.mk drops.mk target.mk hybrid.mk
 
 # Makefiles and resources for other projects
 
@@ -68,6 +70,12 @@ Sources += flextex.md
 
 ######################################################################
 
+## Initializing at various levels
+
+Sources += $(wildcard hybrid/*)
+
+######################################################################
+
 ## Current latex stuff
 
 Sources += latexdiff.pl
@@ -87,7 +95,7 @@ Sources += pandoc.mk compare.mk
 ######################################################################
 
 ## Talk images stuff
-Sources += webpix.mk webthumbs.mk
+Sources += webpix.mk webtrans.mk
 Sources += webhtml.pl webmk.pl
 
 ######################################################################
