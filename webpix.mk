@@ -22,6 +22,7 @@ Ignore += $(steps:.step=.html)
 htmls =  $(steps:.step=.html)
 
 ## Grand overview file
+Ignore += all.html
 all.html: $(htmls)
 	$(cat)
 
@@ -46,6 +47,7 @@ $(Drop)/webpix:
 	$(MAKE) $*
 
 ## Use generated make rules appropriately
+Ignore += allsteps.mk
 stepmks = $(steps:.step=.step.mk)
 Makefile: allsteps.mk
 allsteps.mk: $(stepmks)

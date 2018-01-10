@@ -1,3 +1,5 @@
+Ignore += talkdir
+
 %.txt.fmt: txt.format $(talkdir)/fmt.pl
 	$(PUSHSTAR)
 
