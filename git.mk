@@ -391,10 +391,14 @@ csstuff: makestuff.push $(clonedirs:%=%.csstuff) ;
 %.csstuff: 
 	cd $* && $(MAKE) makestuff.msync && $(MAKE) csstuff
 
-makeignore: $(clonedirs:%=%.makeignore) ;
+## Hybridizing
+cloneignore: $(clonedirs:%=%.cloneignore) ;
+modignore: $(mdirs:%=%.modignore) ;
+hybridignore: cloneignore modignore
 
-%.makeignore: 
-	cd $* && $(MAKE) Makefile.ignore
+
+%.modignore: 
+	cd $* && $(MAKE) Makefile.ignore && $(MAKE) modignore
 
 Makefile.ignore:
 	perl -pi -e 's/(Sources.*).gitignore/$$1.ignore/' Makefile
