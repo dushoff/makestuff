@@ -78,4 +78,4 @@ rclean:
 %.envir: %
 	touch $@
 
-Ignore += *out *.RData *.Rlog *.r .Rhistory *.Rout.pdf *.wrapR.*
+Ignore += *.RData *.Rlog *.r .Rhistory *.Rout* *.wrapR.*

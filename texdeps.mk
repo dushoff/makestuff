@@ -42,3 +42,5 @@ endif
 # A phony target
 %.deps: .texdeps/%.mk 
 	-$(MAKE) -dr -f $< -f Makefile .texdeps/$*.out | tee .texdeps/$*.make.log 2>&1
+
+Ignore += *.log *.aux .*.aux *.blg *.bbl
