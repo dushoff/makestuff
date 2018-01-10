@@ -7,17 +7,7 @@ make.log
 
 
 ## content from makestuff
-*.log
-*.aux
-.*.aux
-*.blg
-*.bbl
-*.RData
-*.Rlog
-*.r
-.Rhistory
-*.Rout*
-*.wrapR.*
+caribou*.jpg
 up.time
 commit.time
 commit.default
