@@ -373,11 +373,13 @@ makeclones: $(clonedirs:%=%.makeclone) ;
 
 ## Transitional, doesn't recurse (yet?)
 
+## Just pull
 cpstuff: makestuff.sync $(clonedirs:%=%.cpstuff) ;
 
 %.cpstuff: 
 	cd $* && $(MAKE) makestuff.pull
 
+## Sync
 clonestuff: $(clonedirs:%=%.clonestuff) ;
 
 %.clonestuff: 
