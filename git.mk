@@ -15,7 +15,8 @@ endif
 ## We don't want automatic gitignore rule to work in makestuff
 ## the perl dependency should stop it
 
-export Ignore += up.time commit.time commit.default dotdir/ clonedir/ .gitignore
+export Ignore += up.time commit.time commit.default dotdir/ clonedir/
+## Put .gitignore into .ignore
 
 .gitignore: .ignore $(filter-out .gitignore, $(Sources)) $(ms)/ignore.pl
 	$(hardcopy)
@@ -80,9 +81,12 @@ rup: $(mdirs:%=%.rup) makestuff.up up.time
 
 mup: master up.time
 
+bump: makestuff.up up.time
+
 %.up: %
 	cd $< && $(MAKE) up.time
 
+## The alternative is for bootstrapping
 %.rup: %
 	cd $< && ($(MAKE) rup || $(MAKE) makestuff.pull)
 
@@ -345,14 +349,21 @@ newstuff:
 	git submodule foreach --recursive 'ls -d makestuff || git pull'
 
 ## Clumsily sync after doing that
+## This goes through directories that have makestuff and adds and commits just the makestuff
+## Should have something else to autosync the makestuff directories
 comstuff:
 	git submodule foreach --recursive '(ls -d makestuff && make syncstuff) ||: '
+
+comcom: 
+	git submodule foreach --recursive '(ls -d makestuff && make tsync) ||: '
 
 getstuff: git_check newstuff comstuff
 
 syncstuff: makestuff
 	git add $< 
 	git commit -m $@
+
+getstuff: git_check newstuff comstuff
 
 ## Watch out for the danger of committing without syncing. The higher-level repos may be more up-to-date than the lower ones…
 
@@ -388,10 +399,16 @@ csstuff: makestuff.push $(clonedirs:%=%.csstuff) ;
 %.csstuff: 
 	cd $* && $(MAKE) makestuff.msync && $(MAKE) csstuff
 
-makeignore: $(clonedirs:%=%.makeignore) ;
+## Hybridizing
+hybridignore: cloneignore modignore
+cloneignore: $(clonedirs:%=%.cloneignore) ;
+modignore: $(mdirs:%=%.modignore) ;
 
-%.makeignore: 
-	cd $* && $(MAKE) Makefile.ignore
+%.cloneignore: 
+	cd $* && $(MAKE) Makefile.ignore && $(MAKE) cloneignore
+
+%.modignore: 
+	cd $* && $(MAKE) Makefile.ignore && $(MAKE) modignore
 
 Makefile.ignore:
 	perl -pi -e 's/(Sources.*).gitignore/$$1.ignore/' Makefile
@@ -417,6 +434,7 @@ Ignore += $(clonedirs)
 
 ## Old files
 
+Ignore += *.oldfile
 %.oldfile:
 	-$(RM) $(basename $*).*.oldfile
 	$(MVF) $(basename $*) tmp_$(basename $*)
