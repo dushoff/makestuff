@@ -15,9 +15,10 @@ endif
 ## We don't want automatic gitignore rule to work in makestuff
 ## the perl dependency should stop it
 
-export Ignore += up.time commit.time commit.default dotdir/ clonedir/ .gitignore
+export Ignore += up.time commit.time commit.default dotdir/ clonedir/
+## Put .gitignore into .ignore
 
-.gitignore: .ignore $(Sources) $(ms)/ignore.pl
+.gitignore: .ignore $(filter-out .gitignore, $(Sources)) $(ms)/ignore.pl
 	$(hardcopy)
 	perl -wf $(ms)/ignore.pl >> $@
 	$(RO)
@@ -79,6 +80,8 @@ rmsync: $(mdirs:%=%.rmsync) makestuff.msync commit.time
 rup: $(mdirs:%=%.rup) makestuff.up up.time
 
 mup: master up.time
+
+bump: makestuff.up up.time
 
 %.up: %
 	cd $< && $(MAKE) up.time
@@ -350,6 +353,11 @@ newstuff:
 comstuff:
 	git submodule foreach --recursive '(ls -d makestuff && make syncstuff) ||: '
 
+comcom: 
+	git submodule foreach --recursive '(ls -d makestuff && make tsync) ||: '
+
+getstuff: git_check newstuff comstuff
+
 syncstuff: makestuff
 	git add $< 
 	git commit -m $@
@@ -390,10 +398,16 @@ csstuff: makestuff.push $(clonedirs:%=%.csstuff) ;
 %.csstuff: 
 	cd $* && $(MAKE) makestuff.msync && $(MAKE) csstuff
 
-makeignore: $(clonedirs:%=%.makeignore) ;
+## Hybridizing
+hybridignore: cloneignore modignore
+cloneignore: $(clonedirs:%=%.cloneignore) ;
+modignore: $(mdirs:%=%.modignore) ;
 
-%.makeignore: 
-	cd $* && $(MAKE) Makefile.ignore
+%.cloneignore: 
+	cd $* && $(MAKE) Makefile.ignore && $(MAKE) cloneignore
+
+%.modignore: 
+	cd $* && $(MAKE) Makefile.ignore && $(MAKE) modignore
 
 Makefile.ignore:
 	perl -pi -e 's/(Sources.*).gitignore/$$1.ignore/' Makefile
@@ -419,6 +433,7 @@ Ignore += $(clonedirs)
 
 ## Old files
 
+Ignore += *.oldfile
 %.oldfile:
 	-$(RM) $(basename $*).*.oldfile
 	$(MVF) $(basename $*) tmp_$(basename $*)
