@@ -395,9 +395,9 @@ csstuff: makestuff.push $(clonedirs:%=%.csstuff) ;
 	cd $* && $(MAKE) makestuff.msync && $(MAKE) csstuff
 
 ## Hybridizing
+hybridignore: cloneignore modignore
 cloneignore: $(clonedirs:%=%.cloneignore) ;
 modignore: $(mdirs:%=%.modignore) ;
-hybridignore: cloneignore modignore
 
 %.modignore: 
 	cd $* && $(MAKE) Makefile.ignore && $(MAKE) modignore
