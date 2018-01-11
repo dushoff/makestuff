@@ -31,6 +31,7 @@ copy.tex:
 talkdir/%:
 	$(MAKE) talkdir
 
+Makefile: talkdir
 talkdir:
 	/bin/ln -fs $(talkdir) $@
 
