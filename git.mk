@@ -86,6 +86,7 @@ bump: makestuff.up up.time
 %.up: %
 	cd $< && $(MAKE) up.time
 
+## The alternative is for bootstrapping
 %.rup: %
 	cd $< && ($(MAKE) rup || $(MAKE) makestuff.pull)
 
