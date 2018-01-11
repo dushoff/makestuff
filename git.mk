@@ -348,6 +348,8 @@ newstuff:
 	git submodule foreach --recursive 'ls -d makestuff || git pull'
 
 ## Clumsily sync after doing that
+## This goes through directories that have makestuff and adds and commits just the makestuff
+## Should have something else to autosync the makestuff directories
 comstuff:
 	git submodule foreach --recursive '(ls -d makestuff && make syncstuff) ||: '
 
@@ -359,6 +361,8 @@ getstuff: git_check newstuff comstuff
 syncstuff: makestuff
 	git add $< 
 	git commit -m $@
+
+getstuff: git_check newstuff comstuff
 
 ## Watch out for the danger of committing without syncing. The higher-level repos may be more up-to-date than the lower ones…
 
