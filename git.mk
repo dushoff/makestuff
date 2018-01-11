@@ -434,7 +434,7 @@ Ignore += $(clonedirs)
 
 ## Old files
 
-Ignore += *.oldfile
+Ignore += *.oldfile *.olddiff
 %.oldfile:
 	-$(RM) $(basename $*).*.oldfile
 	$(MVF) $(basename $*) tmp_$(basename $*)
@@ -442,8 +442,10 @@ Ignore += *.oldfile
 	cp $(basename $*) $@
 	$(MV) tmp_$(basename $*) $(basename $*)
 
-%.olddiff: $(wildcard %*)
-	-$(DIFF) $* $*.*.oldfile > $@
+## Chaining trick to always remake
+%.olddiff: %.old.diff ;
+%.old.diff: %
+	-$(DIFF) $* $*.*.oldfile > $*.olddiff
 
 ######################################################################
 
