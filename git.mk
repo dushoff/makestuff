@@ -38,7 +38,7 @@ up.time: commit.time
 	git push -u origin $(BRANCH)
 	touch $@
 
-## Is this squeedled
+## up.time always pulls before trying to push, so this should sync
 sync: 
 	$(RM) up.time
 	$(MAKE) up.time
