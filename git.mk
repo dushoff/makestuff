@@ -324,6 +324,7 @@ rumfetch: rupdate rfetch rmaster
 rupdate:
 	git submodule update --init --recursive
 
+## Is this one the problem?
 rmaster: 
 	git submodule foreach --recursive git checkout master
 
