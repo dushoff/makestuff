@@ -17,7 +17,7 @@ gptarget:
 	$(MAKE) $<.gp
 
 pushtarget:
-	$(MAKE) $<.push
+	$(MAKE) $<.pd
 
 target.mk:
 	$(CP) $(ms)/$@ .
