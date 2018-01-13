@@ -22,7 +22,7 @@ Sources += .ignore ignore.default ignore.pl
 
 # Starting makefile for other projects
 
-Sources += makefile.mk hooks.mk upstuff.mk localstuff.mk
+Sources += makefile.mk hooks.mk localstuff.mk
 
 # Bootstrap stuff
 # Want to be able to change this stuff locally
@@ -30,6 +30,8 @@ Sources += makefile.mk hooks.mk upstuff.mk localstuff.mk
 	$(CP) $< $@
 
 Sources += os.mk unix.mk linux.mk windows.mk up.mk
+
+Sources += hybrid/*.mk
 
 ######################################################################
 

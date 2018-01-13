@@ -12,6 +12,8 @@ endif
 
 ######################################################################
 
+## Ignoring Make this a separate file?? ignore.mk
+
 ## We don't want automatic gitignore rule to work in makestuff
 ## the perl dependency should stop it
 
@@ -23,12 +25,45 @@ export Ignore += up.time commit.time commit.default dotdir/ clonedir/
 	perl -wf $(ms)/ignore.pl >> $@
 	$(RO)
 
+## Hybridizing and cleaning up; some of these rules should be phased out
+hybridignore: cloneignore modignore
+cloneignore: $(clonedirs:%=%.cloneignore) ;
+modignore: $(mdirs:%=%.modignore) ;
+
+%.cloneignore: 
+	cd $* && $(MAKE) Makefile.ignore && $(MAKE) cloneignore
+
+%.modignore: 
+	cd $* && $(MAKE) Makefile.ignore && $(MAKE) modignore
+
+Makefile.ignore:
+	perl -pi -e 's/(Sources.*).gitignore/$$1.ignore/' Makefile
+	-git rm .gitignore
+
+Ignore += $(clonedirs)
+
 ##################################################################
 
 ### Push and pull
 
 branch:
 	@echo $(BRANCH)
+
+commit.time: $(Sources)
+	$(MAKE) .gitignore
+	-git add -f $^
+	echo "Autocommit ($(notdir $(CURDIR)))" > $@
+	!(git commit --dry-run >> $@) || (perl -pi -e 's/^/#/ unless /Autocommit/' $@ && $(EDIT) $@)
+	$(git_check) || (perl -ne 'print unless /#/' $@ | git commit -F -)
+	date >> $@
+
+## This logic could probably be integrated better with commit.time
+## Trying something … last line of recipe
+commit.default: $(Sources)
+	git add -f $^ 
+	-git commit -m "Pushed automatically"
+	touch $@
+	touch commit.time
 
 pull: commit.time
 	git pull
@@ -39,7 +74,7 @@ up.time: commit.time
 	git push -u origin $(BRANCH)
 	touch $@
 
-## up.time always pulls before trying to push, so this should sync
+## up.time syncs as long as it's out of date, so this should work
 sync: 
 	$(RM) up.time
 	$(MAKE) up.time
@@ -92,10 +127,15 @@ bump: makestuff.up up.time
 
 ######################################################################
 
-## This needs work. Should be autosync, I guess. Use git_check if it works.
+## autosync stuff not consolidated, needs work. 
 remotesync: commit.default
 	git pull
 	git push -u origin $(BRANCH)
+
+%.autosync: %
+	cd $< && $(MAKE) remotesync
+
+######################################################################
 
 %.master: %
 	cd $< && git checkout master
@@ -113,25 +153,8 @@ remotesync: commit.default
 %.push: %
 	cd $< && $(MAKE) up.time
 
-%.autosync: %
-	cd $< && $(MAKE) remotesync
-
 ## git_check is probably useful for some newer rules …
 git_check = git diff-index --quiet HEAD --
-
-commit.time: $(Sources)
-	$(MAKE) .gitignore
-	-git add -f $^
-	echo "Autocommit ($(notdir $(CURDIR)))" > $@
-	!(git commit --dry-run >> $@) || (perl -pi -e 's/^/#/ unless /Autocommit/' $@ && $(EDIT) $@)
-	$(git_check) || (perl -ne 'print unless /#/' $@ | git commit -F -)
-	date >> $@
-
-## This logic could probably be integrated better with commit.time
-commit.default: $(Sources)
-	git add -f $^ 
-	-git commit -m "Pushed automatically"
-	touch $@
 
 ######################################################################
 
@@ -145,6 +168,8 @@ commit.default: $(Sources)
 
 git_push:
 	$(mkdir)
+
+######################################################################
 
 ## Pages. Sort of like git_push, but for gh_pages (html, private repos)
 ## May want to refactor as for git_push above (break link from pages/* to * for robustness)
@@ -400,22 +425,45 @@ csstuff: makestuff.push $(clonedirs:%=%.csstuff) ;
 %.csstuff: 
 	cd $* && $(MAKE) makestuff.msync && $(MAKE) csstuff
 
-## Hybridizing
-hybridignore: cloneignore modignore
-cloneignore: $(clonedirs:%=%.cloneignore) ;
-modignore: $(mdirs:%=%.modignore) ;
+######################################################################
 
-%.cloneignore: 
-	cd $* && $(MAKE) Makefile.ignore && $(MAKE) cloneignore
+## New repos
+## We should have separate lines for different kinds:
+## master (postpone)
 
-%.modignore: 
-	cd $* && $(MAKE) Makefile.ignore && $(MAKE) modignore
+## Not tested; want to make a working repo soon!
+## container
+%.newcontainer: %.containerfiles %.first
 
-Makefile.ignore:
-	perl -pi -e 's/(Sources.*).gitignore/$$1.ignore/' Makefile
-	-git rm .gitignore
+%.containerfiles: %
+	! ls $*/Makefile || (echo new files: Makefile exists; return 1)
+	cp $(ms)/hybrid/container.mk $*/Makefile
+	cp $(ms)/hybrid/upstuff.mk $(ms)/target.mk $*
 
-Ignore += $(clonedirs)
+## working
+%.newwork: %.workfiles %.first ;
+
+%.workfiles: %
+	! ls $*/Makefile || (echo new files: Makefile exists; return 1)
+	echo "# $*" > $*/Makefile
+	cat $(ms)/hybrid/work.mk >> $*/Makefile
+	cp $(ms)/hybrid/substuff.mk $(ms)/target.mk $*
+
+%.first:
+	cd $* && $(MAKE) makestuff && $(MAKE) commit.default && $(MAKE) newpush
+
+## Old
+
+%.newhybrid: % %.hybridfiles
+	cd $* && make makestuff
+
+%.hybridfiles: %
+	! ls $*/Makefile || (echo newhybrid: Makefile exists; return 1)
+	cp $(ms)/makefile.mk $*/Makefile
+	cp $(ms)/hybrid/makestuff.mk $(ms)/target.mk $*
+
+%/Makefile %/link.mk %/target.mk %/sub.mk:
+	$(CP) $(ms)/$(notdir $@) $*/
 
 ######################################################################
 
