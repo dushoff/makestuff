@@ -58,10 +58,12 @@ commit.time: $(Sources)
 	date >> $@
 
 ## This logic could probably be integrated better with commit.time
+## Trying something … last line of recipe
 commit.default: $(Sources)
 	git add -f $^ 
 	-git commit -m "Pushed automatically"
 	touch $@
+	touch commit.time
 
 pull: commit.time
 	git pull
@@ -72,7 +74,7 @@ up.time: commit.time
 	git push -u origin $(BRANCH)
 	touch $@
 
-## up.time syncs as long as it's out of date, so this should work fine
+## up.time syncs as long as it's out of date, so this should work
 sync: 
 	$(RM) up.time
 	$(MAKE) up.time
@@ -347,6 +349,7 @@ rumfetch: rupdate rfetch rmaster
 rupdate:
 	git submodule update --init --recursive
 
+## Is this one the problem?
 rmaster: 
 	git submodule foreach --recursive git checkout master
 
@@ -428,16 +431,26 @@ csstuff: makestuff.push $(clonedirs:%=%.csstuff) ;
 ## We should have separate lines for different kinds:
 ## master (postpone)
 
+## Not tested; want to make a working repo soon!
 ## container
-%.newcontainer: %
+%.newcontainer: %.containerfiles %.first
 
 %.containerfiles: %
 	! ls $*/Makefile || (echo new files: Makefile exists; return 1)
 	cp $(ms)/hybrid/container.mk $*/Makefile
 	cp $(ms)/hybrid/upstuff.mk $(ms)/target.mk $*
 
+## working
+%.newwork: %.workfiles %.first ;
+
+%.workfiles: %
+	! ls $*/Makefile || (echo new files: Makefile exists; return 1)
+	echo "# $*" > $*/Makefile
+	cat $(ms)/hybrid/work.mk >> $*/Makefile
+	cp $(ms)/hybrid/substuff.mk $(ms)/target.mk $*
+
 %.first:
-	cd $* && $(MAKE) makestuff && echo "First commit" > commit.time && $(MAKE) up.time
+	cd $* && $(MAKE) makestuff && $(MAKE) commit.default && $(MAKE) newpush
 
 ## Old
 
@@ -470,7 +483,7 @@ csstuff: makestuff.push $(clonedirs:%=%.csstuff) ;
 
 ## Old files
 
-Ignore += *.oldfile
+Ignore += *.oldfile *.olddiff
 %.oldfile:
 	-$(RM) $(basename $*).*.oldfile
 	$(MVF) $(basename $*) tmp_$(basename $*)
@@ -478,8 +491,10 @@ Ignore += *.oldfile
 	cp $(basename $*) $@
 	$(MV) tmp_$(basename $*) $(basename $*)
 
-%.olddiff: $(wildcard %*)
-	-$(DIFF) $* $*.*.oldfile > $@
+## Chaining trick to always remake
+%.olddiff: %.old.diff ;
+%.old.diff: %
+	-$(DIFF) $* $*.*.oldfile > $*.olddiff
 
 ######################################################################
 
