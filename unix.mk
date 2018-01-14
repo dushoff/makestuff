@@ -52,7 +52,7 @@ shell_execute = sh < $@
 # pdfcat = pdftk $(filter %.pdf, $^) cat output $@
 pdfcat = pdfjoin --outfile $@ $(filter %.pdf, $^) 
 
-%.push: %
+%.pd: %
 	$(CP) $< $(pushdir)
 
 %.pushpush: %

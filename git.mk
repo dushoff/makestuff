@@ -261,6 +261,7 @@ gitprune:
 
 ##################################################################
 
+### make gittest.mk
 ### Testing
 
 dotdir: $(Sources)
@@ -398,6 +399,14 @@ getstuff: git_check newstuff comstuff
 ## Keep newstuff to develop and push the more sophisticated stuff
 
 ######################################################################
+
+## Unified hybrid stuff
+
+hup: makestuff.up $(mdirs:%=%.hup) $(clonedirs:%=%.hup) up.time
+
+## Tortured logic to deal with propagation of makestuff
+%.hup:
+	((cd $* && $(MAKE) hup) && touch $@) || (cd $* && ($(MAKE) makestuff.msync || $(MAKE) makestuff.sync))
 
 ## Clones and hybrids (HOT)
 
