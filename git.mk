@@ -26,9 +26,12 @@ export Ignore += up.time commit.time commit.default dotdir/ clonedir/
 	$(RO)
 
 ## Hybridizing and cleaning up; some of these rules should be phased out
-hybridignore: cloneignore modignore
+hybridignore: $(clonedirs:%=%.hybridignore) $(mdirs:%=%.hybridignore);
 cloneignore: $(clonedirs:%=%.cloneignore) ;
 modignore: $(mdirs:%=%.modignore) ;
+
+%.hybridignore: 
+	cd $* && $(MAKE) Makefile.ignore && $(MAKE) hybridignore
 
 %.cloneignore: 
 	cd $* && $(MAKE) Makefile.ignore && $(MAKE) cloneignore
@@ -403,6 +406,7 @@ getstuff: git_check newstuff comstuff
 
 ## Unified hybrid stuff (HOT)
 
+## Push everything to repo
 hup: $(mdirs:%=%.hup) $(clonedirs:%=%.hup) makestuff.hup up.time
 
 Ignore += *.hup
@@ -412,6 +416,12 @@ makestuff.hup: %.hup: $(wildcard %/*.*)
 ## Maybe suppress
 %.hup: $(wildcard %/*.*)
 	((cd $* && $(MAKE) hup) && touch $@) || (cd $* && ($(MAKE) makestuff.msync || $(MAKE) makestuff.sync))
+
+## Push makestuff changes to subrepos
+srstuff:  $(mdirs:%=%.srstuff) $(clonedirs:%=%.srstuff)
+
+%.srstuff:
+	cd $*/makestuff && git checkout master && $(MAKE) pull
 
 ## Clones and hybrids
 
