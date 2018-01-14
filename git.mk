@@ -41,6 +41,7 @@ Makefile.ignore:
 	-git rm .gitignore
 
 Ignore += $(clonedirs)
+Sources += $(mdirs)
 
 ##################################################################
 
@@ -400,15 +401,16 @@ getstuff: git_check newstuff comstuff
 
 ######################################################################
 
-## Unified hybrid stuff
+## Unified hybrid stuff (HOT)
 
 hup: makestuff.up $(mdirs:%=%.hup) $(clonedirs:%=%.hup) up.time
 
+Ignore += *.hup
 ## Tortured logic to deal with propagation of makestuff
-%.hup: %/*.*
+%.hup: $(wildcard %/*.*)
 	((cd $* && $(MAKE) hup) && touch $@) || (cd $* && ($(MAKE) makestuff.msync || $(MAKE) makestuff.sync))
 
-## Clones and hybrids (HOT)
+## Clones and hybrids
 
 %.cloneup:
 	cd $* && $(MAKE) cloneup
