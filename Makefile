@@ -89,7 +89,7 @@ Sources += simptex.mk
 
 ## Various talkish stuff. Need to find out what's hot, what's not.
 
-Sources += linkdirs.mk newtalk.def newtalk.mk $(wildcard newtalk/*.*)
+Sources += linkdirs.mk newtalk.def newtalk.mk newtalk.md $(wildcard newtalk/*.*)
 
 Sources += lect.mk $(wildcard lect/*.*)
 
