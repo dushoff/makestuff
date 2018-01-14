@@ -410,11 +410,11 @@ getstuff: git_check newstuff comstuff
 hup: $(mdirs:%=%.hup) $(clonedirs:%=%.hup) makestuff.hup up.time
 
 Ignore += *.hup
-makestuff.hup: %.hup: $(wildcard %/*.*)
+makestuff.hup: %.hup: $(wildcard %/*)
 	((cd $* && $(MAKE) up.time) && touch $@)
 ## Tortured logic is only for propagation of makestuff
 ## Maybe suppress
-%.hup: $(wildcard %/*.*)
+%.hup: $(wildcard %/*)
 	((cd $* && $(MAKE) hup) && touch $@) || (cd $* && ($(MAKE) makestuff.msync || $(MAKE) makestuff.sync))
 
 ## Push makestuff changes to subrepos
