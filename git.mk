@@ -403,10 +403,13 @@ getstuff: git_check newstuff comstuff
 
 ## Unified hybrid stuff (HOT)
 
-hup: makestuff.up $(mdirs:%=%.hup) $(clonedirs:%=%.hup) up.time
+hup: $(mdirs:%=%.hup) $(clonedirs:%=%.hup) makestuff.hup up.time
 
 Ignore += *.hup
-## Tortured logic to deal with propagation of makestuff
+makestuff.hup: %.hup: $(wildcard %/*.*)
+	((cd $* && $(MAKE) up.time) && touch $@)
+## Tortured logic is only for propagation of makestuff
+## Maybe suppress
 %.hup: $(wildcard %/*.*)
 	((cd $* && $(MAKE) hup) && touch $@) || (cd $* && ($(MAKE) makestuff.msync || $(MAKE) makestuff.sync))
 
