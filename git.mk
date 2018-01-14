@@ -405,7 +405,7 @@ getstuff: git_check newstuff comstuff
 hup: makestuff.up $(mdirs:%=%.hup) $(clonedirs:%=%.hup) up.time
 
 ## Tortured logic to deal with propagation of makestuff
-%.hup:
+%.hup: %/*.*
 	((cd $* && $(MAKE) hup) && touch $@) || (cd $* && ($(MAKE) makestuff.msync || $(MAKE) makestuff.sync))
 
 ## Clones and hybrids (HOT)
