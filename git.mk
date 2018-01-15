@@ -275,7 +275,7 @@ dotdir: $(Sources)
 	-cp target.mk $@
 
 clonedir: $(Sources)
-	$(MAKE) push
+	$(MAKE) up.time
 	-/bin/rm -rf $@
 	git clone `git remote get-url origin` $@
 	-cp target.mk $@
