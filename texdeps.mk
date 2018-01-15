@@ -44,7 +44,7 @@ endif
 %.deps: .texdeps/%.mk 
 	-$(MAKE) -dr -f $< -f Makefile .texdeps/$*.out | tee .texdeps/$*.make.log 2>&1
 
-Ignore += *.log *.aux .*.aux *.blg *.bbl
+Ignore += *.log *.aux .*.aux *.blg *.bbl .texdeps/
 
 ## texfiles = $(wildcard *.tex)
 ## Ignore += $(texfiles:tex=log) $(texfiles:tex=aux) $(texfiles:tex=blg) $(texfiles:tex=bbl)

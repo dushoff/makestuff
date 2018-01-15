@@ -22,7 +22,7 @@ Sources += .ignore ignore.default ignore.pl
 
 # Starting makefile for other projects
 
-Sources += makefile.mk hooks.mk upstuff.mk localstuff.mk
+Sources += makefile.mk hooks.mk localstuff.mk
 
 # Bootstrap stuff
 # Want to be able to change this stuff locally
@@ -30,6 +30,8 @@ Sources += makefile.mk hooks.mk upstuff.mk localstuff.mk
 	$(CP) $< $@
 
 Sources += os.mk unix.mk linux.mk windows.mk up.mk
+
+Sources += hybrid/*.mk
 
 ######################################################################
 
@@ -87,7 +89,7 @@ Sources += simptex.mk
 
 ## Various talkish stuff. Need to find out what's hot, what's not.
 
-Sources += linkdirs.mk newtalk.def newtalk.mk $(wildcard newtalk/*.*)
+Sources += linkdirs.mk newtalk.def newtalk.mk newtalk.md $(wildcard newtalk/*.*)
 
 Sources += lect.mk $(wildcard lect/*.*)
 

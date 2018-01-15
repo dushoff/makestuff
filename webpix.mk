@@ -38,7 +38,11 @@ webpix: dir = $(Drop)
 webpix: $(Drop)/webpix
 	$(linkdir)
 
-$(Drop)/webpix:
+my_images: dir = $(Drop)
+my_images: $(Drop)/my_images
+	$(linkdir)
+
+$(Drop)/webpix $(Drop)/my_images:
 	$(mkdir)
 
 ## Reload a figure if you messed up the link or something
