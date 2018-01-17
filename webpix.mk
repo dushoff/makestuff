@@ -40,7 +40,7 @@ webpix: $(Drop)/webpix
 
 my_images: dir = $(Drop)
 my_images: $(Drop)/my_images
-	(linkdir)
+	$(linkdir)
 
 $(Drop)/webpix $(Drop)/my_images:
 	$(mkdir)
