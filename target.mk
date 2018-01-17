@@ -1,3 +1,3 @@
-target = store_all 
-target gptarget pngtarget pdftarget vtarget acrtarget: $(target)
+target = Makefile
+target gptarget pushtarget pngtarget pdftarget vtarget acrtarget: $(target)
 

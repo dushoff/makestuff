@@ -3,14 +3,16 @@
 ### Currently developing together with 3SS/Lectures
 ### Previously used with math_talks
 
-### Lives in main directory now … use allsteps only as needed
+Ignore += webpix
 
 steps = $(wildcard *.step)
 Sources += $(steps)
 
+Ignore += $(steps:%=%.mk)
 %.step.mk: %.step $(ms)/webmk.pl
 	$(PUSH)
 
+Ignore += $(steps:.step=.html)
 %.html: %.step.mk $(ms)/webhtml.pl
 	$(MAKE) -f $< -f $(ms)/webtrans.mk images
 	$(MAKE) -f $< -f $(ms)/webtrans.mk thumbs
@@ -20,6 +22,7 @@ Sources += $(steps)
 htmls =  $(steps:.step=.html)
 
 ## Grand overview file
+Ignore += all.html
 all.html: $(htmls)
 	$(cat)
 
@@ -35,7 +38,11 @@ webpix: dir = $(Drop)
 webpix: $(Drop)/webpix
 	$(linkdir)
 
-$(Drop)/webpix:
+my_images: dir = $(Drop)
+my_images: $(Drop)/my_images
+	$(linkdir)
+
+$(Drop)/webpix $(Drop)/my_images:
 	$(mkdir)
 
 ## Reload a figure if you messed up the link or something
@@ -44,6 +51,7 @@ $(Drop)/webpix:
 	$(MAKE) $*
 
 ## Use generated make rules appropriately
+Ignore += allsteps.mk
 stepmks = $(steps:.step=.step.mk)
 Makefile: allsteps.mk
 allsteps.mk: $(stepmks)

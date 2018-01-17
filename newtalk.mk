@@ -1,6 +1,9 @@
+Ignore += talkdir
+
 %.txt.fmt: txt.format $(talkdir)/fmt.pl
 	$(PUSHSTAR)
 
+Ignore += txt.format
 txt.format: $(talkdir)/txt.format local.txt.format
 	$(rm)
 	$(cat)
@@ -28,25 +31,31 @@ copy.tex:
 talkdir/%:
 	$(MAKE) talkdir
 
+Makefile: talkdir
 talkdir:
 	/bin/ln -fs $(talkdir) $@
 
+Ignore += *.final.*
 .PRECIOUS: %.final.tex
 %.final.tex: %.txt beamer.tmp final.txt.fmt $(talkdir)/lect.pl
 	$(PUSH)
 
+Ignore += *.draft.*
 .PRECIOUS: %.draft.tex
 %.draft.tex: %.txt beamer.tmp draft.txt.fmt $(talkdir)/lect.pl
 	$(PUSH)
 
+Ignore += *.handouts.*
 .PRECIOUS: %.handouts.tex
 %.handouts.tex: %.txt notes.tmp handouts.txt.fmt $(talkdir)/lect.pl
 	$(PUSH)
 
+Ignore += *.complete.*
 .PRECIOUS: %.complete.tex
 %.complete.tex: %.txt notes.tmp complete.txt.fmt $(talkdir)/lect.pl
 	$(PUSH)
 
+Ignore += *.complete.*
 .PRECIOUS: %.outline.tex
 %.outline.tex: %.txt notes.tmp outline.txt.fmt $(talkdir)/lect.pl
 	$(PUSH)

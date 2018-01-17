@@ -1,4 +1,8 @@
 # Push runs the first perl script among its dependencies, using all the other dependencies as arguments
+
+## Just the command (refactor using this?)
+PERLEX = perl -wf $(filter %.pl, $^)
+
 PUSH = perl -wf $(filter %.pl, $^) $(filter-out %.pl, $^) > $@
 
 # Pushout adds the name of the output file as the first argument (assuming you only have one .pl dependency)
