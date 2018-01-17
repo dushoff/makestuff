@@ -6,6 +6,8 @@ ifndef slowdir
 slowdir = slow
 endif
 
+Ignore += $(slowdir)
+
 ifndef cachedir
 cachedir = git_cache
 endif
