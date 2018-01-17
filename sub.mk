@@ -6,10 +6,11 @@ Sources += $(ms)
 
 Makefile: $(ms)
 $(ms):
-	git submodule add https://github.com/dushoff/$@.git
+	git submodule add -b master https://github.com/dushoff/$@.git
 
-$(ms)/%.mk: 
-	git submodule init $(ms) 
-	git submodule update $(ms) 
+$(ms)/%.mk: $(ms) $(ms)/Makefile
 	touch $@
 
+$(ms)/Makefile:
+	git submodule update --init $(ms) 
+	touch $@

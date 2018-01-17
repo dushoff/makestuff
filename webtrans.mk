@@ -10,6 +10,12 @@ thumbs: $(thumbs)
 %.thumb.png: %.gif
 	convert -resize x200 $< $@
 
-## Really belongs in webpix, since it's not html-specific. Eliminate when legacies are gone
+## Generic transformations
 %.png: %.svg
+	convert $< $@
+
+%.png: %.gif
+	convert $< $@
+
+%.png: %.pdf
 	convert $< $@

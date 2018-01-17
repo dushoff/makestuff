@@ -3,12 +3,12 @@
 
 cmain = NULL
 
+## Made a strange loop _once_ (doesn't seem to be used anyway).
+# -include $(BRANCH).mk
+
 ifndef BRANCH
 BRANCH=master
 endif
-
-## Made a strange loop _once_ (doesn't seem to be used anyway).
-# -include $(BRANCH).mk
 
 ##################################################################
 
@@ -17,25 +17,21 @@ endif
 branch:
 	@echo $(BRANCH)
 
-newpush: commit.time
-	git push -u origin master
-
-push: commit.time
-	git push -u origin $(BRANCH)
-
 pull: commit.time
 	git pull
 	touch $<
 
-pullup: commit.time
+up.time: commit.time
 	git pull
-	-git submodule update
-	touch $<
+	git push -u origin $(BRANCH)
+	touch $@
 
-rebase: commit.time
-	git fetch
-	git rebase origin/$(BRANCH)
-	touch $<
+sync: 
+	$(RM) up.time
+	$(MAKE) up.time
+
+newpush: commit.time
+	git push -u origin $(BRANCH)
 
 addsync: $(add_cache)
 	touch Makefile
@@ -45,30 +41,38 @@ tsync:
 	touch Makefile
 	$(MAKE) sync
 
-rbsync:
-	$(MAKE) rebase
-	$(MAKE) push
-
-psync:
-	$(MAKE) pull
-	$(MAKE) push
-
-sync: psync ;
-
 msync: commit.time
 	git checkout master
 	$(MAKE) sync
 
 ######################################################################
 
-## Recursive sync everything to master. Be careful, I guess.
-## mdirs for subdirectories that should be synced to master branch
+## Recursive make-based sync. 
+## NOT TESTED (and not needed?)
+## Work on an autosync first and then recurse that?
 rmsync: $(mdirs:%=%.rmsync) makestuff.msync commit.time
 	git checkout master
 	$(MAKE) sync
+	git status
 
-rmpull: $(mdirs:%=%.rmpull) makestuff.mpull
+### up
+### Why is this better than a foreach approach?
+### I guess because I control the order.
+### Probably some hybrid approach would be best...
 
+rup: $(mdirs:%=%.rup) makestuff.up up.time
+
+mup: master up.time
+
+%.up: %
+	cd $< && $(MAKE) up.time
+
+%.rup: %
+	cd $< && ($(MAKE) rup || $(MAKE) makestuff.pull)
+
+######################################################################
+
+## This needs work. Should be autosync, I guess. Use git_check if it works.
 remotesync: commit.default
 	git pull
 	git push -u origin $(BRANCH)
@@ -76,41 +80,27 @@ remotesync: commit.default
 %.master: %
 	cd $< && git checkout master
 
-%.mpull: %.master %.pull ;
-%.pull: %
-	cd $< && $(MAKE) pull
-
-%.newpush: %
-	cd $< && $(MAKE) newpush
+%.status: %
+	cd $< && git status
 
 %.msync: %.master %.sync ;
 %.sync: %
 	cd $< && $(MAKE) sync
 
-%.rmsync: %
-	cd $< && ($(MAKE) rmsync || $(MAKE) msync)
-
-%.rmpull: %
-	cd $< && ($(MAKE) rmpull || $(MAKE) msync)
-
 %.autosync: %
 	cd $< && $(MAKE) remotesync
 
-## Archive is _deprecated_; see .gp:
-## If you really want something remade and archived automatically, it can be a source
-
-## Check function (how to use??)
-
+## git_check is probably useful for some newer rules …
 git_check = git diff-index --quiet HEAD --
 
 commit.time: $(Sources)
-	git add -f $(Sources) $(Archive)
+	-git add -f $^
 	echo "Autocommit ($(notdir $(CURDIR)))" > $@
-	-git commit --dry-run | perl -pe 's/^/#/' >> $@
-	$(EDIT) $@
+	!(git commit --dry-run >> $@) || (perl -pi -e 's/^/#/ unless /Autocommit/' $@ && $(EDIT) $@)
 	$(git_check) || (perl -ne 'print unless /#/' $@ | git commit -F -)
 	date >> $@
 
+## This logic could probably be integrated better with commit.time
 commit.default: $(Sources)
 	git add -f $^ 
 	-git commit -m "Pushed automatically"
@@ -141,7 +131,7 @@ pages/%: % pages
 	$(copy)
 
 pages:
-	$(makesub)
+	git clone `git remote get-url origin` $@
 	cd $@ && (git checkout gh-pages || $(orphanpages)
 
 define orphanpages
@@ -231,9 +221,15 @@ clonedir: $(Sources)
 	$(MAKE) push
 	-/bin/rm -rf $@
 	git clone `git remote get-url origin` $@
+	-cp target.mk $@
+
+%.localdir: %
+	-$(CP) local.mk $*
 
 %.dirtest: %
 	cd $< && $(MAKE) Makefile && $(MAKE) makestuff && $(MAKE) && $(MAKE) vtarget
+
+%.localtest: % %.localdir %.dirtest ;
 
 testclean:
 	-/bin/rm -rf clonedir dotdir
@@ -254,6 +250,12 @@ testclean:
 
 %.master:
 	cd $* && git checkout master
+master: 
+	git checkout master
+
+## Try this stronger rule some time!
+# %.master: %
+#	cd $< && git checkout master
 
 update: sync
 	git rebase $(cmain) 
@@ -280,22 +282,78 @@ hupstream:
 
 ######################################################################
 
-## Recursive updating with submodules
+## Recursive updating using git submodule functions
 
-## Cribbed from https://stackoverflow.com/questions/10168449/git-update-submodule-recursive
-## Doesn't seem to do what I want
-## The problem is branching, I guess
+## Improved from https://stackoverflow.com/questions/10168449/git-update-submodule-recursive
+## Ideal approach would be to have all submodules made with -b from now on.
+
+## Get branch tracking and see how much it helps
+## Check https://stackoverflow.com/questions/1777854/git-submodules-specify-a-branch-tag/18799234#18799234 maybe?
+
+rum: rupdate rmaster
+ruc: rupdate rcheck
+rumfetch: rupdate rfetch rmaster
+
 rupdate:
 	git submodule update --init --recursive
+
+rmaster: 
+	git submodule foreach --recursive git checkout master
+
+rcheck: 
+	(git submodule foreach --recursive git branch | grep -B1 detached) ||:
+
+## Not sure what's good about this, nor why it apparently needs to be combined with rmaster
+## Should we be doing rum; rpull instead? Or nothing?
+rfetch:
 	git submodule foreach --recursive git fetch
-	git submodule foreach --recursive git merge origin master
+
+######################################################################
+
+## Keep makestuff up to date without pointless manual commits
+## ls -d makestuff is a cheap test for "is this makestuff"?
+## Should figure out the right way to test .==makestuff
+
+git_check:
+	$(git_check)
+
+## Push new makestuff (probably from this section) to all submodules
+newstuff:
+	git submodule foreach --recursive 'ls -d makestuff || git pull'
+
+## Clumsily sync after doing that
+comstuff:
+	git submodule foreach --recursive '(ls -d makestuff && make syncstuff) ||: '
+
+getstuff: git_check newstuff comstuff
+
+syncstuff: makestuff
+	git add $< 
+	git commit -m $@
+
+## Watch out for the danger of committing without syncing. The higher-level repos may be more up-to-date than the lower ones…
+
+## Better would be a hybrid approach.
+## A make rule that uses foreach (without --recursive) to recurse on itself
+## Keep newstuff to develop and push the more sophisticated stuff
+
+######################################################################
+
+## Violence
+
+## Remove a submodule
+%.rmsub:
+	-git rm -f $*
+	rm -rf .git/modules/$*
+	git config --remove-section submodule.$*
+
+## Force push a commit
+%.force:
+	git push -f origin  $*:master
 
 ######################################################################
 
 ## Old files
-## Should be modified to:
-	## Clear out old ones by default
-	## Use tmp_ instead of $(hide)
 
 %.oldfile:
 	-$(RM) $(basename $*).*.oldfile
@@ -303,6 +361,9 @@ rupdate:
 	git checkout $(subst .,,$(suffix $*)) -- $(basename $*)
 	cp $(basename $*) $@
 	$(MV) tmp_$(basename $*) $(basename $*)
+
+%.olddiff: $(wildcard %*)
+	-$(DIFF) $* $*.*.oldfile > $@
 
 ######################################################################
 

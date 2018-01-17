@@ -1,5 +1,9 @@
+### Rules for getting images from the web
 
-### Rules for getting stuff
+### Currently developing together with 3SS/Lectures
+### Previously used with math_talks
+
+### Lives in main directory now … use allsteps only as needed
 
 steps = $(wildcard *.step)
 Sources += $(steps)
@@ -8,16 +12,9 @@ Sources += $(steps)
 	$(PUSH)
 
 %.html: %.step.mk $(ms)/webhtml.pl
-	$(MAKE) -f $< -f $(ms)/webthumbs.mk images
-	$(MAKE) -f $< -f $(ms)/webthumbs.mk thumbs
+	$(MAKE) -f $< -f $(ms)/webtrans.mk images
+	$(MAKE) -f $< -f $(ms)/webtrans.mk thumbs
 	$(PUSHSTAR)
-
-## Generic transformations
-%.png: %.svg
-	convert $< $@
-
-%.png: %.gif
-	convert $< $@
 
 ## Digest files
 htmls =  $(steps:.step=.html)
@@ -26,24 +23,32 @@ htmls =  $(steps:.step=.html)
 all.html: $(htmls)
 	$(cat)
 
+######################################################################
+
 ## Make a webpix directory (user should define or pay attention to Drop)
-files: $(Drop)/webpix
-	$(forcelink)
+## WARNING, files directory no longer supported!!
+
+ifeq ($(Drop),)
+Drop = ~/Dropbox
+endif
+webpix: dir = $(Drop)
+webpix: $(Drop)/webpix
+	$(linkdir)
 
 $(Drop)/webpix:
 	$(mkdir)
 
-Makefile: files
-
-## Include generated make rules for these files
-Makefile: allsteps.mk
-
+## Reload a figure if you messed up the link or something
 %.rmk:
 	$(RM) $*
 	$(MAKE) $*
 
+## Use generated make rules appropriately
 stepmks = $(steps:.step=.step.mk)
+Makefile: allsteps.mk
 allsteps.mk: $(stepmks)
 	$(cat)
 
--include allsteps.mk
+webpix/%: allsteps.mk
+	$(MAKE) -f $< $@
+
