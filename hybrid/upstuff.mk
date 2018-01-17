@@ -6,7 +6,8 @@ ms = makestuff
 -include local.mk
 -include $(ms)/os.mk
 
-Sources += $(ms)
+## Better without this, right?
+## Sources += $(ms)
 
 Makefile: $(ms)
 $(ms): 
