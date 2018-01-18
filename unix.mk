@@ -15,6 +15,8 @@ ZIP = zip $@ $^
 readonly = chmod a-w $@
 RO = chmod a-w $@
 
+null = /dev/null
+
 hiddenfile = $(dir $1).$(notdir $1)
 hide = $(MVF) $1 $(dir $1).$(notdir $1)
 unhide = $(MVF) $(dir $1).$(notdir $1) $1
@@ -27,8 +29,8 @@ diff = $(DIFF) $^ > $@
 
 # Generic (vars that use the ones above)
 link = $(LN) $< $@
-linkdir = ls $(dir)/$@ && $(LNF) $(dir)/$@ .
-linkdirname = ls $(dir) && $(LNF) $(dir) $@ 
+linkdir = ls $(dir)/$@ > $(null) && $(LNF) $(dir)/$@ .
+linkdirname = ls $(dir) > $(null) && $(LNF) $(dir) $@ 
 
 forcelink = $(LNF) $< $@
 copy = $(CP) $< $@
@@ -50,7 +52,7 @@ shell_execute = sh < $@
 # pdfcat = pdftk $(filter %.pdf, $^) cat output $@
 pdfcat = pdfjoin --outfile $@ $(filter %.pdf, $^) 
 
-%.push: %
+%.pd: %
 	$(CP) $< $(pushdir)
 
 %.pushpush: %
