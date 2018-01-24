@@ -46,6 +46,7 @@ $(theobio_group):
 
 ## Can't use $(MAKE) because loops. Can't use % because unwanted dependency.
 ## Just have things that ask for Makefile ask for directory first?
+
 $(repofiles): %/Makefile:
 	git submodule init $*
 	git submodule update $*
@@ -59,6 +60,9 @@ $(repofiles): %/Makefile:
 #### go there and make and touch
 #### This rule can either be hot or cold, depending on whether there is a $(1) dependency. Hot right now. Should make a way to control it.
 #### Pulled the mk: ; from hotmake (see coldmake). It was interfering with init
+#### Looping with directory prereq, even though I'm using maketouch
+#### Any solution?
+#### This problem solved for now 2018 Jan 23 (Tue) by eliminating wrapR
 maketouch = cd $(1) && $$(MAKE) $$* && touch $$*
 define hotmake
 $(1)/%: $(1) $(1)/Makefile 
