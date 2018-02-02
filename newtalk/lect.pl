@@ -38,7 +38,7 @@ foreach (split /\n+/, $files{fmt}){
 $spec{PERC} = "\\%" unless defined $spec{PERC};
  
 # Top of template file
-my @tmp = split(/----------------------+\s+/, $files{tmp});
+my @tmp = split(/----------------------+\s+/, $files{tmp}) if defined $files{tmp};
 print $tmp[0] if defined $tmp[0];
  
 # Split input file
