@@ -412,9 +412,11 @@ hup: $(mdirs:%=%.hup) $(clonedirs:%=%.hup) makestuff.hup up.time
 Ignore += *.hup
 makestuff.hup: %.hup: $(wildcard %/*)
 	((cd $* && $(MAKE) up.time) && touch $@)
+
 ## Tortured logic is only for propagation of makestuff
 ## Maybe suppress
-%.hup: $(wildcard %/*)
+## Also, does not ever seem to go out-of-date; something about evaluation?
+%.hup: %/
 	((cd $* && $(MAKE) hup) && touch $@) || (cd $* && ($(MAKE) makestuff.msync || $(MAKE) makestuff.sync))
 
 ## Push makestuff changes to subrepos
