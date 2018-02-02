@@ -23,12 +23,17 @@
 
 ################################################################
 
+EXTRA %!
+
 INTRO INTRO %%
 
 DEFHEAD NULLSLIDE
 bank: HEAD %%
 
 FIRST NULLSLIDE
+bank: HEAD FIRST %!
+
+FIRST18 NULLSLIDE
 bank: HEAD FIRST %!
 midterm1: %!
 
