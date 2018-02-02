@@ -55,7 +55,7 @@ Ignore += *.complete.*
 %.complete.tex: %.txt notes.tmp complete.txt.fmt $(talkdir)/lect.pl
 	$(PUSH)
 
-Ignore += *.complete.*
+Ignore += *.outline.*
 .PRECIOUS: %.outline.tex
 %.outline.tex: %.txt notes.tmp outline.txt.fmt $(talkdir)/lect.pl
 	$(PUSH)

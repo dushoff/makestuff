@@ -28,8 +28,25 @@ $(Bio1M):
 $(theobio_group):
 	git submodule add https://github.com/mac-theobio/$@.git || mkdir $@
 
+######################################################################
+
+%/target.mk:
+	-cp $(ms)/target.mk $@
+
+%/sub.mk:
+	-cp $(ms)/sub.mk $@
+
+%/Makefile:
+	echo "# $*" > $@
+	cat $(ms)/hooks.mk >> $@
+	cat $(ms)/makefile.mk >> $@
+	cd $* && $(MAKE) Makefile
+
+######################################################################
+
 ## Can't use $(MAKE) because loops. Can't use % because unwanted dependency.
 ## Just have things that ask for Makefile ask for directory first?
+
 $(repofiles): %/Makefile:
 	git submodule init $*
 	git submodule update $*
@@ -42,9 +59,12 @@ $(repofiles): %/Makefile:
 #### make the directory
 #### go there and make and touch
 #### This rule can either be hot or cold, depending on whether there is a $(1) dependency. Hot right now. Should make a way to control it.
+#### Pulled the mk: ; from hotmake (see coldmake). It was interfering with init
+#### Looping with directory prereq, even though I'm using maketouch
+#### Any solution?
+#### This problem solved for now 2018 Jan 23 (Tue) by eliminating wrapR
 maketouch = cd $(1) && $$(MAKE) $$* && touch $$*
 define hotmake
-$(1)/%.mk: ;
 $(1)/%: $(1) $(1)/Makefile 
 	$(maketouch)
 endef
@@ -65,25 +85,15 @@ $(foreach dir,$(repodirs),$(eval $(call hotmake,$(dir))))
 # The current .init rule _makes_ then _deletes_ the non-submodule version.
 # There was insane confusion with giving it a different name.
 %.init: 
-	- $(MAKE) -f $(ms)/repos.mk $*
-	- cd $* && (git checkout -b master || git checkout master)
-	$(MAKE) -f $(ms)/init.mk $*/target.mk $*/sub.mk $*/Makefile
-	cd $* && $(MAKE) makestuff && $(MAKE) newpush
-	$(RMR) $*
+	-$(RMR) $@ || !ls $@
+	$(MAKE) -f $(ms)/repos.mk $* || ls $* > /dev/null
+	mv $* $@
+	cd $@ && (git checkout -b master || git checkout master)
+	$(MAKE) $@/target.mk $@/sub.mk $@/Makefile
+	cd $@ && $(MAKE) makestuff && $(MAKE) newpush
+	$(RMR) $@
 
 %.sub: % %/Makefile ;
 
 %.create: %.init %.sub ;
-
-%/target.mk:
-	-cp $(ms)/target.mk $@
-
-%/sub.mk:
-	-cp $(ms)/sub.mk $@
-
-%/Makefile:
-	echo "# $*" > $@
-	cat $(ms)/hooks.mk >> $@
-	cat $(ms)/makefile.mk >> $@
-	cd $* && $(MAKE) Makefile
 
