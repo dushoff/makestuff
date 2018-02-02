@@ -229,10 +229,12 @@ forget:
 	git reset --hard
 
 # Clean all unSourced files (files with extensions only) from directory and repo!!!!
+# Dangerous and rarely used
 clean_repo:
 	git rm --cached --ignore-unmatch $(filter-out $(Sources) $(Archive), $(wildcard *.*))
 
 # Just from directory (also cleans Archive files)
+Ignore += .clean_dir
 clean_dir:
 	-$(RMR) .$@
 	mkdir .$@
@@ -414,9 +416,11 @@ hup: $(mdirs:%=%.hup) $(clonedirs:%=%.hup) makestuff.hup up.time
 Ignore += *.hup
 makestuff.hup: %.hup: $(wildcard %/*)
 	((cd $* && $(MAKE) up.time) && touch $@)
+
 ## Tortured logic is only for propagation of makestuff
 ## Maybe suppress
-%.hup: $(wildcard %/*)
+## Also, does not ever seem to go out-of-date; something about evaluation?
+%.hup: %/
 	((cd $* && $(MAKE) hup) && touch $@) || (cd $* && ($(MAKE) makestuff.msync || $(MAKE) makestuff.sync))
 
 ## Push makestuff changes to subrepos
