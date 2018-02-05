@@ -24,13 +24,15 @@ endif
 # 	$(MAKE) -q -f .texdeps/$*.mk -f Makefile .texdeps/$*.out || $(MAKE) -n
 #	-$(MAKE) -f .texdeps/$*.mk -f Makefile .texdeps/$*.out
 
-.texdeps/%.mk: %.tex .texdeps 
+.texdeps/%.mk: %.tex 
+	$(MAKE) .texdeps 
 	perl -wf $(ms)/texdeps.pl $< > $@
 
 ## This rule makes the first copy of the .out
 ## Meant to be over-riden by rules in the corresponding .mk
 .PRECIOUS: .texdeps/%.out
-.texdeps/%.out: .texdeps 
+.texdeps/%.out: 
+	$(MAKE) .texdeps 
 	touch $@
 
 .texdeps:
