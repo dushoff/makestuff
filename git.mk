@@ -52,6 +52,7 @@ Sources += $(mdirs)
 
 branch:
 	@echo $(BRANCH)
+	git branch
 
 commit.time: $(Sources)
 	$(MAKE) .gitignore
@@ -84,6 +85,7 @@ sync:
 	$(MAKE) up.time
 
 newpush: commit.time
+	-git pull
 	git push -u origin $(BRANCH)
 
 addsync: $(add_cache)
@@ -227,10 +229,12 @@ forget:
 	git reset --hard
 
 # Clean all unSourced files (files with extensions only) from directory and repo!!!!
+# Dangerous and rarely used
 clean_repo:
 	git rm --cached --ignore-unmatch $(filter-out $(Sources) $(Archive), $(wildcard *.*))
 
 # Just from directory (also cleans Archive files)
+Ignore += .clean_dir
 clean_dir:
 	-$(RMR) .$@
 	mkdir .$@
@@ -284,7 +288,7 @@ clonedir: $(Sources)
 	-$(CP) local.mk $*
 
 %.dirtest: %
-	cd $< && $(MAKE) Makefile && $(MAKE) makestuff && $(MAKE) && $(MAKE) vtarget
+	cd $< && $(MAKE) Makefile && $(MAKE) makestuff && $(MAKE) rum && $(MAKE) && $(MAKE) vtarget
 
 %.localtest: % %.localdir %.dirtest ;
 
@@ -299,7 +303,7 @@ testclean:
 	$(MAKE) commit.time
 	git push -u origin $(BRANCH)
 
-%.branch: sync
+%.branch: newpush
 	git checkout $*
 
 %.checkbranch:
@@ -412,9 +416,11 @@ hup: $(mdirs:%=%.hup) $(clonedirs:%=%.hup) makestuff.hup up.time
 Ignore += *.hup
 makestuff.hup: %.hup: $(wildcard %/*)
 	((cd $* && $(MAKE) up.time) && touch $@)
+
 ## Tortured logic is only for propagation of makestuff
 ## Maybe suppress
-%.hup: $(wildcard %/*)
+## Also, does not ever seem to go out-of-date; something about evaluation?
+%.hup: %/
 	((cd $* && $(MAKE) hup) && touch $@) || (cd $* && ($(MAKE) makestuff.msync || $(MAKE) makestuff.sync))
 
 ## Push makestuff changes to subrepos
