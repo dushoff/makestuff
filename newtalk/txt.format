@@ -107,6 +107,12 @@ final: * \uncover<+->{\color{blue} %%}
 draft: * {\color{blue} %%}
 outline: %!
 
+NOANS 
+handouts: \mbox{}%!
+complete: {\bf\underline{Answer postponed}: }%%
+final: * \uncover<+->{\color{blue} %!}
+draft: * {\color{blue} NOANS}
+outline: %!
 
 # Comments are shown in class, but not in the notes
 COMMENT %!
@@ -115,7 +121,7 @@ draft final: {\color{shortcolor}\sl %%}
 
 # For the future; show in draft only
 CHANGE %!
-draft: {\color{red}\textbf{%%}}
+draft: {\color{red}\textbf{cchange: %%}}
 
 CORRECTION {\color{red}\textbf{%%}}
 
@@ -229,6 +235,10 @@ DIAGRAM ^WIDEFIG % \vspace{-0.7in}
 SIDEFIG %!
 draft final: ^WIDEFIG %%
 
+## High version
+HIDEFIG %!
+draft final: ^HFIG 0.45 %%
+
 # Column figure by default is wide in presentations only
 CFIG ^FIG %%
 draft final: ^WIDEFIG %%
@@ -253,6 +263,7 @@ outline: %!
 
 HREF \href{%}{%%}
 draft final: \href{%}{\color{linkcolor}%%}
+handouts: Link: \href{%}{%%}
 outline: %!
 
 ### Input
