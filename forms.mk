@@ -1,5 +1,9 @@
 include $(ms)/forms.def
 
+formDrop: dir = $(formDrop)
+formDrop: 
+	$(linkdirname)
+
 up_date: 
 	date +"%d %b %Y" > date.txt
 
@@ -36,10 +40,7 @@ name.pdf: name.txt
 name.%.png: name.png
 	convert -scale $*% $< $@
 
-sig.%.jpg: $(gitroot)/Correspondence/sig.jpg
-	convert -scale $*% $< $@
-
-sig.%.png: $(gitroot)/Correspondence/sig.png
+formDrop/sig.%.jpg: formDrop/sig.jpg
 	convert -scale $*% $< $@
 
 sig.%.pdf: sig.%.jpg
