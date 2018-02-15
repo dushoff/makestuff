@@ -420,7 +420,7 @@ makestuff.hup: %.hup: $(wildcard %/*)
 ## Tortured logic is only for propagation of makestuff
 ## Maybe suppress
 ## Also, does not ever seem to go out-of-date; something about evaluation?
-%.hup: %/
+%.hup: %/*
 	((cd $* && $(MAKE) hup) && touch $@) || (cd $* && ($(MAKE) makestuff.msync || $(MAKE) makestuff.sync))
 
 ## Push makestuff changes to subrepos
