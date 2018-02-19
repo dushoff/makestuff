@@ -21,5 +21,5 @@
 	cp $(ms)/makefile.mk $*/Makefile
 	cp $(ms)/hybrid/makestuff.mk $(ms)/target.mk $*
 
-%/Makefile %/link.mk %/target.mk %/sub.mk:
+%/link.mk %/target.mk %/sub.mk:
 	$(CP) $(ms)/$(notdir $@) $*/
