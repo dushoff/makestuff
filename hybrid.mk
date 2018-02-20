@@ -26,9 +26,6 @@ endef
 	cp $(ms)/makefile.mk $*/Makefile
 	cp $(ms)/hybrid/makestuff.mk $(ms)/target.mk $*
 
-<<<<<<< HEAD
-%/link.mk %/target.mk %/sub.mk:
-=======
 %.newwork: % %.workfiles
 	$(firstpush)
 
@@ -38,5 +35,4 @@ endef
 	cp $(ms)/hybrid/makestuff.mk $(ms)/target.mk $*
 
 %/Makefile %/link.mk %/target.mk %/sub.mk:
->>>>>>> 8146f2eb50cdb4c0b5232591dbe607842deb7040
 	$(CP) $(ms)/$(notdir $@) $*/
