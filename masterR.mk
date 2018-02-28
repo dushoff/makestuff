@@ -1,6 +1,6 @@
 
 %.master.R: %.Rout
-	- /bin/rm -f dotdir
+	- /bin/rm -rf dotdir
 	$(MAKE) dotdir.localdir
 	cd dotdir && $(MAKE) makestuff && $(MAKE) -ndr $*.Rout > make.log
 	perl -wf $(ms)/masterR.pl dotdir/make.log > $@
