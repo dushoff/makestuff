@@ -10,3 +10,5 @@ Ignore += *.master.mk
 	perl -wf $(ms)/masterRfiles.pl $(<:.masterscript=.master.R) > $@
 	$(MAKE) -f $@ -f Makefile runs
 
+%.masterR: %.masterscript %.master.mk ;
+
