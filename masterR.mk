@@ -2,7 +2,8 @@
 %.masterscript: %.Rout
 	- /bin/rm -rf dotdir
 	$(MAKE) dotdir.localdir
-	cd dotdir && $(MAKE) makestuff && $(MAKE) -ndr $*.Rout > make.log
+	-cd dotdir && $(MAKE) makestuff
+	cd dotdir && $(MAKE) -ndr $*.Rout > make.log
 	perl -wf $(ms)/masterR.pl dotdir/make.log > $*.master.R
 
 Ignore += *.master.mk
