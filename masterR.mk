@@ -6,9 +6,7 @@
 	perl -wf $(ms)/masterR.pl dotdir/make.log > $*.master.R
 
 Ignore += *.master.mk
-%.master.mk: %.master.R
-	perl -wf $(ms)/masterRfiles.pl $< > $@
+%.master.mk: %.masterscript
+	perl -wf $(ms)/masterRfiles.pl $(<:.masterscript=.master.R) > $@
 	$(MAKE) -f $@ -f Makefile runs
-
-%.masterR: %.master.R %.master.mk ;
 
