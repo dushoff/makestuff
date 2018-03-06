@@ -124,5 +124,7 @@ MARK %!
 rub: \uline{%%}
 
 # Separate the two sections of an MC/SA test; ENDMC now obsoleted (but still around in Bio3SS)
+## Next time, move sa_inst to sahead?
+## The parsing is confusing
 STARTSA \cleardoublepage\input{sa_inst.tex}
 key rub mark: %!
