@@ -417,12 +417,6 @@ Ignore += *.hup
 makestuff.hup: %.hup: $(wildcard %/*)
 	((cd $* && $(MAKE) up.time) && touch $@)
 
-## Tortured logic is only for propagation of makestuff
-## Maybe suppress
-## Also, does not ever seem to go out-of-date; something about evaluation?
-%.hup: $(wildcard %/*)
-	((cd $* && $(MAKE) hup) && touch $@) || (cd $* && ($(MAKE) makestuff.msync || $(MAKE) makestuff.sync))
-
 ## Push makestuff changes to subrepos
 srstuff:  $(mdirs:%=%.srstuff) $(clonedirs:%=%.srstuff)
 
@@ -532,3 +526,14 @@ Ignore += *.oldfile *.olddiff
 
 store_all:
 	git config --global credential.helper 'store'
+
+######################################################################
+
+## SECONDEXPANSION stuff (it's a shame I can't just scope it)
+
+## Tortured logic is only for propagation of makestuff
+## Maybe suppress (the logic, not the whole thing)
+## Also, does not ever seem to go out-of-date; something about evaluation?
+.SECONDEXPANSION:
+%.hup: $$(wildcard $$*/*)
+	((cd $* && $(MAKE) hup) && touch $@) || (cd $* && ($(MAKE) makestuff.msync || $(MAKE) makestuff.sync))
