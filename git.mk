@@ -413,6 +413,12 @@ getstuff: git_check newstuff comstuff
 ## Push everything to repo
 hup: $(mdirs:%=%.hup) $(clonedirs:%=%.hup) makestuff.hup up.time
 
+## This doesn't work (see SECONDEXPANSION below)
+## SECONDEXPANSION version is too violent (tries to remake everything that exists)
+## Prematurely remakes makestuff.hup
+## IDEA: hup should depend on up.time, and other hups
+## Still not clear how to chain it best
+## OTHER idea: some sort of OR for the makestuff part (would still be violent, but might usually work)
 Ignore += *.hup
 makestuff.hup: %.hup: $(wildcard %/*)
 	((cd $* && $(MAKE) up.time) && touch $@)
