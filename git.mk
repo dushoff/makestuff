@@ -534,6 +534,7 @@ store_all:
 ## Tortured logic is only for propagation of makestuff
 ## Maybe suppress (the logic, not the whole thing)
 ## Also, does not ever seem to go out-of-date; something about evaluation?
+## SECONDEXPANSION fixes that, but makes it go into makestuff wrong
 .SECONDEXPANSION:
 %.hup: $$(wildcard $$*/*)
 	((cd $* && $(MAKE) hup) && touch $@) || (cd $* && ($(MAKE) makestuff.msync || $(MAKE) makestuff.sync))
