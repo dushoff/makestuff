@@ -13,3 +13,6 @@ Ignore += *.master.mk
 
 %.masterR: %.masterscript %.master.mk ;
 
+pushruns:
+	git add $(wildcard *.run.r)
+	touch Makefile
