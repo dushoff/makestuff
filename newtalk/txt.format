@@ -1,4 +1,4 @@
-# Rules for .format files
+
 ## Lines starting with # are comments
 ## General rules follow identifiers and are associated generally with the identifier
 ## Specific rules follow a list of format names ended by a colon
