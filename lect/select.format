@@ -23,14 +23,22 @@
 
 ################################################################
 
+EXTRA %!
+
+INTRO INTRO %%
+
 DEFHEAD NULLSLIDE
 bank: HEAD %%
 
+## These are weird; in future, only keep FIRST, SECOND etc. Rest can just be DEFHEADs
 FIRST NULLSLIDE
+bank: HEAD FIRST %!
+
+FIRST18 NULLSLIDE
 bank: HEAD FIRST %!
 midterm1: %!
 
-S17 NULLSLIDE
+SECOND NULLSLIDE
 bank: HEAD SECOND %!
 midterm2: %!
 
@@ -44,11 +52,11 @@ final: %!
 
 # Original Gamma used for final 2016
 
-# Delta now used for midterm1 2017
+# Delta used for midterm1 2017
 
 # S17 Second midterm 2017 (S17a, alternative questions for an injured kid)
 # Future: Use FIRST, SECOND and EXAM
-# Append suffixes when editing for next year
+# Append suffixes before editing for next year
 # Don't use F (final or first???)
 # 
 

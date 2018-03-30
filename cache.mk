@@ -49,6 +49,13 @@ $(slowdir) $(cachedir):
 $(cachedir)/%.RData: %.RData
 	$(copy)
 
+## Rout stuff not tested!
+$(slowdir)/%.Rout:
+	$(MAKE) $(slowdir)
+	$(MAKE) $(cachedir)
+	$(MAKE) $(cachedir)/$*.Rout
+	(ls $@ > /dev/null 2>&1) || $(LNF) $(realpath .)/$(cachedir)/$*.Rout $(call hiddenfile,  $(realpath .)/$(cachedir)/$*.RData) $(slowdir)
+
 ## Use nocache to turn on dependencies and un-break the link
 ifdef nocache
 $(foreach target,$(notdir $(wildcard $(cachedir)/*)),$(eval $(slowdir)/$(target): $(cachedir)/$(target)))

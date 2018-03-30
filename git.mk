@@ -229,10 +229,12 @@ forget:
 	git reset --hard
 
 # Clean all unSourced files (files with extensions only) from directory and repo!!!!
+# Dangerous and rarely used
 clean_repo:
 	git rm --cached --ignore-unmatch $(filter-out $(Sources) $(Archive), $(wildcard *.*))
 
 # Just from directory (also cleans Archive files)
+Ignore += .clean_dir
 clean_dir:
 	-$(RMR) .$@
 	mkdir .$@
@@ -286,7 +288,7 @@ clonedir: $(Sources)
 	-$(CP) local.mk $*
 
 %.dirtest: %
-	cd $< && $(MAKE) Makefile && $(MAKE) makestuff && $(MAKE) && $(MAKE) vtarget
+	cd $< && $(MAKE) Makefile && $(MAKE) makestuff && $(MAKE) rum && $(MAKE) && $(MAKE) vtarget
 
 %.localtest: % %.localdir %.dirtest ;
 
@@ -411,13 +413,15 @@ getstuff: git_check newstuff comstuff
 ## Push everything to repo
 hup: $(mdirs:%=%.hup) $(clonedirs:%=%.hup) makestuff.hup up.time
 
+## This doesn't work (see SECONDEXPANSION below)
+## SECONDEXPANSION version is too violent (tries to remake everything that exists)
+## Prematurely remakes makestuff.hup
+## IDEA: hup should depend on up.time, and other hups
+## Still not clear how to chain it best
+## OTHER idea: some sort of OR for the makestuff part (would still be violent, but might usually work)
 Ignore += *.hup
 makestuff.hup: %.hup: $(wildcard %/*)
 	((cd $* && $(MAKE) up.time) && touch $@)
-## Tortured logic is only for propagation of makestuff
-## Maybe suppress
-%.hup: $(wildcard %/*)
-	((cd $* && $(MAKE) hup) && touch $@) || (cd $* && ($(MAKE) makestuff.msync || $(MAKE) makestuff.sync))
 
 ## Push makestuff changes to subrepos
 srstuff:  $(mdirs:%=%.srstuff) $(clonedirs:%=%.srstuff)
@@ -528,3 +532,15 @@ Ignore += *.oldfile *.olddiff
 
 store_all:
 	git config --global credential.helper 'store'
+
+######################################################################
+
+## SECONDEXPANSION stuff (it's a shame I can't just scope it)
+
+## Tortured logic is only for propagation of makestuff
+## Maybe suppress (the logic, not the whole thing)
+## Also, does not ever seem to go out-of-date; something about evaluation?
+## SECONDEXPANSION fixes that, but makes it go into makestuff wrong
+.SECONDEXPANSION:
+%.hup: $$(wildcard $$*/*)
+	((cd $* && $(MAKE) hup) && touch $@) || (cd $* && ($(MAKE) makestuff.msync || $(MAKE) makestuff.sync))
