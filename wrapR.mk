@@ -69,7 +69,7 @@ endef
 .PRECIOUS: .%.RData
 .%.RData: %.Rout ;
 
-rcopy = $(copy); $(CP) $(<:Rout=RData) $(@:Rout=RData)
+rcopy = $(copy); $(CP) $(<:%.Rout=.%.RData) $(@:%.Rout=.%.RData)
 
 rclean:
 	$(RM) *.Rout
