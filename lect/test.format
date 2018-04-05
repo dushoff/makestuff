@@ -16,7 +16,8 @@
 ################################################################
 
 # Outputs: key, rub, test
-## mark is deprecated; put all non-secret rubric stuff in  key and share with students
+# Use MARK for secret (rubric only stuff)
+# RUB for any rubric stuff that can be shared with students
 
 ################################################################
 
@@ -63,17 +64,17 @@ COMMENT \vspace{2.0ex plus 12.0ex}\pagebreak[3]\noindent{\sl %|} %%
 HEAD \subsection*{%%}
 
 INTRO %%
-key rub mark: %!
+key rub: %!
 
 NOCOMMENT \vspace{2.0ex plus 8.0ex}\pagebreak[3]%%
 
 OPT ^STAR %%
 
 STAR ^DEFCOMM %%
-key rub mark: ^DEFCOMM {\bf %%}
+key rub: ^DEFCOMM {\bf %%}
 
 KEY %!
-key rub mark: {\bf ANS: %%}
+key rub: {\bf ANS: %%}
 
 OUTLINE %!
 rub: \subsection*{%%}
@@ -82,19 +83,19 @@ AFIG %!
 key rub: ^FIG %%
 
 ASPACE \vspace{%%}
-key rub mark: %!
+key rub: %!
 
 CLEAR \clearpage
 key rub: %! 
 
 BLANK \mbox{}
 VSPACE \vfill
-key rub mark: %!
+key rub: %!
 
 VADJ \vspace{%}
 
 ANS %!
-key rub mark: \vspace{1.5ex}{\sf %%}
+key rub: \vspace{1.5ex}{\sf %%}
 
 TEST %!
 test: ^%%
@@ -127,4 +128,4 @@ rub: \uline{%%}
 ## Next time, move sa_inst to sahead?
 ## The parsing is confusing
 STARTSA \cleardoublepage\input{sa_inst.tex}
-key rub mark: %!
+key rub: %!
