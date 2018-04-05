@@ -50,3 +50,9 @@ Ignore += *.log *.aux .*.aux *.blg *.bbl *.bcf *.run.xml .texdeps/
 
 texfiles = $(wildcard *.tex)
 Ignore += $(texfiles:tex=pdf) $(texfiles:tex=out)
+
+### Doesn't quite fit here (or anywhere)
+
+%_olddiff.tex: %.tex.*.oldfile %.tex $(ms)/latexdiff.pl
+	$(PUSH)
+
