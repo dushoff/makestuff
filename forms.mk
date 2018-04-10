@@ -4,6 +4,9 @@ formDrop: dir = $(formDrop)
 formDrop: 
 	$(linkdirname)
 
+date.txt:
+	(MAKE) up_date
+
 up_date: 
 	date +"%d %b %Y" > date.txt
 

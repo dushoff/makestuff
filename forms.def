@@ -1,3 +1,9 @@
 jam = pdfjam $^ --outfile $@
 
+ghost = gs -q -sDEVICE=pdfwrite -dNOPAUSE -dBATCH -dSAFER -sOutputFile=$@ 
+
+gsjoin = gs -q -sPAPERSIZE=a4 -dNOPAUSE -dBATCH -sDEVICE=pdfwrite -sOutputFile=$@ $(filter-out Makefile, $^)
+
+gsjoin = $(ghost) $(filter-out Makefile, $^)
+
 formDrop = ~/Dropbox/forms

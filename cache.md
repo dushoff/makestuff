@@ -51,4 +51,4 @@ $(slowdir)/%.Rout:
 	$(MAKE) $(cachedir)
 	$(MAKE) $(cachedir)/$*.Rout
 	(ls $@ > /dev/null 2>&1) || $(LNF) $(realpath .)/$(cachedir)/$*.Rout $(call hiddenfile,  $(realpath .)/$(cachedir)/$*.RData) $(slowdir)
-
+```
