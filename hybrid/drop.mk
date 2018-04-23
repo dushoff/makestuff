@@ -17,7 +17,7 @@ ms = makestuff
 
 Makefile: $(ms)
 $(ms): 
-	ls -d ../makestuff && /bin/ln -fs ../makestuff .
+	ls -d ~/hybrid/makestuff && /bin/ln -fs ~/hybrid/makestuff .
 
 Ignore += $(ms)
 
