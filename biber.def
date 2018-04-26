@@ -1,1 +1,1 @@
-bibtex = biber
+bibtex = biber $*
