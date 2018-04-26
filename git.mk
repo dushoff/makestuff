@@ -288,7 +288,7 @@ clonedir: $(Sources)
 	-$(CP) local.mk $*
 
 %.dirtest: %
-	cd $< && $(MAKE) Makefile && $(MAKE) makestuff && $(MAKE) rum && $(MAKE) && $(MAKE) vtarget
+	$< && $(MAKE) Makefile && $(MAKE) makestuff && $(MAKE) rum && $(MAKE) && $(MAKE) vtarget
 
 %.localtest: % %.localdir %.dirtest ;
 
