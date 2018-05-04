@@ -22,6 +22,7 @@ hide = $(MVF) $1 $(dir $1).$(notdir $1)
 unhide = $(MVF) $(dir $1).$(notdir $1) $1
 hcopy = $(CPF) $1 $(dir $1).$(notdir $1)
 difftouch = diff $1 $(dir $1).$(notdir $1) > /dev/null || touch $1
+touch = touch $@
 
 makethere = cd $(dir $@) && $(MAKE) $(notdir $@)
 

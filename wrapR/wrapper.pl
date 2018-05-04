@@ -66,6 +66,9 @@ if (@envir){
 	print "for (f in  c(";
 	print join ", ", @envir;
 	say ")){envir_list[[f]] <- new.env(); load(f, envir=envir_list[[f]])}";
+	say 'names(envir_list) <- sub("^[.]", "", names(envir_list))';
+	say 'names(envir_list) <- sub(".RData$", "", names(envir_list))';
+	say;
 }
 
 say "pdf(pdfname)";
