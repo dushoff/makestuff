@@ -21,6 +21,9 @@
 %.html: %.csv
 	csv2html -o $@ $<
 
+%.html: %.Rmd
+	Rscript -e "library(\"rmarkdown\"); render(\"$<\")"
+
 %.html: %.rmd
 	Rscript -e "library(\"rmarkdown\"); render(\"$<\")"
 
