@@ -1,4 +1,3 @@
-
 ## Hooks
 
 current: target
@@ -9,16 +8,21 @@ target = Makefile
 
 # stuff
 
-Sources += Makefile .ignore .gitignore
+Sources += Makefile .gitignore
+Ignore += .ignore
 
-ms = makestuff
+## You can change the location of makestuff in local.mk
+msrepo = https://github.com/dushoff
+ms = ./makestuff
+Ignore += local.mk
 -include local.mk
 -include $(ms)/os.mk
 
 Makefile: $(ms)
-$(ms): 
-	ls -d ~/hybrid/makestuff && /bin/ln -fs ~/hybrid/makestuff .
 
+$(ms):
+	cd $(dir $(ms)) && git clone $(msrepo)/$(notdir $(ms)).git
+ 
 Ignore += $(ms)
 
 # -include $(ms)/perl.def
