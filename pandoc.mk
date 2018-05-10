@@ -40,3 +40,6 @@
 %.pdf: %.mkd
 	pandoc -o $@ --variable fontsize=12pt $<
 
+%.pdf: %.md
+	pandoc -o $@ --variable fontsize=12pt $<
+
