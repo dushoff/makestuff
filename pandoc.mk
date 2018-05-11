@@ -21,6 +21,9 @@
 %.html: %.csv
 	csv2html -o $@ $<
 
+%.html: %.Rmd
+	Rscript -e "library(\"rmarkdown\"); render(\"$<\")"
+
 %.html: %.rmd
 	Rscript -e "library(\"rmarkdown\"); render(\"$<\")"
 
@@ -38,5 +41,8 @@
 
 ## This is becoming pretty random
 %.pdf: %.mkd
+	pandoc -o $@ --variable fontsize=12pt $<
+
+%.pdf: %.md
 	pandoc -o $@ --variable fontsize=12pt $<
 

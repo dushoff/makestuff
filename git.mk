@@ -517,9 +517,10 @@ Ignore += *.oldfile *.olddiff
 %.oldfile:
 	-$(RM) $(basename $*).*.oldfile
 	$(MVF) $(basename $*) tmp_$(basename $*)
-	git checkout $(subst .,,$(suffix $*)) -- $(basename $*)
-	cp $(basename $*) $@
+	-git checkout $(subst .,,$(suffix $*)) -- $(basename $*)
+	-cp $(basename $*) $@
 	$(MV) tmp_$(basename $*) $(basename $*)
+	ls $@
 
 ## Chaining trick to always remake
 %.olddiff: %.old.diff ;
