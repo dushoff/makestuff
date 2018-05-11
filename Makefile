@@ -93,7 +93,7 @@ Sources += linkdirs.mk newtalk.def newtalk.mk newtalk.md $(wildcard newtalk/*.*)
 
 Sources += lect.mk $(wildcard lect/*.*)
 
-Sources += pandoc.mk compare.mk
+Sources += pandoc.mk compare.mk render.mk
 
 ######################################################################
 
