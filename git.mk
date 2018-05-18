@@ -492,8 +492,28 @@ csstuff: makestuff.push $(clonedirs:%=%.csstuff) ;
 	cp $(ms)/makefile.mk $*/Makefile
 	cp $(ms)/hybrid/makestuff.mk $(ms)/target.mk $*
 
-%/Makefile %/link.mk %/target.mk %/sub.mk:
+# %/Makefile %/link.mk %/target.mk %/sub.mk:
+%/target.mk:
 	$(CP) $(ms)/$(notdir $@) $*/
+
+######################################################################
+
+makestuff.sub:
+	cd $(ms) && $(MAKE) up.time
+	$(RMR) $(ms)
+	git submodule add -b master $(msrepo)/$(ms)
+
+makestuff.clone:
+	cd $(ms) && $(MAKE) up.time
+	$(MAKE) makestuff.rmsub
+	git clone $(msrepo)/$(ms)
+
+## Only meant to work with makestuff.sub
+$(ms)/%.mk: $(ms)/Makefile ;
+$(ms)/Makefile:
+	git submodule init $(ms) 
+	git submodule update $(ms) 
+	touch $@
 
 ######################################################################
 
