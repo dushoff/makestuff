@@ -498,15 +498,15 @@ csstuff: makestuff.push $(clonedirs:%=%.csstuff) ;
 
 ######################################################################
 
-makestuff.sub:
-	cd $(ms) && $(MAKE) up.time
-	$(RMR) $(ms)
-	git submodule add -b master $(msrepo)/$(ms)
-
 makestuff.clone:
 	cd $(ms) && $(MAKE) up.time
 	$(MAKE) makestuff.rmsub
 	git clone $(msrepo)/$(ms)
+
+makestuff.sub:
+	cd $(ms) && $(MAKE) up.time
+	$(RMR) $(ms)
+	git submodule add -f -b master $(msrepo)/$(ms)
 
 ## Only meant to work with makestuff.sub
 $(ms)/%.mk: $(ms)/Makefile ;
