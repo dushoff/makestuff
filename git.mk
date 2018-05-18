@@ -84,7 +84,7 @@ sync:
 	$(RM) up.time
 	$(MAKE) up.time
 
-newpush: commit.time
+push: commit.time
 	-git pull
 	git push -u origin $(BRANCH)
 
@@ -303,7 +303,7 @@ testclean:
 	$(MAKE) commit.time
 	git push -u origin $(BRANCH)
 
-%.branch: newpush
+%.branch: push
 	git checkout $*
 
 %.checkbranch:
@@ -480,7 +480,7 @@ csstuff: makestuff.push $(clonedirs:%=%.csstuff) ;
 	cp $(ms)/hybrid/substuff.mk $(ms)/target.mk $*
 
 %.first:
-	cd $* && $(MAKE) makestuff && $(MAKE) commit.default && $(MAKE) newpush
+	cd $* && $(MAKE) makestuff && $(MAKE) commit.default && $(MAKE) push
 
 ## Old
 
