@@ -75,7 +75,7 @@ pull: commit.time
 	touch $<
 
 up.time: commit.time
-	git pull
+	-git pull
 	git push -u origin $(BRANCH)
 	touch $@
 
@@ -83,10 +83,6 @@ up.time: commit.time
 sync: 
 	$(RM) up.time
 	$(MAKE) up.time
-
-push: commit.time
-	-git pull
-	git push -u origin $(BRANCH)
 
 addsync: $(add_cache)
 	touch Makefile
