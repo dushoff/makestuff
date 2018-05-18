@@ -75,7 +75,7 @@ pull: commit.time
 	touch $<
 
 up.time: commit.time
-	git pull
+	-git pull
 	git push -u origin $(BRANCH)
 	touch $@
 
@@ -83,10 +83,6 @@ up.time: commit.time
 sync: 
 	$(RM) up.time
 	$(MAKE) up.time
-
-push: commit.time
-	-git pull
-	git push -u origin $(BRANCH)
 
 addsync: $(add_cache)
 	touch Makefile
@@ -502,11 +498,13 @@ makestuff.clone:
 	cd $(ms) && $(MAKE) up.time
 	$(MAKE) makestuff.rmsub
 	git clone $(msrepo)/$(ms)
+	perl -pi -e 's/Sources(.*ms)/Ignore$$1/' Makefile
 
 makestuff.sub:
 	cd $(ms) && $(MAKE) up.time
 	$(RMR) $(ms)
 	git submodule add -f -b master $(msrepo)/$(ms)
+	perl -pi -e 's/Ignore(.*ms)/Sources $$1/' Makefile
 
 ## Only meant to work with makestuff.sub
 $(ms)/%.mk: $(ms)/Makefile ;
