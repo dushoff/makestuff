@@ -299,7 +299,7 @@ testclean:
 	$(MAKE) commit.time
 	git push -u origin $(BRANCH)
 
-%.branch: push
+%.branch: commit.time
 	git checkout $*
 
 %.checkbranch:
