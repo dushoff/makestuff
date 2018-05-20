@@ -506,12 +506,6 @@ makestuff.sub:
 	git submodule add -f -b master $(msrepo)/$(ms)
 	perl -pi -e 's/Ignore(.*ms)/Sources $$1/' Makefile
 
-## Only meant to work with makestuff.sub
-$(ms)/%.mk: $(ms)/Makefile ;
-$(ms)/Makefile:
-	git submodule init $(ms) 
-	git submodule update $(ms) 
-	touch $@
 
 ######################################################################
 
