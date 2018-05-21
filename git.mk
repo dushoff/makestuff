@@ -18,6 +18,7 @@ endif
 ## the perl dependency should stop it
 
 export Ignore += up.time commit.time commit.default dotdir/ clonedir/
+export Ignore += all.time
 
 .gitignore: .ignore $(filter-out .gitignore, $(Sources)) $(ms)/ignore.pl
 	$(hardcopy)
