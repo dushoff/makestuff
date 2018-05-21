@@ -86,6 +86,7 @@ up.time: commit.time
 
 all.time: makestuff.up $(mdirs:%=%.all) $(clonedirs:%=%.all) commit.time
 	touch $@
+	git status
 
 %.up: %
 	cd $< && $(MAKE) up.time
