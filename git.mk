@@ -84,9 +84,7 @@ up.time: commit.time
 	git push -u origin $(BRANCH)
 	touch $@
 
-all.time: makestuff.up $(mdirs:%=%.all) $(clonedirs:%=%.all)
-	-git pull
-	git push -u origin $(BRANCH)
+all.time: makestuff.up $(mdirs:%=%.all) $(clonedirs:%=%.all) commit.time
 	touch $@
 
 %.up: %
