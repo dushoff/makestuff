@@ -18,7 +18,6 @@ endif
 ## the perl dependency should stop it
 
 export Ignore += up.time commit.time commit.default dotdir/ clonedir/
-## Put .gitignore into .ignore
 
 .gitignore: .ignore $(filter-out .gitignore, $(Sources)) $(ms)/ignore.pl
 	$(hardcopy)
@@ -29,6 +28,8 @@ export Ignore += up.time commit.time commit.default dotdir/ clonedir/
 hybridignore: $(clonedirs:%=%.hybridignore) $(mdirs:%=%.hybridignore);
 cloneignore: $(clonedirs:%=%.cloneignore) ;
 modignore: $(mdirs:%=%.modignore) ;
+
+Ignore += $(clonedirs)
 
 %.hybridignore: 
 	cd $* && $(MAKE) Makefile.ignore && $(MAKE) hybridignore
@@ -505,13 +506,6 @@ makestuff.sub:
 	$(RMR) $(ms)
 	git submodule add -f -b master $(msrepo)/$(ms)
 	perl -pi -e 's/Ignore(.*ms)/Sources $$1/' Makefile
-
-## Only meant to work with makestuff.sub
-$(ms)/%.mk: $(ms)/Makefile ;
-$(ms)/Makefile:
-	git submodule init $(ms) 
-	git submodule update $(ms) 
-	touch $@
 
 ######################################################################
 
