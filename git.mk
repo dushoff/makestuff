@@ -74,15 +74,33 @@ pull: commit.time
 	git pull
 	touch $<
 
+######################################################################
+
+## HOT: trying to make stuff auto-recurse again
+
 up.time: commit.time
 	-git pull
 	git push -u origin $(BRANCH)
 	touch $@
 
-## up.time syncs as long as it's out of date, so this should work
+all.time: makestuff.up $(mdirs:%=%.all) $(clonedirs:%=%.all)
+	-git pull
+	git push -u origin $(BRANCH)
+	touch $@
+
+%.up: %
+	cd $< && $(MAKE) up.time
+
+%.all: %
+	cd $< && $(MAKE) all.time
+
+## If we delete up.time that rule will always pull
+## If we do it this way we never pull twice
 sync: 
 	$(RM) up.time
 	$(MAKE) up.time
+
+######################################################################
 
 addsync: $(add_cache)
 	touch Makefile
@@ -119,9 +137,6 @@ rup: $(mdirs:%=%.rup) makestuff.up up.time
 mup: master up.time
 
 bump: makestuff.up up.time
-
-%.up: %
-	cd $< && $(MAKE) up.time
 
 ## The alternative is for bootstrapping
 %.rup: %
