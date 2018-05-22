@@ -95,14 +95,14 @@ all.time: makestuff.up $(mdirs:%=%.all) $(clonedirs:%=%.all) up.time
 %.all: %
 	cd $< && $(MAKE) all.time
 
-## If we delete up.time that rule will always pull
-## If we do it this way we never pull twice
+## Delete up.time to ensure that we pull without creating a way to pull twice
 sync: 
-	$(RM) up.time
-	$(MAKE) up.time
+	$(RM) all.time
+	$(MAKE) all.time
 
 ######################################################################
 
+## This probably belongs somewhere else!
 addsync: $(add_cache)
 	touch Makefile
 	$(MAKE) sync
@@ -127,21 +127,6 @@ rmsync: $(mdirs:%=%.rmsync) makestuff.msync commit.time
 	git checkout master
 	$(MAKE) sync
 	git status
-
-### up
-### Why is this better than a foreach approach?
-### I guess because I control the order.
-### Probably some hybrid approach would be best...
-
-rup: $(mdirs:%=%.rup) makestuff.up up.time
-
-mup: master up.time
-
-bump: makestuff.up up.time
-
-## The alternative is for bootstrapping
-%.rup: %
-	cd $< && ($(MAKE) rup || $(MAKE) makestuff.pull)
 
 ######################################################################
 
@@ -202,9 +187,9 @@ pages/%: % pages
 
 pages:
 	git clone `git remote get-url origin` $@
-	cd $@ && (git checkout gh-pages || $(orphanpages)
+	cd $@ && (git checkout gh-pages || $(createpages)
 
-define orphanpages
+define createpages
 	(git checkout --orphan gh-pages && git rm -rf * && touch ../README.md && cp ../README.md . && git add README.md && git commit -m "Orphan pages branch" && git push --set-upstream origin gh-pages ))
 endef
 
