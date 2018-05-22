@@ -415,7 +415,7 @@ srstuff:  $(mdirs:%=%.srstuff) $(clonedirs:%=%.srstuff)
 ## Initializing and pulling clones
 
 %.makeclone: % 
-	cd $* && $(MAKE) makestuff && $(MAKE) makestuff.sync && $(MAKE) makeclones
+	cd $* && $(MAKE) makestuff && $(MAKE) makestuff.master && $(MAKE) makestuff.sync && $(MAKE) makeclones
 
 makeclones: $(clonedirs:%=%.makeclone) ;
 
