@@ -292,7 +292,7 @@ dotdir: $(Sources)
 
 %.branchdir: $(Sources)
 	$(MAKE) commit.time
-	git pull origin $*
+	git pull origin $*:$*
 	-/bin/rm -rf $*
 	git clone . $*
 	cd $* && git checkout $*
