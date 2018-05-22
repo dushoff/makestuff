@@ -290,6 +290,14 @@ dotdir: $(Sources)
 	git clone . $@
 	-cp target.mk $@
 
+%.branchdir: $(Sources)
+	$(MAKE) commit.time
+	-/bin/rm -rf $*
+	git clone . $*
+	cd $* && git checkout $*
+	cd $* && (cd .. && git remote get-url origin)
+	
+
 clonedir: $(Sources)
 	$(MAKE) up.time
 	-/bin/rm -rf $@
