@@ -404,28 +404,25 @@ getstuff: git_check newstuff comstuff
 
 ######################################################################
 
+## Is srstuff covered by clone stuff below it?
+
 ## Push makestuff changes to subrepos
 srstuff:  $(mdirs:%=%.srstuff) $(clonedirs:%=%.srstuff)
 
 %.srstuff:
 	cd $*/makestuff && git checkout master && $(MAKE) pull
 
-## Clones and hybrids
-
-%.cloneup:
-	cd $* && $(MAKE) cloneup
-
-cloneup: $(clonedirs:%=%.cloneup) up.time ;
+## Initializing and pulling clones
 
 %.makeclone: % 
-	cd $* && $(MAKE) makestuff && $(MAKE) makeclones
+	cd $* && $(MAKE) makestuff && $(MAKE) makestuff.sync && $(MAKE) makeclones
 
 makeclones: $(clonedirs:%=%.makeclone) ;
 
 ## Transitional, doesn't recurse (yet?)
 
 ## Just pull
-cpstuff: makestuff.sync $(clonedirs:%=%.cpstuff) ;
+cpstuff: makestuff.pull $(clonedirs:%=%.cpstuff) ;
 
 %.cpstuff: 
 	cd $* && $(MAKE) makestuff.pull
