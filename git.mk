@@ -95,8 +95,11 @@ all.time: makestuff.up $(mdirs:%=%.all) $(clonedirs:%=%.all) up.time
 %.all: %
 	cd $< && $(MAKE) all.time
 
-## Delete up.time to ensure that we pull without creating a way to pull twice
 sync: 
+	$(RM) up.time
+	$(MAKE) up.time
+
+allsync: 
 	$(RM) all.time
 	$(MAKE) all.time
 
