@@ -295,8 +295,7 @@ dotdir: $(Sources)
 	-/bin/rm -rf $*
 	git clone . $*
 	cd $* && git checkout $*
-	cd $* && (cd .. && git remote get-url origin)
-	
+	cd $* && git remote set-url origin `(cd .. && git remote get-url origin)`
 
 clonedir: $(Sources)
 	$(MAKE) up.time
