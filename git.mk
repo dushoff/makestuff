@@ -7,7 +7,7 @@ cmain = NULL
 # -include $(BRANCH).mk
 
 ifndef BRANCH
-BRANCH=master
+BRANCH = $(shell cat .git/HEAD 2>/dev/null | perl -npE "s|.*/||;")
 endif
 
 ######################################################################
@@ -269,9 +269,10 @@ dotdir: $(Sources)
 	git clone . $@
 	-cp target.mk $@
 
+## Still working on rev-parse line
 %.branchdir: $(Sources)
 	$(MAKE) commit.time
-	git rev-parse --verify $* || git pull origin $*:$*
+	git rev-parse --verify $* || git pull origin $*
 	-/bin/rm -rf $*
 	git clone . $*
 	cd $* && git checkout $*
@@ -312,14 +313,6 @@ testclean:
 	cd $* && git checkout master
 master: 
 	git checkout master
-
-%.branchdir: $(Sources)
-	$(MAKE) commit.time
-	git pull origin $*:$*
-	-/bin/rm -rf $*
-	git clone . $*
-	cd $* && git checkout $*
-	cd $* && git remote set-url origin `(cd .. && git remote get-url origin)`
 
 ## Try this stronger rule some time!
 # %.master: %
