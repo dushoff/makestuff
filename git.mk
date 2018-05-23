@@ -206,6 +206,9 @@ abort:
 README.md LICENSE.md:
 	touch $@
 
+%/target.mk:
+	$(CP) target.mk $*
+
 ##################################################################
 
 ### Cleaning
