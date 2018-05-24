@@ -3,7 +3,7 @@
 ### Currently developing together with 3SS/Lectures
 ### Previously used with math_talks
 
-Ignore += webpix
+Ignore += webpix my_images
 
 steps = $(wildcard *.step)
 Sources += $(steps)

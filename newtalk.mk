@@ -1,9 +1,9 @@
 Ignore += talkdir
 
+Ignore += *.txt.fmt txt.format
 %.txt.fmt: txt.format $(talkdir)/fmt.pl
 	$(PUSHSTAR)
 
-Ignore += txt.format
 txt.format: $(talkdir)/txt.format local.txt.format
 	$(rm)
 	$(cat)
