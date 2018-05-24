@@ -119,7 +119,7 @@ rmsync: $(mdirs:%=%.rmsync) makestuff.msync commit.time
 	git status
 
 %.rmsync:
-	cd $@ && $(MAKE) rmsync
+	cd $* && $(MAKE) rmsync
 
 ######################################################################
 
@@ -386,30 +386,17 @@ git_check:
 newstuff: makestuff.sync
 	git submodule foreach --recursive 'ls -d makestuff || (git checkout master && git pull)'
 
-## Clumsily sync after doing that
 ## This goes through directories that have makestuff and adds and commits just the makestuff
-## Should have something else to autosync the makestuff directories
 comstuff:
 	git submodule foreach --recursive '(ls -d makestuff && make syncstuff) ||: '
 
-comcom: 
-	git submodule foreach --recursive '(ls -d makestuff && make tsync) ||: '
-
-getstuff: git_check newstuff comstuff
-
+## Used to have pull/push manually; should it work instead with rmsync?
+## No idea!
 syncstuff: makestuff
 	git add $< 
 	git commit -m $@
-	git pull
-	git push
 
-getstuff: git_check newstuff comstuff
-
-## Watch out for the danger of committing without syncing. The higher-level repos may be more up-to-date than the lower ones…
-
-## Better would be a hybrid approach.
-## A make rule that uses foreach (without --recursive) to recurse on itself
-## Keep newstuff to develop and push the more sophisticated stuff
+pushstuff: newstuff comstuff rmsync
 
 ######################################################################
 
