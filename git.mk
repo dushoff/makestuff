@@ -381,7 +381,7 @@ git_check:
 
 ## Push new makestuff (probably from this section) to all submodules
 newstuff:
-	git submodule foreach --recursive 'ls -d makestuff || git pull'
+	git submodule foreach --recursive 'ls -d makestuff || (git checkout master && git pull)'
 
 ## Clumsily sync after doing that
 ## This goes through directories that have makestuff and adds and commits just the makestuff
