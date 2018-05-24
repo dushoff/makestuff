@@ -118,6 +118,9 @@ rmsync: $(mdirs:%=%.rmsync) makestuff.msync commit.time
 	$(MAKE) sync
 	git status
 
+%.rmsync:
+	cd $@ && $(MAKE) rmsync
+
 ######################################################################
 
 ## autosync stuff not consolidated, needs work. 
@@ -380,7 +383,7 @@ git_check:
 	$(git_check)
 
 ## Push new makestuff (probably from this section) to all submodules
-newstuff:
+newstuff: makestuff.sync
 	git submodule foreach --recursive 'ls -d makestuff || (git checkout master && git pull)'
 
 ## Clumsily sync after doing that
@@ -397,6 +400,8 @@ getstuff: git_check newstuff comstuff
 syncstuff: makestuff
 	git add $< 
 	git commit -m $@
+	git pull
+	git push
 
 getstuff: git_check newstuff comstuff
 
