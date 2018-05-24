@@ -431,7 +431,6 @@ cpstuff: makestuff.pull $(clonedirs:%=%.cpstuff) ;
 %.cpstuff: 
 	cd $* && $(MAKE) makestuff.pull
 
-## Sync (works on older things than cpstuff will. I hope)
 csstuff: makestuff.push $(clonedirs:%=%.csstuff) ;
 
 %.csstuff: 
