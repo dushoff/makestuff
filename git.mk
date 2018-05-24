@@ -1,5 +1,3 @@
-### Git for _centralized_ workflow
-### Trying to generalize now
 
 cmain = NULL
 
