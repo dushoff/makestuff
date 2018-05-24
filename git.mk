@@ -1,9 +1,6 @@
 
-## I don't understand how this works right now
-## 2018 May 23 (Wed)
-## Something about branches and about git.def. Maybe?
-## cmain might be the upstream branch?
-
+## cmain is meant to point upstream; don't see any rules
+## to manipulate it. Maybe there were once.
 cmain = NULL
 
 ## Made a strange loop _once_ (doesn't seem to be used anyway).
