@@ -34,12 +34,9 @@ all.html: $(htmls)
 ifeq ($(Drop),)
 Drop = ~/Dropbox
 endif
-webpix: dir = $(Drop)
-webpix: $(Drop)/webpix
-	$(linkdir)
-
-my_images: dir = $(Drop)
-my_images: $(Drop)/my_images
+webpix my_images: dir = $(Drop)
+webpix my_images: 
+	$(MAKE)  $(Drop)/$@
 	$(linkdir)
 
 $(Drop)/webpix $(Drop)/my_images:
