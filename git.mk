@@ -377,7 +377,7 @@ git_check:
 shortstuff:
 	git submodule foreach '(ls -d makestuff && cd makestuff && git checkout master && git pull) ||:'
 ## Recursively
-newstuff:
+newstuff: makestuff.sync
 	git submodule foreach --recursive 'ls -d makestuff || (git checkout master && git pull)'
 
 ## Clumsily sync after doing that
@@ -394,6 +394,8 @@ getstuff: git_check newstuff comstuff
 syncstuff: makestuff
 	git add $< 
 	git commit -m $@
+	git pull
+	git push
 
 getstuff: git_check newstuff comstuff
 
@@ -428,7 +430,6 @@ cpstuff: makestuff.pull $(clonedirs:%=%.cpstuff) ;
 %.cpstuff: 
 	cd $* && $(MAKE) makestuff.pull
 
-## Sync (works on older things than cpstuff will. I hope)
 csstuff: makestuff.push $(clonedirs:%=%.csstuff) ;
 
 %.csstuff: 
