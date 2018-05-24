@@ -14,6 +14,16 @@ repodirs += $(PulliamLab)
 
 ## Mike Li
 
+## Something hacked together for Katie and Rachel
+wzmli += rabies_report
+rabies_report:
+
+$(wzmli):
+	$(MAKE) target=$@ repo=$(github) user=wzmli clone
+
+repodirs += $(wzmli)
+
+
 ######################################################################
 
 ## ICI3D
@@ -50,4 +60,26 @@ $(fishforwish):
 repodirs += $(fishforwish)
 
 ######################################################################
+
+# alejo = PISKa_disease_modeling
+# roxy = SIHR-Age-Mixing-Analysis
+# dsw_github = networkSEIR
+# sid_reed = DushoffCollab
+# mli_github = Survival rdc mli_sims HIV_Coupling lunchbox hybrid hybrid2 mc_recency StrucImpute Li_Rabies mc_status comps hybridx rabies_R0
+# wim_github = MiceABC
+# earn = plague
+# PulliamLab = competenceFramework
+# worden_github = github-pages-sandbox 
+
+# walker_bitbucket = goaheadandrarefymicrobiomedata
+# bolker_github = microbiome_stats upr_2016 HIV_LHS mosqsamp stat744
+# blank = dhsease
+# pearsonca = alice bob carl karl
+# woodstkp_github = Woodstock-thesis
+# bellan_github = IDI-cumulative-VL-project
+# dc = RESuDe_forecast epiforecast
+# fishforwish = fgc
+# elia_github = Sequels
+
+# roswell = SexNetworks_git
 
