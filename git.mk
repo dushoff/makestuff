@@ -1,6 +1,6 @@
-### Git for _centralized_ workflow
-### Trying to generalize now
 
+## cmain is meant to point upstream; don't see any rules
+## to manipulate it. Maybe there were once.
 cmain = NULL
 
 ## Made a strange loop _once_ (doesn't seem to be used anyway).
@@ -107,19 +107,6 @@ msync: commit.time
 
 ######################################################################
 
-## Older module based stuff
-## Need to make hybrid?
-
-## Recursive make-based sync. 
-## NOT TESTED (and not needed?)
-## Work on an autosync first and then recurse that?
-rmsync: $(mdirs:%=%.rmsync) makestuff.msync commit.time
-	git checkout master
-	$(MAKE) sync
-	git status
-
-######################################################################
-
 ## autosync stuff not consolidated, needs work. 
 remotesync: commit.default
 	git pull
@@ -142,6 +129,12 @@ remotesync: commit.default
 
 %.pull: %
 	cd $< && $(MAKE) pull
+
+## Not tested (hasn't propagated)
+rmpull: $(mdirs:%=%.rmpull) makestuff.pull pull
+	git checkout master
+	$(MAKE) pull
+	git status
 
 %.push: %
 	cd $< && $(MAKE) up.time
@@ -380,31 +373,32 @@ git_check:
 	$(git_check)
 
 ## Push new makestuff (probably from this section) to all submodules
-newstuff:
-	git submodule foreach --recursive 'ls -d makestuff || git pull'
+## Locally if makestuffs aren't submodules)
+shortstuff:
+	git submodule foreach '(ls -d makestuff && cd makestuff && git checkout master && git pull) ||:'
+## Recursively
+newstuff: makestuff.sync
+	git submodule foreach --recursive 'ls -d makestuff || (git checkout master && git pull)'
 
-## Clumsily sync after doing that
 ## This goes through directories that have makestuff and adds and commits just the makestuff
-## Should have something else to autosync the makestuff directories
 comstuff:
 	git submodule foreach --recursive '(ls -d makestuff && make syncstuff) ||: '
 
-comcom: 
-	git submodule foreach --recursive '(ls -d makestuff && make tsync) ||: '
-
-getstuff: git_check newstuff comstuff
-
+## Used to have pull/push manually; should it work instead with rmsync?
+## No idea!
 syncstuff: makestuff
 	git add $< 
 	git commit -m $@
 
-getstuff: git_check newstuff comstuff
+rmsync: $(mdirs:%=%.rmsync) makestuff.msync commit.time
+	git checkout master
+	$(MAKE) sync
+	git status
 
-## Watch out for the danger of committing without syncing. The higher-level repos may be more up-to-date than the lower ones…
+%.rmsync:
+	cd $* && $(MAKE) rmsync
 
-## Better would be a hybrid approach.
-## A make rule that uses foreach (without --recursive) to recurse on itself
-## Keep newstuff to develop and push the more sophisticated stuff
+pushstuff: newstuff comstuff rmsync
 
 ######################################################################
 
@@ -431,7 +425,6 @@ cpstuff: makestuff.pull $(clonedirs:%=%.cpstuff) ;
 %.cpstuff: 
 	cd $* && $(MAKE) makestuff.pull
 
-## Sync (works on older things than cpstuff will. I hope)
 csstuff: makestuff.push $(clonedirs:%=%.csstuff) ;
 
 %.csstuff: 
