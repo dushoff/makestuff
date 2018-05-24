@@ -107,22 +107,6 @@ msync: commit.time
 
 ######################################################################
 
-## Older module based stuff
-## Need to make hybrid?
-
-## Recursive make-based sync. 
-## NOT TESTED (and not needed?)
-## Work on an autosync first and then recurse that?
-rmsync: $(mdirs:%=%.rmsync) makestuff.msync commit.time
-	git checkout master
-	$(MAKE) sync
-	git status
-
-%.rmsync:
-	cd $* && $(MAKE) rmsync
-
-######################################################################
-
 ## autosync stuff not consolidated, needs work. 
 remotesync: commit.default
 	git pull
@@ -145,6 +129,12 @@ remotesync: commit.default
 
 %.pull: %
 	cd $< && $(MAKE) pull
+
+## Not tested (hasn't propagated)
+rmpull: $(mdirs:%=%.rmpull) makestuff.pull pull
+	git checkout master
+	$(MAKE) pull
+	git status
 
 %.push: %
 	cd $< && $(MAKE) up.time
@@ -383,6 +373,10 @@ git_check:
 	$(git_check)
 
 ## Push new makestuff (probably from this section) to all submodules
+## Locally if makestuffs aren't submodules)
+shortstuff:
+	git submodule foreach '(ls -d makestuff && cd makestuff && git checkout master && git pull) ||:'
+## Recursively
 newstuff: makestuff.sync
 	git submodule foreach --recursive 'ls -d makestuff || (git checkout master && git pull)'
 
@@ -395,6 +389,14 @@ comstuff:
 syncstuff: makestuff
 	git add $< 
 	git commit -m $@
+
+rmsync: $(mdirs:%=%.rmsync) makestuff.msync commit.time
+	git checkout master
+	$(MAKE) sync
+	git status
+
+%.rmsync:
+	cd $* && $(MAKE) rmsync
 
 pushstuff: newstuff comstuff rmsync
 
