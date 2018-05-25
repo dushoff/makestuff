@@ -13,7 +13,7 @@ Ignore += $(steps:%=%.mk)
 	$(PUSH)
 
 Ignore += $(steps:.step=.html)
-%.html: %.step.mk $(ms)/webhtml.pl
+%.html: %.step.mk $(ms)/webhtml.pl webpix
 	$(MAKE) -f $< -f $(ms)/webtrans.mk images
 	$(MAKE) -f $< -f $(ms)/webtrans.mk thumbs
 	$(PUSHSTAR)
@@ -54,6 +54,8 @@ Makefile: allsteps.mk
 allsteps.mk: $(stepmks)
 	$(cat)
 
-webpix/%: allsteps.mk
+webpix/%: allsteps.mk webpix
 	$(MAKE) -f $< $@
 
+my_images/%: my_images
+	cd $< && $(MAKE) $*

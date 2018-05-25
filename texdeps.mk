@@ -7,12 +7,17 @@ ifeq ($(bibtex),)
 bibtex = biber $* || bibtex $*
 endif
 
+## This can be improved by getting it to do some of the error printing
+## even when .ltx fails. Some sort of fancy or-ing
 %.pdf: %.tex .texdeps/%.out
 	$(MAKE) .texdeps/$*.mk
 	-$(MAKE) $*.deps
-	$(MAKE) $*.ltx
+	$(MAKE) $*.ltx || ($(MAKE) $*.logreport && 0)
+	$(MAKE) $*.logreport
+	sleep 1 ### Sleeping to clarify time stamps
+
+%.logreport:
 	@!(grep "Fatal error occurred" $*.log)
-	sleep 1 ### Make sure time stamps are distinct
 	@(grep "Rerun to get" $*.log && touch $<) || :
 	@(grep "Error:" $*.log && touch $<) || :
 	@grep "Stop." .texdeps/$*.make.log || :

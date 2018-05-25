@@ -64,8 +64,6 @@ pull: commit.time
 
 ######################################################################
 
-## HOT: trying to make stuff auto-recurse again
-
 Ignore += up.time all.time
 up.time: commit.time
 	-git pull
