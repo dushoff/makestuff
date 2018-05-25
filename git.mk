@@ -1,6 +1,7 @@
 
 ## cmain is meant to point upstream; don't see any rules
 ## to manipulate it. Maybe there were once.
+## Don't try merging with our rules until this is fixed!
 cmain = NULL
 
 ## Made a strange loop _once_ (doesn't seem to be used anyway).
