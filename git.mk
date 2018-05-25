@@ -1,6 +1,7 @@
 
 ## cmain is meant to point upstream; don't see any rules
 ## to manipulate it. Maybe there were once.
+## Don't try merging with our rules until this is fixed!
 cmain = NULL
 
 ## Made a strange loop _once_ (doesn't seem to be used anyway).
@@ -377,6 +378,14 @@ shortstuff:
 ## Recursively
 newstuff: makestuff.sync
 	git submodule foreach --recursive 'ls -d makestuff || (git checkout master && git pull)'
+
+## The principled way to do this seems to be with update merge
+## It seems to require config variables?
+allmaster: 
+	git submodule foreach --recursive 'git checkout master'
+
+upsub:
+	git submodule update --init --merge
 
 ## This goes through directories that have makestuff and adds and commits just the makestuff
 comstuff:
