@@ -18,6 +18,9 @@ dushoff_github += Workshops
 ## Rarity stuff with Roswell
 dushoff_github += diversity_metrics
 
+## Main Planning repo
+dushoff_github += Planning
+
 ######################################################################
 
 dushoff_all = CIHR_Ebola Ebola_stochasticity make Planning rabies-SD RR autorefs dushoff.github.io makework techtex-ebola sherif TZ_clinics rabies_burden nserc_tools SEER_HPV initial_epi diversity_metrics Latent_incidence_fitting DHS_overview Country_lists little_r SIR_model_family Rabies_talks Syphilis_and_ARVs HIV_presentations SIR_simulations Circumcision_and_behaviour scratch permutation_binomial notebook disease_model_talks statistics_talks Ebola_talks Generation_distributions Ebola_sims fitting_code Endemic_curves math_talks texdeps org Workshops gi_appoximations link_calculations
