@@ -137,16 +137,11 @@ personal.pdf:
 
 ######################################################################
 
+Sources += repos/dushoff_repos.mk repos/friends.mk repos/sites.mk
+
+######################################################################
+
 -include local.mk
 include git.mk
 include pandoc.mk
 include visual.mk
-
-# Developing newlatex
-
-include perl.def
-# include newlatex.mk
-
-# test.pdf: test.tex latexdeps.pl
-
-# .deps/test.tex.d: test.tex latexdeps.pl

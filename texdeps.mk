@@ -51,10 +51,15 @@ endif
 %.deps: .texdeps/%.mk 
 	-$(MAKE) -dr -f $< -f Makefile .texdeps/$*.out | tee .texdeps/$*.make.log 2>&1
 
-Ignore += *.log *.aux .*.aux *.blg *.bbl *.bcf *.run.xml .texdeps/
+Ignore += .texdeps/
 
 texfiles = $(wildcard *.tex)
 Ignore += $(texfiles:tex=pdf) $(texfiles:tex=out)
+
+## These direct exclusions can be replaced by fancier rules above if necessary
+Ignore += *.log *.aux .*.aux *.blg *.bbl *.bcf 
+Ignore += *.nav *.snm *.toc
+Ignore += *.run.xml
 
 ### Doesn't quite fit here (or anywhere)
 
