@@ -57,3 +57,5 @@ allsteps.mk: $(stepmks)
 webpix/%: allsteps.mk webpix
 	$(MAKE) -f $< $@
 
+my_images/%: my_images
+	cd $< && $(MAKE) $*
