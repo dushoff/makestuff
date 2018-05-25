@@ -378,8 +378,13 @@ shortstuff:
 newstuff: makestuff.sync
 	git submodule foreach --recursive 'ls -d makestuff || (git checkout master && git pull)'
 
+## The principled way to do this seems to be with update merge
+## It seems to require config variables?
 allmaster: 
 	git submodule foreach --recursive 'git checkout master'
+
+upsub:
+	git submodule update --init --merge
 
 ## This goes through directories that have makestuff and adds and commits just the makestuff
 comstuff:
