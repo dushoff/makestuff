@@ -65,6 +65,8 @@ pull: commit.time
 ######################################################################
 
 ## HOT: trying to make stuff auto-recurse again
+## Works well, but not clear it should. If I edit a file, when
+## will this change the directory timestamp??
 
 Ignore += up.time all.time
 up.time: commit.time
