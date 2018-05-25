@@ -380,6 +380,9 @@ shortstuff:
 newstuff: makestuff.sync
 	git submodule foreach --recursive 'ls -d makestuff || (git checkout master && git pull)'
 
+allmaster: 
+	git submodule foreach --recursive 'git checkout master'
+
 ## This goes through directories that have makestuff and adds and commits just the makestuff
 comstuff:
 	git submodule foreach --recursive '(ls -d makestuff && make syncstuff) ||: '
