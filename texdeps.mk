@@ -18,8 +18,8 @@ endif
 
 %.logreport:
 	@!(grep "Fatal error occurred" $*.log)
-	@(grep "Rerun to get" $*.log && touch $<) || :
-	@(grep "Error:" $*.log && touch $<) || :
+	@(grep "Rerun to get" $*.log && touch $*.tex) || :
+	@(grep "Error:" $*.log && touch $*.tex) || :
 	@grep "Stop." .texdeps/$*.make.log || :
 	@grep "failed" .texdeps/$*.make.log || :
 
