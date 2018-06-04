@@ -71,7 +71,7 @@ theobio += QMEE
 $(theobio):
 	$(MAKE) target=$@ repo=$(github) user=mac-theobio clone
 
-repodirs += $(mac-theobio)
+repodirs += $(theobio)
 
 ######################################################################
 
