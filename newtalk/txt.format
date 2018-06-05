@@ -218,7 +218,7 @@ LFIG \hfill\includegraphics[height=%\textheight,angle=270]{%}\hfill\mbox{}
 outline: %!
 
 LANDFIG ^LFIG 0.4 %%
-draft final: ^LFIG 0.75 %%
+draft final: ^LFIG 0.9 %%
 
 ## Width for scale
 
