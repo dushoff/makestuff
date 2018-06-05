@@ -28,10 +28,13 @@ repodirs += $(wzmli)
 
 ## ICI3D
 
-ICI3D += MMED MMEDparticipants ICI3D.github.io coreFaculty
+ICI3D += MMED MMEDparticipants ICI3D.github.io coreFaculty RTutorials
+
+ICI3D += Malaria malariaImmunity
 
 $(ICI3D):
 	$(MAKE) target=$@ repo=$(github) user=ICI3D clone
+
 
 repodirs += $(ICI3D)
 
@@ -58,6 +61,17 @@ $(fishforwish):
 	$(MAKE) target=$@ repo=$(github) user=fishforwish clone
 
 repodirs += $(fishforwish)
+
+######################################################################
+
+## Mac theobio organization
+
+theobio += QMEE
+
+$(theobio):
+	$(MAKE) target=$@ repo=$(github) user=mac-theobio clone
+
+repodirs += $(theobio)
 
 ######################################################################
 
