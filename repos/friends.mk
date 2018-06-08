@@ -16,7 +16,9 @@ repodirs += $(PulliamLab)
 
 ## Something hacked together for Katie and Rachel
 wzmli += rabies_report
-rabies_report:
+
+## 2018 Jun 07 (Thu) the current rabies_R0 investigation (Scotland poster)
+wzmli += rabies_R0
 
 $(wzmli):
 	$(MAKE) target=$@ repo=$(github) user=wzmli clone
