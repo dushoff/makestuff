@@ -34,3 +34,13 @@ repodirs += $(dushoff_github)
 
 $(dushoff_github):
 	$(MAKE) target=$@ repo=$(github) user=dushoff clone
+
+######################################################################
+
+dushoff_bitbucket += New_CV 
+
+bitbucket_other  += talks nserc tutorial Vaccination_analysis TZ_pediatric_HIV zebra_movement Academic_CV Correspondence HIV_Project taxes Sandbox djd QMEE_private tick_math FIDO 1m_2017
+
+$(dushoff_bitbucket):
+	$(MAKE) target=$@ repo=$(bitbucket) user=dushoff clone
+
