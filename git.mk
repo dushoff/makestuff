@@ -264,8 +264,7 @@ dotdir: $(Sources)
 ## Still working on rev-parse line
 %.branchdir: $(Sources)
 	$(MAKE) commit.time
-	git rev-parse --verify $* || git pull origin $*
-	-/bin/rm -rf $*
+	git rev-parse --verify $* || git fetch origin $*:$*
 	git clone . $*
 	cd $* && git checkout $*
 	cd $* && git remote set-url origin `(cd .. && git remote get-url origin)`
@@ -329,6 +328,9 @@ upmerge:
 
 upstream:
 	git remote get-url origin | perl -pe "s|:|/|; s|[^@]*@|go https://|; s/\.git.*//" | bash --login
+
+hub:
+	echo go `git remote get-url origin` | bash 
 
 hupstream:
 	echo go `git remote get-url origin` | bash --login

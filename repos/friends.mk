@@ -15,9 +15,13 @@ repodirs += $(PulliamLab)
 ## Mike Li
 
 ## Something hacked together for Katie and Rachel
-wzmli += rabies_report rabies_correlations
-rabies_correlations:
-rabies_report:
+wzmli += rabies_report
+
+## Mike's big Scotland idea
+wzmli += rabies_correlations
+
+## 2018 Jun 07 (Thu) the current rabies_R0 investigation (Scotland poster)
+wzmli += rabies_R0
 
 $(wzmli):
 	$(MAKE) target=$@ repo=$(github) user=wzmli clone
@@ -29,10 +33,13 @@ repodirs += $(wzmli)
 
 ## ICI3D
 
-ICI3D += MMED MMEDparticipants ICI3D.github.io coreFaculty
+ICI3D += MMED MMEDparticipants ICI3D.github.io coreFaculty RTutorials
+
+ICI3D += Malaria malariaImmunity
 
 $(ICI3D):
 	$(MAKE) target=$@ repo=$(github) user=ICI3D clone
+
 
 repodirs += $(ICI3D)
 
@@ -59,6 +66,17 @@ $(fishforwish):
 	$(MAKE) target=$@ repo=$(github) user=fishforwish clone
 
 repodirs += $(fishforwish)
+
+######################################################################
+
+## Mac theobio organization
+
+theobio += QMEE
+
+$(theobio):
+	$(MAKE) target=$@ repo=$(github) user=mac-theobio clone
+
+repodirs += $(theobio)
 
 ######################################################################
 
