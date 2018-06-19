@@ -15,7 +15,8 @@ repodirs += $(PulliamLab)
 ## Mike Li
 
 ## Something hacked together for Katie and Rachel
-wzmli += rabies_report
+wzmli += rabies_report rabies_correlations
+rabies_correlations:
 rabies_report:
 
 $(wzmli):
