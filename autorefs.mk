@@ -16,6 +16,7 @@ Ignore += $(pmrr)
 
 rmu = $(wildcard *.rmu) $(pmrr)
 Ignore += $(rmu:.rmu=.bib) $(rmu:.rmu=.md) $(rmu:.rmu=.html)
+Ignore += *.bibmk *.point
 %.bib %.int %.bibmk %.point: %.rmu
 	$(MAKE) -f $(autorefs)/Makefile $@
 
