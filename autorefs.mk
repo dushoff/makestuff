@@ -1,4 +1,5 @@
 Makefile: bibdir
+Ignore += bibdir
 bibdir: 
 	(touch $(Drop)/autorefs/testfile && $(LNF) $(Drop)/autorefs $@) || mkdir $@
 
