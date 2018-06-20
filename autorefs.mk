@@ -2,6 +2,7 @@ Makefile: bibdir
 bibdir: 
 	(touch $(Drop)/autorefs/testfile && $(LNF) $(Drop)/autorefs $@) || mkdir $@
 
+## Awkward holdovers from wiki setup?
 export ms
 export autorefs = $(ms)/autorefs
 
