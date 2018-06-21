@@ -71,7 +71,7 @@ repodirs += $(fishforwish)
 
 ## Mac theobio organization
 
-theobio += QMEE
+theobio += QMEE smb-mathepi
 
 $(theobio):
 	$(MAKE) target=$@ repo=$(github) user=mac-theobio clone
