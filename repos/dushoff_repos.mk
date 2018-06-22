@@ -13,7 +13,9 @@ Sandbox: clonecommand=subclone
 dushoff_github += Sandbox
 
 ## A repo-repo (still good? simplify?) for educational talks
-dushoff_github += Workshops
+## Deprecate Workshops, and use sub-repos
+## Rabies_talks may be outdated (last talk in disease_model_talks?)
+dushoff_github += Workshops disease_model_talks math_talks Rabies_talks statistics_talks Generation_talks
 
 ## Rarity stuff with Roswell
 dushoff_github += diversity_metrics
@@ -46,3 +48,13 @@ $(dushoff_bitbucket):
 	$(MAKE) target=$@ repo=$(bitbucket) user=dushoff clone
 
 repodirs += $(dushoff_bitbucket)
+
+######################################################################
+
+
+## Trying to avoid this (at least outside of 3SS, but maybe everywhere)
+## Has lots of .step info that I want, though
+Bio3SS += Lecture_images
+
+$(Bio3SS):
+	$(MAKE) target=$@ repo=$(github) user=Bio3SS clone
