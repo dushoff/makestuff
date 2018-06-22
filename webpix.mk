@@ -58,4 +58,4 @@ webpix/%: allsteps.mk webpix
 	$(MAKE) -f $< $@
 
 my_images/%: my_images
-	cd $< && $(MAKE) $*
+	(cd $< && $(MAKE) $*) || convert $(word 2, $^) $@
