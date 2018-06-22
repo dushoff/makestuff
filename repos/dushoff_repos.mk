@@ -58,3 +58,5 @@ Bio3SS += Lecture_images
 
 $(Bio3SS):
 	$(MAKE) target=$@ repo=$(github) user=Bio3SS clone
+
+repodirs += $(Bio3SS)
