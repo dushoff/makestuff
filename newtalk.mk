@@ -1,3 +1,7 @@
+ifndef PUSHSTAR
+include $(ms)/perl.def
+endif
+
 Ignore += talkdir
 
 Ignore += *.txt.fmt txt.format

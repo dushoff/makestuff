@@ -1,6 +1,9 @@
-# include $(ms)/repos.def
 
+# include $(ms)/repos.def
 ## Add organizations to list, and make a rule
+
+## A lot of stuff here should be phased out, or moved
+## submake.mk for hot/cold dirs??
 
 ## Does not work without repos.def (or some other repo definer)
 repodirs += $(dushoff_github) $(ICI3D) $(Bio3SS) $(theobio_group) $(dushoff_bitbucket)
@@ -76,6 +79,10 @@ $(1)/%: $(1)/Makefile
 endef
 
 $(foreach dir,$(repodirs),$(eval $(call hotmake,$(dir))))
+
+## Adding to call from elsewhere
+$(foreach dir,$(hotdirs),$(eval $(call hotmake,$(dir))))
+$(foreach dir,$(colddirs),$(eval $(call hotmake,$(dir))))
 
 ######################################################################
 
