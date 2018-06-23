@@ -68,7 +68,7 @@ repodirs += $(fishforwish)
 
 ## Mac theobio organization
 
-theobio += QMEE
+theobio += QMEE Lab_meeting
 
 $(theobio):
 	$(MAKE) target=$@ repo=$(github) user=mac-theobio clone
