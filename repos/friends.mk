@@ -17,6 +17,9 @@ repodirs += $(PulliamLab)
 ## Something hacked together for Katie and Rachel
 wzmli += rabies_report
 
+## Mike's big Scotland idea
+wzmli += rabies_correlations
+
 ## 2018 Jun 07 (Thu) the current rabies_R0 investigation (Scotland poster)
 wzmli += rabies_R0
 
@@ -68,7 +71,7 @@ repodirs += $(fishforwish)
 
 ## Mac theobio organization
 
-theobio += QMEE Lab_meeting
+theobio += QMEE Lab_meeting smb-mathepi
 
 $(theobio):
 	$(MAKE) target=$@ repo=$(github) user=mac-theobio clone
