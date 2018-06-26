@@ -314,6 +314,8 @@ update: sync
 	git push origin --delete $*
 	git push -u origin $*
 
+## Destroy a branch
+## Usually call from upmerge (which hasn't been tested for a long time)
 %.nuke:
 	git branch -D $*
 	git push origin --delete $*
@@ -326,14 +328,19 @@ upmerge:
 	git push -u origin $(cmain)
 	$(MAKE) $(BRANCH).nuke
 
-upstream:
-	git remote get-url origin | perl -pe "s|:|/|; s|[^@]*@|go https://|; s/\.git.*//" | bash --login
 
+######################################################################
+
+## Open the web page associated with the repo
+## Not clear why sometimes one of these works, and sometimes the other
 hub:
 	echo go `git remote get-url origin` | bash 
-
 hupstream:
 	echo go `git remote get-url origin` | bash --login
+
+## Outdated version for github ssh 
+upstream:
+	git remote get-url origin | perl -pe "s|:|/|; s|[^@]*@|go https://|; s/\.git.*//" | bash --login
 
 ######################################################################
 
