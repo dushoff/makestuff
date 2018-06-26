@@ -1,4 +1,4 @@
-include $(ms)/dushoff_repos.def
+include $(ms)/repos/dushoff_repos.def
 
 repodirs += $(dushoff_github)
 
