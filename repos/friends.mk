@@ -80,6 +80,16 @@ repodirs += $(theobio)
 
 ######################################################################
 
+## Daniel Sang Woo Park (no hyphen)
+parksw3 += networkSEIR
+
+$(parksw3):
+	$(MAKE) target=$@ repo=$(github) user=parksw3 clone
+
+repodirs += $(parksw3)
+
+######################################################################
+
 # alejo = PISKa_disease_modeling
 # roxy = SIHR-Age-Mixing-Analysis
 # dsw_github = networkSEIR
