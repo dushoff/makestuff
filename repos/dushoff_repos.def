@@ -49,9 +49,4 @@ bitbucket_other  += talks nserc tutorial Vaccination_analysis TZ_pediatric_HIV z
 ## Has lots of .step info that I want, though
 Bio3SS += Lecture_images
 
-## Trying to avoid this (at least outside of 3SS, but maybe everywhere)
-## Has lots of .step info that I want, though
-Bio3SS += Lecture_images
-## Trying to avoid this (at least outside of 3SS, but maybe everywhere)
-## Has lots of .step info that I want, though
-Bio3SS += Lecture_images
+Bio3SS += Grading
