@@ -14,7 +14,6 @@ repodirs += $(dushoff_bitbucket)
 
 ######################################################################
 
-
 $(Bio3SS):
 	$(MAKE) target=$@ repo=$(github) user=Bio3SS clone
 
