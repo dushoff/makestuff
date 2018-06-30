@@ -7,7 +7,6 @@ $(dushoff_github):
 
 ######################################################################
 
-
 $(dushoff_bitbucket):
 	$(MAKE) target=$@ repo=$(bitbucket) user=dushoff clone
 
