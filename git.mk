@@ -43,6 +43,9 @@ branch:
 	@echo $(BRANCH)
 	git branch
 
+sourceadd: 
+	git add -f $(Sources)
+
 commit.time: $(Sources)
 	$(MAKE) .gitignore
 	-git add -f $^
