@@ -278,6 +278,14 @@ clonedir: $(Sources)
 	git clone `git remote get-url origin` $@
 	-cp target.mk $@
 
+sourcedir: $(Sources)
+	-/bin/rm -rf $@
+	mkdir $@
+	tar czf $@.tgz $^
+	cp $@.tgz $@
+	cd $@ && tar xzf $@.tgz && $(RM) $@.tgz
+	-cp target.mk $@
+
 %.localdir: %
 	-$(CP) local.mk $*
 
