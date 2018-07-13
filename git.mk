@@ -43,6 +43,9 @@ branch:
 	@echo $(BRANCH)
 	git branch
 
+sourceadd: 
+	git add -f $(Sources)
+
 commit.time: $(Sources)
 	$(MAKE) .gitignore
 	-git add -f $^
@@ -273,6 +276,14 @@ clonedir: $(Sources)
 	$(MAKE) up.time
 	-/bin/rm -rf $@
 	git clone `git remote get-url origin` $@
+	-cp target.mk $@
+
+sourcedir: $(Sources)
+	-/bin/rm -rf $@
+	mkdir $@
+	tar czf $@.tgz $^
+	cp $@.tgz $@
+	cd $@ && tar xzf $@.tgz && $(RM) $@.tgz
 	-cp target.mk $@
 
 %.localdir: %

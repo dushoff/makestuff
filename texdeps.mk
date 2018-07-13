@@ -48,7 +48,7 @@ endif
 
 # Update dependencies for a .tex file
 # A phony target
-%.deps: .texdeps/%.mk 
+%.deps: .texdeps/%.mk %.tex
 	-$(MAKE) -dr -f $< -f Makefile .texdeps/$*.out | tee .texdeps/$*.make.log 2>&1
 
 Ignore += .texdeps/
