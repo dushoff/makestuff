@@ -51,11 +51,6 @@ theobio += QMEE Lab_meeting smb-mathepi
 ## Daniel Sang Woo Park (no hyphen)
 parksw3 += networkSEIR
 
-$(parksw3):
-	$(MAKE) target=$@ repo=$(github) user=parksw3 clone
-
-repodirs += $(parksw3)
-
 ######################################################################
 
 # alejo = PISKa_disease_modeling
