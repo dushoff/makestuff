@@ -33,3 +33,7 @@ repodirs += $(theobio)
 $(parksw3):
 	$(MAKE) target=$@ repo=$(github) user=parksw3 clone
 repodirs += $(parksw3)
+
+$(champredon):
+	$(MAKE) target=$@ repo=$(github) user=davidchampredon clone
+repodirs += $(parksw3)

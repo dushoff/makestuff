@@ -28,7 +28,7 @@ dushoff_github += significance
 dushoff_github += Circumcision_and_behaviour
 
 ## 
-dushoff_github += Generation_talks disease_model_talks 
+dushoff_github += Generation_talks disease_model_talks generation_links
 
 ## 
 dushoff_github += generation_links Generation_distributions
