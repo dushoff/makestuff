@@ -55,6 +55,8 @@ repodirs += $(parksw3)
 
 ######################################################################
 
+davidchampredon += ILI-ER
+
 # alejo = PISKa_disease_modeling
 # roxy = SIHR-Age-Mixing-Analysis
 # dsw_github = networkSEIR
