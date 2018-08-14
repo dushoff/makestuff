@@ -367,6 +367,9 @@ rum: rupdate rmaster
 ruc: rupdate rcheck
 rumfetch: rupdate rfetch rmaster
 
+rup: rupdate
+	git submodule foreach --recursive touch up.time
+
 rupdate:
 	git submodule update --init --recursive
 
