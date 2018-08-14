@@ -51,9 +51,14 @@ theobio += QMEE Lab_meeting smb-mathepi
 ## Daniel Sang Woo Park (no hyphen)
 parksw3 += networkSEIR
 
-repodirs += $(parksw3)
+######################################################################
+
+## Champredon 
+champredon += ILI-ER
 
 ######################################################################
+
+davidchampredon += ILI-ER
 
 # alejo = PISKa_disease_modeling
 # roxy = SIHR-Age-Mixing-Analysis
