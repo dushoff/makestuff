@@ -1,6 +1,5 @@
 ## Fake dependency to avoid looping (since master.R is a source)
 %.masterscript: %.Rout
-	- /bin/rm -rf dotdir
 	$(MAKE) dotdir.localdir
 	-cd dotdir && $(MAKE) makestuff
 	cd dotdir && $(MAKE) -ndr $*.Rout > make.log
