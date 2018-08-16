@@ -10,11 +10,14 @@ endif
 %.pdf: %.tex .texdeps/%.out
 	$(MAKE) .texdeps/$*.mk
 	-$(MAKE) $*.deps
-	$(MAKE) $*.ltx
+	$(MAKE) $*.ltx || ($(MAKE) $*.logreport && 0)
+	$(MAKE) $*.logreport
+	sleep 1 ### Sleeping to clarify time stamps
+
+%.logreport:
 	@!(grep "Fatal error occurred" $*.log)
-	sleep 1 ### Make sure time stamps are distinct
-	@(grep "Rerun to get" $*.log && touch $<) || :
-	@(grep "Error:" $*.log && touch $<) || :
+	@(grep "Rerun to get" $*.log && touch $*.tex) || :
+	@(grep "Error:" $*.log && touch $*.tex) || :
 	@grep "Stop." .texdeps/$*.make.log || :
 	@grep "failed" .texdeps/$*.make.log || :
 
@@ -43,13 +46,18 @@ endif
 
 # Update dependencies for a .tex file
 # A phony target
-%.deps: .texdeps/%.mk 
+%.deps: .texdeps/%.mk %.tex
 	-$(MAKE) -dr -f $< -f Makefile .texdeps/$*.out | tee .texdeps/$*.make.log 2>&1
 
-Ignore += *.log *.aux .*.aux *.blg *.bbl *.bcf *.run.xml .texdeps/
+Ignore += .texdeps/
 
 texfiles = $(wildcard *.tex)
 Ignore += $(texfiles:tex=pdf) $(texfiles:tex=out)
+
+## These direct exclusions can be replaced by fancier rules above if necessary
+Ignore += *.log *.aux .*.aux *.blg *.bbl *.bcf 
+Ignore += *.nav *.snm *.toc
+Ignore += *.run.xml
 
 ### Doesn't quite fit here (or anywhere)
 

@@ -20,6 +20,9 @@ Sources += Makefile LICENSE README.md static.mk sub.mk todo.md
 ## Not clear when .gitignore is better here, or better in .ignore
 Sources += .ignore ignore.default ignore.pl
 
+## Probably don't need this 2018 May 22 (Tue)
+Sources += ignore.mk
+
 # Starting makefile for other projects
 
 Sources += makefile.mk hooks.mk localstuff.mk
@@ -122,6 +125,9 @@ Sources += wrapR/pdf.mk forms.def forms.mk wrapR/up.mk
 
 Sources += masterR.mk masterR.pl masterRfiles.pl
 
+## New autorefs stuff
+Sources += autorefs.mk $(wildcard autorefs/*.pl) autorefs/Makefile
+
 ######################################################################
 
 ## Missing image tags
@@ -134,16 +140,12 @@ personal.pdf:
 
 ######################################################################
 
+Sources += repos/dushoff_repos.mk repos/friends.mk repos/sites.mk
+Sources += repos/dushoff_repos.def repos/friends.def
+
+######################################################################
+
 -include local.mk
 include git.mk
 include pandoc.mk
 include visual.mk
-
-# Developing newlatex
-
-include perl.def
-# include newlatex.mk
-
-# test.pdf: test.tex latexdeps.pl
-
-# .deps/test.tex.d: test.tex latexdeps.pl

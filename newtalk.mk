@@ -1,9 +1,13 @@
+ifndef PUSHSTAR
+include $(ms)/perl.def
+endif
+
 Ignore += talkdir
 
+Ignore += *.txt.fmt txt.format
 %.txt.fmt: txt.format $(talkdir)/fmt.pl
 	$(PUSHSTAR)
 
-Ignore += txt.format
 txt.format: $(talkdir)/txt.format local.txt.format
 	$(rm)
 	$(cat)
@@ -31,7 +35,7 @@ copy.tex:
 talkdir/%:
 	$(MAKE) talkdir
 
-Makefile: talkdir
+Makefile: 
 talkdir:
 	/bin/ln -fs $(talkdir) $@
 

@@ -1,13 +1,14 @@
-### Git for _centralized_ workflow
-### Trying to generalize now
 
+## cmain is meant to point upstream; don't see any rules
+## to manipulate it. Maybe there were once.
+## Don't try merging with our rules until this is fixed!
 cmain = NULL
 
 ## Made a strange loop _once_ (doesn't seem to be used anyway).
 # -include $(BRANCH).mk
 
 ifndef BRANCH
-BRANCH=master
+BRANCH = $(shell cat .git/HEAD 2>/dev/null | perl -npE "s|.*/||;")
 endif
 
 ######################################################################
@@ -17,31 +18,19 @@ endif
 ## We don't want automatic gitignore rule to work in makestuff
 ## the perl dependency should stop it
 
-export Ignore += up.time commit.time commit.default dotdir/ clonedir/
-## Put .gitignore into .ignore
+export Ignore += commit.time commit.default dotdir/ clonedir/
 
 .gitignore: .ignore $(filter-out .gitignore, $(Sources)) $(ms)/ignore.pl
 	$(hardcopy)
 	perl -wf $(ms)/ignore.pl >> $@
 	$(RO)
 
-## Hybridizing and cleaning up; some of these rules should be phased out
-hybridignore: $(clonedirs:%=%.hybridignore) $(mdirs:%=%.hybridignore);
-cloneignore: $(clonedirs:%=%.cloneignore) ;
-modignore: $(mdirs:%=%.modignore) ;
+## 2018 May 22 (Tue)
+## Moved bootstrap stuff to ignore.mk for clarity
 
-%.hybridignore: 
-	cd $* && $(MAKE) Makefile.ignore && $(MAKE) hybridignore
+######################################################################
 
-%.cloneignore: 
-	cd $* && $(MAKE) Makefile.ignore && $(MAKE) cloneignore
-
-%.modignore: 
-	cd $* && $(MAKE) Makefile.ignore && $(MAKE) modignore
-
-Makefile.ignore:
-	perl -pi -e 's/(Sources.*).gitignore/$$1.ignore/' Makefile
-	-git rm .gitignore
+## Hybrid subdirectory types
 
 Ignore += $(clonedirs)
 Sources += $(mdirs)
@@ -53,6 +42,9 @@ Sources += $(mdirs)
 branch:
 	@echo $(BRANCH)
 	git branch
+
+sourceadd: 
+	git add -f $(Sources)
 
 commit.time: $(Sources)
 	$(MAKE) .gitignore
@@ -74,20 +66,35 @@ pull: commit.time
 	git pull
 	touch $<
 
+######################################################################
+
+Ignore += up.time all.time
 up.time: commit.time
-	git pull
+	-git pull
 	git push -u origin $(BRANCH)
 	touch $@
 
-## up.time syncs as long as it's out of date, so this should work
+all.time: makestuff.up $(mdirs:%=%.all) $(clonedirs:%=%.all) up.time
+	touch $@
+	git status
+
+%.up: %
+	cd $< && $(MAKE) up.time
+
+%.all: %
+	cd $< && $(MAKE) all.time
+
 sync: 
 	$(RM) up.time
 	$(MAKE) up.time
 
-newpush: commit.time
-	-git pull
-	git push -u origin $(BRANCH)
+allsync: 
+	$(RM) all.time
+	$(MAKE) all.time
 
+######################################################################
+
+## This probably belongs somewhere else!
 addsync: $(add_cache)
 	touch Makefile
 	$(MAKE) sync
@@ -99,37 +106,6 @@ tsync:
 msync: commit.time
 	git checkout master
 	$(MAKE) sync
-
-######################################################################
-
-## Older module based stuff
-## Need to make hybrid?
-
-## Recursive make-based sync. 
-## NOT TESTED (and not needed?)
-## Work on an autosync first and then recurse that?
-rmsync: $(mdirs:%=%.rmsync) makestuff.msync commit.time
-	git checkout master
-	$(MAKE) sync
-	git status
-
-### up
-### Why is this better than a foreach approach?
-### I guess because I control the order.
-### Probably some hybrid approach would be best...
-
-rup: $(mdirs:%=%.rup) makestuff.up up.time
-
-mup: master up.time
-
-bump: makestuff.up up.time
-
-%.up: %
-	cd $< && $(MAKE) up.time
-
-## The alternative is for bootstrapping
-%.rup: %
-	cd $< && ($(MAKE) rup || $(MAKE) makestuff.pull)
 
 ######################################################################
 
@@ -156,6 +132,12 @@ remotesync: commit.default
 %.pull: %
 	cd $< && $(MAKE) pull
 
+## Not tested (hasn't propagated)
+rmpull: $(mdirs:%=%.rmpull) makestuff.pull pull
+	git checkout master
+	$(MAKE) pull
+	git status
+
 %.push: %
 	cd $< && $(MAKE) up.time
 
@@ -165,7 +147,6 @@ git_check = git diff-index --quiet HEAD --
 ######################################################################
 
 ## git push; make things and add them to the repo
-## Testing streamlined version Jul 2017
 
 %.gp: % git_push
 	cp $* git_push
@@ -176,6 +157,8 @@ git_push:
 	$(mkdir)
 
 ######################################################################
+
+## Redo in a more systematic way (like .branchdir)
 
 ## Pages. Sort of like git_push, but for gh_pages (html, private repos)
 ## May want to refactor as for git_push above (break link from pages/* to * for robustness)
@@ -190,15 +173,15 @@ pages/%: % pages
 
 pages:
 	git clone `git remote get-url origin` $@
-	cd $@ && (git checkout gh-pages || $(orphanpages)
+	cd $@ && (git checkout gh-pages || $(createpages)
 
-define orphanpages
+define createpages
 	(git checkout --orphan gh-pages && git rm -rf * && touch ../README.md && cp ../README.md . && git add README.md && git commit -m "Orphan pages branch" && git push --set-upstream origin gh-pages ))
 endef
 
 ##################################################################
 
-### Rebase
+### Rebase problems
 
 continue: $(Sources)
 	git add $(Sources)
@@ -217,6 +200,9 @@ abort:
 
 README.md LICENSE.md:
 	touch $@
+
+%/target.mk:
+	$(CP) target.mk $*
 
 ##################################################################
 
@@ -240,9 +226,6 @@ clean_dir:
 	mkdir .$@
 	$(MV) $(filter-out $(Sources) local.mk $(wildcard *.makestuff), $(wildcard *.*)) .$@
 
-### Not clear whether these rules actually play well together!
-clean_both: clean_repo clean_dir
-
 # Fixes untracked files - if you have files included in .gitignore that are present in the repo on github
 fix_repo:
 	git rm -r --cached .
@@ -252,6 +235,10 @@ fix_repo:
 $(Outside):
 	echo Please get $@ from outside the repo and try again.
 	exit 1
+
+######################################################################
+
+## For security breaches
 
 ##### Annihilation
 %.annihilate: sync
@@ -269,7 +256,6 @@ gitprune:
 
 ##################################################################
 
-### make gittest.mk
 ### Testing
 
 dotdir: $(Sources)
@@ -278,10 +264,26 @@ dotdir: $(Sources)
 	git clone . $@
 	-cp target.mk $@
 
+## Still working on rev-parse line
+%.branchdir: $(Sources)
+	$(MAKE) commit.time
+	git rev-parse --verify $* || git fetch origin $*:$*
+	git clone . $*
+	cd $* && git checkout $*
+	cd $* && git remote set-url origin `(cd .. && git remote get-url origin)`
+
 clonedir: $(Sources)
 	$(MAKE) up.time
 	-/bin/rm -rf $@
 	git clone `git remote get-url origin` $@
+	-cp target.mk $@
+
+sourcedir: $(Sources)
+	-/bin/rm -rf $@
+	mkdir $@
+	tar czf $@.tgz $^
+	cp $@.tgz $@
+	cd $@ && tar xzf $@.tgz && $(RM) $@.tgz
 	-cp target.mk $@
 
 %.localdir: %
@@ -303,7 +305,7 @@ testclean:
 	$(MAKE) commit.time
 	git push -u origin $(BRANCH)
 
-%.branch: newpush
+%.branch: commit.time
 	git checkout $*
 
 %.checkbranch:
@@ -323,6 +325,8 @@ update: sync
 	git push origin --delete $*
 	git push -u origin $*
 
+## Destroy a branch
+## Usually call from upmerge (which hasn't been tested for a long time)
 %.nuke:
 	git branch -D $*
 	git push origin --delete $*
@@ -335,11 +339,19 @@ upmerge:
 	git push -u origin $(cmain)
 	$(MAKE) $(BRANCH).nuke
 
-upstream:
-	git remote get-url origin | perl -pe "s|:|/|; s|[^@]*@|go https://|; s/\.git.*//" | bash --login
 
+######################################################################
+
+## Open the web page associated with the repo
+## Not clear why sometimes one of these works, and sometimes the other
+hub:
+	echo go `git remote get-url origin` | bash 
 hupstream:
 	echo go `git remote get-url origin` | bash --login
+
+## Outdated version for github ssh 
+upstream:
+	git remote get-url origin | perl -pe "s|:|/|; s|[^@]*@|go https://|; s/\.git.*//" | bash --login
 
 ######################################################################
 
@@ -354,6 +366,10 @@ hupstream:
 rum: rupdate rmaster
 ruc: rupdate rcheck
 rumfetch: rupdate rfetch rmaster
+
+## Is this a candidate for C-F3?
+rup: rupdate
+	git submodule foreach --recursive touch up.time
 
 rupdate:
 	git submodule update --init --recursive
@@ -380,48 +396,44 @@ git_check:
 	$(git_check)
 
 ## Push new makestuff (probably from this section) to all submodules
-newstuff:
-	git submodule foreach --recursive 'ls -d makestuff || git pull'
+## Locally if makestuffs aren't submodules)
+shortstuff:
+	git submodule foreach '(ls -d makestuff && cd makestuff && git checkout master && git pull) ||:'
+## Recursively
+newstuff: makestuff.sync
+	git submodule foreach --recursive 'ls -d makestuff || (git checkout master && git pull)'
 
-## Clumsily sync after doing that
+## The principled way to do this seems to be with update merge
+## It seems to require config variables?
+allmaster: 
+	git submodule foreach --recursive 'git checkout master'
+
+upsub:
+	git submodule update --init --merge
+
 ## This goes through directories that have makestuff and adds and commits just the makestuff
-## Should have something else to autosync the makestuff directories
 comstuff:
 	git submodule foreach --recursive '(ls -d makestuff && make syncstuff) ||: '
 
-comcom: 
-	git submodule foreach --recursive '(ls -d makestuff && make tsync) ||: '
-
-getstuff: git_check newstuff comstuff
-
+## Used to have pull/push manually; should it work instead with rmsync?
+## No idea!
 syncstuff: makestuff
 	git add $< 
 	git commit -m $@
 
-getstuff: git_check newstuff comstuff
+rmsync: $(mdirs:%=%.rmsync) makestuff.msync commit.time
+	git checkout master
+	$(MAKE) sync
+	git status
 
-## Watch out for the danger of committing without syncing. The higher-level repos may be more up-to-date than the lower ones…
+%.rmsync:
+	cd $* && $(MAKE) rmsync
 
-## Better would be a hybrid approach.
-## A make rule that uses foreach (without --recursive) to recurse on itself
-## Keep newstuff to develop and push the more sophisticated stuff
+pushstuff: newstuff comstuff rmsync
 
 ######################################################################
 
-## Unified hybrid stuff (HOT)
-
-## Push everything to repo
-hup: $(mdirs:%=%.hup) $(clonedirs:%=%.hup) makestuff.hup up.time
-
-## This doesn't work (see SECONDEXPANSION below)
-## SECONDEXPANSION version is too violent (tries to remake everything that exists)
-## Prematurely remakes makestuff.hup
-## IDEA: hup should depend on up.time, and other hups
-## Still not clear how to chain it best
-## OTHER idea: some sort of OR for the makestuff part (would still be violent, but might usually work)
-Ignore += *.hup
-makestuff.hup: %.hup: $(wildcard %/*)
-	((cd $* && $(MAKE) up.time) && touch $@)
+## Is srstuff covered by clone stuff below it?
 
 ## Push makestuff changes to subrepos
 srstuff:  $(mdirs:%=%.srstuff) $(clonedirs:%=%.srstuff)
@@ -429,27 +441,21 @@ srstuff:  $(mdirs:%=%.srstuff) $(clonedirs:%=%.srstuff)
 %.srstuff:
 	cd $*/makestuff && git checkout master && $(MAKE) pull
 
-## Clones and hybrids
-
-%.cloneup:
-	cd $* && $(MAKE) cloneup
-
-cloneup: $(clonedirs:%=%.cloneup) up.time ;
+## Initializing and pulling clones
 
 %.makeclone: % 
-	cd $* && $(MAKE) makestuff && $(MAKE) makeclones
+	cd $* && $(MAKE) makestuff && $(MAKE) makestuff.master && $(MAKE) makestuff.sync && $(MAKE) makeclones
 
 makeclones: $(clonedirs:%=%.makeclone) ;
 
 ## Transitional, doesn't recurse (yet?)
 
 ## Just pull
-cpstuff: makestuff.sync $(clonedirs:%=%.cpstuff) ;
+cpstuff: makestuff.pull $(clonedirs:%=%.cpstuff) ;
 
 %.cpstuff: 
 	cd $* && $(MAKE) makestuff.pull
 
-## Sync (works on older things than cpstuff will. I hope)
 csstuff: makestuff.push $(clonedirs:%=%.csstuff) ;
 
 %.csstuff: 
@@ -457,43 +463,23 @@ csstuff: makestuff.push $(clonedirs:%=%.csstuff) ;
 
 ######################################################################
 
-## New repos
-## We should have separate lines for different kinds:
-## master (postpone)
+## Moved a bunch of confusing stuff to hybrid.mk
 
-## Not tested; want to make a working repo soon!
-## container
-%.newcontainer: %.containerfiles %.first
+######################################################################
 
-%.containerfiles: %
-	! ls $*/Makefile || (echo new files: Makefile exists; return 1)
-	cp $(ms)/hybrid/container.mk $*/Makefile
-	cp $(ms)/hybrid/upstuff.mk $(ms)/target.mk $*
+## Switch makestuff style in repo made by gitroot 
 
-## working
-%.newwork: %.workfiles %.first ;
+makestuff.clone:
+	cd $(ms) && $(MAKE) up.time
+	$(MAKE) makestuff.rmsub
+	git clone $(msrepo)/$(ms)
+	perl -pi -e 's/Sources(.*ms)/Ignore$$1/' Makefile
 
-%.workfiles: %
-	! ls $*/Makefile || (echo new files: Makefile exists; return 1)
-	echo "# $*" > $*/Makefile
-	cat $(ms)/hybrid/work.mk >> $*/Makefile
-	cp $(ms)/hybrid/substuff.mk $(ms)/target.mk $*
-
-%.first:
-	cd $* && $(MAKE) makestuff && $(MAKE) commit.default && $(MAKE) newpush
-
-## Old
-
-%.newhybrid: % %.hybridfiles
-	cd $* && make makestuff
-
-%.hybridfiles: %
-	! ls $*/Makefile || (echo newhybrid: Makefile exists; return 1)
-	cp $(ms)/makefile.mk $*/Makefile
-	cp $(ms)/hybrid/makestuff.mk $(ms)/target.mk $*
-
-%/Makefile %/link.mk %/target.mk %/sub.mk:
-	$(CP) $(ms)/$(notdir $@) $*/
+makestuff.sub:
+	cd $(ms) && $(MAKE) up.time
+	$(RMR) $(ms)
+	git submodule add -f -b master $(msrepo)/$(ms)
+	perl -pi -e 's/Ignore(.*ms)/Sources $$1/' Makefile
 
 ######################################################################
 
@@ -533,15 +519,3 @@ Ignore += *.oldfile *.olddiff
 
 store_all:
 	git config --global credential.helper 'store'
-
-######################################################################
-
-## SECONDEXPANSION stuff (it's a shame I can't just scope it)
-
-## Tortured logic is only for propagation of makestuff
-## Maybe suppress (the logic, not the whole thing)
-## Also, does not ever seem to go out-of-date; something about evaluation?
-## SECONDEXPANSION fixes that, but makes it go into makestuff wrong
-.SECONDEXPANSION:
-%.hup: $$(wildcard $$*/*)
-	((cd $* && $(MAKE) hup) && touch $@) || (cd $* && ($(MAKE) makestuff.msync || $(MAKE) makestuff.sync))
