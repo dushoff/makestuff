@@ -41,9 +41,9 @@ dushoff_other = CIHR_Ebola Ebola_stochasticity make Planning rabies-SD RR autore
 ######################################################################
 
 ## 2018 Jun 17 (Sun)
-dushoff_bitbucket += New_CV 
+dushoff_bitbucket += New_CV Correspondence 
 
-bitbucket_other  += talks nserc tutorial Vaccination_analysis TZ_pediatric_HIV zebra_movement Academic_CV Correspondence HIV_Project taxes Sandbox djd QMEE_private tick_math FIDO 1m_2017
+bitbucket_other  += talks nserc tutorial Vaccination_analysis TZ_pediatric_HIV zebra_movement Academic_CV HIV_Project taxes Sandbox djd QMEE_private tick_math FIDO 1m_2017
 
 
 ######################################################################
