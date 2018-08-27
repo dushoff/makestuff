@@ -7,8 +7,6 @@ ifeq ($(bibtex),)
 bibtex = biber $* || bibtex $*
 endif
 
-## This can be improved by getting it to do some of the error printing
-## even when .ltx fails. Some sort of fancy or-ing
 %.pdf: %.tex .texdeps/%.out
 	$(MAKE) .texdeps/$*.mk
 	-$(MAKE) $*.deps

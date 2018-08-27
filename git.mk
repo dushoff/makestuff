@@ -367,6 +367,10 @@ rum: rupdate rmaster
 ruc: rupdate rcheck
 rumfetch: rupdate rfetch rmaster
 
+## Is this a candidate for C-F3?
+rup: rupdate
+	git submodule foreach --recursive touch up.time
+
 rupdate:
 	git submodule update --init --recursive
 
