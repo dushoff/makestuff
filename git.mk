@@ -313,6 +313,7 @@ testclean:
 
 %.master:
 	cd $* && git checkout master
+
 master: 
 	git checkout master
 
@@ -369,7 +370,7 @@ rumfetch: rupdate rfetch rmaster
 
 ## Is this a candidate for C-F3?
 rup: rupdate
-	git submodule foreach --recursive touch up.time
+	git submodule foreach --recursive touch commit.time up.time
 
 rupdate:
 	git submodule update --init --recursive
