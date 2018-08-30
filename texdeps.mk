@@ -13,6 +13,7 @@ endif
 	sleep 1 ### Sleeping to clarify time stamps
 	$(MAKE) $*.ltx || ($(MAKE) $*.logreport && 0)
 	$(MAKE) $*.logreport
+	sleep 1 ### Sleeping to clarify time stamps
 
 %.logreport:
 	@!(grep "Fatal error occurred" $*.log)
