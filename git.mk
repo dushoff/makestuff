@@ -43,6 +43,9 @@ branch:
 	@echo $(BRANCH)
 	git branch
 
+sourceadd: 
+	git add -f $(Sources)
+
 commit.time: $(Sources)
 	$(MAKE) .gitignore
 	-git add -f $^
@@ -122,7 +125,9 @@ remotesync: commit.default
 %.status: %
 	cd $< && git status
 
-%.msync: %.master %.sync ;
+%.msync: %.master
+	cd $< && $(MAKE) sync
+
 %.sync: %
 	cd $< && $(MAKE) sync
 
@@ -275,6 +280,14 @@ clonedir: $(Sources)
 	git clone `git remote get-url origin` $@
 	-cp target.mk $@
 
+sourcedir: $(Sources)
+	-/bin/rm -rf $@
+	mkdir $@
+	tar czf $@.tgz $^
+	cp $@.tgz $@
+	cd $@ && tar xzf $@.tgz && $(RM) $@.tgz
+	-cp target.mk $@
+
 %.localdir: %
 	-$(CP) local.mk $*
 
@@ -302,6 +315,7 @@ testclean:
 
 %.master:
 	cd $* && git checkout master
+
 master: 
 	git checkout master
 
@@ -314,6 +328,8 @@ update: sync
 	git push origin --delete $*
 	git push -u origin $*
 
+## Destroy a branch
+## Usually call from upmerge (which hasn't been tested for a long time)
 %.nuke:
 	git branch -D $*
 	git push origin --delete $*
@@ -326,14 +342,19 @@ upmerge:
 	git push -u origin $(cmain)
 	$(MAKE) $(BRANCH).nuke
 
-upstream:
-	git remote get-url origin | perl -pe "s|:|/|; s|[^@]*@|go https://|; s/\.git.*//" | bash --login
 
+######################################################################
+
+## Open the web page associated with the repo
+## Not clear why sometimes one of these works, and sometimes the other
 hub:
 	echo go `git remote get-url origin` | bash 
-
 hupstream:
 	echo go `git remote get-url origin` | bash --login
+
+## Outdated version for github ssh 
+upstream:
+	git remote get-url origin | perl -pe "s|:|/|; s|[^@]*@|go https://|; s/\.git.*//" | bash --login
 
 ######################################################################
 
@@ -348,6 +369,10 @@ hupstream:
 rum: rupdate rmaster
 ruc: rupdate rcheck
 rumfetch: rupdate rfetch rmaster
+
+## Is this a candidate for C-F3?
+rup: rupdate
+	git submodule foreach --recursive touch commit.time up.time
 
 rupdate:
 	git submodule update --init --recursive

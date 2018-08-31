@@ -1,4 +1,3 @@
-
 ifeq ($(latex),)
 latex = pdflatex -interaction=nonstopmode
 endif
@@ -7,11 +6,10 @@ ifeq ($(bibtex),)
 bibtex = biber $* || bibtex $*
 endif
 
-## This can be improved by getting it to do some of the error printing
-## even when .ltx fails. Some sort of fancy or-ing
 %.pdf: %.tex .texdeps/%.out
 	$(MAKE) .texdeps/$*.mk
 	-$(MAKE) $*.deps
+	## sleep 1 ### Sleeping to clarify time stamps
 	$(MAKE) $*.ltx || ($(MAKE) $*.logreport && 0)
 	$(MAKE) $*.logreport
 	sleep 1 ### Sleeping to clarify time stamps
@@ -48,7 +46,7 @@ endif
 
 # Update dependencies for a .tex file
 # A phony target
-%.deps: .texdeps/%.mk 
+%.deps: .texdeps/%.mk %.tex
 	-$(MAKE) -dr -f $< -f Makefile .texdeps/$*.out | tee .texdeps/$*.make.log 2>&1
 
 Ignore += .texdeps/

@@ -1,0 +1,58 @@
+
+## See makestuff/repos.def ## makestuff/repos.mk
+
+######################################################################
+
+## dushoff_github
+
+## Only for testing setup; this should be completely destroy-able
+dushoff_github += creation
+
+## Less-temporary Sandbox stuff
+Sandbox: clonecommand=subclone
+dushoff_github += Sandbox
+
+## A repo-repo (still good? simplify?) for educational talks
+dushoff_github += Workshops
+
+## Rarity stuff with Roswell
+dushoff_github += diversity_metrics
+
+## Main Planning repo
+dushoff_github += Planning
+
+## Clarity, etc.
+dushoff_github += significance
+
+## Which one is this?
+dushoff_github += Circumcision_and_behaviour
+
+## 
+dushoff_github += Generation_talks disease_model_talks
+
+## 
+dushoff_github += generation_links Generation_distributions
+
+## Course containers (new 2018 Aug 29 (Wed))
+dushoff_github += 1M
+
+######################################################################
+
+dushoff_other = CIHR_Ebola Ebola_stochasticity make Planning rabies-SD RR autorefs dushoff.github.io makework techtex-ebola sherif TZ_clinics rabies_burden nserc_tools SEER_HPV initial_epi diversity_metrics Latent_incidence_fitting DHS_overview Country_lists little_r SIR_model_family Rabies_talks Syphilis_and_ARVs HIV_presentations SIR_simulations scratch permutation_binomial notebook statistics_talks Ebola_talks Ebola_sims fitting_code Endemic_curves math_talks texdeps org Workshops gi_appoximations link_calculations
+
+
+######################################################################
+
+## 2018 Jun 17 (Sun)
+dushoff_bitbucket += New_CV Correspondence 
+
+bitbucket_other  += talks nserc tutorial Vaccination_analysis TZ_pediatric_HIV zebra_movement Academic_CV HIV_Project taxes Sandbox djd QMEE_private tick_math FIDO 1m_2017
+
+
+######################################################################
+
+## Trying to avoid this (at least outside of 3SS, but maybe everywhere)
+## Has lots of .step info that I want, though
+Bio3SS += Lecture_images
+
+Bio3SS += Grading

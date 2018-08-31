@@ -141,6 +141,7 @@ personal.pdf:
 ######################################################################
 
 Sources += repos/dushoff_repos.mk repos/friends.mk repos/sites.mk
+Sources += repos/dushoff_repos.def repos/friends.def
 
 ######################################################################
 
