@@ -123,7 +123,7 @@ Sources += wrapR/pdf.mk forms.def forms.mk wrapR/up.mk
 
 ## Make automatic wrapR master wrappers
 
-Sources += masterR.mk masterR.pl masterRfiles.pl
+Sources += masterR.mk masterR.pl masterRfiles.pl masterR.md
 
 ## New autorefs stuff
 Sources += autorefs.mk $(wildcard autorefs/*.pl) autorefs/Makefile

@@ -123,6 +123,9 @@ draft final: {\color{shortcolor}\sl %%}
 CHANGE %!
 draft: {\color{red}\textbf{cchange: %%}}
 
+REMARK %!
+draft: {\color{red}\textbf{%%}}
+
 CORRECTION {\color{red}\textbf{%%}}
 
 STRIKE {\sout{%%}}
