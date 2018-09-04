@@ -51,8 +51,12 @@ bitbucket_other  += talks nserc tutorial Vaccination_analysis TZ_pediatric_HIV z
 
 ######################################################################
 
-## Trying to avoid this (at least outside of 3SS, but maybe everywhere)
-## Has lots of .step info that I want, though
+## Trying to avoid separate image-control directories 
+## Lots of .step info here, though
 Bio3SS += Lecture_images
 
 Bio3SS += Grading
+
+######################################################################
+
+mac-theobio += mac-theobio.github.io
