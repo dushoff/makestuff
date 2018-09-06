@@ -150,6 +150,10 @@ draft final: ^%%
 
 # Slides with purely repetitive information (for classroom exposition)
 RSLIDE NULLSLIDE
+final: ^DEFHEAD {\sl %% (repeat)}
+draft: ^DEFHEAD {\sl %% (repeat OR preview?)}
+
+REPSLIDE NULLSLIDE
 draft final: ^DEFHEAD {\sl %% (repeat)}
 
 PRESLIDE NULLSLIDE
