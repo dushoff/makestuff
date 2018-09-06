@@ -7,7 +7,7 @@ my %runs;
 while (<>){
 	chomp;
 	my ($f) =/.*"(.*)"/; 
-	$runs{$f} = "Mike";
+	$runs{$f} = 0 if defined $f;
 }
  
 print "runs: ";
