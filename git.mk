@@ -125,7 +125,9 @@ remotesync: commit.default
 %.status: %
 	cd $< && git status
 
-%.msync: %.master %.sync ;
+%.msync: %.master
+	cd $* && $(MAKE) sync
+
 %.sync: %
 	cd $< && $(MAKE) sync
 
@@ -313,6 +315,7 @@ testclean:
 
 %.master:
 	cd $* && git checkout master
+
 master: 
 	git checkout master
 
@@ -366,6 +369,10 @@ upstream:
 rum: rupdate rmaster
 ruc: rupdate rcheck
 rumfetch: rupdate rfetch rmaster
+
+## Is this a candidate for C-F3?
+rup: rupdate
+	git submodule foreach --recursive touch commit.time up.time
 
 rupdate:
 	git submodule update --init --recursive

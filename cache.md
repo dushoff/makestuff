@@ -16,7 +16,16 @@ To do a complete make (not respecting the cache), say:
 make <target>.nocache
 ```
 
-This seals up the breakpoint in your make logic (between the slow directory and the cache directory). It should always work within a local session, but I'm worried about time stamps when the repo is pushed and pulled. Will investigate further.
+This seals up the breakpoint in your make logic (between the slow directory and the cache directory). 
+
+# Pushing
+
+`git` seems like a really bad way to manage cache files, so I probably should take out all that code.
+
+You can put your cache in a shared file system or not; need example code for how that should be done.
+
+
+It should always work within a local session, but I'm worried about time stamps when the repo is pushed and pulled. Will investigate further.
 
 I think the solution (not implemented) is to disable automatic pushing. You _don't_ want to push slow files if they're not up-to-date. So a special rule for making and adding slow files. 
 

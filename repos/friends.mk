@@ -12,6 +12,10 @@ $(ICI3D):
 	$(MAKE) target=$@ repo=$(github) user=ICI3D clone
 repodirs += $(ICI3D)
 
+$(davidchampredon):
+	$(MAKE) target=$@ repo=$(github) user=davidchampredon clone
+repodirs += $(davidchampredo)
+
 $(davidearn):
 	$(MAKE) target=$@ repo=$(github) user=davidearn clone
 repodirs += $(davidearn)
@@ -29,3 +33,7 @@ repodirs += $(theobio)
 $(parksw3):
 	$(MAKE) target=$@ repo=$(github) user=parksw3 clone
 repodirs += $(parksw3)
+
+Ignore += $(champredon)
+$(champredon):
+	$(MAKE) target=$@ repo=$(github) user=davidchampredon clone

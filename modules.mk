@@ -1,4 +1,6 @@
 
+## OMG. Lots of stuff here that shouldn't be used, but what's here that's valuable? hotmake/coldmake?
+
 # include $(ms)/repos.def
 ## Add organizations to list, and make a rule
 

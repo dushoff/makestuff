@@ -31,9 +31,16 @@ all.html: $(htmls)
 ## Make a webpix directory (user should define or pay attention to Drop)
 ## WARNING, files directory no longer supported!!
 
-ifeq ($(Drop),)
-Drop = ~/Dropbox
+## Drop is a terrible name here; should upgrade to imageDrop I guess.
+
+ifeq ($(imageDrop),)
+imageDrop = $(Drop)
 endif
+
+ifeq ($(imageDrop),)
+imageDrop = .
+endif
+
 webpix my_images: dir = $(Drop)
 webpix my_images: 
 	$(MAKE)  $(Drop)/$@
