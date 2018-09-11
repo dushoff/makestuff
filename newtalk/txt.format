@@ -128,7 +128,7 @@ REMARK %!
 draft: {\color{red}\textbf{Remark: %%}}
 
 # Changes that need to be shown in final notes
-CORRECTION {\color{red}\textbf{%%}}
+CORRECTION {\color{orange}\textbf{%%}}
 STRIKE {\sout{%%}}
 
 CREDIT {\small\emph{%%}}
