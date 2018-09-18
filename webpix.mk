@@ -28,18 +28,23 @@ all.html: $(htmls)
 
 ######################################################################
 
-## Make a webpix directory (user should define or pay attention to Drop)
-## WARNING, files directory no longer supported!!
+## Make a webpix directory (user should define or pay attention to imageDrop)
+## Drop is mapped for back-compatibility
 
-ifeq ($(Drop),)
-Drop = ~/Dropbox
+ifeq ($(imageDrop),)
+imageDrop = $(Drop)
 endif
-webpix my_images: dir = $(Drop)
+
+ifeq ($(imageDrop),)
+imageDrop = .
+endif
+
+webpix my_images: dir = $(imageDrop)
 webpix my_images: 
-	$(MAKE)  $(Drop)/$@
+	$(MAKE)  $(imageDrop)/$@
 	$(linkdir)
 
-$(Drop)/webpix $(Drop)/my_images:
+$(imageDrop)/webpix $(imageDrop)/my_images:
 	$(mkdir)
 
 ## Reload a figure if you messed up the link or something

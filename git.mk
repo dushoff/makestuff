@@ -126,7 +126,7 @@ remotesync: commit.default
 	cd $< && git status
 
 %.msync: %.master
-	cd $< && $(MAKE) sync
+	cd $* && $(MAKE) sync
 
 %.sync: %
 	cd $< && $(MAKE) sync

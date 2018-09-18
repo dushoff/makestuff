@@ -119,15 +119,16 @@ COMMENT %!
 complete: {\em\underline{Comment}: }%%
 draft final: {\color{shortcolor}\sl %%}
 
-# For the future; show in draft only
+# Something to change in the future (handouts already out) show in draft only
 CHANGE %!
-draft: {\color{red}\textbf{cchange: %%}}
+draft: {\color{red}\textbf{Change: %%}}
 
+# To remind the lecturer
 REMARK %!
-draft: {\color{red}\textbf{%%}}
+draft: {\color{red}\textbf{Remark: %%}}
 
-CORRECTION {\color{red}\textbf{%%}}
-
+# Changes that need to be shown in final notes
+CORRECTION {\color{orange}\textbf{%%}}
 STRIKE {\sout{%%}}
 
 CREDIT {\small\emph{%%}}
@@ -148,12 +149,19 @@ PICSLIDE NULLSLIDE
 draft final: ^%%
 
 # Slides with purely repetitive information (for classroom exposition)
-# Slanted header to remind us we've seen it
 RSLIDE NULLSLIDE
-draft final: ^DEFHEAD {\sl %%}
+final: ^DEFHEAD {\sl %% (repeat)}
+draft: ^DEFHEAD {\sl %% (repeat OR preview?)}
 
+REPSLIDE NULLSLIDE
+draft final: ^DEFHEAD {\sl %% (repeat)}
+
+PRESLIDE NULLSLIDE
+draft final: ^DEFHEAD {\sl %% (preview)}
+
+## A whole slide for notes only
 NSLIDE NULLSLIDE
-handouts: ^DEFHEAD %%
+handouts complete: ^DEFHEAD %%
 
 ### Paragraph level
 
@@ -174,7 +182,7 @@ REP ^PRESENT %%
 # Mark as a picture
 PIC ^PRESENT %%
 
-# Repetitive slide heading
+# Repetitive slide heading (don't repeat the heading in notes)
 RHEAD %!
 draft final: ^DEFHEAD %%
 
