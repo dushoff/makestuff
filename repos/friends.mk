@@ -24,6 +24,10 @@ $(fishforwish):
 	$(MAKE) target=$@ repo=$(github) user=fishforwish clone
 repodirs += $(fishforwish)
 
+$(cfshi):
+	$(MAKE) target=$@ repo=$(github) user=cfshi clone
+repodirs += $(cfshi)
+
 ## Mac theobio organization
 
 $(theobio):
