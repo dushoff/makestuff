@@ -4,6 +4,10 @@ $(PulliamLab):
 	$(MAKE) target=$@ repo=$(github) user=PulliamLab-UFL clone
 repodirs += $(PulliamLab)
 
+$(cygubicko):
+	$(MAKE) target=$@ repo=$(github) user=cygubicko clone
+repodirs += $(cygubicko)
+
 $(wzmli):
 	$(MAKE) target=$@ repo=$(github) user=wzmli clone
 repodirs += $(wzmli)
