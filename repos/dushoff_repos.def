@@ -64,3 +64,9 @@ Bio3SS += Grading
 ######################################################################
 
 mac-theobio += mac-theobio.github.io
+
+## Machine learning course
+mac-theobio += ml_medicine
+
+## Bewketu's review?
+mac-theobio += HIV_treatment_Africa
