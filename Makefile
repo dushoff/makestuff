@@ -40,10 +40,8 @@ Sources += hybrid/*.mk
 
 # Accounts 
 
+## Not clear what this was meant to be for 2018 Sep 22 (Sat)
 Sources += accounts.mk accounts.pl
-
-### TEMP
-include accounts.mk
 
 ######################################################################
 

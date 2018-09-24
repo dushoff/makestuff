@@ -4,6 +4,10 @@ $(PulliamLab):
 	$(MAKE) target=$@ repo=$(github) user=PulliamLab-UFL clone
 repodirs += $(PulliamLab)
 
+$(cygubicko):
+	$(MAKE) target=$@ repo=$(github) user=cygubicko clone
+repodirs += $(cygubicko)
+
 $(wzmli):
 	$(MAKE) target=$@ repo=$(github) user=wzmli clone
 repodirs += $(wzmli)
@@ -38,6 +42,11 @@ $(parksw3):
 	$(MAKE) target=$@ repo=$(github) user=parksw3 clone
 repodirs += $(parksw3)
 
+## Fix this with a drop-in (clone-in)
 Ignore += $(champredon)
 $(champredon):
 	$(MAKE) target=$@ repo=$(github) user=davidchampredon clone
+
+repodirs += alberta_age
+alberta_age:
+	git clone https://git.overleaf.com/8974471gkzqmdgbwvtj $@

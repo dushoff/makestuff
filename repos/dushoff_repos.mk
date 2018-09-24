@@ -18,3 +18,12 @@ $(Bio3SS):
 	$(MAKE) target=$@ repo=$(github) user=Bio3SS clone
 
 repodirs += $(Bio3SS)
+
+######################################################################
+
+$(mac-theobio):
+	$(MAKE) target=$@ repo=$(github) user=mac-theobio clone
+
+repodirs += $(mac-theobio)
+
+######################################################################

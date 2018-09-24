@@ -36,6 +36,10 @@ dushoff_github += generation_links Generation_distributions
 ## Course containers (new 2018 Aug 29 (Wed))
 dushoff_github += 1M
 
+## Hybrid stuff
+## Want to be able to make these easily, but don't really wnat to keep them around
+## No problem; couldn't find them anyway ☺
+
 ######################################################################
 
 dushoff_other = CIHR_Ebola Ebola_stochasticity make Planning rabies-SD RR autorefs dushoff.github.io makework techtex-ebola sherif TZ_clinics rabies_burden nserc_tools SEER_HPV initial_epi diversity_metrics Latent_incidence_fitting DHS_overview Country_lists little_r SIR_model_family Rabies_talks Syphilis_and_ARVs HIV_presentations SIR_simulations scratch permutation_binomial notebook statistics_talks Ebola_talks Ebola_sims fitting_code Endemic_curves math_talks texdeps org Workshops gi_appoximations link_calculations
@@ -60,3 +64,9 @@ Bio3SS += Grading
 ######################################################################
 
 mac-theobio += mac-theobio.github.io
+
+## Machine learning course
+mac-theobio += ml_medicine
+
+## Bewketu's review?
+mac-theobio += HIV_treatment_Africa

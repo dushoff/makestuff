@@ -7,6 +7,9 @@ PulliamLab += competenceFramework
 
 ######################################################################
 
+## Steve Bicko Cygu
+cygubicko += WDBC-Codes
+
 ## Mike Li
 
 ## Something hacked together for Katie and Rachel
@@ -57,6 +60,14 @@ parksw3 += networkSEIR contact_trace
 
 ## Champredon 
 champredon += ILI-ER link-re-erlang
+
+######################################################################
+
+## Daihai
+
+## Overleaf
+
+alberta_age = https://git.overleaf.com/8974471gkzqmdgbwvtj
 
 ######################################################################
 
