@@ -159,6 +159,9 @@ draft final: ^DEFHEAD {\sl %% (repeat)}
 PRESLIDE NULLSLIDE
 draft final: ^DEFHEAD {\sl %% (preview)}
 
+FUNSLIDE NULLSLIDE
+draft final: ^DEFHEAD {\sl %% (Extra)}
+
 ## A whole slide for notes only
 NSLIDE NULLSLIDE
 handouts complete: ^DEFHEAD %%
