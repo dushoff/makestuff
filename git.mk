@@ -74,7 +74,7 @@ up.time: commit.time
 	git push -u origin $(BRANCH)
 	touch $@
 
-all.time: makestuff.up $(mdirs:%=%.all) $(clonedirs:%=%.all) up.time
+all.time: makestuff.up $(mdirs:%=%.all) $(clonedirs:%=%.all) $(subdirs:%=%.all) up.time
 	touch $@
 	git status
 
