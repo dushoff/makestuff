@@ -372,7 +372,7 @@ rumfetch: rupdate rfetch rmaster
 
 ## Is this a candidate for C-F3?
 rup: rupdate
-	git submodule foreach --recursive touch commit.time up.time
+	git submodule foreach --recursive touch commit.time up.time all.time
 
 rupdate:
 	git submodule update --init --recursive
