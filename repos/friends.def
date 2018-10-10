@@ -21,6 +21,10 @@ wzmli += rabies_correlations
 ## 2018 Jun 07 (Thu) the current rabies_R0 investigation (Scotland poster)
 wzmli += rabies_R0
 
+##
+
+wzmli += rdc
+
 ######################################################################
 
 ## ICI3D
