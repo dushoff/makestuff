@@ -74,7 +74,7 @@ up.time: commit.time
 	git push -u origin $(BRANCH)
 	touch $@
 
-all.time: makestuff.up $(mdirs:%=%.all) $(clonedirs:%=%.all) up.time
+all.time: makestuff.up $(mdirs:%=%.all) $(clonedirs:%=%.all) $(subdirs:%=%.all) up.time
 	touch $@
 	git status
 
@@ -350,7 +350,7 @@ upmerge:
 hub:
 	echo go `git remote get-url origin` | bash 
 hupstream:
-	echo go `git remote get-url origin` | bash --login
+	echo go `git remote get-url origin | perl -pe "s/[.]git$$//"` | bash --login
 
 ## Outdated version for github ssh 
 upstream:
@@ -372,7 +372,7 @@ rumfetch: rupdate rfetch rmaster
 
 ## Is this a candidate for C-F3?
 rup: rupdate
-	git submodule foreach --recursive touch commit.time up.time
+	git submodule foreach --recursive touch commit.time up.time all.time
 
 rupdate:
 	git submodule update --init --recursive

@@ -53,6 +53,8 @@ shell_execute = sh < $@
 # pdfcat = pdftk $(filter %.pdf, $^) cat output $@
 pdfcat = pdfjoin --outfile $@ $(filter %.pdf, $^) 
 
+latexdiff = perl -wf $(ms)/latexdiff.pl $^ > $@
+
 %.pd: %
 	$(CP) $< $(pushdir)
 

@@ -10,7 +10,7 @@ endif
 	$(MAKE) .texdeps/$*.mk
 	-$(MAKE) $*.deps
 	## sleep 1 ### Sleeping to clarify time stamps
-	$(MAKE) $*.ltx || ($(MAKE) $*.logreport && 0)
+	$(MAKE) $*.ltx || ($(MAKE) $*.logreport && false)
 	$(MAKE) $*.logreport
 	sleep 1 ### Sleeping to clarify time stamps
 
@@ -22,7 +22,7 @@ endif
 	@grep "failed" .texdeps/$*.make.log || :
 
 %.bbl: %.ltx
-	$(bibtex)
+	($(bibtex)) || ($(RM) $@ && false)
 
 # 	$(MAKE) -q -f .texdeps/$*.mk -f Makefile .texdeps/$*.out || $(MAKE) -n
 #	-$(MAKE) -f .texdeps/$*.mk -f Makefile .texdeps/$*.out
