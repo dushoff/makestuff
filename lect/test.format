@@ -94,6 +94,11 @@ key rub: %!
 
 VADJ \vspace{%}
 
+SANS \vspace{%}%!
+key rub: \vspace{1.5ex}\eat{%}{\sf %%}
+
+STANS ^SANS 5ex %%
+
 ANS %!
 key rub: \vspace{1.5ex}{\sf %%}
 
