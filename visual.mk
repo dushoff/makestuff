@@ -19,5 +19,8 @@ gptarget:
 pushtarget:
 	$(MAKE) $<.pd
 
+dtarget:
+	$(MAKE) pushdir=~/Downloads/ pushtarget
+
 target.mk:
 	$(CP) $(ms)/$@ .
