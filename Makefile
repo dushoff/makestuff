@@ -124,7 +124,7 @@ Sources += wrapR/pdf.mk forms.def forms.mk wrapR/up.mk
 Sources += masterR.mk masterR.pl masterRfiles.pl masterR.md
 
 ## New autorefs stuff
-Sources += autorefs.mk $(wildcard autorefs/*.pl) autorefs/Makefile
+Sources += autorefs.mk $(wildcard autorefs/*.pl) autorefs/Makefile autorefs.md
 
 ######################################################################
 
