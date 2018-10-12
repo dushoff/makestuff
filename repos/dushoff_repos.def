@@ -33,7 +33,7 @@ dushoff_github += Generation_talks disease_model_talks
 ## 
 dushoff_github += generation_links Generation_distributions
 
-dushoff_github += notebook 
+dushoff_github += notebook  scratch
 
 ## Course containers (new 2018 Aug 29 (Wed))
 dushoff_github += 1M
