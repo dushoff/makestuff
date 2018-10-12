@@ -6,6 +6,8 @@ ifeq ($(bibtex),)
 bibtex = biber $* || bibtex $*
 endif
 
+%.alltex: %.deps %.pdf ;
+
 %.pdf: %.tex .texdeps/%.out
 	$(MAKE) .texdeps/$*.mk
 	-$(MAKE) $*.deps
@@ -14,7 +16,7 @@ endif
 	$(MAKE) $*.logreport
 	sleep 1 ### Sleeping to clarify time stamps
 
-%.logreport:
+%.logreport: %.deps
 	@!(grep "Fatal error occurred" $*.log)
 	@(grep "Rerun to get" $*.log && touch $*.tex) || :
 	@(grep "Error:" $*.log && touch $*.tex) || :

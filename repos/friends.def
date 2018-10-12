@@ -12,16 +12,16 @@ cygubicko += WDBC-Codes
 
 ## Mike Li
 
-## Something hacked together for Katie and Rachel
+## Rabies main
+wzmli += rabies_db_pipeline
+## Hacked together for Katie and Rachel; is it dead?
 wzmli += rabies_report
 
-## Mike's big Scotland idea
-wzmli += rabies_correlations
-
-## 2018 Jun 07 (Thu) the current rabies_R0 investigation (Scotland poster)
+## 2018 Jun 07 (Thu) rabies_R0 investigation (Scotland poster)
 wzmli += rabies_R0
 
-##
+## Mike's big Scotland idea about within-animal correlations
+wzmli += rabies_correlations
 
 wzmli += rdc
 
