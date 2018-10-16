@@ -1,5 +1,6 @@
 ## Directory links
 
+Ignore += lect
 .PRECIOUS: lect/%
 lect/%: 
 	$(MAKE) lect
@@ -10,6 +11,7 @@ lect/%:
 lect: 
 	/bin/ln -s $(ms)/$@ .
 
+Ignore += talkdir
 .PRECIOUS: talkdir/%
 talkdir/%:
 	$(MAKE) talkdir

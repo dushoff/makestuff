@@ -350,7 +350,7 @@ upmerge:
 hub:
 	echo go `git remote get-url origin` | bash 
 hupstream:
-	echo go `git remote get-url origin` | bash --login
+	echo go `git remote get-url origin | perl -pe "s/[.]git$$//"` | bash --login
 
 ## Outdated version for github ssh 
 upstream:

@@ -53,6 +53,11 @@ shell_execute = sh < $@
 # pdfcat = pdftk $(filter %.pdf, $^) cat output $@
 pdfcat = pdfjoin --outfile $@ $(filter %.pdf, $^) 
 
+latexdiff = latexdiff $^ > $@
+
+%.ld.tex: $(wildcard %.tex.*.oldfile) %.tex
+	$(latexdiff)
+
 %.pd: %
 	$(CP) $< $(pushdir)
 
