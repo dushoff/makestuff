@@ -64,3 +64,7 @@ webpix/%: allsteps.mk webpix
 
 my_images/%: my_images
 	(cd $< && $(MAKE) $*) || convert $(word 2, $^) $@
+
+## Make things that programs need?
+%.gif.jpg: %.gif
+	$(convert)
