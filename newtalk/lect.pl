@@ -80,6 +80,9 @@ foreach(@tex){
  
 		#Hot changes (where should these go?)
  
+ 		# PITA latex$
+		s/⇒/\\ensuremath{\\implies}/;
+
 		# Underscores
 		# Latex math Trick: EM does not span tab.
 		# E.g. !EM \emph{%}
