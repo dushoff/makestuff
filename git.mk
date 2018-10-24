@@ -13,15 +13,16 @@ endif
 
 ######################################################################
 
-## Ignoring Make this a separate file?? ignore.mk
+## Ignoring
 
-## We don't want automatic gitignore rule to work in makestuff
-## the perl dependency should stop it
+## Make the personal exclude file as long as we're in the main directory
+## This will eventually lead to trouble  when we have subdirectories with 
+## make rules that the main directory lacks
+exclude: 
+	(! ls .git/info) || $(MAKE) .git/info/exclude
 
-export Ignore += commit.time commit.default dotdir/ clonedir/
-
-exclude: $(filter-out .gitignore, $(Sources)) $(ms)/ignore.pl
-	(! ls .git/info) || perl -wf $(ms)/ignore.pl >> .git/info/exclude
+.git/info/exclude: $(Sources)
+	perl -wf $(ms)/ignore.pl > $@
 
 ######################################################################
 
@@ -41,8 +42,9 @@ branch:
 sourceadd: 
 	git add -f $(Sources)
 
+Ignore += commit.time commit.default
 commit.time: $(Sources)
-	$(MAKE) .gitignore
+	$(MAKE) exclude
 	-git add -f $^
 	echo "Autocommit ($(notdir $(CURDIR)))" > $@
 	!(git commit --dry-run >> $@) || (perl -pi -e 's/^/#/ unless /Autocommit/' $@ && $(EDIT) $@)
@@ -258,6 +260,7 @@ gitprune:
 
 ### Testing
 
+Ignore += dotdir/ clonedir/
 dotdir: $(Sources)
 	$(MAKE) commit.time
 	-/bin/rm -rf $@
