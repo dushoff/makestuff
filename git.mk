@@ -28,7 +28,7 @@ exclude:
 
 ## Hybrid subdirectory types
 
-Ignore += $(clonedirs)
+export Ignore += $(clonedirs)
 Sources += $(mdirs)
 
 ##################################################################
