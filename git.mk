@@ -18,10 +18,18 @@ endif
 ## Make the personal exclude file as long as we're in the main directory
 ## This will eventually lead to trouble  when we have subdirectories with 
 ## make rules that the main directory lacks
-exclude: 
-	(! ls .git/info) || $(MAKE) .git/info/exclude
+git_dir = $(shell git rev-parse --git-dir)
 
-.git/info/exclude: $(Sources)
+now:
+	@echo $(git_dir)
+
+## Not sure if this careful logic will help sometimes 2018 Oct 24 (Wed)
+oldexclude: 
+	(! ls $(git_dir)/info) || $(MAKE) $(git_dir)/info/exclude
+
+exclude: $(git_dir)/info/exclude ;
+
+$(git_dir)/info/exclude: $(Sources)
 	perl -wf $(ms)/ignore.pl > $@
 
 export Ignore = local.mk target.mk make.log
