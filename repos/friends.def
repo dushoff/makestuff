@@ -25,6 +25,8 @@ wzmli += rabies_correlations
 
 wzmli += rdc
 
+wzmli += mc_recency
+
 ######################################################################
 
 ## ICI3D
@@ -58,7 +60,7 @@ theobio += QMEE Lab_meeting smb-mathepi
 ######################################################################
 
 ## Daniel Sang Woo Park (no hyphen)
-parksw3 += networkSEIR contact_trace
+parksw3 += networkSEIR contact_trace bayes_antigen
 
 ######################################################################
 
