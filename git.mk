@@ -24,11 +24,13 @@ exclude:
 .git/info/exclude: $(Sources)
 	perl -wf $(ms)/ignore.pl > $@
 
+export Ignore = local.mk target.mk make.log
+
 ######################################################################
 
 ## Hybrid subdirectory types
 
-export Ignore += $(clonedirs)
+Ignore += $(clonedirs)
 Sources += $(mdirs)
 
 ##################################################################
