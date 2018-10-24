@@ -20,13 +20,8 @@ endif
 
 export Ignore += commit.time commit.default dotdir/ clonedir/
 
-.gitignore: .ignore $(filter-out .gitignore, $(Sources)) $(ms)/ignore.pl
-	$(hardcopy)
-	perl -wf $(ms)/ignore.pl >> $@
-	$(RO)
-
-## 2018 May 22 (Tue)
-## Moved bootstrap stuff to ignore.mk for clarity
+exclude: $(filter-out .gitignore, $(Sources)) $(ms)/ignore.pl
+	(! ls .git/info) || perl -wf $(ms)/ignore.pl >> .git/info/exclude
 
 ######################################################################
 
@@ -197,8 +192,11 @@ abort:
 
 # Special files
 
-.ignore:
-	-/bin/cp $(ms)/ignore.default $@
+~/.config/git:
+	$(mkdir)
+
+ignore.config: ~/.config/git
+	-/bin/cp $(ms)/ignore.default $</ignore
 
 README.md LICENSE.md:
 	touch $@
