@@ -20,9 +20,6 @@ endif
 ## make rules that the main directory lacks
 git_dir = $(shell git rev-parse --git-dir)
 
-now:
-	@echo $(git_dir)
-
 ## Not sure if this careful logic will help sometimes 2018 Oct 24 (Wed)
 oldexclude: 
 	(! ls $(git_dir)/info) || $(MAKE) $(git_dir)/info/exclude
