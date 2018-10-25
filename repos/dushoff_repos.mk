@@ -1,5 +1,11 @@
 include $(ms)/repos/dushoff_repos.def
 
+justclone:
+	git clone $(repo)$(user)/$(target).git
+
+
+######################################################################
+
 repodirs += $(dushoff_github)
 
 $(dushoff_github):
