@@ -18,7 +18,7 @@ include localstuff.mk
 Sources += Makefile LICENSE README.md static.mk sub.mk todo.md
 
 ## Not clear when .gitignore is better here, or better in .ignore
-Sources += .ignore ignore.default ignore.pl
+Sources += .ignore ignore.vim ignore.pl
 
 ## Probably don't need this 2018 May 22 (Tue)
 Sources += ignore.mk
