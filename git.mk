@@ -29,7 +29,7 @@ exclude: $(git_dir)/info/exclude ;
 $(git_dir)/info/exclude: $(Sources)
 	perl -wf $(ms)/ignore.pl > $@
 
-export Ignore = local.mk target.mk make.log
+export Ignore += local.mk target.mk make.log
 
 ######################################################################
 
