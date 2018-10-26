@@ -390,7 +390,9 @@ rup: rupdate
 rupdate:
 	git submodule update --init --recursive
 
-## Is this one the problem?
+pullup: pull rup
+
+## What does this do? Endless loops of commits?
 rmaster: 
 	git submodule foreach --recursive git checkout master
 
