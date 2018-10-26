@@ -13,7 +13,7 @@ cygubicko += WDBC-Codes
 ## Mike Li
 
 ## Something hacked together for Katie and Rachel
-wzmli += rabies_report
+wzmli += rabies_report rdc
 
 ## Mike's big Scotland idea
 wzmli += rabies_correlations
