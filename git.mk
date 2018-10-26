@@ -78,7 +78,12 @@ up.time: commit.time
 	git push -u origin $(BRANCH)
 	touch $@
 
-all.time: makestuff.up $(mdirs:%=%.all) $(clonedirs:%=%.all) $(subdirs:%=%.all) up.time
+## trying to switch to alldirs
+ifndef alldirs
+alldirs = $(mdirs) $(clonedirs) $(subdirs)
+endif
+
+all.time: makestuff.up $(alldirs:%=%.all) up.time
 	touch $@
 	git status
 
