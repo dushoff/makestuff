@@ -210,7 +210,7 @@ abort:
 	$(mkdir)
 
 ignore.config: ~/.config/git
-	-/bin/cp $(ms)/ignore.default $</ignore
+	-/bin/cp $(ms)/ignore.vim $</ignore
 
 README.md LICENSE.md:
 	touch $@
