@@ -11,15 +11,22 @@ PulliamLab += competenceFramework
 cygubicko += WDBC-Codes
 
 ## Mike Li
+wzmli += rdc
 
-## Something hacked together for Katie and Rachel
-wzmli += rabies_report rdc
+## Rabies main
+wzmli += rabies_db_pipeline
+## Hacked together for Katie and Rachel; is it dead?
+wzmli += rabies_report
 
-## Mike's big Scotland idea
+## 2018 Jun 07 (Thu) rabies_R0 investigation (Scotland poster)
+wzmli += rabies_R0
+
+## Mike's big Scotland idea about within-animal correlations
 wzmli += rabies_correlations
 
-## 2018 Jun 07 (Thu) the current rabies_R0 investigation (Scotland poster)
-wzmli += rabies_R0
+wzmli += rdc
+
+wzmli += mc_recency
 
 ######################################################################
 
@@ -54,7 +61,7 @@ theobio += QMEE Lab_meeting smb-mathepi
 ######################################################################
 
 ## Daniel Sang Woo Park (no hyphen)
-parksw3 += networkSEIR contact_trace
+parksw3 += networkSEIR contact_trace bayes_antigen
 
 ######################################################################
 

@@ -50,7 +50,7 @@ outline: \n
 # Sectioning
 
 WORKSHOP NOFRAME
-draft final: NOFRAME \date{\jddate} \title{\jdtitle} \subtitle{\jdsub} \author{\jdauth}
+draft final: NOFRAME \date{\jddate} \title{\jdtitle} \subtitle{\jdsub} \author{\jdauth}\date{\wdate}\maketitle
 handouts: {\centering \textsf{ \textbf{ {\Large\jdtitle} \\ {\large\jdsub} }} \\ {\large \jddate} \\ \mbox{} } }
 
 ICI3D NOFRAME
@@ -158,6 +158,9 @@ draft final: ^DEFHEAD {\sl %% (repeat)}
 
 PRESLIDE NULLSLIDE
 draft final: ^DEFHEAD {\sl %% (preview)}
+
+FUNSLIDE NULLSLIDE
+draft final: ^DEFHEAD {\sl %% (Extra)}
 
 ## A whole slide for notes only
 NSLIDE NULLSLIDE

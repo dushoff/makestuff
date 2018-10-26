@@ -13,20 +13,23 @@ endif
 
 ######################################################################
 
-## Ignoring Make this a separate file?? ignore.mk
+## Ignoring
 
-## We don't want automatic gitignore rule to work in makestuff
-## the perl dependency should stop it
+## Make the personal exclude file as long as we're in the main directory
+## This will eventually lead to trouble  when we have subdirectories with 
+## make rules that the main directory lacks
+git_dir = $(shell git rev-parse --git-dir)
 
-export Ignore += commit.time commit.default dotdir/ clonedir/
+## Not sure if this careful logic will help sometimes 2018 Oct 24 (Wed)
+oldexclude: 
+	(! ls $(git_dir)/info) || $(MAKE) $(git_dir)/info/exclude
 
-.gitignore: .ignore $(filter-out .gitignore, $(Sources)) $(ms)/ignore.pl
-	$(hardcopy)
-	perl -wf $(ms)/ignore.pl >> $@
-	$(RO)
+exclude: $(git_dir)/info/exclude ;
 
-## 2018 May 22 (Tue)
-## Moved bootstrap stuff to ignore.mk for clarity
+$(git_dir)/info/exclude: $(Sources)
+	perl -wf $(ms)/ignore.pl > $@
+
+export Ignore += local.mk target.mk make.log
 
 ######################################################################
 
@@ -46,8 +49,9 @@ branch:
 sourceadd: 
 	git add -f $(Sources)
 
+Ignore += commit.time commit.default
 commit.time: $(Sources)
-	$(MAKE) .gitignore
+	$(MAKE) exclude
 	-git add -f $^
 	echo "Autocommit ($(notdir $(CURDIR)))" > $@
 	!(git commit --dry-run >> $@) || (perl -pi -e 's/^/#/ unless /Autocommit/' $@ && $(EDIT) $@)
@@ -74,7 +78,12 @@ up.time: commit.time
 	git push -u origin $(BRANCH)
 	touch $@
 
-all.time: makestuff.up $(mdirs:%=%.all) $(clonedirs:%=%.all) up.time
+## trying to switch to alldirs
+ifndef alldirs
+alldirs = $(mdirs) $(clonedirs) $(subdirs)
+endif
+
+all.time: makestuff.up $(alldirs:%=%.all) up.time
 	touch $@
 	git status
 
@@ -197,8 +206,11 @@ abort:
 
 # Special files
 
-.ignore:
-	-/bin/cp $(ms)/ignore.default $@
+~/.config/git:
+	$(mkdir)
+
+ignore.config: ~/.config/git
+	-/bin/cp $(ms)/ignore.vim $</ignore
 
 README.md LICENSE.md:
 	touch $@
@@ -260,6 +272,7 @@ gitprune:
 
 ### Testing
 
+Ignore += dotdir/ clonedir/
 dotdir: $(Sources)
 	$(MAKE) commit.time
 	-/bin/rm -rf $@
@@ -350,7 +363,7 @@ upmerge:
 hub:
 	echo go `git remote get-url origin` | bash 
 hupstream:
-	echo go `git remote get-url origin` | bash --login
+	echo go `git remote get-url origin | perl -pe "s/[.]git$$//"` | bash --login
 
 ## Outdated version for github ssh 
 upstream:
@@ -372,7 +385,7 @@ rumfetch: rupdate rfetch rmaster
 
 ## Is this a candidate for C-F3?
 rup: rupdate
-	git submodule foreach --recursive touch commit.time up.time
+	git submodule foreach --recursive touch commit.time up.time all.time
 
 rupdate:
 	git submodule update --init --recursive

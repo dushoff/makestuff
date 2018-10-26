@@ -36,7 +36,7 @@ imageDrop = $(Drop)
 endif
 
 ifeq ($(imageDrop),)
-imageDrop = .
+imageDrop = images
 endif
 
 webpix my_images: dir = $(imageDrop)
@@ -64,3 +64,7 @@ webpix/%: allsteps.mk webpix
 
 my_images/%: my_images
 	(cd $< && $(MAKE) $*) || convert $(word 2, $^) $@
+
+## Make things that programs need?
+%.gif.jpg: %.gif
+	$(convert)
