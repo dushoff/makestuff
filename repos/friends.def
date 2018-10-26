@@ -25,6 +25,8 @@ wzmli += rabies_correlations
 
 wzmli += rdc
 
+wzmli += mc_recency
+
 ######################################################################
 
 ## ICI3D

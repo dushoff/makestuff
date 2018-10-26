@@ -1,7 +1,4 @@
 
-now:
-	@echo $(now)
-
 ifndef slowdir
 slowdir = slow
 endif
