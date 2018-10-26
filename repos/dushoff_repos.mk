@@ -8,8 +8,8 @@ module:
 	git submodule -b master $(repo)$(user)/$(target).git
 
 clone: $(clonecommand)
-clonedirs: clonecommand=justclone
-mdirs: clonecommand=module
+$(clonedirs): clonecommand=justclone
+$(mdirs): clonecommand=justclone
 
 ## Could add a $(MAKE) or a % dependency. But maybe better to watch how this rule is called.
 mdmake = $(mdirs:%=%/Makefile)
