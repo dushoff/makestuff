@@ -119,6 +119,8 @@ COMMENT %!
 complete: {\em\underline{Comment}: }%%
 draft final: {\color{shortcolor}\sl %%}
 
+RESTING %!
+
 # Something to change in the future (handouts already out) show in draft only
 CHANGE %!
 draft: {\color{red}\textbf{Change: %%}}
