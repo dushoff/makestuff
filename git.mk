@@ -112,10 +112,6 @@ tsync:
 	touch Makefile
 	$(MAKE) sync
 
-msync: commit.time
-	git checkout master
-	$(MAKE) sync
-
 ######################################################################
 
 ## autosync stuff not consolidated, needs work. 
@@ -134,8 +130,8 @@ remotesync: commit.default
 %.status: %
 	cd $< && git status
 
-%.msync: %.master
-	cd $* && $(MAKE) sync
+%.msync: 
+	$(MAKE) $*.master $*.sync
 
 %.sync: %
 	cd $< && $(MAKE) sync
