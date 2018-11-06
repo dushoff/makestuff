@@ -35,3 +35,10 @@ $(mac-theobio):
 repodirs += $(mac-theobio)
 
 ######################################################################
+
+$(Outbreak-analysis):
+	$(MAKE) target=$@ repo=$(github) user=Outbreak-analysis clone
+
+repodirs += $(Outbreak-analysis)
+
+######################################################################
