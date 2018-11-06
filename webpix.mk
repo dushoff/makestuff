@@ -36,7 +36,7 @@ imageDrop = $(Drop)
 endif
 
 ifeq ($(imageDrop),)
-imageDrop = .
+imageDrop = images
 endif
 
 webpix my_images: dir = $(imageDrop)

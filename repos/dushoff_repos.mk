@@ -1,10 +1,26 @@
+## This seems like a mess now; maybe move most of the dushoff stuff to .def, and just a general repos.mk
 include $(ms)/repos/dushoff_repos.def
+
+bitbucket = dushoff@bitbucket.org
+github = https://github.com
 
 justclone:
 	git clone $(repo)$(user)/$(target).git
 
+module:
+	git submodule add -b master $(repo)$(user)/$(target).git
+
+## Why does this not work? In particular, the mdirs override??
+$(clonedirs):clonecommand=justclone
+$(mdirs):clonecommand=module
+## clonecommand = justclone
+
 clone: $(clonecommand)
-clonedirs: clonecommand=justclone
+
+## Could add a $(MAKE) or a % dependency. But maybe better to watch how this rule is called.
+mdmake = $(mdirs:%=%/Makefile)
+$(mdmake): %/Makefile:
+	git submodule update -i
 
 ######################################################################
 

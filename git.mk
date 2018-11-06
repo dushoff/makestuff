@@ -78,7 +78,12 @@ up.time: commit.time
 	git push -u origin $(BRANCH)
 	touch $@
 
-all.time: makestuff.up $(mdirs:%=%.all) $(clonedirs:%=%.all) $(subdirs:%=%.all) up.time
+## trying to switch to alldirs
+ifndef alldirs
+alldirs = $(mdirs) $(clonedirs) $(subdirs)
+endif
+
+all.time: makestuff.up $(alldirs:%=%.all) up.time
 	touch $@
 	git status
 
@@ -107,10 +112,6 @@ tsync:
 	touch Makefile
 	$(MAKE) sync
 
-msync: commit.time
-	git checkout master
-	$(MAKE) sync
-
 ######################################################################
 
 ## autosync stuff not consolidated, needs work. 
@@ -129,8 +130,8 @@ remotesync: commit.default
 %.status: %
 	cd $< && git status
 
-%.msync: %.master
-	cd $* && $(MAKE) sync
+%.msync: 
+	$(MAKE) $*.master $*.sync
 
 %.sync: %
 	cd $< && $(MAKE) sync
@@ -205,7 +206,7 @@ abort:
 	$(mkdir)
 
 ignore.config: ~/.config/git
-	-/bin/cp $(ms)/ignore.default $</ignore
+	-/bin/cp $(ms)/ignore.vim $</ignore
 
 README.md LICENSE.md:
 	touch $@
@@ -385,7 +386,9 @@ rup: rupdate
 rupdate:
 	git submodule update --init --recursive
 
-## Is this one the problem?
+pullup: pull rup
+
+## What does this do? Endless loops of commits?
 rmaster: 
 	git submodule foreach --recursive git checkout master
 
