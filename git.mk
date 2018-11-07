@@ -83,7 +83,7 @@ ifndef alldirs
 alldirs = $(mdirs) $(clonedirs) $(subdirs)
 endif
 
-all.time: makestuff.up $(alldirs:%=%.all) up.time
+all.time: makestuff.up $(alldirs:%=%.all) exclude up.time
 	touch $@
 	git status
 
@@ -92,6 +92,14 @@ all.time: makestuff.up $(alldirs:%=%.all) up.time
 
 %.all: %
 	cd $< && $(MAKE) all.time
+
+## Bridge rules maybe? Eventually this should be part of all.time
+## and all.time does not need to be part of rup
+all.exclude: makestuff.exclude $(alldirs:%=%.allexclude) exclude
+%.allexclude:
+	cd $* && $(MAKE) all.exclude
+%.exclude: 
+	cd $* && $(MAKE) exclude
 
 sync: 
 	$(RM) up.time
@@ -386,7 +394,6 @@ rup: rupdate
 
 rupdate:
 	git submodule update --init --recursive
-
 
 pullup: pull rup
 
