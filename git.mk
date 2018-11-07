@@ -395,7 +395,7 @@ rupdate:
 rup: rupdate
 	git submodule foreach --recursive touch commit.time up.time all.time
 
-rupe: rup
+rupex: rup
 	git submodule foreach --recursive make exclude
 
 pullup: pull rup
