@@ -5,7 +5,7 @@ bitbucket = dushoff@bitbucket.org
 github = https://github.com
 
 justclone:
-	git clone $(repo)$(user)/$(target).git
+	git clone $(repo)/$(user)/$(target).git
 
 module:
 	git submodule add -b master $(repo)$(user)/$(target).git
