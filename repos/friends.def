@@ -24,8 +24,6 @@ wzmli += rabies_R0
 ## Mike's big Scotland idea about within-animal correlations
 wzmli += rabies_correlations
 
-wzmli += rdc
-
 wzmli += mc_recency
 
 ######################################################################

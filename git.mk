@@ -84,7 +84,7 @@ alldirs = $(mdirs) $(clonedirs) $(subdirs) makestuff
 endif
 
 ## 2018 Nov 07 (Wed). Trying to make these rules finish better
-all.time: $(alldirs:%=%.all) up.time
+all.time: $(alldirs:%=%.all) exclude up.time
 	touch $@
 	git status
 
@@ -95,6 +95,14 @@ makestuff.all: %.all: %
 %.all: %
 	cd $< && $(MAKE) all.time
 	touch $@
+
+## Bridge rules maybe? Eventually this should be part of all.time
+## and all.time does not need to be part of rup
+all.exclude: makestuff.exclude $(alldirs:%=%.allexclude) exclude
+%.allexclude:
+	cd $* && $(MAKE) all.exclude
+%.exclude: 
+	cd $* && $(MAKE) exclude
 
 sync: 
 	$(RM) up.time
@@ -383,11 +391,15 @@ ruc: rupdate rcheck
 rumfetch: rupdate rfetch rmaster
 
 ## Is this a candidate for C-F3?
-rup: rupdate
-	git submodule foreach --recursive touch commit.time up.time all.time
 
 rupdate:
 	git submodule update --init --recursive
+
+rup: rupdate
+	git submodule foreach --recursive touch commit.time up.time all.time
+
+rupex: rup
+	git submodule foreach --recursive make exclude
 
 pullup: pull rup
 

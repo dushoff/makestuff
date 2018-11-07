@@ -5,7 +5,7 @@ bitbucket = dushoff@bitbucket.org
 github = https://github.com
 
 justclone:
-	git clone $(repo)$(user)/$(target).git
+	git clone $(repo)/$(user)/$(target).git
 
 module:
 	git submodule add -b master $(repo)$(user)/$(target).git
@@ -49,5 +49,12 @@ $(mac-theobio):
 	$(MAKE) target=$@ repo=$(github) user=mac-theobio clone
 
 repodirs += $(mac-theobio)
+
+######################################################################
+
+$(Outbreak-analysis):
+	$(MAKE) target=$@ repo=$(github) user=Outbreak-analysis clone
+
+repodirs += $(Outbreak-analysis)
 
 ######################################################################

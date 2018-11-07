@@ -29,12 +29,12 @@ Sources += makefile.mk hooks.mk localstuff.mk
 
 # Bootstrap stuff
 # Want to be able to change this stuff locally
-%.mk: %.mk.template
-	$(CP) $< $@
+## %.mk: %.mk.template; $(CP) $< $@
 
 Sources += os.mk unix.mk linux.mk windows.mk up.mk
 
-Sources += hybrid/*.mk
+## Deprecated!!
+## Sources += hybrid/*.mk
 
 ######################################################################
 
@@ -106,6 +106,7 @@ Sources += webhtml.pl webmk.pl
 
 ## Caching
 Sources += cache.mk cache.md
+Sources += newcache.mk newcache.md
 
 ######################################################################
 
