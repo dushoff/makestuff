@@ -93,7 +93,7 @@ makestuff.all: %.all: %
 	cd $< && $(MAKE) up.time
 	touch $@
 
-%.all: %
+%.all: $(wildcard %/*)
 	cd $< && $(MAKE) all.time
 	touch $@
 
