@@ -88,6 +88,7 @@ all.time: $(alldirs:%=%.all) exclude up.time
 	touch $@
 	git status
 
+Ignore += *.all
 makestuff.all: %.all: %
 	cd $< && $(MAKE) up.time
 	touch $@
