@@ -80,18 +80,21 @@ up.time: commit.time
 
 ## trying to switch to alldirs
 ifndef alldirs
-alldirs = $(mdirs) $(clonedirs) $(subdirs)
+alldirs = $(mdirs) $(clonedirs) $(subdirs) makestuff
 endif
 
-all.time: makestuff.up $(alldirs:%=%.all) up.time
+## 2018 Nov 07 (Wed). Trying to make these rules finish better
+all.time: $(alldirs:%=%.all) up.time
 	touch $@
 	git status
 
-%.up: %
+makestuff.all: %.all: %
 	cd $< && $(MAKE) up.time
+	touch $@
 
 %.all: %
 	cd $< && $(MAKE) all.time
+	touch $@
 
 sync: 
 	$(RM) up.time
