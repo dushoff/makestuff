@@ -78,15 +78,30 @@ up.time: commit.time
 	git push -u origin $(BRANCH)
 	touch $@
 
-all.time: makestuff.up $(mdirs:%=%.all) $(clonedirs:%=%.all) $(subdirs:%=%.all) up.time
+## trying to switch to alldirs
+ifndef alldirs
+alldirs = $(mdirs) $(clonedirs) $(subdirs) makestuff
+endif
+
+## 2018 Nov 07 (Wed). Trying to make these rules finish better
+all.time: $(alldirs:%=%.all) exclude up.time
 	touch $@
 	git status
 
-%.up: %
-	cd $< && $(MAKE) up.time
+Ignore += *.all
+makestuff.all: %.all: %
+	cd $* && $(MAKE) up.time
 
-%.all: %
-	cd $< && $(MAKE) all.time
+%.all: 
+	cd $* && $(MAKE) all.time
+
+## Bridge rules maybe? Eventually this should be part of all.time
+## and all.time does not need to be part of rup
+all.exclude: makestuff.exclude $(alldirs:%=%.allexclude) exclude
+%.allexclude:
+	cd $* && $(MAKE) all.exclude
+%.exclude: 
+	cd $* && $(MAKE) exclude
 
 sync: 
 	$(RM) up.time
@@ -107,10 +122,6 @@ tsync:
 	touch Makefile
 	$(MAKE) sync
 
-msync: commit.time
-	git checkout master
-	$(MAKE) sync
-
 ######################################################################
 
 ## autosync stuff not consolidated, needs work. 
@@ -129,8 +140,8 @@ remotesync: commit.default
 %.status: %
 	cd $< && git status
 
-%.msync: %.master
-	cd $* && $(MAKE) sync
+%.msync: 
+	$(MAKE) $*.master $*.sync
 
 %.sync: %
 	cd $< && $(MAKE) sync
@@ -205,7 +216,7 @@ abort:
 	$(mkdir)
 
 ignore.config: ~/.config/git
-	-/bin/cp $(ms)/ignore.default $</ignore
+	-/bin/cp $(ms)/ignore.vim $</ignore
 
 README.md LICENSE.md:
 	touch $@
@@ -379,13 +390,19 @@ ruc: rupdate rcheck
 rumfetch: rupdate rfetch rmaster
 
 ## Is this a candidate for C-F3?
-rup: rupdate
-	git submodule foreach --recursive touch commit.time up.time all.time
 
 rupdate:
 	git submodule update --init --recursive
 
-## Is this one the problem?
+rup: rupdate
+	git submodule foreach --recursive touch commit.time up.time all.time
+
+rupex: rup
+	git submodule foreach --recursive make exclude
+
+pullup: pull rup
+
+## What does this do? Endless loops of commits?
 rmaster: 
 	git submodule foreach --recursive git checkout master
 

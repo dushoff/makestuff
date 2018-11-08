@@ -16,6 +16,8 @@
 
 # Input stuff (should never require specific rules)
 
+FIXFIG %!
+
 !SLIDESEP ----------------+
 !TAB \t
 outline: NULL
@@ -50,7 +52,7 @@ outline: \n
 # Sectioning
 
 WORKSHOP NOFRAME
-draft final: NOFRAME \date{\jddate} \title{\jdtitle} \subtitle{\jdsub} \author{\jdauth}
+draft final: NOFRAME \date{\jddate} \title{\jdtitle} \subtitle{\jdsub} \author{\jdauth}\date{\wdate}\maketitle
 handouts: {\centering \textsf{ \textbf{ {\Large\jdtitle} \\ {\large\jdsub} }} \\ {\large \jddate} \\ \mbox{} } }
 
 ICI3D NOFRAME
@@ -118,6 +120,8 @@ outline: %!
 COMMENT %!
 complete: {\em\underline{Comment}: }%%
 draft final: {\color{shortcolor}\sl %%}
+
+RESTING %!
 
 # Something to change in the future (handouts already out) show in draft only
 CHANGE %!
