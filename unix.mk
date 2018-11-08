@@ -55,7 +55,9 @@ pdfcat = pdfjoin --outfile $@ $(filter %.pdf, $^)
 
 latexdiff = latexdiff $^ > $@
 
-%.ld.tex: $(wildcard %.tex.*.oldfile) %.tex
+## Does not work!
+Ignore += *.ld.tex
+%.ld.tex: $(wildcard %.tex.*oldfile) %.tex
 	$(latexdiff)
 
 %.pd: %
