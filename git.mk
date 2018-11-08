@@ -90,11 +90,11 @@ all.time: $(alldirs:%=%.all) exclude up.time
 
 Ignore += *.all
 makestuff.all: %.all: %
-	cd $< && $(MAKE) up.time
+	cd $* && $(MAKE) up.time
 	touch $@
 
 %.all: $(wildcard %/*)
-	cd $< && $(MAKE) all.time
+	cd $* && $(MAKE) all.time
 	touch $@
 
 ## Bridge rules maybe? Eventually this should be part of all.time
