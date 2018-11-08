@@ -92,7 +92,7 @@ Ignore += *.all
 makestuff.all: %.all: %
 	cd $* && $(MAKE) up.time
 
-%.all: $(wildcard %/*)
+%.all: 
 	cd $* && $(MAKE) all.time
 
 ## Bridge rules maybe? Eventually this should be part of all.time
