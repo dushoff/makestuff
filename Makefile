@@ -47,7 +47,7 @@ Sources += accounts.mk accounts.pl
 
 # Git makefile for this and other projects
 
-Sources += git.mk git.def repos.def repos.mk init.mk modules.mk drops.mk target.mk hybrid.mk hotcold.mk
+Sources += git.mk git.def git.md repos.def repos.mk init.mk modules.mk drops.mk target.mk hybrid.mk hotcold.mk
 
 # Makefiles and resources for other projects
 
