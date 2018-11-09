@@ -2,7 +2,7 @@
 
 %.go:
 	$(MAKE) $*
-	echo "xdg-open $* &" | sh
+	echo "xdg-open $* >& go.log &" | bash
 
 %.acr:
 	$(MAKE) $*
