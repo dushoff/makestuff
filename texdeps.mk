@@ -15,6 +15,7 @@ endif
 	$(MAKE) $*.ltx || ($(MAKE) $*.logreport && false)
 	$(MAKE) $*.logreport
 	sleep 1 ### Sleeping to clarify time stamps
+	touch $@
 
 %.logreport: %.deps
 	@!(grep "Fatal error occurred" $*.log)
