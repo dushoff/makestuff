@@ -15,21 +15,18 @@ endif
 
 ## Ignoring
 
-## Make the personal exclude file as long as we're in the main directory
-## This will eventually lead to trouble  when we have subdirectories with 
-## make rules that the main directory lacks
-git_dir = $(shell git rev-parse --git-dir)
+## Find the git directory and make an exclude file here
+## When we have subdirectories they may compete (overwrite each others' exclud files)
+## Not clear why that would be a problem
 
-## Not sure if this careful logic will help sometimes 2018 Oct 24 (Wed)
-oldexclude: 
-	(! ls $(git_dir)/info) || $(MAKE) $(git_dir)/info/exclude
+git_dir = $(shell git rev-parse --git-dir)
 
 exclude: $(git_dir)/info/exclude ;
 
 $(git_dir)/info/exclude: $(Sources)
 	perl -wf $(ms)/ignore.pl > $@
 
-export Ignore += local.mk target.mk make.log
+export Ignore += local.mk target.mk make.log go.log
 
 ######################################################################
 
@@ -80,18 +77,28 @@ up.time: commit.time
 
 ## trying to switch to alldirs
 ifndef alldirs
-alldirs = $(mdirs) $(clonedirs) $(subdirs)
+alldirs = $(mdirs) $(clonedirs) $(subdirs) makestuff
 endif
 
-all.time: makestuff.up $(alldirs:%=%.all) up.time
+## 2018 Nov 07 (Wed). Trying to make these rules finish better
+all.time: $(alldirs:%=%.all) exclude up.time
 	touch $@
 	git status
 
-%.up: %
-	cd $< && $(MAKE) up.time
+Ignore += *.all
+makestuff.all: %.all: %
+	cd $* && $(MAKE) up.time
 
-%.all: %
-	cd $< && $(MAKE) all.time
+%.all: 
+	cd $* && $(MAKE) all.time
+
+## Bridge rules maybe? Eventually this should be part of all.time
+## and all.time does not need to be part of rup
+all.exclude: makestuff.exclude $(alldirs:%=%.allexclude) exclude
+%.allexclude:
+	cd $* && $(MAKE) all.exclude
+%.exclude: 
+	cd $* && $(MAKE) exclude
 
 sync: 
 	$(RM) up.time
@@ -380,11 +387,15 @@ ruc: rupdate rcheck
 rumfetch: rupdate rfetch rmaster
 
 ## Is this a candidate for C-F3?
-rup: rupdate
-	git submodule foreach --recursive touch commit.time up.time all.time
 
 rupdate:
 	git submodule update --init --recursive
+
+rup: rupdate
+	git submodule foreach --recursive touch commit.time up.time all.time
+
+rupex: rup
+	git submodule foreach --recursive make exclude
 
 pullup: pull rup
 

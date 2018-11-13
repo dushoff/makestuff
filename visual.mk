@@ -22,5 +22,9 @@ pushtarget:
 dtarget:
 	$(MAKE) pushdir=~/Downloads/ pushtarget
 
+## Not working, apparently
+deptarget:
+	$(MAKE) $(<:.pdf=.deps)
+
 target.mk:
 	$(CP) $(ms)/$@ .
