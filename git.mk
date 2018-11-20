@@ -15,21 +15,18 @@ endif
 
 ## Ignoring
 
-## Make the personal exclude file as long as we're in the main directory
-## This will eventually lead to trouble  when we have subdirectories with 
-## make rules that the main directory lacks
-git_dir = $(shell git rev-parse --git-dir)
+## Find the git directory and make an exclude file here
+## When we have subdirectories they may compete (overwrite each others' exclud files)
+## Not clear why that would be a problem
 
-## Not sure if this careful logic will help sometimes 2018 Oct 24 (Wed)
-oldexclude: 
-	(! ls $(git_dir)/info) || $(MAKE) $(git_dir)/info/exclude
+git_dir = $(shell git rev-parse --git-dir)
 
 exclude: $(git_dir)/info/exclude ;
 
 $(git_dir)/info/exclude: $(Sources)
 	perl -wf $(ms)/ignore.pl > $@
 
-export Ignore += local.mk target.mk make.log
+export Ignore += local.mk target.mk make.log go.log
 
 ######################################################################
 
