@@ -14,7 +14,7 @@ Ignore += *.rdeps
 %.rdeps: %.R $(ms)/rstep.pl
 	$(PUSH)
 
-Ignore += *.RData
+Ignore += $(wildcard *.RData *.Rlog *.Rout)
 rflags = --no-environ --no-site-file --no-init-file --no-restore
 %.Rout: %.R
 	- $(RM) .RData
