@@ -9,6 +9,7 @@ rdeps = $(rscripts:.R=.rdeps)
 -include $(wildcard *.rdeps)
 Makefile: $(rdeps)
 
+Ignore += *.rdeps
 .PRECIOUS: %.rdeps
 %.rdeps: %.R $(ms)/rstep.pl
 	$(PUSH)
