@@ -63,6 +63,10 @@ parksw3 += networkSEIR contact_trace bayes_antigen
 
 ######################################################################
 
+## Outbreak-analysis (see dushoff_repos.def)
+
+######################################################################
+
 ## Champredon 
 champredon += ILI-ER link-re-erlang
 

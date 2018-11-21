@@ -50,3 +50,5 @@ $(champredon):
 repodirs += alberta_age
 alberta_age:
 	git clone https://git.overleaf.com/8974471gkzqmdgbwvtj $@
+
+## Outbreak-analysis (see dushoff_repos.mk)
