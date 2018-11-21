@@ -1,6 +1,5 @@
 ## Horrible, wet code.
-## Should really have an input table, and a two-level hash
-## But I probably never will
+## Should really have an input table that specifies formats, and a two-level hash
 
 use strict;
 use 5.10.0;
@@ -22,9 +21,8 @@ while ($f =~ s/\bsource\s*\(\s*"(.*?)"//){
 	$sources{$1}=0;
 }
 if (%sources){
-	say "$basename.Rout $basename.rdeps: "
-		, join " ", keys %sources
-		, join " ", map {s|.R$|.rdeps|; $_} keys %sources;
+	say "$basename.Rout: "
+		, join " ", keys %sources;
 	say "";
 }
 
@@ -36,7 +34,7 @@ while ($f =~ s/\bload\s*\(\s*"(.*?)"//){
 	$loads{$1}=0;
 }
 if (%loads){
-	say "$basename.rdeps: ", join " ", keys %loads;
+	say "$basename.Rout: ", join " ", keys %loads;
 	say"";
 }
 
@@ -48,7 +46,7 @@ while ($f =~ s/\bread\.\w+\s*\(\s*"(.*?)"//){
 	$reads{$1}=0;
 }
 if (%reads){
-	say "$basename.rdeps: ", join " ", keys %reads;
+	say "$basename.Rout: ", join " ", keys %reads;
 	say"";
 }
 
@@ -60,6 +58,6 @@ while ($f =~ s/\bwrite\.\w+\s*\(\s*"(.*?)"//){
 	$writes{$1}=0;
 }
 if (%writes){
-	say "join " ", keys %writes, ": $basename.Rout ;";
+	say join " ", keys %writes . ": $basename.Rout ;";
 	say"";
 }
