@@ -17,11 +17,14 @@ Ignore += $(wildcard *.rdeps)
 Ignore += $(wildcard *.RData *.Rlog *.Rout)
 rflags = --no-environ --no-site-file --no-init-file --no-restore
 %.Rout: %.R
-	- $(RM) .RData
+	- $(RM) .RData Rplots.pdf $*.RData $*.Rout.pdf 
 	( (R $(rflags) --save < $*.R > $@) 2> $*.Rlog && cat $*.Rlog ) || ! cat $*.Rlog
-	- $(MV) .RData $*.RData
+	- $(MV) .RData $*.RData 
+	- perl -wf $(RRd)/pdfcheck.pl Rplots.pdf && $(MV) Rplots.pdf $*.Rout.pdf 
 
 %.RData: %.Rout ;
+%.Rout.pdf: %.Rout
+	ls $@
 
 rclean:
 	$(RM) *.Rout *.Rlog *.RData *.rdeps

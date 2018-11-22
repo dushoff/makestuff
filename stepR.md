@@ -47,3 +47,17 @@ Conventions:
 .rda should be made manually and parsed out by rstep.pl
 
 Ha! There also seem to be chaining problems?
+
+----------------------------------------------------------------------
+
+## Figures: should be parsing these out when made manually (include ggsave)
+
+Deal with Rplots.pdf
+
+Are there other auto figures? What's the default?
+
+* Looks for input/output filenames using keywords (like read_*, ggsave) and then finding the first thing in parens surrounded by quotes.
+* Puts the natural dependency into .rdeps
+
+* Use <line> # noStep to ignore something
+* Use # stepSource/stepProduct to manually add to rdeps
