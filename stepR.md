@@ -1,63 +1,31 @@
-What are the different possible approaches to stepping?
+(Development notes moved to Sandbox/stepR/notes.md)
 
-All the time
-============
+stepR is meant to help gnu make co-ordinate R projects that were not written for that purpose. For simple projects, it can work as a drop-in.
 
-Make makefiles before running; use them all the time
+stepR takes a pretty aggressive approach towards making and implementing make rules, and towards making assumptions about default targets.
 
-Just in time
-============
+.rdeps files are made automatically for each R file, and are automatically included as part of the make flow. 
+* stepR does not process code following the magic word noStep
 
-Make makefiles as a side-effect; use only makefiles that you know you need
+stepR tries to figure out sources and products by parsing out commands which _start with_ keywords listed at the top of makestuff/rstep.pl, and lines with the magic words stepSource or stepProduct
 
-In-between
-==========
+Magic words usually work when commented out in R (and should usually _be_ commented out in R, but can be suppressed with "##" at the beginning of the line.
 
-Make makefiles all the time, but control when you use them
+stepR also has default products: 
+* <basename>.Rout will generally be made when any script is run
+* <basename>.Rout.pdf will be made from any script that leaves behind Rplots.pdf
+* <basename>.RData will be made from any script that leaves behind .RData
+These can be used for chaining.
 
-Each approach has different problems, and it seems like we could go pretty far down this rabbit hole
+It is a convention to name manually created R data files `.rda` and allow stepR to call things `.RData`.
 
-----------------------------------------------------------------------
+stepR was first pushed Thanksgiving 2018. It is pre-α.
 
-The big problem we had before with All the time approaches is that a client (me) was making .tex files. Haven't seen a case where I would want to make .R files, though...
+to use stepR, you should `include` makestuff/perl.def and makestuff/stepR.mk in your Makefile
 
-So we should consider making all of the .rdeps files right at the beginning.
-
-Next: do we always use them? Well, why not?
-
-----------------------------------------------------------------------
-
-Try 1
-=====
-
-Be violent!
-
-Or … allow the user to specify stepFiles. stepFiles always use the .rdeps files to be made. But the problem here is you can't really specify static targets with patterns unless they exist. So, violent for now.
-
-Could also have rules for types of files...
-e.g.,
-$(routs):
-	$(MAKE) -f Makefile -f *.rdeps $@
-But not yet.
-
-Conventions:
-
-.RData is made automatically; matches R script name
-
-.rda should be made manually and parsed out by rstep.pl
-
-Ha! There also seem to be chaining problems?
+If you want stepR without makestuff, you can copy makestuff/stepR.mk and makestuff/rstep.pl and then either copy makestuff/perl.def or make your own perl rule.
 
 ----------------------------------------------------------------------
 
-## Figures: should be parsing these out when made manually (include ggsave)
+TODO
 
-Deal with Rplots.pdf
-
-Are there other auto figures? What's the default?
-
-* Looks for input/output filenames using keywords (like read_*, ggsave) and then finding the first thing in parens surrounded by quotes.
-* Puts the natural dependency into .rdeps
-
-* Use <line> # noStep to ignore something
-* Use # stepSource/stepProduct to manually add to rdeps

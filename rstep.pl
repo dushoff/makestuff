@@ -18,6 +18,7 @@ my $f = <>;
 ## Double comment to cancel
 $f =~ s/^##.*//;
 $f =~ s/\n##.*//g;
+$f =~ s/noStep.*//s;
 while ($f =~ s/\bstepSource\s*($listpattern)//){
 	say "## stepSource";
 	say "$target: $1\n";

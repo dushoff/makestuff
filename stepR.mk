@@ -4,10 +4,10 @@ RRd = $(ms)/wrapR
 include $(RRd)/pdf.mk
 include $(RRd)/up.mk
 
+Makefile: $(rdeps)
 rscripts = $(wildcard *.R)
 rdeps = $(rscripts:.R=.rdeps)
--include $(wildcard *.rdeps)
-Makefile: $(rdeps)
+-include $(rdeps)
 
 Ignore += $(wildcard *.rdeps)
 .PRECIOUS: %.rdeps
@@ -20,11 +20,11 @@ rflags = --no-environ --no-site-file --no-init-file --no-restore
 	- $(RM) .RData Rplots.pdf $*.RData $*.Rout.pdf 
 	( (R $(rflags) --save < $*.R > $@) 2> $*.Rlog && cat $*.Rlog ) || ! cat $*.Rlog
 	- $(MV) .RData $*.RData 
-	- perl -wf $(RRd)/pdfcheck.pl Rplots.pdf && $(MV) Rplots.pdf $*.Rout.pdf 
+	(perl -wf $(RRd)/pdfcheck.pl Rplots.pdf && $(MV) Rplots.pdf $*.Rout.pdf) || :
 
 %.RData: %.Rout ;
 %.Rout.pdf: %.Rout
-	ls $@
+	@ls $@
 
 rclean:
 	$(RM) *.Rout *.Rlog *.RData *.rdeps
