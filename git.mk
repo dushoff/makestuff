@@ -85,12 +85,15 @@ all.time: $(alldirs:%=%.all) exclude up.time
 	touch $@
 	git status
 
+allin: $(alldirs:%=%.msync)
+
 Ignore += *.all
 makestuff.all: %.all: %
 	cd $* && $(MAKE) up.time
 
+## Should there be a dependency here? Better chaining?
 %.all: 
-	cd $* && $(MAKE) all.time
+	$(MAKE) $* && cd $* && $(MAKE) all.time
 
 ## Bridge rules maybe? Eventually this should be part of all.time
 ## and all.time does not need to be part of rup
