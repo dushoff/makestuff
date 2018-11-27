@@ -85,7 +85,7 @@ all.time: $(alldirs:%=%.all) exclude up.time
 	touch $@
 	git status
 
-allin: $(alldirs:%=%.msync)
+allin: $(alldirs) $(alldirs:%=%.mmsync)
 
 Ignore += *.all
 makestuff.all: %.all: %
@@ -142,6 +142,10 @@ remotesync: commit.default
 
 %.msync: 
 	$(MAKE) $*.master $*.sync
+
+makestuff.mmsync: ;
+%.mmsync: 
+	cd $* && $(MAKE) makestuff.master makestuff.sync
 
 %.sync: %
 	cd $< && $(MAKE) sync
