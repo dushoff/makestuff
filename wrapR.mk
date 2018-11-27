@@ -1,4 +1,4 @@
-wrapRd = $(ms)/rapR
+wrapRd = $(ms)/wrapR
 RRd = $(ms)/wrapR
 include $(RRd)/pdf.mk
 include $(RRd)/up.mk
