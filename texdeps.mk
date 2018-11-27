@@ -30,6 +30,7 @@ endif
 # 	$(MAKE) -q -f .texdeps/$*.mk -f Makefile .texdeps/$*.out || $(MAKE) -n
 #	-$(MAKE) -f .texdeps/$*.mk -f Makefile .texdeps/$*.out
 
+.PRECIOUS: .texdeps/%.mk
 .texdeps/%.mk: %.tex 
 	$(MAKE) .texdeps 
 	perl -wf $(ms)/texdeps.pl $< > $@
