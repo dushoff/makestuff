@@ -29,5 +29,5 @@ deptarget:
 target.mk:
 	$(CP) $(ms)/$@ .
 
-%.screen: %
+%.dscreen: %
 	cd $< && screen -t "$(notdir $<)"
