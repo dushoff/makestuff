@@ -58,7 +58,7 @@ texfiles = $(wildcard *.tex)
 Ignore += $(texfiles:tex=pdf) $(texfiles:tex=out)
 
 ## These direct exclusions can be replaced by fancier rules above if necessary
-Ignore += *.log *.aux .*.aux *.blg *.bbl *.bcf 
+Ignore += *.biblog *.log *.aux .*.aux *.blg *.bbl *.bcf 
 Ignore += *.nav *.snm *.toc
 Ignore += *.run.xml
 
