@@ -11,7 +11,7 @@ You can change the texdeps behaviour by presetting the following make variables:
 * bibtex (defaults to `bibtex = biber $* || bibtex $*`; don't forget `$*` if you set it.
 
 The goal of texdeps is to make a pdf file from a tex file (if your make environment makes the tex file, it should chain and make that as well). It will do this by:
-* Going through your tex file and make a corresponding .mk file (hidden a file called .texdeps)
+* Going through your tex file and make a corresponding .mk file (in a hidden folder .texdeps)
 * Using the .mk file to make things that your .tex file needs:
 	* Any file referred to in \includegraphics
 	* Any file that is input or included -- it does _not_ autocomplete missing extensions:
