@@ -30,13 +30,13 @@ endif
 # 	$(MAKE) -q -f .texdeps/$*.mk -f Makefile .texdeps/$*.out || $(MAKE) -n
 #	-$(MAKE) -f .texdeps/$*.mk -f Makefile .texdeps/$*.out
 
+.PRECIOUS: .texdeps/%.mk
 .texdeps/%.mk: %.tex 
 	$(MAKE) .texdeps 
 	perl -wf $(ms)/texdeps.pl $< > $@
 
 ## This rule makes the first copy of the .out
 ## Meant to be over-riden by rules in the corresponding .mk
-.PRECIOUS: .texdeps/%.out
 .texdeps/%.out: 
 	$(MAKE) .texdeps 
 	touch $@
@@ -52,13 +52,16 @@ endif
 %.deps: .texdeps/%.mk %.tex
 	-$(MAKE) -dr -f $< -f Makefile .texdeps/$*.out | tee .texdeps/$*.make.log 2>&1
 
+%.alldeps:
+	$(MAKE) $*.deps $*.ltx $*.deps $*.pdf ;
+
 Ignore += .texdeps/
 
 texfiles = $(wildcard *.tex)
 Ignore += $(texfiles:tex=pdf) $(texfiles:tex=out)
 
 ## These direct exclusions can be replaced by fancier rules above if necessary
-Ignore += *.log *.aux .*.aux *.blg *.bbl *.bcf 
+Ignore += *.biblog *.log *.aux .*.aux *.blg *.bbl *.bcf 
 Ignore += *.nav *.snm *.toc
 Ignore += *.run.xml
 
