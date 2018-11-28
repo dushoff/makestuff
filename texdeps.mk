@@ -52,7 +52,8 @@ endif
 %.deps: .texdeps/%.mk %.tex
 	-$(MAKE) -dr -f $< -f Makefile .texdeps/$*.out | tee .texdeps/$*.make.log 2>&1
 
-%.alldeps: %.deps %.ltx %.deps %.pdf ;
+%.alldeps:
+	$(MAKE) $*.deps $*.ltx $*.deps $*.pdf ;
 
 Ignore += .texdeps/
 
