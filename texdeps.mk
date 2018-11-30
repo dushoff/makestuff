@@ -24,7 +24,7 @@ endif
 	@grep "failed" .texdeps/$*.make.log || :
 	$(MAKE) $*.deps > /dev/null
 
-%.bbl: %.ltx
+%.bbl: %.tex %.ltx
 	($(bibtex)) || ($(RM) $@ && false)
 
 # 	$(MAKE) -q -f .texdeps/$*.mk -f Makefile .texdeps/$*.out || $(MAKE) -n
