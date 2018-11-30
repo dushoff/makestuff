@@ -11,18 +11,21 @@ endif
 %.pdf: %.tex .texdeps/%.out
 	$(MAKE) .texdeps/$*.mk
 	-$(MAKE) $*.deps ## Try the dependencies, but try to make a pdf anyway
-	$(MAKE) $*.ltx ## Always succeeds
-	sleep 1 ### Sleeping to clarify time stamps
+	$(MAKE) $*.ltx ## Always succeeds, but doesn't always make pdf
+	sleep 1 ### Sleeping before checking Rerun
+	$(MAKE) $*.texcheck
 	$(MAKE) $*.logreport
 
 ## Working on better reporting 2018 Nov 29 (Thu)
-%.logreport: 
+## Are we geting everything we need from make log?
+%.texcheck: 
 	@!(grep "Fatal error occurred" $*.log)
 	@(grep "Rerun to get" $*.log && touch $*.tex) || :
+
+%.logreport: 
 	@(grep "Error:" $*.log && touch $*.tex) || :
 	@grep "Stop." .texdeps/$*.make.log || :
 	@grep "failed" .texdeps/$*.make.log || :
-	$(MAKE) $*.deps > /dev/null
 
 %.bbl: %.tex %.ltx
 	($(bibtex)) || ($(RM) $@ && false)
