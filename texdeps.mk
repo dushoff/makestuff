@@ -10,19 +10,19 @@ endif
 
 %.pdf: %.tex .texdeps/%.out
 	$(MAKE) .texdeps/$*.mk
-	-$(MAKE) $*.deps
-	## sleep 1 ### Sleeping to clarify time stamps
-	$(MAKE) $*.ltx || ($(MAKE) $*.logreport && false)
-	$(MAKE) $*.logreport
+	-$(MAKE) $*.deps ## Try the dependencies, but try to make a pdf anyway
+	$(MAKE) $*.ltx ## Always succeeds
 	sleep 1 ### Sleeping to clarify time stamps
-	touch $@
+	$(MAKE) $*.logreport
 
-%.logreport: %.deps
+## Working on better reporting 2018 Nov 29 (Thu)
+%.logreport: 
 	@!(grep "Fatal error occurred" $*.log)
 	@(grep "Rerun to get" $*.log && touch $*.tex) || :
 	@(grep "Error:" $*.log && touch $*.tex) || :
 	@grep "Stop." .texdeps/$*.make.log || :
 	@grep "failed" .texdeps/$*.make.log || :
+	$(MAKE) $*.deps > /dev/null
 
 %.bbl: %.ltx
 	($(bibtex)) || ($(RM) $@ && false)
@@ -50,10 +50,7 @@ endif
 # Update dependencies for a .tex file
 # A phony target
 %.deps: .texdeps/%.mk %.tex
-	-$(MAKE) -dr -f $< -f Makefile .texdeps/$*.out | tee .texdeps/$*.make.log 2>&1
-
-%.alldeps:
-	$(MAKE) $*.deps $*.ltx $*.deps $*.pdf ;
+	-$(MAKE) -f $< -f Makefile .texdeps/$*.out | tee .texdeps/$*.make.log 2>&1
 
 Ignore += .texdeps/
 
