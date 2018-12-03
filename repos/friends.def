@@ -24,9 +24,13 @@ wzmli += rabies_R0
 ## Mike's big Scotland idea about within-animal correlations
 wzmli += rabies_correlations
 
+## Chyun's new MC paper
 wzmli += mc_recency
 
 wzmli += mli_sims
+
+## Importance sampling test stuff
+wzmli += ImpSamp
 
 ######################################################################
 
