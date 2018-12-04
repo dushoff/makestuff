@@ -9,7 +9,9 @@ export ms = ./
 
 ##################################################################
 
-Sources += $(wildcard *.md)
+md = $(wildcard *.md)
+Sources += $(md)
+Ignore += $(md:md=html)
 
 ## Work on documentation!!!
 
