@@ -365,7 +365,6 @@ upmerge:
 	git push -u origin $(cmain)
 	$(MAKE) $(BRANCH).nuke
 
-
 ######################################################################
 
 ## Open the web page associated with the repo
@@ -374,6 +373,8 @@ hub:
 	echo go `git remote get-url origin` | bash 
 hupstream:
 	echo go `git remote get-url origin | perl -pe "s/[.]git$$//"` | bash --login
+hup:
+	git remote get-url origin
 
 ## Outdated version for github ssh 
 upstream:
