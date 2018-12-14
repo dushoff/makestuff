@@ -85,12 +85,15 @@ all.time: $(alldirs:%=%.all) exclude up.time
 	touch $@
 	git status
 
+allin: $(alldirs) $(alldirs:%=%.mmsync)
+
 Ignore += *.all
 makestuff.all: %.all: %
 	cd $* && $(MAKE) up.time
 
+## Should there be a dependency here? Better chaining?
 %.all: 
-	cd $* && $(MAKE) all.time
+	$(MAKE) $* && cd $* && $(MAKE) all.time
 
 ## Bridge rules maybe? Eventually this should be part of all.time
 ## and all.time does not need to be part of rup
@@ -139,6 +142,10 @@ remotesync: commit.default
 
 %.msync: 
 	$(MAKE) $*.master $*.sync
+
+makestuff.mmsync: ;
+%.mmsync: 
+	cd $* && git checkout master && $(MAKE) makestuff.master makestuff.sync
 
 %.sync: %
 	cd $< && $(MAKE) sync
@@ -358,7 +365,6 @@ upmerge:
 	git push -u origin $(cmain)
 	$(MAKE) $(BRANCH).nuke
 
-
 ######################################################################
 
 ## Open the web page associated with the repo
@@ -367,6 +373,8 @@ hub:
 	echo go `git remote get-url origin` | bash 
 hupstream:
 	echo go `git remote get-url origin | perl -pe "s/[.]git$$//"` | bash --login
+hup:
+	git remote get-url origin
 
 ## Outdated version for github ssh 
 upstream:

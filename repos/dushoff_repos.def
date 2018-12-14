@@ -60,9 +60,9 @@ bitbucket_other  += nserc tutorial Vaccination_analysis TZ_pediatric_HIV zebra_m
 
 ## Trying to avoid separate image-control directories 
 ## Lots of .step info here, though
-Bio3SS += Lecture_images
+# Bio3SS += Lecture_images
 
-Bio3SS += Grading
+Bio3SS += 3SS
 
 ######################################################################
 

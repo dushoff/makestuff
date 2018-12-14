@@ -50,7 +50,7 @@ pandocs = pandoc -s -o $@ $<
 convert = convert $< $@
 imageconvert = convert -density 600 -trim $< -quality 100 -sharpen 0x1.0 $@
 shell_execute = sh < $@
-# pdfcat = pdftk $(filter %.pdf, $^) cat output $@
+
 pdfcat = pdfjoin --outfile $@ $(filter %.pdf, $^) 
 
 latexdiff = latexdiff $^ > $@
