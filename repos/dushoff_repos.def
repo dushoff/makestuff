@@ -26,7 +26,6 @@ dushoff_github += significance
 
 ## Which one is this?
 dushoff_github += Circumcision_and_behaviour
-
 ## 
 dushoff_github += Generation_talks disease_model_talks statistics_talks
 
@@ -38,9 +37,7 @@ dushoff_github += notebook scratch
 ## Directory containers (new 2018 Aug 29 (Wed)); just for org
 dushoff_github += 1M talks
 
-## Hybrid stuff
-## Want to be able to make these easily, but don't really wnat to keep them around
-## No problem; couldn't find them anyway ☺
+dushoff_github += CIHR_Ebola
 
 ######################################################################
 

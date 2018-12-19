@@ -32,5 +32,8 @@ target.mk:
 %.dscreen: %
 	cd $< && screen -t "$(notdir $<)"
 
-%.vscreen: %
-	cd $< && screen -t "$(notdir $<)" bash -cl "vmt"
+%.vscreen: %.dir
+	cd $* && screen -t "$(notdir $*)" bash -cl "vmt"
+
+%.dir:
+	cd $(dir $*) && $(MAKE) $(notdir $*)
