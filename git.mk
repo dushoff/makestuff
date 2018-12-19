@@ -16,7 +16,7 @@ endif
 ## Ignoring
 
 ## Find the git directory and make an exclude file here
-## When we have subdirectories they may compete (overwrite each others' exclud files)
+## When we have subdirectories they may compete (overwrite each others' exclude files)
 ## Not clear why that would be a problem
 
 git_dir = $(shell git rev-parse --git-dir)
