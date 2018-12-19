@@ -72,7 +72,7 @@ pull: commit.time
 ## Not part of all.time because updated in parallel
 $(pardirs):
 	cd .. && $(MAKE) $@
-	ls ../$@ > $(null) && $(LNF) $(dir)/$@ .
+	ls ../$@ > $(null) && $(LNF) ../$@ .
 
 Ignore += up.time all.time
 up.time: commit.time
