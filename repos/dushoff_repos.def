@@ -37,12 +37,13 @@ dushoff_github += notebook scratch
 ## Directory containers (new 2018 Aug 29 (Wed)); just for org
 dushoff_github += 1M talks
 
-dushoff_github += CIHR_Ebola
-
 ######################################################################
+
+## Just bung these in to save 3SS trouble. No obvious disadvantages left.
 
 dushoff_other = CIHR_Ebola Ebola_stochasticity make Planning rabies-SD RR autorefs dushoff.github.io makework techtex-ebola sherif TZ_clinics rabies_burden nserc_tools SEER_HPV initial_epi diversity_metrics Latent_incidence_fitting DHS_overview Country_lists little_r SIR_model_family Rabies_talks Syphilis_and_ARVs HIV_presentations SIR_simulations scratch permutation_binomial Ebola_talks Ebola_sims fitting_code Endemic_curves math_talks texdeps org Workshops gi_appoximations link_calculations
 
+dushoff_github += $(dushoff_other)
 
 ######################################################################
 
