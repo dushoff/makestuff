@@ -29,8 +29,8 @@ deptarget:
 target.mk:
 	$(CP) $(ms)/$@ .
 
-%.dscreen: %
-	cd $< && screen -t "$(notdir $<)"
+%.dscreen: %.dir
+	cd $* && screen -t "$(notdir $*)"
 
 %.vscreen: %.dir
 	cd $* && screen -t "$(notdir $*)" bash -cl "vmt"
