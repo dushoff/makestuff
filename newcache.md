@@ -4,11 +4,9 @@ It is meant to be agnostic about where you keep your cached files: typically eit
 
 We want to have rules for three types of make:
 
-* fast: try to make, but don't do anything marked as slow
-* lazy: make if possible, but don't do anything marked as slow, unless it is necessary
-* full: make updated targets, pay no attention to what is marked as slow
-
-One of these should be the default (not full, of course).
+* fast: the default
+* lazy: make if possible, but don't do anything marked as slow, unless it is necessary (buildcache)O
+* full: make updated targets, pay no attention to what is marked as slow (rebuildcache)
 
 There's also a question about time stamps: it is hard to be sure that time stamps are consistent between platforms (or even within git, if we are pushing output files).
 
