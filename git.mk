@@ -16,7 +16,7 @@ endif
 ## Ignoring
 
 ## Find the git directory and make an exclude file here
-## When we have subdirectories they may compete (overwrite each others' exclud files)
+## When we have subdirectories they may compete (overwrite each others' exclude files)
 ## Not clear why that would be a problem
 
 git_dir = $(shell git rev-parse --git-dir)
@@ -69,6 +69,11 @@ pull: commit.time
 
 ######################################################################
 
+## Not part of all.time because updated in parallel
+$(pardirs):
+	cd .. && $(MAKE) $@
+	ls ../$@ > $(null) && $(LNF) ../$@ .
+
 Ignore += up.time all.time
 up.time: commit.time
 	-git pull
@@ -97,7 +102,10 @@ makestuff.all: %.all: %
 
 ## Bridge rules maybe? Eventually this should be part of all.time
 ## and all.time does not need to be part of rup
+## This chokes because makestuff is sometimes in alldirs, should think about this
+## Maybe patched 2018 Dec 19 (Wed), but not yet percolated
 all.exclude: makestuff.exclude $(alldirs:%=%.allexclude) exclude
+makestuff.allexclude: ;
 %.allexclude:
 	cd $* && $(MAKE) all.exclude
 %.exclude: 
@@ -365,7 +373,6 @@ upmerge:
 	git push -u origin $(cmain)
 	$(MAKE) $(BRANCH).nuke
 
-
 ######################################################################
 
 ## Open the web page associated with the repo
@@ -374,6 +381,8 @@ hub:
 	echo go `git remote get-url origin` | bash 
 hupstream:
 	echo go `git remote get-url origin | perl -pe "s/[.]git$$//"` | bash --login
+hup:
+	git remote get-url origin
 
 ## Outdated version for github ssh 
 upstream:
