@@ -1,63 +1,16 @@
-Use `-include $(ms)/cache.mk` to enable simple caching. `cache.mk` is intended for files which are expensive to make, but not expensive to track.
+newcache is designed to replace cache (see makestuff/cache.md and makestuff/cache.mk)
 
-# Basic idea
+It is meant to be agnostic about where you keep your cached files: typically either in a repo subdirectory or in a Drop folder of some kind)
 
-Slow targets are:
-* made automatically, but not remade automatically
-* added to the repo, so that they can be reverted, or shared between platforms
-* designated using make rules
+We want to have rules for three types of make:
 
-In the make file, slow targets should be:
-* _made_ in the cache directory (`$(cachedir)`, `git_cache` by default) 
-* _used_ them from the slow directory (`$(slowdir)`, `slow` by default)
+* fast: the default
+* lazy: make if possible, but don't do anything marked as slow, unless it is necessary (buildcache)O
+* full: make updated targets, pay no attention to what is marked as slow (rebuildcache)
 
-To do a complete make (not respecting the cache), say:
-``` bash
-make <target>.nocache
-```
+There's also a question about time stamps: it is hard to be sure that time stamps are consistent between platforms (or even within git, if we are pushing output files).
 
-This seals up the breakpoint in your make logic (between the slow directory and the cache directory). 
+We want to mark targets as slow where we make them. We can do that by making them in a cache directory. In general, these should have weird names also, so that there is no other way to make them.
+* This idea depends on assuming a flat directory structure for now
+* Later we could use some sort of directory logic (like hide uses)
 
-# Pushing
-
-`git` seems like a really bad way to manage cache files, so I probably should take out all that code.
-
-You can put your cache in a shared file system or not; need example code for how that should be done.
-
-
-It should always work within a local session, but I'm worried about time stamps when the repo is pushed and pulled. Will investigate further.
-
-I think the solution (not implemented) is to disable automatic pushing. You _don't_ want to push slow files if they're not up-to-date. So a special rule for making and adding slow files. 
-
-__But__ it's still not reliable, since git doesn't seem to respect anything about time stamps (fresh clone of a big repo, every single file has the same time, it seems hard to predict what will be made). OTOH, things might make a bit of sense, if:
-* it's not a fresh clone
-* we only push to the cache when we're up to date
-
-So: maybe some make machinery that figures out which cache files are up to date, and adds them? Any that have changed but are not up to date would then show on status, which could be good?
-
-Here is some example code that seems to be working for me (in a repo with makestuff as a submodule):
-
-```make
-## Not very relevant, but maybe you're curious about PUSH
--include $(ms)/perl.def
-
-git_cache/test.out: test.pl
-	$(PUSH)
-
-test.print: slow/test.out
-	cat $< > $@
-
-# Rename cache directories before you include cache.mk
-# slowdir = datadir
--include $(ms)/cache.mk
-
-# Include cache.mk before git.mk, if you want to auto-cache git cache (and conversely, I guess)
--include $(ms)/git.mk
-
-## Need a weirder rule for .Rout / RData, and it needs to come first
-$(slowdir)/%.Rout:
-	$(MAKE) $(slowdir)
-	$(MAKE) $(cachedir)
-	$(MAKE) $(cachedir)/$*.Rout
-	(ls $@ > /dev/null 2>&1) || $(LNF) $(realpath .)/$(cachedir)/$*.Rout $(call hiddenfile,  $(realpath .)/$(cachedir)/$*.RData) $(slowdir)
-```
