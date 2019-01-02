@@ -24,3 +24,6 @@ all current target: ;
 	$(MAKE) cachefiles
 	ls $@
 endif
+
+clearcache:
+	$(RM) cache/* cache/.?*.*
