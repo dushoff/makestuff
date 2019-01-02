@@ -1,7 +1,7 @@
 ## This seems like a mess now; maybe move most of the dushoff stuff to .def, and just a general repos.mk
 include $(ms)/repos/dushoff_repos.def
 
-bitbucket = dushoff@bitbucket.org
+bitbucket = https://dushoff@bitbucket.org
 github = https://github.com
 
 justclone:
