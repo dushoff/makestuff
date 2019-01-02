@@ -99,7 +99,6 @@ Sources += webhtml.pl webmk.pl
 
 ## Caching
 Sources += cache.mk cache.md
-Sources += newcache.mk newcache.md
 
 ######################################################################
 
