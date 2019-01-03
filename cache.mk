@@ -1,7 +1,11 @@
 cachefiles: 
+	$(MAKE) cache
 	- $(CPR) cache/* cache/.?*.* .
 
-## Make things in the cache if necessary
+## Default is to never make anything in the cache implicitly
+
+## buildcache means make things in the cache if necessary
+## Change the default by setting buildcache in your Makefile
 %.buildcache:
 	$(MAKE) buildcache=TRUE $*
 
@@ -9,18 +13,15 @@ cachefiles:
 %.rebuildcache:
 	$(MAKE) rebuildcache=TRUE $*
 
-## Make things in slow directory by linking to cache directory
-## But don't tell them about the dependency most of the time
-## Don't link if the file already exists; it creates confusion (at least in the editor)
 ifdef rebuildcache
 $(foreach target,$(notdir $(wildcard cache/*)),$(eval $(target): cache/$(target); $(MAKE) cachefiles))
 else ifdef buildcache
-%:: 
+%::
 	$(MAKE) cache/$*
 	$(MAKE) cachefiles
 else
 all current target: ;
-%::
+%:
 	$(MAKE) cachefiles
 	ls $@
 endif
