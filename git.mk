@@ -28,6 +28,8 @@ $(git_dir)/info/exclude: $(Sources)
 
 export Ignore += local.mk target.mk make.log go.log
 
+## Personal ignore stuff see config
+
 ######################################################################
 
 ## Hybrid subdirectory types
@@ -213,7 +215,7 @@ abort:
 	$(mkdir)
 
 ignore.config: ~/.config/git
-	-/bin/cp $(ms)/ignore.vim $</ignore
+	cat $(ms)/ignore.vim $(ms)/ignore.auth $</ignore
 
 README.md LICENSE.md:
 	touch $@
