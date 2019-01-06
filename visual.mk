@@ -22,9 +22,18 @@ pushtarget:
 dtarget:
 	$(MAKE) pushdir=~/Downloads/ pushtarget
 
-## Not working, apparently
+## Not tested; could also try adding deptarget: $(target) and using $<
 deptarget:
-	$(MAKE) $(<:.pdf=.deps)
+	$(MAKE) $(target:.pdf=.deps)
 
 target.mk:
 	$(CP) $(ms)/$@ .
+
+%.dscreen: %.dir
+	cd $* && screen -t "$(notdir $*)"
+
+%.vscreen: %.dir
+	cd $* && screen -t "$(notdir $*)" bash -cl "vmt"
+
+%.dir:
+	cd $(dir $*) && $(MAKE) $(notdir $*)

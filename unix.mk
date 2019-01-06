@@ -3,6 +3,7 @@ MVF = /bin/mv -f
 MV = /bin/mv
 CP = /bin/cp
 CPF = /bin/cp -f
+CPR = /bin/cp -rf
 DIFF = diff
 EDIT = gvim -f
 RMR = /bin/rm -rf
@@ -50,7 +51,7 @@ pandocs = pandoc -s -o $@ $<
 convert = convert $< $@
 imageconvert = convert -density 600 -trim $< -quality 100 -sharpen 0x1.0 $@
 shell_execute = sh < $@
-# pdfcat = pdftk $(filter %.pdf, $^) cat output $@
+
 pdfcat = pdfjoin --outfile $@ $(filter %.pdf, $^) 
 
 latexdiff = latexdiff $^ > $@

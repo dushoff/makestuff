@@ -10,32 +10,36 @@ endif
 
 %.pdf: %.tex .texdeps/%.out
 	$(MAKE) .texdeps/$*.mk
-	-$(MAKE) $*.deps
-	## sleep 1 ### Sleeping to clarify time stamps
-	$(MAKE) $*.ltx || ($(MAKE) $*.logreport && false)
+	-$(MAKE) $*.deps ## Try the dependencies, but try to make a pdf anyway
+	$(MAKE) $*.ltx ## Always succeeds, but doesn't always make pdf
+	sleep 1 ### Sleeping before checking Rerun
+	$(MAKE) $*.texcheck
 	$(MAKE) $*.logreport
-	sleep 1 ### Sleeping to clarify time stamps
 
-%.logreport: %.deps
+## Working on better reporting 2018 Nov 29 (Thu)
+## Are we geting everything we need from make log?
+%.texcheck: 
 	@!(grep "Fatal error occurred" $*.log)
 	@(grep "Rerun to get" $*.log && touch $*.tex) || :
+
+%.logreport: 
 	@(grep "Error:" $*.log && touch $*.tex) || :
 	@grep "Stop." .texdeps/$*.make.log || :
 	@grep "failed" .texdeps/$*.make.log || :
 
-%.bbl: %.ltx
+%.bbl: %.tex %.ltx
 	($(bibtex)) || ($(RM) $@ && false)
 
 # 	$(MAKE) -q -f .texdeps/$*.mk -f Makefile .texdeps/$*.out || $(MAKE) -n
 #	-$(MAKE) -f .texdeps/$*.mk -f Makefile .texdeps/$*.out
 
+.PRECIOUS: .texdeps/%.mk
 .texdeps/%.mk: %.tex 
 	$(MAKE) .texdeps 
 	perl -wf $(ms)/texdeps.pl $< > $@
 
 ## This rule makes the first copy of the .out
 ## Meant to be over-riden by rules in the corresponding .mk
-.PRECIOUS: .texdeps/%.out
 .texdeps/%.out: 
 	$(MAKE) .texdeps 
 	touch $@
@@ -49,7 +53,7 @@ endif
 # Update dependencies for a .tex file
 # A phony target
 %.deps: .texdeps/%.mk %.tex
-	-$(MAKE) -dr -f $< -f Makefile .texdeps/$*.out | tee .texdeps/$*.make.log 2>&1
+	-$(MAKE) -f $< -f Makefile .texdeps/$*.out | tee .texdeps/$*.make.log 2>&1
 
 Ignore += .texdeps/
 
@@ -57,7 +61,7 @@ texfiles = $(wildcard *.tex)
 Ignore += $(texfiles:tex=pdf) $(texfiles:tex=out)
 
 ## These direct exclusions can be replaced by fancier rules above if necessary
-Ignore += *.log *.aux .*.aux *.blg *.bbl *.bcf 
+Ignore += *.biblog *.log *.aux .*.aux *.blg *.bbl *.bcf 
 Ignore += *.nav *.snm *.toc
 Ignore += *.run.xml
 

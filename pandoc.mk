@@ -27,8 +27,12 @@
 %.html: %.rmd
 	Rscript -e "library(\"rmarkdown\"); render(\"$<\")"
 
+.PRECIOUS: %.tex
 %.tex: %.Rnw
 	Rscript -e "library(\"knitr\"); knit(\"$<\")"
+
+%-knitr.Rnw: %.Rnw
+	Rscript -e "library(\"knitr\"); Sweave2knitr(\"nn_presentation.Rnw\")"
 
 %.md: %.rmd
 	Rscript -e "library(\"knitr\"); knit(\"$<\")"

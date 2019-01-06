@@ -4,48 +4,41 @@
 current: target
 -include target.mk
 
+export ms = ./
+-include $(ms)/os.mk
+
 ##################################################################
+
+md = $(wildcard *.md)
+Sources += $(md)
+Ignore += $(md:md=html)
+
 ## Work on documentation!!!
 
-cache.html: cache.md
+## cache.html: cache.md
 
 ######################################################################
-
-include localstuff.mk
 
 # Base files
 
 Sources += Makefile LICENSE README.md static.mk sub.mk todo.md
 
-## git rm .ignore ##
-Sources += ignore.auth ignore.vim ignore.pl
-
-## Probably don't need this 2018 May 22 (Tue)
-Sources += ignore.mk
-
-# Starting makefile for other projects
-
-Sources += makefile.mk hooks.mk localstuff.mk
-
-# Bootstrap stuff
-# Want to be able to change this stuff locally
-## %.mk: %.mk.template; $(CP) $< $@
+## Script to make exclude file
+Sources += ignore.pl
 
 Sources += os.mk unix.mk linux.mk windows.mk up.mk
 
-## Deprecated!!
-## Sources += hybrid/*.mk
-
 ######################################################################
 
-# Accounts 
+# Scripts to do accounting via google sheets (inactive)
 
 ## Not clear what this was meant to be for 2018 Sep 22 (Sat)
 Sources += accounts.mk accounts.pl
 
 ######################################################################
 
-# Git makefile for this and other projects
+# Git makefile stuff 
+# Not so clear what's active or not
 
 Sources += git.mk git.def git.md repos.def repos.mk init.mk modules.mk drops.mk target.mk hybrid.mk hotcold.mk
 
@@ -106,7 +99,6 @@ Sources += webhtml.pl webmk.pl
 
 ## Caching
 Sources += cache.mk cache.md
-Sources += newcache.mk newcache.md
 
 ######################################################################
 
