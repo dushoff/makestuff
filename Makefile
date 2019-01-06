@@ -26,6 +26,9 @@ Sources += Makefile LICENSE README.md static.mk sub.mk todo.md
 ## Script to make exclude file
 Sources += ignore.pl
 
+## Inputs for .config ignore file
+Sources += ignore.auth ignore.vim
+
 Sources += os.mk unix.mk linux.mk windows.mk up.mk
 
 ######################################################################
