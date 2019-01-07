@@ -187,6 +187,10 @@ git_check = git diff-index --quiet HEAD --
 git_push:
 	$(mkdir)
 
+gpobjects = $(wildcard git_push/*)
+gptargets = $(gpobjects:git_push/%=%.gp)
+gptargets: $(gptargets)
+
 ######################################################################
 
 ## Redo in a more systematic way (like .branchdir)
