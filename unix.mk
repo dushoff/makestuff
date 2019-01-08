@@ -74,7 +74,7 @@ Ignore += *.ld.tex
 
 %.makelog: %.log ;
 
-## Confused by this now
+## Jekyll stuff
 serve:
 	bundle exec jekyll serve &
 
@@ -82,3 +82,7 @@ killserve:
 	killall jekyll
 	sleep 1
 	bundle exec jekyll serve &
+
+## Convenience
+%.tod: %
+	$(CP) $< ~/Downloads
