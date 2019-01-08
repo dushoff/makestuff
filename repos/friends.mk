@@ -51,4 +51,10 @@ repodirs += alberta_age
 alberta_age:
 	git clone https://git.overleaf.com/8974471gkzqmdgbwvtj $@
 
+## Roswell
+
+$(mikeroswell):
+	$(MAKE) target=$@ repo=$(github) user=mikeroswell clone
+repodirs += $(mikeroswell)
+
 ## Outbreak-analysis (see dushoff_repos.mk)
