@@ -3,6 +3,7 @@ MVF = /bin/mv -f
 MV = /bin/mv
 CP = /bin/cp
 CPF = /bin/cp -f
+CPR = /bin/cp -rf
 DIFF = diff
 EDIT = gvim -f
 RMR = /bin/rm -rf

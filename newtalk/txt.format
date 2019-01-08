@@ -147,6 +147,8 @@ EXTRA NULLSLIDE
 # Presentation-only slides
 PSLIDE NULLSLIDE
 draft final: ^DEFHEAD {%%}
+final: ^DEFHEAD {%%}
+draft: ^DEFHEAD {\sl %% (present)}
 
 # Just one pic (no header)
 PICSLIDE NULLSLIDE

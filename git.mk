@@ -16,7 +16,7 @@ endif
 ## Ignoring
 
 ## Find the git directory and make an exclude file here
-## When we have subdirectories they may compete (overwrite each others' exclud files)
+## When we have subdirectories they may compete (overwrite each others' exclude files)
 ## Not clear why that would be a problem
 
 git_dir = $(shell git rev-parse --git-dir)
@@ -27,6 +27,8 @@ $(git_dir)/info/exclude: $(Sources)
 	perl -wf $(ms)/ignore.pl > $@
 
 export Ignore += local.mk target.mk make.log go.log
+
+## Personal ignore stuff see ignore.config
 
 ######################################################################
 
@@ -69,6 +71,11 @@ pull: commit.time
 
 ######################################################################
 
+## Not part of all.time because updated in parallel
+$(pardirs):
+	cd .. && $(MAKE) $@
+	ls ../$@ > $(null) && $(LNF) ../$@ .
+
 Ignore += up.time all.time
 up.time: commit.time
 	-git pull
@@ -97,7 +104,10 @@ makestuff.all: %.all: %
 
 ## Bridge rules maybe? Eventually this should be part of all.time
 ## and all.time does not need to be part of rup
+## This chokes because makestuff is sometimes in alldirs, should think about this
+## Maybe patched 2018 Dec 19 (Wed), but not yet percolated
 all.exclude: makestuff.exclude $(alldirs:%=%.allexclude) exclude
+makestuff.allexclude: ;
 %.allexclude:
 	cd $* && $(MAKE) all.exclude
 %.exclude: 
@@ -177,6 +187,10 @@ git_check = git diff-index --quiet HEAD --
 git_push:
 	$(mkdir)
 
+gpobjects = $(wildcard git_push/*)
+gptargets = $(gpobjects:git_push/%=%.gp)
+gptargets: $(gptargets)
+
 ######################################################################
 
 ## Redo in a more systematic way (like .branchdir)
@@ -220,7 +234,7 @@ abort:
 	$(mkdir)
 
 ignore.config: ~/.config/git
-	-/bin/cp $(ms)/ignore.vim $</ignore
+	cat $(ms)/ignore.vim $(ms)/ignore.auth $</ignore
 
 README.md LICENSE.md:
 	touch $@
