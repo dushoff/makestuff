@@ -21,6 +21,8 @@ wzmli += rabies_report
 ## 2018 Jun 07 (Thu) rabies_R0 investigation (Scotland poster)
 wzmli += rabies_R0 impSamp
 
+wzmli += rabies_cihr
+
 ## Mike's big Scotland idea about within-animal correlations
 wzmli += rabies_correlations
 
