@@ -7,8 +7,16 @@ PulliamLab += competenceFramework
 
 ######################################################################
 
+Ignore += shell
+shell:
+	mkdir $@
+
 ## Steve Bicko Cygu
-cygubicko += WDBC-Codes
+cygubicko += WDBC-Codes projects
+
+aphrc: shell projects
+	mv projects shell
+	ln -s shell/projects/$@ .
 
 ## Mike Li
 wzmli += rdc

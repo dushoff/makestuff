@@ -23,7 +23,7 @@ all current target: ;
 ## How about now? 2019 Jan 15 (Tue)
 %:
 	- $(cachefiles)
-	ls $@
+	touch $@
 endif
 
 clearcache:
