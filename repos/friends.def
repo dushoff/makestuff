@@ -8,7 +8,7 @@ PulliamLab += competenceFramework
 ######################################################################
 
 ## Steve Bicko Cygu
-cygubicko += WDBC-Codes
+cygubicko += WDBC-Codes projects
 
 ## Mike Li
 wzmli += rdc
