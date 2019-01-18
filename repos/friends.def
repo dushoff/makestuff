@@ -21,6 +21,7 @@ shell/projects:
 	$(MAKE) shell
 	- $(MAKE) projects
 	mv projects shell
+links += aphrc
 
 ## Mike Li
 wzmli += rdc

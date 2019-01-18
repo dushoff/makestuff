@@ -1,5 +1,7 @@
 include $(ms)/repos/friends.def
 
+repodirs += $(links)
+
 $(PulliamLab):
 	$(MAKE) target=$@ repo=$(github) user=PulliamLab-UFL clone
 repodirs += $(PulliamLab)
