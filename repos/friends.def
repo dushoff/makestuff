@@ -14,9 +14,13 @@ shell:
 ## Steve Bicko Cygu
 cygubicko += WDBC-Codes projects
 
-aphrc: shell projects
-	mv projects shell
+## Working?
+aphrc: shell/projects
 	ln -s shell/projects/$@ .
+shell/projects:
+	$(MAKE) shell
+	- $(MAKE) projects
+	mv projects shell
 
 ## Mike Li
 wzmli += rdc
