@@ -206,6 +206,7 @@ pages/%: % pages
 	cd pages && git checkout gh-pages
 	$(copy)
 
+Ignore += pages
 pages:
 	git clone `git remote get-url origin` $@
 	cd $@ && (git checkout gh-pages || $(createpages)
