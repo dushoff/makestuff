@@ -28,6 +28,8 @@ $(git_dir)/info/exclude: $(Sources)
 
 export Ignore += local.mk target.mk make.log go.log
 
+## Personal ignore stuff see ignore.config
+
 ######################################################################
 
 ## Hybrid subdirectory types
@@ -185,6 +187,10 @@ git_check = git diff-index --quiet HEAD --
 git_push:
 	$(mkdir)
 
+gpobjects = $(wildcard git_push/*)
+gptargets = $(gpobjects:git_push/%=%.gp)
+gptargets: $(gptargets)
+
 ######################################################################
 
 ## Redo in a more systematic way (like .branchdir)
@@ -200,6 +206,7 @@ pages/%: % pages
 	cd pages && git checkout gh-pages
 	$(copy)
 
+Ignore += pages
 pages:
 	git clone `git remote get-url origin` $@
 	cd $@ && (git checkout gh-pages || $(createpages)
@@ -228,7 +235,7 @@ abort:
 	$(mkdir)
 
 ignore.config: ~/.config/git
-	-/bin/cp $(ms)/ignore.vim $</ignore
+	cat $(ms)/ignore.vim $(ms)/ignore.auth $</ignore
 
 README.md LICENSE.md:
 	touch $@

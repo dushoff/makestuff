@@ -1,4 +1,5 @@
 ## This seems to be for dushoff-centered stuff. Stuff from others that is meant to be hosted at ~/git is at ~/git/others.def
+## Deprecated in favor of dushoff_repos…
 
 makestuff += makestuff
 

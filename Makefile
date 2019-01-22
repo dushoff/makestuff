@@ -26,6 +26,9 @@ Sources += Makefile LICENSE README.md static.mk sub.mk todo.md
 ## Script to make exclude file
 Sources += ignore.pl
 
+## Inputs for .config ignore file
+Sources += ignore.auth ignore.vim
+
 Sources += os.mk unix.mk linux.mk windows.mk up.mk
 
 ######################################################################
@@ -107,7 +110,7 @@ Sources += cache.mk cache.md
 wrapRR = $(wildcard wrapR/*.R)
 wrapRpl = $(wildcard wrapR/*.pl)
 
-Sources += wrapR.mk $(wrapRR) $(wrapRpl)
+Sources += wrapR.md wrapR.mk $(wrapRR) $(wrapRpl)
 
 ## pdf manipulation
 Sources += wrapR/pdf.mk forms.def forms.mk wrapR/up.mk

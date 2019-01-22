@@ -7,8 +7,21 @@ PulliamLab += competenceFramework
 
 ######################################################################
 
+Ignore += shell
+shell:
+	mkdir $@
+
 ## Steve Bicko Cygu
-cygubicko += WDBC-Codes
+cygubicko += WDBC-Codes projects
+
+## Working?
+aphrc: shell/projects
+	ln -s shell/projects/$@ .
+shell/projects:
+	$(MAKE) shell
+	- $(MAKE) projects
+	mv projects shell
+links += aphrc
 
 ## Mike Li
 wzmli += rdc
@@ -19,7 +32,9 @@ wzmli += rabies_db_pipeline
 wzmli += rabies_report
 
 ## 2018 Jun 07 (Thu) rabies_R0 investigation (Scotland poster)
-wzmli += rabies_R0
+wzmli += rabies_R0 impSamp
+
+wzmli += rabies_cihr
 
 ## Mike's big Scotland idea about within-animal correlations
 wzmli += rabies_correlations
@@ -86,6 +101,12 @@ alberta_age = https://git.overleaf.com/8974471gkzqmdgbwvtj
 
 ######################################################################
 
+# Roswell bee sex, users guide
+
+mikeroswell = SexNetworks_git users_guide_clean
+
+######################################################################
+
 # alejo = PISKa_disease_modeling
 # roxy = SIHR-Age-Mixing-Analysis
 # dsw_github = networkSEIR
@@ -105,7 +126,4 @@ alberta_age = https://git.overleaf.com/8974471gkzqmdgbwvtj
 # dc = RESuDe_forecast epiforecast
 # fishforwish = fgc
 # elia_github = Sequels
-
-# roswell = SexNetworks_git
-
 
