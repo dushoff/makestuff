@@ -104,7 +104,7 @@ makestuff.all: %.all: %
 ## and all.time does not need to be part of rup
 ## This chokes because makestuff is sometimes in alldirs, should think about this
 ## Maybe patched 2018 Dec 19 (Wed), but not yet percolated
-all.exclude: makestuff.exclude $(alldirs:%=%.allexclude) exclude
+all.exclude: makestuff.exclude $(alldirs:%=%.allexclude) exclude ;
 makestuff.allexclude: ;
 %.allexclude:
 	cd $* && $(MAKE) all.exclude
