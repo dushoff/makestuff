@@ -110,7 +110,7 @@ Sources += cache.mk cache.md
 wrapRR = $(wildcard wrapR/*.R)
 wrapRpl = $(wildcard wrapR/*.pl)
 
-Sources += wrapR.mk $(wrapRR) $(wrapRpl)
+Sources += wrapR.md wrapR.mk $(wrapRR) $(wrapRpl)
 
 ## pdf manipulation
 Sources += wrapR/pdf.mk forms.def forms.mk wrapR/up.mk
