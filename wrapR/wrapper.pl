@@ -27,9 +27,6 @@ $dottarget =~ s/[^\/]*$/.$&/;
 say "# This file was generated automatically by wrapR.pl";
 say "# You probably don't want to edit it";
 
-my $savetext = "save.image(file=\"$dottarget.RData\")";
-my $save = $savetext;
-
 foreach(@ARGV){
 	s/([^\/]*)\.Rout$/.$1.RData/;
 	if ((/\.RData$/) or (/\.rda$/) or (/.R.env$/) or (/.Rdata/)){
@@ -59,7 +56,11 @@ if (@input){
 say "rtargetname <- \"$target\"";
 say "pdfname <- \"$dottarget.Rout.pdf\"";
 say "csvname <- \"$target.Rout.csv\"";
-say "rdsname <- \"$target.Rds\"";
+say "rdsname <- \"$dottarget.Rds\"";
+say "rdaname <- \"$dottarget.RData\"";
+
+my $savetext = "save.image(file=\"$dottarget.RData\")";
+my $save = $savetext;
 
 if (@envir){
 	print "\nenvir_list <- list(); ";
@@ -82,12 +83,11 @@ foreach my $f (@R){
 	my $text;
 	open (INF, $f);
 	while(<INF>){
+		next if /^#\s*#/;
 		if (/rdsave/){
 			$save = $_;
-			$save =~ s/^# *//;
-			if ($save =~/^#/) {$save=$savetext} else{
-				$save =~ s/rdsave\s*\(/save(file="$dottarget.RData", / or die("Problem with special statement $save");
-			}
+			$save =~ s/rdsave\s*\(/save(file="$dottarget.RData", /
+				or die("Problem with special statement $save");
 		}
 
 		if (/rdnosave/){
