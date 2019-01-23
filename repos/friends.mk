@@ -26,6 +26,10 @@ $(davidearn):
 	$(MAKE) target=$@ repo=$(github) user=davidearn clone
 repodirs += $(davidearn)
 
+$(bolker_github):
+	$(MAKE) target=$@ repo=$(github) user=bbolker clone
+REPODirs += $(bolker_github)
+
 $(fishforwish):
 	$(MAKE) target=$@ repo=$(github) user=fishforwish clone
 repodirs += $(fishforwish)
