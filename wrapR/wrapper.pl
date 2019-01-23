@@ -86,7 +86,7 @@ foreach my $f (@R){
 		next if /^#\s*#/;
 		if (/rdsave/){
 			$save = $_;
-			$save =~ s/rdsave\s*\(/save(file="$dottarget.RData", /
+			$save =~ s/^[ #]*rdsave\s*\(/save(file="$dottarget.RData", /
 				or die("Problem with special statement $save");
 		}
 
