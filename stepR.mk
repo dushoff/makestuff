@@ -22,6 +22,8 @@ rflags = --no-environ --no-site-file --no-init-file --no-restore
 	- $(MV) .RData $*.RData 
 	(perl -wf $(RRd)/pdfcheck.pl Rplots.pdf && $(MV) Rplots.pdf $*.Rout.pdf) || :
 
+stepthere = cd $(dir $<) && Rscript $(notdir $<) > $(notdir $<:.R=.Rout)
+
 %.RData: %.Rout ;
 %.Rout.pdf: %.Rout
 	@ls $@
