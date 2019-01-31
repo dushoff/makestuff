@@ -107,6 +107,10 @@ mikeroswell = SexNetworks_git users_guide_clean
 
 ######################################################################
 
+bolker_github = microbiome_stats upr_2016 HIV_LHS mosqsamp stat744
+
+######################################################################
+
 # alejo = PISKa_disease_modeling
 # roxy = SIHR-Age-Mixing-Analysis
 # dsw_github = networkSEIR
@@ -118,7 +122,6 @@ mikeroswell = SexNetworks_git users_guide_clean
 # worden_github = github-pages-sandbox 
 
 # walker_bitbucket = goaheadandrarefymicrobiomedata
-# bolker_github = microbiome_stats upr_2016 HIV_LHS mosqsamp stat744
 # blank = dhsease
 # pearsonca = alice bob carl karl
 # woodstkp_github = Woodstock-thesis
