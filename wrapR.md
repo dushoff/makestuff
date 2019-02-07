@@ -23,3 +23,12 @@ It can do this by default, and handle simple dependencies. But for complicated p
 * `.R` files are sourced in the order that they come from make (`$(run-r)` can often clarify this order
 * `.envir` files are put into an environment list
 * all other dependency files are put into an inputs list
+
+2) Creates names for output files based on the target (so that one script can be run in more than one part of the pipeline). These are:
+* rtargetname <target>
+* csvname <target>.Rout.csv
+* pdfname <dottarget>.Rout.pdf
+* rdsname <dottarget>.Rds
+* rdaname <dottarget>.RData
+
+The <dottarget> is an attempt to make a hidden file (requested by Mike Li). `wrapR.mk` is supposed to understand how to make these dependencies, and how to unhide them when necessary.

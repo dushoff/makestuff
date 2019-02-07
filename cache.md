@@ -5,7 +5,7 @@ It is meant to be agnostic about where you keep your cached files: typically eit
 We want to have rules for three types of make:
 
 * fast: the default
-* lazy: make if possible, but don't do anything marked as slow, unless it is necessary (buildcache)O
+* lazy: make if possible, but don't do anything marked as slow, unless it is necessary (buildcache)
 * full: make updated targets, pay no attention to what is marked as slow (rebuildcache)
 
 There's also a question about time stamps: it is hard to be sure that time stamps are consistent between platforms (or even within git, if we are pushing output files).
@@ -14,3 +14,4 @@ We want to mark targets as slow where we make them. We can do that by making the
 * This idea depends on assuming a flat directory structure for now
 * Later we could use some sort of directory logic (like hide uses)
 
+This whole project is a disaster, I think
