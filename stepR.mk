@@ -6,12 +6,17 @@ include $(RRd)/up.mk
 
 Makefile: $(rdeps)
 rscripts = $(wildcard *.R)
-rdeps = $(rscripts:.R=.rdeps)
+rmds = $(wildcard *.Rmd *.rmd)
+rdeps = $(rscripts:.R=.rdeps) $(rmds:%=%.rdeps)
 -include $(rdeps)
 
 Ignore += $(wildcard *.rdeps)
 .PRECIOUS: %.rdeps
 %.rdeps: %.R $(ms)/rstep.pl
+	$(PUSH)
+
+## For Rmd/rmd (hope it is secondary to the one above)
+%.rdeps: % $(ms)/rstep.pl
 	$(PUSH)
 
 Ignore += $(wildcard *.RData *.Rlog *.Rout *.Rout.pdf)
