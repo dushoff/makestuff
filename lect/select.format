@@ -31,10 +31,8 @@ DEFHEAD NULLSLIDE
 bank: HEAD %%
 
 ## These are weird; in future, only keep FIRST, SECOND etc. Rest can just be DEFHEADs
-FIRST NULLSLIDE
-bank: HEAD FIRST %!
 
-FIRST18 NULLSLIDE
+FIRST NULLSLIDE
 bank: HEAD FIRST %!
 midterm1: %!
 
@@ -45,23 +43,11 @@ midterm2: %!
 EXAM NULLSLIDE
 bank: HEAD EXAM %!
 
-EXAM18 NULLSLIDE
-bank: HEAD EXAM %!
-final: %!
-
+## Deprecate
 # Original Alphas used for midterm1 2016
-
 # Original Betas used for midterm2 2016
-
 # Original Gamma used for final 2016
-
 # Delta used for midterm1 2017
-
-# S17 Second midterm 2017 (S17a, alternative questions for an injured kid)
-# Future: Use FIRST, SECOND and EXAM
-# Append suffixes before editing for next year
-# Don't use F (final or first???)
-# 
 
 ## Questions with problems, maybe delete?
 Zero NULLSLIDE

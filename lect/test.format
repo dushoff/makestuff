@@ -84,6 +84,9 @@ rub: \subsection*{%%}
 AFIG %!
 key rub: ^FIG %%
 
+QPAGE %!
+test: \clearpage
+
 ASPACE \vspace{%%}
 key rub: %!
 
@@ -99,7 +102,9 @@ VADJ \vspace{%}
 SANS \vspace{%}%!
 key rub: \vspace{1.5ex}\eat{%}{\sf %%}
 
-STANS ^SANS 5ex %%
+## Make this shorter for 1M? Using local format file ltest.fmt?
+## ltest does not seem to exist for 3SS. yet
+STANS ^SANS 8ex %%
 
 ANS %!
 key rub: \vspace{1.5ex}{\sf %%}
