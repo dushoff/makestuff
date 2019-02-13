@@ -1,6 +1,12 @@
-## -S is “smart”
+## Thinking about pandoc 2 and less-random rules 
+## 2019 Feb 12 (Tue)
+
+## -S for “smart” quotes (those quotes were a failed message to myself)
 %.html: %.md
-	pandoc -s -S -o $@ $<
+	pandoc -s -o $@ $<
+
+%.gh.html: %.md
+	pandoc -s -f gfm -o $@ $<
 
 ## Not tested; may cause trouble with mathjax? Just shut up and test it.
 %.emb.html: %.md
