@@ -562,6 +562,14 @@ Ignore += *.oldfile *.olddiff
 
 ######################################################################
 
+## Blame
+
+Ignore += *.blame
+%.blame: %
+	git blame $* > $@
+
+######################################################################
+
 ## Git config (just to remind myself)
 
 store_all:
