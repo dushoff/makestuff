@@ -65,6 +65,9 @@ Ignore += *.ld.tex
 %.pd: %
 	$(CP) $< $(pushdir)
 
+%.pdown: %
+	$(CP) $< ~/Downloads/
+
 %.pushpush: %
 	$(CP) $< $(pushdir)
 	cd $(pushdir) && make remotesync

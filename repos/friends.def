@@ -7,8 +7,21 @@ PulliamLab += competenceFramework
 
 ######################################################################
 
+Ignore += shell
+shell:
+	mkdir $@
+
 ## Steve Bicko Cygu
-cygubicko += WDBC-Codes
+cygubicko += WDBC-Codes projects
+
+## Working?
+aphrc: shell/projects
+	ln -s shell/projects/$@ .
+shell/projects:
+	$(MAKE) shell
+	- $(MAKE) projects
+	mv projects shell
+links += aphrc
 
 ## Mike Li
 wzmli += rdc
@@ -20,6 +33,12 @@ wzmli += rabies_report
 
 ## 2018 Jun 07 (Thu) rabies_R0 investigation (Scotland poster)
 wzmli += rabies_R0 impSamp
+
+## Big grant. Get money!
+wzmli += rabies_cihr
+
+## Last chapter
+wzmli += persistence
 
 ## Mike's big Scotland idea about within-animal correlations
 wzmli += rabies_correlations
@@ -92,6 +111,10 @@ mikeroswell = SexNetworks_git users_guide_clean
 
 ######################################################################
 
+bolker_github = microbiome_stats upr_2016 HIV_LHS mosqsamp stat744
+
+######################################################################
+
 # alejo = PISKa_disease_modeling
 # roxy = SIHR-Age-Mixing-Analysis
 # dsw_github = networkSEIR
@@ -103,7 +126,6 @@ mikeroswell = SexNetworks_git users_guide_clean
 # worden_github = github-pages-sandbox 
 
 # walker_bitbucket = goaheadandrarefymicrobiomedata
-# bolker_github = microbiome_stats upr_2016 HIV_LHS mosqsamp stat744
 # blank = dhsease
 # pearsonca = alice bob carl karl
 # woodstkp_github = Woodstock-thesis
