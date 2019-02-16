@@ -49,8 +49,9 @@ dushoff_github += $(dushoff_other)
 
 ## 2018 Jun 17 (Sun)
 dushoff_bitbucket += Academic_CV New_CV Correspondence qmee_private nserc
-## git clone https://dushoff@bitbucket.org/dushoff/qmee_private.git
-## git clone 	 https://dushoff@bitbucket.org/dushoff/nserc.git
+
+## FIDO never took off, but has a link to the gdrive. 
+## 2018 application still missing
 
 dushoff_bitbucket += FIDO HIV_Project 
 
