@@ -37,10 +37,14 @@
 %.tex: %.Rnw
 	Rscript -e "library(\"knitr\"); knit(\"$<\")"
 
+## Old and busted
 %-knitr.Rnw: %.Rnw
 	Rscript -e "library(\"knitr\"); Sweave2knitr(\"nn_presentation.Rnw\")"
 
 %.md: %.rmd
+	Rscript -e 'library("rmarkdown"); render("$<", output_format="md_document")'
+
+%.knit.md: %.rmd
 	Rscript -e "library(\"knitr\"); knit(\"$<\")"
 
 %.th.tex: %.md
