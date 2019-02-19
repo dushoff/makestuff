@@ -24,6 +24,9 @@
 %.html: %.wikitext
 	pandoc -f mediawiki -o $@ $<
 
+%.md: %.wikitext
+	pandoc -f mediawiki -o $@ $<
+
 %.html: %.csv
 	csv2html -o $@ $<
 
