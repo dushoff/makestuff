@@ -6,7 +6,7 @@ include $(RRd)/up.mk
 
 Makefile: $(rdeps)
 rscripts = $(wildcard *.R)
-rmds = $(wildcard *.Rmd *.rmd)
+rmds = $(wildcard *.rmd)
 rdeps = $(rscripts:.R=.rdeps) $(rmds:%=%.rdeps)
 -include $(rdeps)
 
@@ -15,8 +15,8 @@ Ignore += $(wildcard *.rdeps)
 %.rdeps: %.R $(ms)/rstep.pl
 	$(PUSH)
 
-## For Rmd/rmd (hope it is secondary to the one above)
-%.rdeps: % $(ms)/rstep.pl
+## For rmd (this rule should be secondary to the one above)
+%.rdeps: % $(ms)/rmdstep.pl
 	$(PUSH)
 
 Ignore += $(wildcard *.RData *.Rlog *.Rout *.Rout.pdf)

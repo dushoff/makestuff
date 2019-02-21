@@ -50,7 +50,7 @@ Sources += git.mk git.def git.md repos.def repos.mk init.mk modules.mk drops.mk 
 Sources += visual.mk compare.mk
 
 Sources += stepR.mk stepR.md
-Sources += rstep.pl
+Sources += rstep.pl rmdstep.pl
 
 Sources += resources.mk
 

@@ -4,6 +4,9 @@ stepR is meant to help gnu make co-ordinate R projects that were not written for
 
 stepR takes a pretty aggressive approach towards making and implementing make rules, and towards making assumptions about default targets.
 
+R files
+=======
+
 .rdeps files are made automatically for each R file, and are automatically included as part of the make flow. 
 * stepR does not process code following the magic word noStep
 
@@ -25,7 +28,8 @@ to use stepR, you should `include` makestuff/perl.def and makestuff/stepR.mk in 
 
 If you want stepR without makestuff, you can copy makestuff/stepR.mk and makestuff/rstep.pl and then either copy makestuff/perl.def or make your own perl rule.
 
-----------------------------------------------------------------------
+Rmd files
+=========
 
-TODO
+These make different products (.html or .pdf), but we want them to follow the same logic. Just starting 2019 Feb 21 (Thu)
 
