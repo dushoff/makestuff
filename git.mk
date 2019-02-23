@@ -57,11 +57,9 @@ commit.time: $(Sources)
 	$(git_check) || (perl -ne 'print unless /#/' $@ | git commit -F -)
 	date >> $@
 
-## This logic could probably be integrated better with commit.time
-## Trying something … last line of recipe
 commit.default: $(Sources)
 	git add -f $^ 
-	-git commit -m "Pushed automatically"
+	-git commit -m "commit.default"
 	touch $@
 	touch commit.time
 
