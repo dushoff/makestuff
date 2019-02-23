@@ -7,6 +7,7 @@ $(1)/%: $(1) $(1)/Makefile
 	$(maketouch)
 endef
 
+## This is circular; what would happen if we used a wildcard scope before the percent rule?
 define coldmake
 $(1)/%.mk: ;
 $(1)/%: $(1)/Makefile 

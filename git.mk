@@ -71,7 +71,8 @@ pull: commit.time
 
 ######################################################################
 
-## Not part of all.time because updated in parallel
+## parallel directories
+## Not part of all.time by default because usually updated in parallel
 $(pardirs):
 	cd .. && $(MAKE) $@
 	ls ../$@ > $(null) && $(LNF) ../$@ .
