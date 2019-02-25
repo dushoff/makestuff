@@ -79,6 +79,8 @@ mac-theobio += HIV_treatment_Africa
 ## Emanuel
 mac-theobio += shims_age_mixing
 
+mac-theobio += ari_submission
+
 ######################################################################
 
 Outbreak-analysis += madagascar_tb_hiv
