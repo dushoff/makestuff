@@ -124,6 +124,14 @@ Sources += autorefs.mk $(wildcard autorefs/*.pl) autorefs/Makefile autorefs.md
 
 ######################################################################
 
+## Marginal .mk
+
+## CIHR application tools
+Sources += cihrpaste.mk $(wildcard cihrScripts/*.*)
+
+######################################################################
+
+
 ## Missing image tags
 Sources += missing.pdf personal.pdf
 missing.pdf:
