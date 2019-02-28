@@ -1,7 +1,7 @@
 ## Code from HIV project pilot (lots of html pasting)
 
 paste = makestuff/cihrScripts
-Ignore += $(wildcard *.html *.mkd)
+Ignore += $(wildcard *.html *.mkd *.mkd.log)
 
 %.auto.html: $(paste)/simple.css %.refs.mkd
 	$(MAKE) $*.count
