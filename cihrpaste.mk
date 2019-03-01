@@ -30,7 +30,7 @@ Sources += $(wildcard *.ref)
 
 Ignore += *.count
 %.count: %.out $(paste)/count.pl
-	$(PUSH)
+	$(PUSH) || Breaks if perl.def is missing!
 	cat $@
 
 currcount:
