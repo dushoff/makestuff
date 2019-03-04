@@ -49,6 +49,7 @@ dushoff_github += $(dushoff_other)
 
 ## 2018 Jun 17 (Sun)
 dushoff_bitbucket += Academic_CV New_CV Correspondence qmee_private nserc
+dushoff_github += bio
 
 ## FIDO never took off, but has a link to the gdrive. 
 ## 2018 application still missing
