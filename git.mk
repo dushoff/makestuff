@@ -556,6 +556,7 @@ Ignore += *.oldfile *.olddiff
 	ls $@
 
 ## Chaining trick to always remake
+## Not clear it works
 %.olddiff: %.old.diff ;
 %.old.diff: %
 	-$(DIFF) $* $*.*.oldfile > $*.olddiff
