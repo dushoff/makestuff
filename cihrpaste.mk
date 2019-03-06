@@ -69,3 +69,6 @@ currcount:
 %.out: %.refs.mkd
 	pandoc -t plain -o $@ $<
 
+%.txt: %
+	pandoc -t plain -o $@ $<
+
