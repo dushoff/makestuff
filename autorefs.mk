@@ -28,3 +28,6 @@ Ignore += *.mdmk
 %.md %.mdmk: %.rmu
 	$(MAKE) -f $(autorefs)/Makefile $@
 
+## Corrections (via autorefs/Makefile)
+%.corr:
+	$(MAKE) -f $(autorefs)/Makefile $@
