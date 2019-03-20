@@ -24,3 +24,4 @@ We want to mark targets as slow where we make them. We can do that by making the
 * This idea depends on assuming a flat directory structure for now
 * Later we could use some sort of directory logic (like hide uses)
 
+This whole project is a disaster, I think

@@ -50,7 +50,7 @@ Sources += git.mk git.def git.md repos.def repos.mk init.mk modules.mk drops.mk 
 Sources += visual.mk compare.mk
 
 Sources += stepR.mk stepR.md
-Sources += rstep.pl
+Sources += rstep.pl rmdstep.pl
 
 Sources += resources.mk
 
@@ -123,6 +123,14 @@ Sources += masterR.mk masterR.pl masterRfiles.pl masterR.md
 Sources += autorefs.mk $(wildcard autorefs/*.pl) autorefs/Makefile autorefs.md
 
 ######################################################################
+
+## Marginal .mk
+
+## CIHR application tools
+Sources += cihrpaste.mk $(wildcard cihrScripts/*.*)
+
+######################################################################
+
 
 ## Missing image tags
 Sources += missing.pdf personal.pdf

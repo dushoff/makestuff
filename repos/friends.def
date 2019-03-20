@@ -34,7 +34,11 @@ wzmli += rabies_report
 ## 2018 Jun 07 (Thu) rabies_R0 investigation (Scotland poster)
 wzmli += rabies_R0 impSamp
 
+## Big grant. Get money!
 wzmli += rabies_cihr
+
+## Last chapter
+wzmli += persistence
 
 ## Mike's big Scotland idea about within-animal correlations
 wzmli += rabies_correlations
@@ -80,7 +84,7 @@ theobio += QMEE Lab_meeting smb-mathepi
 ######################################################################
 
 ## Daniel Sang Woo Park (no hyphen)
-parksw3 += networkSEIR contact_trace bayes_antigen
+parksw3 += networkSEIR contact_trace bayes_antigen latentGeneration
 
 ######################################################################
 

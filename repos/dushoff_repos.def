@@ -49,11 +49,15 @@ dushoff_github += $(dushoff_other)
 
 ## 2018 Jun 17 (Sun)
 dushoff_bitbucket += Academic_CV New_CV Correspondence qmee_private nserc
-## git clone https://dushoff@bitbucket.org/dushoff/qmee_private.git
-## git clone 	 https://dushoff@bitbucket.org/dushoff/nserc.git
+dushoff_github += bio
+
+## FIDO never took off, but has a link to the gdrive. 
+## 2018 application still missing
+
+dushoff_bitbucket += FIDO HIV_Project 
 
 bitbucket_overridden  += talks
-bitbucket_other  += nserc tutorial Vaccination_analysis TZ_pediatric_HIV zebra_movement HIV_Project taxes Sandbox djd tick_math FIDO 1m_2017
+bitbucket_other  += nserc tutorial Vaccination_analysis TZ_pediatric_HIV zebra_movement taxes Sandbox djd tick_math 1m_2017
 
 ######################################################################
 
@@ -75,6 +79,8 @@ mac-theobio += HIV_treatment_Africa
 
 ## Emanuel
 mac-theobio += shims_age_mixing
+
+mac-theobio += ari_submission
 
 ######################################################################
 

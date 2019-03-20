@@ -1,6 +1,12 @@
-## -S is “smart”
+## Thinking about pandoc 2 and less-random rules 
+## 2019 Feb 12 (Tue)
+
+## -S for “smart” quotes (those quotes were a failed message to myself)
 %.html: %.md
-	pandoc -s -S -o $@ $<
+	pandoc -s -o $@ $<
+
+%.gh.html: %.md
+	pandoc -s -f gfm -o $@ $<
 
 ## Not tested; may cause trouble with mathjax? Just shut up and test it.
 %.emb.html: %.md
@@ -18,6 +24,9 @@
 %.html: %.wikitext
 	pandoc -f mediawiki -o $@ $<
 
+%.md: %.wikitext
+	pandoc -f mediawiki -o $@ $<
+
 %.html: %.csv
 	csv2html -o $@ $<
 
@@ -31,10 +40,14 @@
 %.tex: %.Rnw
 	Rscript -e "library(\"knitr\"); knit(\"$<\")"
 
+## Old and busted
 %-knitr.Rnw: %.Rnw
 	Rscript -e "library(\"knitr\"); Sweave2knitr(\"nn_presentation.Rnw\")"
 
 %.md: %.rmd
+	Rscript -e 'library("rmarkdown"); render("$<", output_format="md_document")'
+
+%.knit.md: %.rmd
 	Rscript -e "library(\"knitr\"); knit(\"$<\")"
 
 %.th.tex: %.md
