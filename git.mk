@@ -23,7 +23,7 @@ git_dir = $(shell git rev-parse --git-dir)
 
 exclude: $(git_dir)/info/exclude ;
 
-$(git_dir)/info/exclude: $(Sources)
+$(git_dir)/info/exclude: $(Sources) Makefile
 	perl -wf $(ms)/ignore.pl > $@
 
 export Ignore += local.mk target.mk make.log go.log
@@ -85,6 +85,10 @@ up.time: commit.time
 ifndef alldirs
 alldirs = $(mdirs) $(clonedirs) $(subdirs) makestuff
 endif
+
+$(subdirs):
+	$(mkdir)
+	$(CP) $(ms)/subdir.mk $@/Makefile
 
 ## 2018 Nov 07 (Wed). Trying to make these rules finish better
 all.time: $(alldirs:%=%.all) exclude up.time

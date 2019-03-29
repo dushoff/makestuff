@@ -1,6 +1,16 @@
-newcache is designed to replace cache (see makestuff/cache.md and makestuff/cache.mk)
 
-It is meant to be agnostic about where you keep your cached files: typically either in a repo subdirectory or in a Drop folder of some kind)
+2019 Mar 13 (Wed)
+=================
+
+Starting over, and I basically have no principles I agree with.
+
+We want to mark steps as slow, and not do slow steps by default.
+
+----------------------------------------------------------------------
+
+There was an older thing. It's hiding in the history. I'm not convinced I've done anything good so far. 
+
+----------------------------------------------------------------------
 
 We want to have rules for three types of make:
 
