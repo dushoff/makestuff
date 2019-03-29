@@ -93,7 +93,7 @@ parksw3 += networkSEIR contact_trace bayes_antigen latentGeneration
 ######################################################################
 
 ## Champredon 
-champredon += ILI-ER link-re-erlang
+champredon += ILI-ER link-re-erlang FoLaBa
 
 ######################################################################
 
