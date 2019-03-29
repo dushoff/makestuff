@@ -22,6 +22,7 @@ Ignore += $(md:md=html)
 # Base files
 
 Sources += Makefile LICENSE README.md static.mk sub.mk todo.md
+Sources += subdir.mk
 
 ## Script to make exclude file
 Sources += ignore.pl
