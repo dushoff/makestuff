@@ -104,5 +104,7 @@ Sources += $(wildcard *.corr)
 ## it also has a default tag created from author and date
 ## as of 2016 the script attempts to "fill" using second choices
 .PRECIOUS: bibdir/%.mdl
-bibdir/%.mdl: bibdir/%.med $(autorefs)/mm.pl
+bibdir/%.mdl: bibdir/%.med $(autorefs)/mm.pl *.corr
 	$(CP) $*.corr $@ || $(PUSH)
+
+-include $(ms)/os.mk

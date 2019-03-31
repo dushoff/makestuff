@@ -23,7 +23,7 @@ git_dir = $(shell git rev-parse --git-dir)
 
 exclude: $(git_dir)/info/exclude ;
 
-$(git_dir)/info/exclude: $(Sources)
+$(git_dir)/info/exclude: $(Sources) Makefile
 	perl -wf $(ms)/ignore.pl > $@
 
 export Ignore += local.mk target.mk make.log go.log
@@ -57,11 +57,9 @@ commit.time: $(Sources)
 	$(git_check) || (perl -ne 'print unless /#/' $@ | git commit -F -)
 	date >> $@
 
-## This logic could probably be integrated better with commit.time
-## Trying something … last line of recipe
 commit.default: $(Sources)
 	git add -f $^ 
-	-git commit -m "Pushed automatically"
+	-git commit -m "commit.default"
 	touch $@
 	touch commit.time
 
@@ -71,7 +69,8 @@ pull: commit.time
 
 ######################################################################
 
-## Not part of all.time because updated in parallel
+## parallel directories
+## Not part of all.time by default because usually updated in parallel
 $(pardirs):
 	cd .. && $(MAKE) $@
 	ls ../$@ > $(null) && $(LNF) ../$@ .
@@ -86,6 +85,10 @@ up.time: commit.time
 ifndef alldirs
 alldirs = $(mdirs) $(clonedirs) $(subdirs) makestuff
 endif
+
+$(subdirs):
+	$(mkdir)
+	$(CP) $(ms)/subdir.mk $@/Makefile
 
 ## 2018 Nov 07 (Wed). Trying to make these rules finish better
 all.time: $(alldirs:%=%.all) exclude up.time
@@ -104,8 +107,6 @@ makestuff.all: %.all: %
 
 ## Bridge rules maybe? Eventually this should be part of all.time
 ## and all.time does not need to be part of rup
-## This chokes because makestuff is sometimes in alldirs, should think about this
-## Maybe patched 2018 Dec 19 (Wed), but not yet percolated
 all.exclude: makestuff.exclude $(alldirs:%=%.allexclude) exclude ;
 makestuff.allexclude: ;
 %.allexclude:
@@ -557,6 +558,7 @@ Ignore += *.oldfile *.olddiff
 	ls $@
 
 ## Chaining trick to always remake
+## Not clear it works
 %.olddiff: %.old.diff ;
 %.old.diff: %
 	-$(DIFF) $* $*.*.oldfile > $*.olddiff

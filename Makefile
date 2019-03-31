@@ -22,6 +22,7 @@ Ignore += $(md:md=html)
 # Base files
 
 Sources += Makefile LICENSE README.md static.mk sub.mk todo.md
+Sources += subdir.mk
 
 ## Script to make exclude file
 Sources += ignore.pl
@@ -123,6 +124,14 @@ Sources += masterR.mk masterR.pl masterRfiles.pl masterR.md
 Sources += autorefs.mk $(wildcard autorefs/*.pl) autorefs/Makefile autorefs.md
 
 ######################################################################
+
+## Marginal .mk
+
+## CIHR application tools
+Sources += cihrpaste.mk $(wildcard cihrScripts/*.*)
+
+######################################################################
+
 
 ## Missing image tags
 Sources += missing.pdf personal.pdf

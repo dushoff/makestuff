@@ -28,3 +28,7 @@ Ignore += *.mdmk
 %.md %.mdmk: %.rmu
 	$(MAKE) -f $(autorefs)/Makefile $@
 
+## Corrections (via autorefs/Makefile)
+Sources += $(wildcard *.corr)
+%.corr:
+	$(MAKE) -f $(autorefs)/Makefile $@
