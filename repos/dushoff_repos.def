@@ -10,7 +10,7 @@ dushoff_github += creation
 
 ## Less-temporary Sandbox stuff
 Sandbox: clonecommand=subclone
-dushoff_github += Sandbox
+dushoff_github += Sandbox stuff
 
 ## A repo-repo (still good? simplify?) for educational talks
 dushoff_github += Workshops

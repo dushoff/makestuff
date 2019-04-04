@@ -86,6 +86,10 @@ ifndef alldirs
 alldirs = $(mdirs) $(clonedirs) $(subdirs) makestuff
 endif
 
+$(subdirs):
+	$(mkdir)
+	$(CP) $(ms)/subdir.mk $@/Makefile
+
 ## 2018 Nov 07 (Wed). Trying to make these rules finish better
 all.time: $(alldirs:%=%.all) exclude up.time
 	touch $@
@@ -405,8 +409,6 @@ upstream:
 rum: rupdate rmaster
 ruc: rupdate rcheck
 rumfetch: rupdate rfetch rmaster
-
-## Is this a candidate for C-F3?
 
 rupdate:
 	git submodule update --init --recursive
