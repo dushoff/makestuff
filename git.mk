@@ -410,8 +410,6 @@ rum: rupdate rmaster
 ruc: rupdate rcheck
 rumfetch: rupdate rfetch rmaster
 
-## Is this a candidate for C-F3?
-
 rupdate:
 	git submodule update --init --recursive
 
