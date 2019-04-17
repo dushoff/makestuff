@@ -8,6 +8,8 @@
 ## Only for testing setup; this should be completely destroy-able
 dushoff_github += creation
 
+dushoff_github += branches
+
 ## Less-temporary Sandbox stuff
 Sandbox: clonecommand=subclone
 dushoff_github += Sandbox stuff
