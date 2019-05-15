@@ -4,6 +4,10 @@ RRd = $(ms)/wrapR
 include $(RRd)/pdf.mk
 include $(RRd)/up.mk
 
+## Terrible: use .rmd as intermediate
+%.rmd: %.Rmd
+	$(copy)
+
 Makefile: $(rdeps)
 rscripts = $(wildcard *.R)
 rmds = $(wildcard *.rmd)
