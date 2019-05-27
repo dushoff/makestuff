@@ -16,7 +16,7 @@ cygubicko += WDBC-Codes projects
 
 ## Working?
 aphrc: shell/projects
-	ln -s shell/projects/$@ .
+	ln -fs shell/projects/$@ .
 shell/projects:
 	$(MAKE) shell
 	- $(MAKE) projects

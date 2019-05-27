@@ -84,6 +84,8 @@ mac-theobio += shims_age_mixing
 
 mac-theobio += ari_submission
 
+mac-theobio += GOS_NMF
+
 ######################################################################
 
 Outbreak-analysis += madagascar_tb_hiv
