@@ -59,6 +59,9 @@ ICI3D += MMED MMEDparticipants ICI3D.github.io coreFaculty RTutorials
 
 ICI3D += Malaria malariaImmunity
 
+ICI3D += ici3d-pkg
+
+
 ######################################################################
 
 ## David Earn
