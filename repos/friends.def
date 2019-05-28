@@ -61,6 +61,9 @@ ICI3D += Malaria malariaImmunity
 
 ICI3D += ici3d-pkg
 
+ICI3D += datasets
+
+sempa += MMED2019Bugs
 
 ######################################################################
 
