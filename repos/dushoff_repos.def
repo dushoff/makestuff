@@ -71,7 +71,7 @@ Bio3SS += 3SS
 
 ######################################################################
 
-mac-theobio += mac-theobio.github.io
+mac-theobio += mac-theobio.github.io Disease_data
 
 ## Machine learning course
 mac-theobio += ml_medicine
