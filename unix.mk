@@ -90,3 +90,6 @@ killserve:
 ## Convenience
 %.tod: %
 	$(CP) $< ~/Downloads
+
+%.var:
+	@echo $($*)
