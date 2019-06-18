@@ -12,7 +12,7 @@ shell:
 	mkdir $@
 
 ## Steve Bicko Cygu
-cygubicko += WDBC-Codes projects
+cygubicko += WDBC-Codes projects funs wash
 
 ## Working?
 aphrc: shell/projects
