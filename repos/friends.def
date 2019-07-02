@@ -7,8 +7,21 @@ PulliamLab += competenceFramework
 
 ######################################################################
 
+Ignore += shell
+shell:
+	mkdir $@
+
 ## Steve Bicko Cygu
-cygubicko += WDBC-Codes
+cygubicko += WDBC-Codes projects funs wash
+
+## Working?
+aphrc: shell/projects
+	ln -fs shell/projects/$@ .
+shell/projects:
+	$(MAKE) shell
+	- $(MAKE) projects
+	mv projects shell
+links += aphrc
 
 ## Mike Li
 wzmli += rdc
@@ -19,7 +32,13 @@ wzmli += rabies_db_pipeline
 wzmli += rabies_report
 
 ## 2018 Jun 07 (Thu) rabies_R0 investigation (Scotland poster)
-wzmli += rabies_R0
+wzmli += rabies_R0 impSamp
+
+## Big grant. Get money!
+wzmli += rabies_cihr
+
+## Last chapter
+wzmli += persistence
 
 ## Mike's big Scotland idea about within-animal correlations
 wzmli += rabies_correlations
@@ -39,6 +58,15 @@ wzmli += ImpSamp
 ICI3D += MMED MMEDparticipants ICI3D.github.io coreFaculty RTutorials
 
 ICI3D += Malaria malariaImmunity
+
+ICI3D += ici3d-pkg lectureCode
+
+ICI3D += datasets
+
+## MMED 2019
+ICI3D += rubellaSA cancerScreening
+
+SACEMA += MMED2019Bugs
 
 ######################################################################
 
@@ -65,7 +93,7 @@ theobio += QMEE Lab_meeting smb-mathepi
 ######################################################################
 
 ## Daniel Sang Woo Park (no hyphen)
-parksw3 += networkSEIR contact_trace bayes_antigen
+parksw3 += networkSEIR contact_trace bayes_antigen latentGeneration
 
 ######################################################################
 
@@ -74,7 +102,7 @@ parksw3 += networkSEIR contact_trace bayes_antigen
 ######################################################################
 
 ## Champredon 
-champredon += ILI-ER link-re-erlang
+champredon += ILI-ER link-re-erlang FoLaBa
 
 ######################################################################
 
@@ -83,6 +111,16 @@ champredon += ILI-ER link-re-erlang
 ## Overleaf
 
 alberta_age = https://git.overleaf.com/8974471gkzqmdgbwvtj
+
+######################################################################
+
+# Roswell bee sex, users guide
+
+mikeroswell = SexNetworks_git users_guide_clean
+
+######################################################################
+
+bolker_github = microbiome_stats upr_2016 HIV_LHS mosqsamp stat744
 
 ######################################################################
 
@@ -97,7 +135,6 @@ alberta_age = https://git.overleaf.com/8974471gkzqmdgbwvtj
 # worden_github = github-pages-sandbox 
 
 # walker_bitbucket = goaheadandrarefymicrobiomedata
-# bolker_github = microbiome_stats upr_2016 HIV_LHS mosqsamp stat744
 # blank = dhsease
 # pearsonca = alice bob carl karl
 # woodstkp_github = Woodstock-thesis
@@ -105,7 +142,4 @@ alberta_age = https://git.overleaf.com/8974471gkzqmdgbwvtj
 # dc = RESuDe_forecast epiforecast
 # fishforwish = fgc
 # elia_github = Sequels
-
-# roswell = SexNetworks_git
-
 

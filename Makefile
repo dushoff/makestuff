@@ -22,6 +22,7 @@ Ignore += $(md:md=html)
 # Base files
 
 Sources += Makefile LICENSE README.md static.mk sub.mk todo.md
+Sources += subdir.mk
 
 ## Script to make exclude file
 Sources += ignore.pl
@@ -50,7 +51,7 @@ Sources += git.mk git.def git.md repos.def repos.mk init.mk modules.mk drops.mk 
 Sources += visual.mk compare.mk
 
 Sources += stepR.mk stepR.md
-Sources += rstep.pl
+Sources += rstep.pl rmdstep.pl
 
 Sources += resources.mk
 
@@ -110,7 +111,7 @@ Sources += cache.mk cache.md
 wrapRR = $(wildcard wrapR/*.R)
 wrapRpl = $(wildcard wrapR/*.pl)
 
-Sources += wrapR.mk $(wrapRR) $(wrapRpl)
+Sources += wrapR.md wrapR.mk $(wrapRR) $(wrapRpl)
 
 ## pdf manipulation
 Sources += wrapR/pdf.mk forms.def forms.mk wrapR/up.mk
@@ -123,6 +124,14 @@ Sources += masterR.mk masterR.pl masterRfiles.pl masterR.md
 Sources += autorefs.mk $(wildcard autorefs/*.pl) autorefs/Makefile autorefs.md
 
 ######################################################################
+
+## Marginal .mk
+
+## CIHR application tools
+Sources += cihrpaste.mk $(wildcard cihrScripts/*.*)
+
+######################################################################
+
 
 ## Missing image tags
 Sources += missing.pdf personal.pdf

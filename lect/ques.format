@@ -41,6 +41,9 @@ key rub: \vspace{1.5ex}{\sf %%}
 RUB %!
 rub: \vspace{1.5ex}{\noindent\textbf{\small %%}}
 
+## So far RUB info only goes on test keys, not HW keys
+MARK ^RUB Mark? %%
+
 SUPPRESS %!
 
 # Note

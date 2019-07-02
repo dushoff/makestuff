@@ -1,6 +1,5 @@
-cachefiles: 
-	$(MAKE) cache
-	- $(CPR) cache/* cache/.?*.* .
+Makefile: cache
+cachefiles =  $(CPR) cache/* cache/.?*.* .
 
 ## Default is to never make anything in the cache implicitly
 
@@ -14,15 +13,18 @@ cachefiles:
 	$(MAKE) rebuildcache=TRUE $*
 
 ifdef rebuildcache
-$(foreach target,$(notdir $(wildcard cache/*)),$(eval $(target): cache/$(target); $(MAKE) cachefiles))
+$(foreach target,$(notdir $(wildcard cache/*)),$(eval $(target): cache/$(target); - $(cachefiles)))
 else ifdef buildcache
+## What the hell does this do?
 %::
-	$(MAKE) cache/$*
-	$(MAKE) cachefiles
+	- $(cachefiles)
 else
 all current target: ;
+## This loops if there are any optional files (e.g., local.mk is requested not present)
+## How about now? 2019 Jan 15 (Tue)
+## Disaster to use touch 2019 Jan 27 (Sun)
 %:
-	$(MAKE) cachefiles
+	- $(cachefiles)
 	ls $@
 endif
 

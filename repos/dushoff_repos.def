@@ -8,9 +8,11 @@
 ## Only for testing setup; this should be completely destroy-able
 dushoff_github += creation
 
+dushoff_github += branches
+
 ## Less-temporary Sandbox stuff
 Sandbox: clonecommand=subclone
-dushoff_github += Sandbox
+dushoff_github += Sandbox stuff
 
 ## A repo-repo (still good? simplify?) for educational talks
 dushoff_github += Workshops
@@ -32,7 +34,7 @@ dushoff_github += Generation_talks disease_model_talks statistics_talks
 ## 
 dushoff_github += generation_links Generation_distributions
 
-dushoff_github += notebook scratch
+dushoff_github += notebook scratch linux_config
 
 ## Directory containers (new 2018 Aug 29 (Wed)); just for org
 dushoff_github += 1M talks 708
@@ -49,11 +51,15 @@ dushoff_github += $(dushoff_other)
 
 ## 2018 Jun 17 (Sun)
 dushoff_bitbucket += Academic_CV New_CV Correspondence qmee_private nserc
-## git clone https://dushoff@bitbucket.org/dushoff/qmee_private.git
-## git clone 	 https://dushoff@bitbucket.org/dushoff/nserc.git
+dushoff_github += bio
+
+## FIDO never took off, but has a link to the gdrive. 
+## 2018 application still missing
+
+dushoff_bitbucket += FIDO HIV_Project 
 
 bitbucket_overridden  += talks
-bitbucket_other  += nserc tutorial Vaccination_analysis TZ_pediatric_HIV zebra_movement HIV_Project taxes Sandbox djd tick_math FIDO 1m_2017
+bitbucket_other  += nserc tutorial Vaccination_analysis TZ_pediatric_HIV zebra_movement taxes Sandbox djd tick_math 1m_2017
 
 ######################################################################
 
@@ -65,7 +71,7 @@ Bio3SS += 3SS
 
 ######################################################################
 
-mac-theobio += mac-theobio.github.io
+mac-theobio += mac-theobio.github.io Disease_data
 
 ## Machine learning course
 mac-theobio += ml_medicine
@@ -75,6 +81,10 @@ mac-theobio += HIV_treatment_Africa
 
 ## Emanuel
 mac-theobio += shims_age_mixing
+
+mac-theobio += ari_submission
+
+mac-theobio += GOS_NMF
 
 ######################################################################
 

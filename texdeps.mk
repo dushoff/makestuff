@@ -10,11 +10,11 @@ endif
 
 %.pdf: %.tex .texdeps/%.out
 	$(MAKE) .texdeps/$*.mk
-	-$(MAKE) $*.deps ## Try the dependencies, but try to make a pdf anyway
+	-$(MAKE) $*.deps ## Try the dependencies, but continue regardless
 	$(MAKE) $*.ltx ## Always succeeds, but doesn't always make pdf
 	sleep 1 ### Sleeping before checking Rerun
-	$(MAKE) $*.texcheck
-	$(MAKE) $*.logreport
+	$(MAKE) $*.texcheck ## Crash here if pdf has fatal error
+	$(MAKE) $*.logreport ## Never crash here
 
 ## Working on better reporting 2018 Nov 29 (Thu)
 ## Are we geting everything we need from make log?

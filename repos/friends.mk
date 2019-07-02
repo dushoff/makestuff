@@ -1,5 +1,7 @@
 include $(ms)/repos/friends.def
 
+repodirs += $(links)
+
 $(PulliamLab):
 	$(MAKE) target=$@ repo=$(github) user=PulliamLab-UFL clone
 repodirs += $(PulliamLab)
@@ -16,6 +18,10 @@ $(ICI3D):
 	$(MAKE) target=$@ repo=$(github) user=ICI3D clone
 repodirs += $(ICI3D)
 
+$(SACEMA):
+	$(MAKE) target=$@ repo=$(github) user=SACEMA clone
+repodirs += $(SACEMA)
+
 $(davidchampredon):
 	$(MAKE) target=$@ repo=$(github) user=davidchampredon clone
 repodirs += $(davidchampredo)
@@ -23,6 +29,10 @@ repodirs += $(davidchampredo)
 $(davidearn):
 	$(MAKE) target=$@ repo=$(github) user=davidearn clone
 repodirs += $(davidearn)
+
+$(bolker_github):
+	$(MAKE) target=$@ repo=$(github) user=bbolker clone
+repodirs += $(bolker_github)
 
 $(fishforwish):
 	$(MAKE) target=$@ repo=$(github) user=fishforwish clone
@@ -50,5 +60,11 @@ $(champredon):
 repodirs += alberta_age
 alberta_age:
 	git clone https://git.overleaf.com/8974471gkzqmdgbwvtj $@
+
+## Roswell
+
+$(mikeroswell):
+	$(MAKE) target=$@ repo=$(github) user=mikeroswell clone
+repodirs += $(mikeroswell)
 
 ## Outbreak-analysis (see dushoff_repos.mk)
