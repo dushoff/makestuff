@@ -1,6 +1,6 @@
 ## -S is “smart”
 %.html: %.md
-	pandoc -s -S -o $@ $<
+	pandoc -s -o $@ $<
 
 ## Not tested; may cause trouble with mathjax? Just shut up and test it.
 %.emb.html: %.md
@@ -48,5 +48,5 @@
 	pandoc -o $@ --variable fontsize=12pt $<
 
 %.pdf: %.md
-	pandoc -o $@ --variable fontsize=12pt $<
+	pandoc -o $@ --pdf-engine=lualatex --variable fontsize=12pt $<
 
