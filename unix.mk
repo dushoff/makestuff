@@ -56,8 +56,6 @@ pdfcat = pdfjoin --outfile $@ $(filter %.pdf, $^)
 
 latexdiff = latexdiff $^ > $@
 
-## Rule does not work! Ignore is a good convention
-## Trying a new rule (untested)
 Ignore += *.ld.tex
 %.ld.tex: %.tex
 	latexdiff $*.tex.*.oldfile $< > $@
