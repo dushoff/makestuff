@@ -77,7 +77,7 @@ $(pardirs):
 
 Ignore += up.time all.time
 up.time: commit.time
-	-git pull
+	$(MAKE) pullup
 	git push -u origin $(BRANCH)
 	touch $@
 
