@@ -12,11 +12,11 @@ shell:
 	mkdir $@
 
 ## Steve Bicko Cygu
-cygubicko += WDBC-Codes projects
+cygubicko += WDBC-Codes projects funs wash
 
 ## Working?
 aphrc: shell/projects
-	ln -s shell/projects/$@ .
+	ln -fs shell/projects/$@ .
 shell/projects:
 	$(MAKE) shell
 	- $(MAKE) projects
@@ -59,6 +59,15 @@ ICI3D += MMED MMEDparticipants ICI3D.github.io coreFaculty RTutorials
 
 ICI3D += Malaria malariaImmunity
 
+ICI3D += ici3d-pkg lectureCode
+
+ICI3D += datasets
+
+## MMED 2019
+ICI3D += rubellaSA cancerScreening
+
+SACEMA += MMED2019Bugs
+
 ######################################################################
 
 ## David Earn
@@ -84,7 +93,7 @@ theobio += QMEE Lab_meeting smb-mathepi
 ######################################################################
 
 ## Daniel Sang Woo Park (no hyphen)
-parksw3 += networkSEIR contact_trace bayes_antigen latentGeneration
+parksw3 += networkSEIR contact_trace bayes_antigen latentGeneration speedstrength
 
 ######################################################################
 
@@ -111,7 +120,7 @@ mikeroswell = SexNetworks_git users_guide_clean
 
 ######################################################################
 
-bolker_github = microbiome_stats upr_2016 HIV_LHS mosqsamp stat744
+bolker_github = microbiome_stats upr_2016 HIV_LHS mosqsamp stat744 louseplague
 
 ######################################################################
 

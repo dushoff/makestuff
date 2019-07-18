@@ -38,6 +38,7 @@ dushoff_github += notebook scratch linux_config
 
 ## Directory containers (new 2018 Aug 29 (Wed)); just for org
 dushoff_github += 1M talks 708
+## talks is definitely deprecated (Workshops); others I guess are OK.
 
 ######################################################################
 
@@ -71,7 +72,7 @@ Bio3SS += 3SS
 
 ######################################################################
 
-mac-theobio += mac-theobio.github.io
+mac-theobio += mac-theobio.github.io Disease_data
 
 ## Machine learning course
 mac-theobio += ml_medicine
@@ -83,6 +84,8 @@ mac-theobio += HIV_treatment_Africa
 mac-theobio += shims_age_mixing
 
 mac-theobio += ari_submission
+
+mac-theobio += GOS_NMF
 
 ######################################################################
 

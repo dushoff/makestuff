@@ -5,7 +5,7 @@ CP = /bin/cp
 CPF = /bin/cp -f
 CPR = /bin/cp -rf
 DIFF = diff
-EDIT = (gvim -f $@ || pico $@ || nano $@ || gedit $@ || @echo No editor found makestuff/unix.mk)
+GVEDIT = ($(VEDIT) $@ || gedit $@ || (echo ERROR: No editor found makestuff/unix.mk && echo set shell VEDIT variable && exit 1))
 RMR = /bin/rm -rf
 LN = /bin/ln -s
 LNF = /bin/ln -fs
@@ -56,8 +56,6 @@ pdfcat = pdfjoin --outfile $@ $(filter %.pdf, $^)
 
 latexdiff = latexdiff $^ > $@
 
-## Rule does not work! Ignore is a good convention
-## Trying a new rule (untested)
 Ignore += *.ld.tex
 %.ld.tex: %.tex
 	latexdiff $*.tex.*.oldfile $< > $@
@@ -90,3 +88,6 @@ killserve:
 ## Convenience
 %.tod: %
 	$(CP) $< ~/Downloads
+
+%.var:
+	@echo $($*)

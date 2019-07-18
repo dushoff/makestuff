@@ -53,7 +53,7 @@ commit.time: $(Sources)
 	$(MAKE) exclude
 	-git add -f $^
 	echo "Autocommit ($(notdir $(CURDIR)))" > $@
-	!(git commit --dry-run >> $@) || (perl -pi -e 's/^/#/ unless /Autocommit/' $@ && $(EDIT))
+	!(git commit --dry-run >> $@) || (perl -pi -e 's/^/#/ unless /Autocommit/' $@ && $(GVEDIT))
 	$(git_check) || (perl -ne 'print unless /#/' $@ | git commit -F -)
 	date >> $@
 
@@ -70,14 +70,14 @@ pull: commit.time
 ######################################################################
 
 ## parallel directories
-## Not part of all.time by default because usually updated in parallel
+## not part of all.time by default because usually updated in parallel
 $(pardirs):
 	cd .. && $(MAKE) $@
 	ls ../$@ > $(null) && $(LNF) ../$@ .
 
 Ignore += up.time all.time
 up.time: commit.time
-	-git pull
+	$(MAKE) pullup
 	git push -u origin $(BRANCH)
 	touch $@
 
