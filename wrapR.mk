@@ -53,6 +53,7 @@ endef
 	$(CP) $(call hiddenfile, $@) $@
 	touch $@
 
+## Should this just be unhide? No, that moves not copies.
 %.RData: %.Rout
 	$(CP) $(call hiddenfile, $@) $@
 

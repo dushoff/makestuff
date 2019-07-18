@@ -38,6 +38,7 @@ dushoff_github += notebook scratch linux_config
 
 ## Directory containers (new 2018 Aug 29 (Wed)); just for org
 dushoff_github += 1M talks 708
+## talks is definitely deprecated (Workshops); others I guess are OK.
 
 ######################################################################
 
