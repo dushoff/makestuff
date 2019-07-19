@@ -9,8 +9,8 @@ include $(RRd)/up.mk
 	$(copy)
 
 Makefile: $(rdeps)
-rscripts = $(wildcard *.R)
-rmds = $(wildcard *.rmd)
+rscripts += $(wildcard *.R)
+rmds += $(wildcard *.rmd)
 rdeps = $(rscripts:.R=.rdeps) $(rmds:%=%.rdeps)
 -include $(rdeps)
 
