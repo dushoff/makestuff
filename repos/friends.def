@@ -93,7 +93,7 @@ theobio += QMEE Lab_meeting smb-mathepi
 ######################################################################
 
 ## Daniel Sang Woo Park (no hyphen)
-parksw3 += networkSEIR contact_trace bayes_antigen latentGeneration speedstrength ## WTF?
+parksw3 += networkSEIR contact_trace bayes_antigen latentGeneration speedstrength
 
 ######################################################################
 
@@ -120,7 +120,7 @@ mikeroswell = SexNetworks_git users_guide_clean
 
 ######################################################################
 
-bolker_github = microbiome_stats upr_2016 HIV_LHS mosqsamp stat744
+bolker_github = microbiome_stats upr_2016 HIV_LHS mosqsamp stat744 louseplague
 
 ######################################################################
 
