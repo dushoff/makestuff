@@ -46,10 +46,16 @@ name.%.png: name.png
 formDrop/csig.%.jpg: formDrop/csig.jpg
 	convert -scale $*% $< $@
 
-csig.%.pdf: csig.%.jpg
+%.pdf: %.jpg
 	convert $< $@
 
-formDrop/sig.%.jpg: formDrop/sig.jpg
+%.pdf: *.jpg
+	convert $< $@
+
+formDrop/jsig.%.jpg: formDrop/jsig.jpg
+	convert -scale $*% $< $@
+
+formDrop/csig.%.jpg: formDrop/csig.jpg
 	convert -scale $*% $< $@
 
 sig.%.pdf: sig.%.jpg
