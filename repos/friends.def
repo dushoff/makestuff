@@ -40,6 +40,8 @@ wzmli += rabies_cihr
 ## Last chapter
 wzmli += persistence
 
+wzmli += mli_thesis
+
 ## Mike's big Scotland idea about within-animal correlations
 wzmli += rabies_correlations
 
