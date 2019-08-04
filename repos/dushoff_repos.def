@@ -37,8 +37,9 @@ dushoff_github += generation_links Generation_distributions
 dushoff_github += notebook scratch linux_config
 
 ## Directory containers (new 2018 Aug 29 (Wed)); just for org
-dushoff_github += 1M talks 708
+dushoff_github += 1M 708
 ## talks is definitely deprecated (Workshops); others I guess are OK.
+## talks can be deleted from github
 
 ######################################################################
 
@@ -57,9 +58,12 @@ dushoff_github += bio
 ## FIDO never took off, but has a link to the gdrive. 
 ## 2018 application still missing
 
-dushoff_bitbucket += FIDO HIV_Project 
+## bitbucket "talks" was very short-lived for some reason. Maybe I wanted to merge things or move to private repos
+## This is not on all, and I don't want to bother
+## Clone it if you insist on looking…
+## The thing that's still valuable seems to be ~/Dropbox/academicWW/Ebola_math/
+dushoff_bitbucket += FIDO HIV_Project talks
 
-bitbucket_overridden  += talks
 bitbucket_other  += nserc tutorial Vaccination_analysis TZ_pediatric_HIV zebra_movement taxes Sandbox djd tick_math 1m_2017
 
 ######################################################################
