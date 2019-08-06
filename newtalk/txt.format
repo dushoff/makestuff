@@ -146,7 +146,6 @@ EXTRA NULLSLIDE
 
 # Presentation-only slides
 PSLIDE NULLSLIDE
-draft final: ^DEFHEAD {%%}
 final: ^DEFHEAD {%%}
 draft: ^DEFHEAD {\sl %% (present)}
 
@@ -167,6 +166,11 @@ draft final: ^DEFHEAD {\sl %% (preview)}
 
 FUNSLIDE NULLSLIDE
 draft final: ^DEFHEAD {\sl %% (Extra)}
+
+## Titlespace omit from notes
+
+TSPACE %!
+draft final: \vfill
 
 ## A whole slide for notes only
 NSLIDE NULLSLIDE
@@ -199,6 +203,14 @@ draft final: ^DEFHEAD %%
 
 # Columns
 
+## SS supposed to work even in notes but doesn't (needs hboxes or something)
+
+BSS \begin{columns}[c] \column{0.47\textwidth} \small
+
+NSS \column{0.47\textwidth} \small
+
+ESS \end{columns}
+
 BC %!
 draft final: \begin{columns}[c] \column{0.54\textwidth} \small
 
@@ -208,6 +220,7 @@ draft final: \column{0.4\textwidth} \small
 EC %!
 draft final: \end{columns}
 
+## 
 BCC %!
 draft final: \begin{columns}[c] \column{0.47\textwidth} \small
 
