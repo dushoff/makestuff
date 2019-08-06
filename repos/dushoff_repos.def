@@ -43,6 +43,9 @@ dushoff_github += 1M 708
 
 ######################################################################
 
+## 2019 Aug 04 (Sun) Japan
+dushoff_github += subclinical
+
 ## Just bung these in to save 3SS trouble. No obvious disadvantages left.
 
 dushoff_other = CIHR_Ebola Ebola_stochasticity make rabies-SD RR autorefs dushoff.github.io makework techtex-ebola sherif TZ_clinics rabies_burden nserc_tools SEER_HPV initial_epi Latent_incidence_fitting DHS_overview Country_lists little_r SIR_model_family Rabies_talks Syphilis_and_ARVs HIV_presentations SIR_simulations permutation_binomial Ebola_talks Ebola_sims fitting_code Endemic_curves math_talks texdeps org gi_appoximations link_calculations
@@ -93,4 +96,5 @@ mac-theobio += GOS_NMF
 
 ######################################################################
 
-Outbreak-analysis += madagascar_tb_hiv
+
+Outbreak-analysis += madagascar_tb_hiv WA_Ebola_Outbreak hybrid_fitting Datsid Ebola_challenge_renewal hybrid backtest_fcast OA_Planning OA_workspace Ebola_presentation factorialtemplate tmp_earlyForecast tmp_SEIFR exp_fit who_ebola Zika
