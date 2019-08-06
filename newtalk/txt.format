@@ -146,7 +146,6 @@ EXTRA NULLSLIDE
 
 # Presentation-only slides
 PSLIDE NULLSLIDE
-draft final: ^DEFHEAD {%%}
 final: ^DEFHEAD {%%}
 draft: ^DEFHEAD {\sl %% (present)}
 
@@ -167,6 +166,11 @@ draft final: ^DEFHEAD {\sl %% (preview)}
 
 FUNSLIDE NULLSLIDE
 draft final: ^DEFHEAD {\sl %% (Extra)}
+
+## Titlespace omit from notes
+
+TSPACE %!
+draft final: \vfill
 
 ## A whole slide for notes only
 NSLIDE NULLSLIDE
