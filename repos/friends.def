@@ -68,14 +68,14 @@ ICI3D += datasets
 ## MMED 2019
 ICI3D += rubellaSA cancerScreening
 
-SACEMA += MMED2019Bugs epidemicinsurance
+SACEMA += MMED2019Bugs epidemicInsurance
 
 ######################################################################
 
 ## David Earn
 ## https://github.com/davidearn/mbfuture.git
 
-davidearn += mbfuture plague
+davidearn += mbfuture plague math-epi
 
 ######################################################################
 
