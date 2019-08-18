@@ -9,8 +9,8 @@ include $(RRd)/up.mk
 	$(copy)
 
 Makefile: $(rdeps)
-rscripts = $(wildcard *.R)
-rmds = $(wildcard *.rmd)
+rscripts += $(wildcard *.R)
+rmds += $(wildcard *.rmd)
 rdeps = $(rscripts:.R=.rdeps) $(rmds:%=%.rdeps)
 -include $(rdeps)
 
@@ -32,14 +32,14 @@ rflags = --no-environ --no-site-file --no-init-file --no-restore
 ## other directory stuff
 define stepHere
 	- $(RM) .RData Rplots.pdf $*.RData $*.Rout.pdf 
-	( (R $(rflags) --save < $*.R > .$@) 2> $*.Rlog && cat $*.Rlog ) || ! cat $*.Rlog
-	- $(MV) .$@ $@
+	( (R $(rflags) --save < $*.R > $@) 2> $*.Rlog && cat $*.Rlog ) || ! cat $*.Rlog
 	- $(MV) .RData $*.RData 
 	(perl -wf $(RRd)/pdfcheck.pl Rplots.pdf && $(MV) Rplots.pdf $*.Rout.pdf) || :
 endef
 
+## 2019 Jul 18 (Thu)
+## These seem clunky; maybe the improved stepHere makes them less necessary
 stepThere = cd $(dir $<) && Rscript $(notdir $<) > $(notdir $(<:%.R=%.Rout))
-
 plotThere = $(stepThere) && $(MV) Rplots.pdf $(notdir $(<:%.R=%.Rout.pdf))
 
 ## Testing: dir does work for ./

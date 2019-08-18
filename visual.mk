@@ -1,4 +1,6 @@
 
+## Make things appear; some of it feels pretty Dushoff-specific
+
 pngtarget: 
 	$(MAKE) $<.png
 	$(MAKE) $<.png.go
@@ -32,7 +34,12 @@ target.mk:
 %.dscreen: %.dir
 	cd $* && screen -t "$(notdir $*)"
 
+frogs:
+	@echo $(notdir trace)
+	@echo $(dir trace)
+
 %.vscreen: %.dir
+	cd $(dir $*) && $(MAKE) "$(notdir $*)" 
 	cd $* && screen -t "$(notdir $*)" bash -cl "vmt"
 
 %.dir:
