@@ -34,6 +34,11 @@ link = $(LN) $< $@
 linkdir = ls $(dir)/$@ > $(null) && $(LNF) $(dir)/$@ .
 linkdirname = ls $(dir) > $(null) && $(LNF) $(dir) $@ 
 
+## This will make directory if it doesn't exist
+## Possibly good for shared projects. Problematic if central user makes two 
+## redundant dropboxes because of sync problems
+alwayslinkdir = (ls $(dir)/$@ > $(null) || $(MD) $(dir)/$@) && $(LNF) $(dir)/$@ .
+
 forcelink = $(LNF) $< $@
 copy = $(CP) $< $@
 hardcopy = $(CPF) $< $@
