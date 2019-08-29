@@ -8,6 +8,7 @@ current: target
 Makefile: makestuff/Makefile
 	touch $@
 
+Ignore += makestuff
 makestuff/Makefile:
 	ln -s . makestuff
 
