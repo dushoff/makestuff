@@ -20,4 +20,5 @@ PUSHON = perl -wf $(filter %.pl, $^) $(filter-out %.pl, $^) >> $@
 PPUSH = perl -00 -wf $(filter %.pl, $^) $(filter-out %.pl, $^) > $@
 
 ## Perl in place (use with fake targets, obviously)
+## Could you explain better 2019 Aug 29 (Thu)?
 PIPUSH = perl -pi -wf $(filter %.pl, $^) $(filter-out %.pl, $^)

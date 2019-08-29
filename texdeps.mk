@@ -36,7 +36,7 @@ endif
 .PRECIOUS: .texdeps/%.mk
 .texdeps/%.mk: %.tex 
 	$(MAKE) .texdeps 
-	perl -wf $(ms)/texdeps.pl $< > $@
+	perl -wf makestuff/texdeps.pl $< > $@
 
 ## This rule makes the first copy of the .out
 ## Meant to be over-riden by rules in the corresponding .mk
@@ -67,6 +67,6 @@ Ignore += *.run.xml
 
 ### Doesn't quite fit here (or anywhere)
 
-%_olddiff.tex: %.tex.*.oldfile %.tex $(ms)/latexdiff.pl
+%_olddiff.tex: %.tex.*.oldfile %.tex makestuff/latexdiff.pl
 	$(PUSH)
 

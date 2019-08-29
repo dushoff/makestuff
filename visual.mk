@@ -29,7 +29,7 @@ deptarget:
 	$(MAKE) $(target:.pdf=.deps)
 
 target.mk:
-	$(CP) $(ms)/$@ .
+	$(CP) makestuff/$@ .
 
 %.dscreen: %.dir
 	cd $* && screen -t "$(notdir $*)"

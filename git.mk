@@ -24,7 +24,7 @@ git_dir = $(shell git rev-parse --git-dir)
 exclude: $(git_dir)/info/exclude ;
 
 $(git_dir)/info/exclude: $(Sources) Makefile
-	perl -wf $(ms)/ignore.pl > $@
+	perl -wf makestuff/ignore.pl > $@
 
 export Ignore += local.mk target.mk make.log go.log
 
@@ -88,7 +88,7 @@ endif
 
 $(subdirs):
 	$(mkdir)
-	$(CP) $(ms)/subdir.mk $@/Makefile
+	$(CP) makestuff/subdir.mk $@/Makefile
 
 ## 2018 Nov 07 (Wed). Trying to make these rules finish better
 all.time: $(alldirs:%=%.all) exclude up.time
@@ -236,7 +236,7 @@ abort:
 	$(mkdir)
 
 ignore.config: ~/.config/git
-	cat $(ms)/ignore.vim $(ms)/ignore.auth $</ignore
+	cat makestuff/ignore.vim makestuff/ignore.auth $</ignore
 
 README.md LICENSE.md:
 	touch $@
@@ -517,15 +517,15 @@ csstuff: makestuff.push $(clonedirs:%=%.csstuff) ;
 ## Switch makestuff style in repo made by gitroot 
 
 makestuff.clone:
-	cd $(ms) && $(MAKE) up.time
+	cd makestuff && $(MAKE) up.time
 	$(MAKE) makestuff.rmsub
-	git clone $(msrepo)/$(ms)
+	git clone $(msrepo)/makestuff
 	perl -pi -e 's/Sources(.*ms)/Ignore$$1/' Makefile
 
 makestuff.sub:
-	cd $(ms) && $(MAKE) up.time
-	$(RMR) $(ms)
-	git submodule add -f -b master $(msrepo)/$(ms)
+	cd makestuff && $(MAKE) up.time
+	$(RMR) makestuff
+	git submodule add -f -b master $(msrepo)/makestuff
 	perl -pi -e 's/Ignore(.*ms)/Sources $$1/' Makefile
 
 ######################################################################

@@ -1,4 +1,4 @@
 ms = ./makestuff
 -include local.mk
--include $(ms)/os.mk
+-include makestuff/os.mk
 

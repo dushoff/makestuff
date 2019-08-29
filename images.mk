@@ -3,7 +3,7 @@
 
 ## Image drop
 
-web_drop/%: $(ms)/missing.pdf
+web_drop/%: makestuff/missing.pdf
 	$(MAKE) web_drop
 	(cd Lecture_images && $(MAKE) files/$*) || convert $^ $@
 
@@ -11,7 +11,7 @@ web_drop: Lecture_images
 	$(MAKE) Lecture_images/Makefile
 	$(LNF) $</files $@
 
-my_images/%: my_images $(ms)/personal.pdf
+my_images/%: my_images makestuff/personal.pdf
 	(cd $< && $(MAKE) $*) || convert $(word 2, $^) $@
 
 my_images: 

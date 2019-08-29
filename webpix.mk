@@ -9,13 +9,13 @@ steps = $(wildcard *.step)
 Sources += $(steps)
 
 Ignore += $(steps:%=%.mk)
-%.step.mk: %.step $(ms)/webmk.pl
+%.step.mk: %.step makestuff/webmk.pl
 	$(PUSH)
 
 Ignore += $(steps:.step=.html)
-%.html: %.step.mk $(ms)/webhtml.pl webpix
-	$(MAKE) -f $< -f $(ms)/webtrans.mk images
-	$(MAKE) -f $< -f $(ms)/webtrans.mk thumbs
+%.html: %.step.mk makestuff/webhtml.pl webpix
+	$(MAKE) -f $< -f makestuff/webtrans.mk images
+	$(MAKE) -f $< -f makestuff/webtrans.mk thumbs
 	$(PUSHSTAR)
 
 ## Digest files

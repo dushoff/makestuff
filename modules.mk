@@ -1,7 +1,7 @@
 
 ## OMG. Lots of stuff here that shouldn't be used, but what's here that's valuable? hotmake/coldmake?
 
-# include $(ms)/repos.def
+# include makestuff/repos.def
 ## Add organizations to list, and make a rule
 
 ## A lot of stuff here should be phased out, or moved
@@ -36,15 +36,15 @@ $(theobio_group):
 ######################################################################
 
 %/target.mk:
-	-cp $(ms)/target.mk $@
+	-cp makestuff/target.mk $@
 
 %/sub.mk:
-	-cp $(ms)/sub.mk $@
+	-cp makestuff/sub.mk $@
 
 %/Makefile:
 	echo "# $*" > $@
-	cat $(ms)/hooks.mk >> $@
-	cat $(ms)/makefile.mk >> $@
+	cat makestuff/hooks.mk >> $@
+	cat makestuff/makefile.mk >> $@
 	cd $* && $(MAKE) Makefile
 
 ######################################################################
@@ -95,7 +95,7 @@ $(foreach dir,$(colddirs),$(eval $(call hotmake,$(dir))))
 # There was insane confusion with giving it a different name.
 %.init: 
 	-$(RMR) $@ || !ls $@
-	$(MAKE) -f $(ms)/repos.mk $* || ls $* > /dev/null
+	$(MAKE) -f makestuff/repos.mk $* || ls $* > /dev/null
 	mv $* $@
 	cd $@ && (git checkout -b master || git checkout master)
 	$(MAKE) $@/target.mk $@/sub.mk $@/Makefile

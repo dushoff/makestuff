@@ -3,7 +3,7 @@
 
 ms = makestuff
 
--include $(ms)/repos.def
+-include makestuff/repos.def
 -include localrepos.def
 
 bitbucket = dushoff@bitbucket.org

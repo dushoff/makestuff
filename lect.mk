@@ -9,7 +9,7 @@ lect/%:
 
 # talk lect: 
 lect: 
-	/bin/ln -s $(ms)/$@ .
+	/bin/ln -s makestuff/$@ .
 
 Ignore += talkdir
 .PRECIOUS: talkdir/%

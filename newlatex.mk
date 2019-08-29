@@ -5,7 +5,7 @@
 latex = pdflatex -interaction=nonstopmode
 bibtex = bibtex
 
-include $(ms)/perl.def
+include makestuff/perl.def
 include $(wildcard .deps/*.d)
 
 define ltx
@@ -18,7 +18,7 @@ endef
 
 ### Make ./%.deps in the current directory, to be examined when we need it, and deleted otherwise. Hopefully, make can delete it automatically unless we ask for it explicitly
 
-%.tex.deps: %.tex $(ms)/latexdeps.pl
+%.tex.deps: %.tex makestuff/latexdeps.pl
 	$(PUSH)
 	$(MAKE) .deps
 	$(CP) $@ .deps/$<.d

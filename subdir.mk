@@ -10,17 +10,17 @@ Sources += Makefile
 
 ms = makestuff
 Ignore += $(ms)
-Makefile: $(ms)/Makefile
+Makefile: makestuff/Makefile
 	touch $@
-$(ms)/Makefile:
+makestuff/Makefile:
 	ls ../makestuff/Makefile && /bin/ln -s ../makestuff 
 
--include $(ms)/os.mk
+-include makestuff/os.mk
 
 ######################################################################
 
 ### Makestuff
 
--include $(ms)/git.mk
--include $(ms)/visual.mk
+-include makestuff/git.mk
+-include makestuff/visual.mk
 

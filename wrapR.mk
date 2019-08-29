@@ -1,5 +1,5 @@
-wrapRd = $(ms)/wrapR
-RRd = $(ms)/wrapR
+wrapRd = makestuff/wrapR
+RRd = makestuff/wrapR
 include $(RRd)/pdf.mk
 include $(RRd)/up.mk
 
@@ -17,7 +17,7 @@ define run-R
 endef
 
 .PRECIOUS: %.Rlib.R
-%.Rlib.R: $(ms)/
+%.Rlib.R: makestuff/
 	echo 'library("$*")' > $@
 
 .PRECIOUS: %.summary.Rout

@@ -1,4 +1,4 @@
-include $(ms)/forms.def
+include makestuff/forms.def
 
 formDrop: dir = $(formDrop)
 formDrop: 
@@ -64,4 +64,4 @@ sig.%.pdf: sig.%.jpg
 %.ppmed.png: %.pdf
 	convert -density 400x400 $< $@
 
--include $(ms)/wrapR/pdf.mk
+-include makestuff/wrapR/pdf.mk

@@ -1,5 +1,5 @@
 ifndef PUSHSTAR
-include $(ms)/perl.def
+include makestuff/perl.def
 endif
 
 Ignore += talkdir
@@ -70,4 +70,4 @@ Ignore += *.outline.*
 %.notebook: %.note
 	cd $(gitroot)/notebook/ && make remotesync
 
-# include $(ms)/resources.mk
+# include makestuff/resources.mk

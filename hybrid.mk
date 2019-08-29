@@ -23,19 +23,19 @@ endef
 
 %.hybridfiles: %
 	! ls $*/Makefile || (echo newhybrid: Makefile exists; return 1)
-	cp $(ms)/makefile.mk $*/Makefile
-	cp $(ms)/hybrid/makestuff.mk $(ms)/target.mk $*
+	cp makestuff/makefile.mk $*/Makefile
+	cp makestuff/hybrid/makestuff.mk $(ms)/target.mk $*
 
 %.newwork: % %.workfiles
 	$(firstpush)
 
 %.workfiles: %
 	! ls $*/Makefile || (echo newwork: Makefile exists; return 1)
-	cp $(ms)/work.mk $*/Makefile
-	cp $(ms)/hybrid/makestuff.mk $(ms)/target.mk $*
+	cp makestuff/work.mk $*/Makefile
+	cp makestuff/hybrid/makestuff.mk $(ms)/target.mk $*
 
 %/Makefile %/link.mk %/target.mk %/sub.mk:
-	$(CP) $(ms)/$(notdir $@) $*/
+	$(CP) makestuff/$(notdir $@) $*/
 
 ## Not tested; want to make a working repo soon!
 ## container
@@ -43,8 +43,8 @@ endef
 
 %.containerfiles: %
 	! ls $*/Makefile || (echo new files: Makefile exists; return 1)
-	cp $(ms)/hybrid/container.mk $*/Makefile
-	cp $(ms)/hybrid/upstuff.mk $(ms)/target.mk $*
+	cp makestuff/hybrid/container.mk $*/Makefile
+	cp makestuff/hybrid/upstuff.mk $(ms)/target.mk $*
 
 ## working
 %.newwork: %.workfiles %.first ;
@@ -52,8 +52,8 @@ endef
 %.workfiles: %
 	! ls $*/Makefile || (echo new files: Makefile exists; return 1)
 	echo "# $*" > $*/Makefile
-	cat $(ms)/hybrid/work.mk >> $*/Makefile
-	cp $(ms)/hybrid/substuff.mk $(ms)/target.mk $*
+	cat makestuff/hybrid/work.mk >> $*/Makefile
+	cp makestuff/hybrid/substuff.mk $(ms)/target.mk $*
 
 %.first:
 	cd $* && $(MAKE) makestuff && $(MAKE) commit.default && $(MAKE) push
@@ -65,6 +65,6 @@ endef
 
 %.hybridfiles: %
 	! ls $*/Makefile || (echo newhybrid: Makefile exists; return 1)
-	cp $(ms)/makefile.mk $*/Makefile
-	cp $(ms)/hybrid/makestuff.mk $(ms)/target.mk $*
+	cp makestuff/makefile.mk $*/Makefile
+	cp makestuff/hybrid/makestuff.mk $(ms)/target.mk $*
 

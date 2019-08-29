@@ -1,4 +1,4 @@
-include $(ms)/perl.def
+include makestuff/perl.def
 
 # You can change these variables _after_ including 
 latex = pdflatex -interaction=nonstopmode
@@ -6,10 +6,10 @@ bibtex = biber
 
 .PRECIOUS: %.aux
 %.aux: /proc/uptime %.tex
-	- $(MAKE) -f $(ms)/deps.mk -f Makefile $*.reqs $@
+	- $(MAKE) -f makestuff/deps.mk -f Makefile $*.reqs $@
 
 %.pdf: %.aux
-	- $(MAKE) -f $(ms)/deps.mk -f Makefile $*.reqs
+	- $(MAKE) -f makestuff/deps.mk -f Makefile $*.reqs
 	touch $<
 	$(call hcopy, $<)
 	$(latex) $*
@@ -23,7 +23,7 @@ bibtex = biber
 	-$(MAKE) -f $< -f Makefile $@
 
 .PRECIOUS: %.deps
-%.deps: %.tex $(ms)/flextex.pl
+%.deps: %.tex makestuff/flextex.pl
 	$(PUSH)
 
 texclean:

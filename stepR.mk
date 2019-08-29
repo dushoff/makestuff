@@ -1,6 +1,6 @@
-include $(ms)/perl.def
+include makestuff/perl.def
 
-RRd = $(ms)/wrapR
+RRd = makestuff/wrapR
 include $(RRd)/pdf.mk
 include $(RRd)/up.mk
 
@@ -16,11 +16,11 @@ rdeps = $(rscripts:.R=.rdeps) $(rmds:%=%.rdeps)
 
 Ignore += $(wildcard *.rdeps)
 .PRECIOUS: %.rdeps
-%.rdeps: %.R $(ms)/rstep.pl
+%.rdeps: %.R makestuff/rstep.pl
 	$(PUSH)
 
 ## For rmd (this rule should be secondary to the one above)
-%.rdeps: % $(ms)/rmdstep.pl
+%.rdeps: % makestuff/rmdstep.pl
 	$(PUSH)
 
 Ignore += $(wildcard *.RData *.Rlog *.Rout *.Rout.pdf)

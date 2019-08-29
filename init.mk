@@ -2,17 +2,17 @@ gitroot = ./
 export ms = $(gitroot)/makestuff
 
 %/target.mk:
-	-cp $(ms)/target.mk $@
+	-cp makestuff/target.mk $@
 
 %/sub.mk:
-	-cp $(ms)/sub.mk $@
+	-cp makestuff/sub.mk $@
 
 %/stuff.mk:
-	-cp $(ms)/stuff.mk $@
+	-cp makestuff/stuff.mk $@
 
 %/Makefile:
 	echo "# $*" > $@
-	cat $(ms)/hooks.mk >> $@
-	cat $(ms)/makefile.mk >> $@
+	cat makestuff/hooks.mk >> $@
+	cat makestuff/makefile.mk >> $@
 		cd $* && $(MAKE) Makefile
 

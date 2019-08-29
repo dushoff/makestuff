@@ -5,7 +5,7 @@ bibdir:
 
 ## Awkward holdovers from wiki setup?
 export ms
-export autorefs = $(ms)/autorefs
+export autorefs = makestuff/autorefs
 
 pmr = $(wildcard *.pmr)
 %.rmu: %.pmr

@@ -4,8 +4,14 @@
 current: target
 -include target.mk
 
-export ms = ./
--include $(ms)/os.mk
+## export ms = ./ 2019 Aug 29 (Thu) experimenting with getting ms out!
+Makefile: makestuff/Makefile
+	touch $@
+
+makestuff/Makefile:
+	ln -s . makestuff
+
+-include makestuff/os.mk
 
 ##################################################################
 
@@ -23,12 +29,12 @@ Ignore += $(md:md=html)
 
 Sources += Makefile LICENSE README.md static.mk sub.mk todo.md
 Sources += subdir.mk ## Probably not used much …
-Sources += simple.mk
+Sources += simple.mk ## New, for users
 
 ## Script to make exclude file
 Sources += ignore.pl
 
-## Inputs for .config ignore file ## What is this?? 2019 Aug 29 (Thu)
+## Inputs for .config ignore file (see git.mk)
 Sources += ignore.auth ignore.vim
 
 Sources += os.mk unix.mk linux.mk windows.mk up.mk
