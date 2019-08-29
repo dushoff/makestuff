@@ -14,7 +14,6 @@ makestuff/Makefile:
 
 ### Makestuff rules you may want. The os is basic and shouldn't hurt
 ### Others can be commented in and out
-ms = makestuff ## Sort-of a legacy, shouldn't hurt you
 -include makestuff/os.mk
 -include makestuff/perl.def
 
@@ -22,12 +21,11 @@ ms = makestuff ## Sort-of a legacy, shouldn't hurt you
 
 # Main content here
 
-## You may want to CP this content (if any) here for convenience
-## and delete this line (although it won't hurt you much)
+## You may want to CP content.mk here for convenience (if it exists),
+## then delete this line (although it won't hurt you much)
 -include content.mk
 
 ######################################################################
-
 
 ### Makestuff rules
 
