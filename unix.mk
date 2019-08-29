@@ -1,4 +1,10 @@
-# Unix
+## Retrofits and hacks
+
+## Bailed on $. Watch out?
+noms:
+	perl -pi -e 's|.\(ms\)/|makestuff/|' Makefile
+	
+# Unix basics
 MVF = /bin/mv -f
 MV = /bin/mv
 CP = /bin/cp

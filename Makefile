@@ -26,11 +26,20 @@ Ignore += $(md:md=html)
 
 ######################################################################
 
+## Retrofits
+
+## Sources += noms.pl ## get rid of ## Do this through the hack section of unix.mk instead
+
+######################################################################
+
 # Base files
 
 Sources += Makefile LICENSE README.md static.mk sub.mk todo.md
 Sources += subdir.mk ## Probably not used much …
-Sources += simple.mk ## New, for users
+
+## New copy-able makefiles
+Sources += simple.mk ## for users
+Sources += direct.mk ## for direct subdirectories
 
 ## Script to make exclude file
 Sources += ignore.pl
