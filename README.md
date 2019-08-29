@@ -12,3 +12,7 @@ To install makestuff in an existing project, you can try the following.
 * Clone this repo as a subdirectory: `git clone https://github.com/dushoff/makestuff.git`
 * Get a simple Makefile: `cp makestuff/simple.mk Makefile`
 
+That should be it. You should still be able to make anything you could make before, and at least some makestuff should be working. Let me know if this does or doesn't work for you
+
+Next, you could look at your new Makefile and see what it says about moving old content (if any) and about including makestuff rules.
+
