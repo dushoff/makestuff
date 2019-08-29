@@ -15,19 +15,20 @@ Ignore += $(md:md=html)
 
 ## Work on documentation!!!
 
-## cache.html: cache.md
+## README.html: README.md
 
 ######################################################################
 
 # Base files
 
 Sources += Makefile LICENSE README.md static.mk sub.mk todo.md
-Sources += subdir.mk
+Sources += subdir.mk ## Probably not used much …
+Sources += simple.mk
 
 ## Script to make exclude file
 Sources += ignore.pl
 
-## Inputs for .config ignore file
+## Inputs for .config ignore file ## What is this?? 2019 Aug 29 (Thu)
 Sources += ignore.auth ignore.vim
 
 Sources += os.mk unix.mk linux.mk windows.mk up.mk
