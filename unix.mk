@@ -17,6 +17,7 @@ LN = /bin/ln -s
 LNF = /bin/ln -fs
 TGZ = tar czf $@ $^
 MD = mkdir
+MKDIR = mkdir
 CAT = cat
 ZIP = zip $@ $^
 readonly = chmod a-w $@

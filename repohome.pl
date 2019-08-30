@@ -22,4 +22,5 @@ while(<>){
 	my $dirname = $host . $und . $org . $und . $name;
 	$dirname =~ s/$default//;
 	say  "rhdir/$dirname: url=$url";
+	say  "rhdir/$dirname: ; " . '$(rhmake)';
 }

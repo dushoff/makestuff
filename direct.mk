@@ -1,5 +1,6 @@
 
-## This is the XXX subdirectory of the YYY repo
+## This is the XXX (direct) subdirectory of the YYY/screens repo
+## makestuff/direct.mk
 
 current: target
 -include target.mk
@@ -21,7 +22,24 @@ makestuff/Makefile:
 
 ######################################################################
 
-screen_session:
+screen_session: ..vscreen
+
+vim_session:
+	bash -cl "vi Makefile target.mk"
+
+######################################################################
+
+## repo locations
+## makestuff/repohome.list
+## makestuff/repohome.auto.mk
+
+## rhdir_drop:
+
+# projdirs += sample
+sample: rhdir/sample_sample_sample
+	$(rcopy)
+
+alldirs += $(projdirs)
 
 ######################################################################
 
@@ -29,5 +47,4 @@ screen_session:
 
 -include makestuff/git.mk
 -include makestuff/visual.mk
-
-
+-include makestuff/repohome.mk
