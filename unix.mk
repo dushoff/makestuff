@@ -47,6 +47,7 @@ linkdirname = ls $(dir) > $(null) && $(LNF) $(dir) $@
 alwayslinkdir = (ls $(dir)/$@ > $(null) || $(MD) $(dir)/$@) && $(LNF) $(dir)/$@ .
 
 forcelink = $(LNF) $< $@
+rcopy = $(CPR) $< $@
 copy = $(CP) $< $@
 hardcopy = $(CPF) $< $@
 allcopy =  $(CP) $^ $@
