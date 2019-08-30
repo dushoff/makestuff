@@ -31,13 +31,17 @@ deptarget:
 target.mk:
 	$(CP) makestuff/$@ .
 
+## 
 %.dscreen: %.dir
 	cd $* && screen -t "$(notdir $*)"
 
-frogs:
-	@echo $(notdir trace)
-	@echo $(dir trace)
+## open directory in a screen window (for running things)
+## meant to be called from within screen (otherwise makes a new one)
+%.rscreen: %.dir
+	cd $(dir $*) && $(MAKE) "$(notdir $*)" 
+	cd $* && screen -t "$(notdir $*)"
 
+## do the above and open a vim_session
 %.vscreen: %.dir
 	cd $(dir $*) && $(MAKE) "$(notdir $*)" 
 	cd $* && screen -t "$(notdir $*)" bash -cl "vmt"
