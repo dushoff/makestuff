@@ -165,7 +165,7 @@ Sources += repos/dushoff_repos.mk repos/friends.mk repos/sites.mk
 Sources += repos/dushoff_repos.def repos/friends.def
 
 ## repos for screens
-Sources += repohome.list repohome.mk
+Sources += repohome.list repohome.mk repohome.pl
 
 ######################################################################
 
