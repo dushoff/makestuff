@@ -3,7 +3,10 @@
 makestuff/repohome.auto.mk: makestuff/repohome.list makestuff/repohome.pl
 	perl -wf $(filter %.pl, $^) $(filter-out %.pl, $^) > $@
 
-%: rhdir/%
+## This is cool, but too strong, chains and competes with other rules
+## %: rhdir/%; $(MAKE) rhdir/$* || $(MAKE) rhdir/$<
+
+%.repohome: rhdir/%
 	$(MAKE) rhdir/$* || $(MAKE) rhdir/$<
 
 rhdir:
