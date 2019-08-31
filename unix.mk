@@ -1,8 +1,9 @@
 ## Retrofits and hacks
 
-## Bailed on $. Watch out?
+## Bailed on getting the regex syntax write for the $. Watch out?
+## Try [$$] if you're bored.
 noms:
-	perl -pi -e 's|.\(ms\)/|makestuff/|' Makefile
+	perl -pi -e 's|.\(ms\)/|makestuff/|' Makefile *.mk
 	
 # Unix basics
 MVF = /bin/mv -f
