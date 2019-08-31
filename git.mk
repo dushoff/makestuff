@@ -45,13 +45,10 @@ branch:
 	@echo $(BRANCH)
 	git branch
 
-sourceadd: 
-	git add -f $(Sources)
-
 Ignore += commit.time commit.default
 commit.time: $(Sources)
 	$(MAKE) exclude
-	-git add -f $^
+	-git add -f $?
 	echo "Autocommit ($(notdir $(CURDIR)))" > $@
 	!(git commit --dry-run >> $@) || (perl -pi -e 's/^/#/ unless /Autocommit/' $@ && $(GVEDIT))
 	$(git_check) || (perl -ne 'print unless /#/' $@ | git commit -F -)

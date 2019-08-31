@@ -166,6 +166,7 @@ Sources += repos/dushoff_repos.def repos/friends.def
 
 ## repos for screens
 Sources += repohome.list repohome.mk repohome.pl
+Ignore += repohome.auto.mk
 
 ######################################################################
 
