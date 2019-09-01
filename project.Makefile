@@ -8,8 +8,6 @@ current: target
 
 # Content
 
-Sources += README.md notes.md
-
 ######################################################################
 
 ### Makestuff
