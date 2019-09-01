@@ -42,5 +42,7 @@ ship_pages:
 	cd pages && git pull || ( echo "WAIT: Don't ship_pages until you can pull" && false)
 	$(MAKE) $(pageProducts)
 
-push_all: ship_pages
+push_pages: ship_pages
 	cd pages && git add $(pageProductsLocal) && git pull && git push
+
+push_all: all.time push_pages
