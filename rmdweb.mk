@@ -34,5 +34,3 @@ ship_pages:
 
 push_all: ship_pages
 	cd pages && git add $(pageProductsLocal) && git pull && git push
-
-all.time: push_all
