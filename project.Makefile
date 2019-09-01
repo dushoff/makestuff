@@ -8,6 +8,9 @@ current: target
 
 # Content
 
+vim_session:
+	bash -cl "vmt"
+
 ######################################################################
 
 ### Makestuff
