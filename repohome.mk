@@ -6,6 +6,7 @@ makestuff/repohome.auto.mk: makestuff/repohome.list makestuff/repohome.pl
 ## 2019 Aug 30 (Fri)
 ## This rule should be OK now, because it has only generated rules
 ## (with dependencies) for the next link
+## I have also thought about limiting this to projdirs and rprojdirs
 %: rhdir/%
 	$(rcopy)
 

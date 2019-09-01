@@ -23,17 +23,17 @@ vim_session:
 
 ## Directories
 
-## projdirs
+## repohome
 
 example: rhdir/host_group_name
 	$(rcopy)
+
+## makestuff/repohome.auto.mk: makestuff/repohome.list makestuff/repohome.pl
 
 ## linkdirs
 
 sample: dir=~
 sample: ; $(linkdir)
-
-## makestuff/repohome.auto.mk: makestuff/repohome.list makestuff/repohome.pl
 
 
 ######################################################################
