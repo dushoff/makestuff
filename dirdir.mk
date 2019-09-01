@@ -11,6 +11,7 @@ endif
 ## linkdirs are screened but not alled (these are the ones that need more care)
 ## deepdirs are deep resting
 
+## Making screens automatically
 ## recipes to be included in screen_session
 pvscreens = $(MAKE) $(projdirs:%=%.vscreen)
 lvscreens = $(MAKE) $(linkdirs:%=%.vscreen)
@@ -18,6 +19,7 @@ plvscreens = $(pvscreens) && $(lvscreens)
 
 ## Hooks for bash so we can autocomplete from dirdir and get what we want
 
+## Finding screens to make them manually
 ## Use deepdir to hide something
 knowndirs += $(projdirs) $(linkdirs) $(rprojdirs)
 dirnames.mk: Makefile
@@ -29,7 +31,13 @@ dirnames.mk: Makefile
 alldirs += $(projdirs)
 Ignore += $(knowndirs) $(deepdirs)
 
-## Dev
+## Directory locking.
+## Resist the temptation to be recursive; we want this to work on old directories, too
 
-link:
-	chmod -R a-w QMEE
+## QMEE.lockdir:
+%.lockdir:
+	chmod -R a-w $*
+
+## QMEE.unlockdir:
+%.unlockdir:
+	chmod -R ug+rwX $*
