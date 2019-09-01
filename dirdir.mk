@@ -2,6 +2,10 @@
 ifdef git_dir
 $(error dirdir.mk does not work after git.mk)
 endif
+dirdir = TRUE
+
+## alling should be different in a dirdir; we don't actually want to commit, we went the big dir to do it for us.
+## This means we need to control git.mk from here!
 
 ## A projdir is a regular repo project, it should be alled
 ## rprojdir is something that was and might be a projdir; it's resting
