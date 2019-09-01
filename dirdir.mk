@@ -1,3 +1,7 @@
+## alling can fail if dirdir doesn't run _before_ git.mk
+ifdef git_dir
+$(error dirdir.mk does not work after git.mk)
+endif
 
 ## A projdir is a regular repo project, it should be alled
 ## rprojdir is something that was and might be a projdir; it's resting
