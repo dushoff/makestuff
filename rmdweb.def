@@ -7,11 +7,3 @@ pageProductsLocal += $(mkd:mkd.html)
 pageProductsLocal += main.css
 
 pageProducts = $(pageProductsLocal:%=pages/%)
-
-push_all:
-	cd pages && ! git commit -am "Orphan commit!"
-	cd pages && git pull || ( echo "WAIT: Don't push_all until you can pull" && false)
-	$(MAKE) $(pageProducts)
-	cd pages && git add $(pageProductsLocal) && git pull && git push
-
-all.time: push_all
