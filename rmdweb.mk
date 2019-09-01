@@ -1,13 +1,14 @@
 
 ## .def??
-## Does this need to be a def? Can we move to .mk?
 
-mkd = $(wildcard *.mkd)
+pageSources += $(wildcard *.mkd *.Rmd *.rmd)
 
 pageProductsLocal += $(mkd:.mkd=.html)
 pageProductsLocal += main.css
 
 pageProducts = $(pageProductsLocal:%=pages/%)
+
+Sources += $(pageSources)
 
 ## .mk??
 ## Started in haste 2019 Sep 01 (Sun)
