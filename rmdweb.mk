@@ -27,6 +27,16 @@ mds_r = pandoc --mathjax -s -c main.css -B main.header.html -A main.footer.html 
 pages/%.html: %.mkd main.css main.header.html main.footer.html
 	$(mds_r)
 
+pages/%.html: %.rmk main.css main.header.html main.footer.html
+	$(mds_r)
+
+## At some point could add rmdstep-ish stuff here 
+%.rmk: %.rmd
+
+Ignore += *.rmk
+
+## Outputting
+
 ship_pages:
 	cd pages && ! git commit -am "Orphan commit!"
 	cd pages && git pull || ( echo "WAIT: Don't ship_pages until you can pull" && false)
