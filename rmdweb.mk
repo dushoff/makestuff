@@ -1,5 +1,16 @@
 
-## Developing at the same time as 20190744; need to revisit
+## .def??
+## Does this need to be a def? Can we move to .mk?
+
+mkd = $(wildcard *.mkd)
+
+pageProductsLocal += $(mkd:.mkd=.html)
+pageProductsLocal += main.css
+
+pageProducts = $(pageProductsLocal:%=pages/%)
+
+## .mk??
+## Started in haste 2019 Sep 01 (Sun)
 
 ## This rule should FILTER. 
 mds_r = pandoc --mathjax -s -c main.css -B main.header.html -A main.footer.html -o $@ $<
