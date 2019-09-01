@@ -64,6 +64,9 @@ pull: commit.time
 	git pull
 	touch $<
 
+newSource:
+	git add $(Sources)
+
 ######################################################################
 
 ## parallel directories
