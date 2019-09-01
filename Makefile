@@ -40,13 +40,10 @@ Ignore += $(md:md=html)
 
 Sources += Makefile LICENSE README.md static.mk sub.mk todo.md
 
-Sources += $(wildcard *.mk *.pl)
-
-Sources += subdir.mk ## Probably not used much …
+Sources += $(wildcard *.mk *.pl *.Makefile)
 
 ## New copy-able makefiles 2019 Aug 31 (Sat)
-# Sources += simple.mk ## for users
-# Sources += direct.mk ## for direct subdirectories
+## simple.Makefile direct.Makefile
 
 ## Script to make exclude file
 # Sources += ignore.pl
