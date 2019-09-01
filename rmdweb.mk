@@ -1,9 +1,15 @@
 
 ## .def??
 
-pageSources += $(wildcard *.mkd *.Rmd *.rmd)
+mkd = $(wildcard *.mkd)
+Rmd = $(wildcard *.Rmd)
+rmd = $(wildcard *.rmd)
+
+pageSources += $(mkd) $(Rmd) $(rmd)
 
 pageProductsLocal += $(mkd:.mkd=.html)
+pageProductsLocal += $(Rmd:.Rmd=.html)
+pageProductsLocal += $(rmd:.rmd=.html)
 pageProductsLocal += main.css
 
 pageProducts = $(pageProductsLocal:%=pages/%)
