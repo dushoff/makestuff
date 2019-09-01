@@ -40,7 +40,7 @@ Ignore += $(md:md=html)
 
 Sources += Makefile LICENSE README.md static.mk sub.mk todo.md
 
-Sources += $(wildcard *.mk *.pl *.Makefile)
+Sources += $(wildcard *.mk *.pl *.Makefile *.def)
 
 ## New copy-able makefiles 2019 Aug 31 (Sat)
 ## simple.Makefile direct.Makefile
