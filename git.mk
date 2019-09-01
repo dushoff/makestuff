@@ -201,7 +201,11 @@ gptargets: $(gptargets)
 
 %.pages:
 	$(MAKE) pages/$*
-	cd pages && git add -f $* && git commit -m "Pushed from parent" && git pull && git push
+	cd pages && git add -f $*
+	-cd pages && git commit -m "Pushed directly from parent"
+
+%.pagepush: %.pages
+	cd pages && git pull && git push
 
 pages/%: % pages
 	cd pages && git checkout gh-pages

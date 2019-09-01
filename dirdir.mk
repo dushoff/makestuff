@@ -10,6 +10,7 @@ endif
 ## rprojdirs are _alled_ but not screened
 ## linkdirs are screened but not alled (these are the ones that need more care)
 ## deepdirs are deep resting
+## deepdirs should be locked, and sometimes linkdirs will be, too
 
 ## Making screens automatically
 ## recipes to be included in screen_session
