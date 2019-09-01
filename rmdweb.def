@@ -3,7 +3,7 @@
 
 mkd = $(wildcard *.mkd)
 
-pageProductsLocal += $(mkd:mkd.html)
+pageProductsLocal += $(mkd:.mkd=.html)
 pageProductsLocal += main.css
 
 pageProducts = $(pageProductsLocal:%=pages/%)
