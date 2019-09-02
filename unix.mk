@@ -4,6 +4,9 @@
 ## Try [$$] if you're bored.
 noms:
 	perl -pi -e 's|.\(ms\)/|makestuff/|' Makefile *.mk
+
+%.noms:
+	perl -pi -e 's|.\(ms\)/|makestuff/|' $*/Makefile $*/*.mk
 	
 # Unix basics
 MVF = /bin/mv -f
