@@ -33,7 +33,7 @@ dirnames.mk: Makefile
 -include dirnames.mk
 
 ## Syncing and alling
-alldirs += $(projdirs)
+alldirs += makestuff $(projdirs)
 Ignore += $(knowndirs) $(deepdirs)
 
 ## Directory locking.
