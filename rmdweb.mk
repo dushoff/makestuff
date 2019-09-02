@@ -53,8 +53,9 @@ Ignore += *.rmk
 
 ## Outputting
 
+## Not so clear what the Orphans are about or whether they should break us
 ship_pages:
-	cd pages && ! git commit -am "Orphan commit!"
+	- cd pages && ! git commit -am "Orphan commit!"
 	cd pages && git pull || ( echo "WAIT: Don't ship_pages until you can pull" && false)
 	$(MAKE) $(pageProducts)
 
