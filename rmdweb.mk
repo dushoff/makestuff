@@ -30,10 +30,26 @@ pages/%.html: %.mkd main.css main.header.html main.footer.html
 pages/%.html: %.rmk main.css main.header.html main.footer.html
 	$(mds_r)
 
-## At some point could add rmdstep-ish stuff here 
-%.rmk: %.rmd
+## rmd. It's awkward because rmarkdown library does not play well with piping
+## At some point could add rmdstep-ish stuff here (automatic dependencies)
+rwm_r = Rscript -e 'library("rmarkdown"); render("$<", output_format="md_document", output_file="$@")'
+Ignore += *.rwm
+%.rwm: %.rmd
+	$(rwm_r)
+%.rwm: %.Rmd
+	$(rwm_r)
+
+## Treat up to the first blank line as yaml
+Ignore += *.rym
+rym_r = perl -nE "last if /^$$/; print; END{say}" $< > $@
+%.rym: %.rmd
+	$(rym_r)
+%.rym: %.Rmd
+	$(rym_r)
 
 Ignore += *.rmk
+%.rmk: %.rym %.rwm
+	$(cat)
 
 ## Outputting
 
