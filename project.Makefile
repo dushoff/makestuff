@@ -18,10 +18,13 @@ vim_session:
 Sources += Makefile
 
 Ignore += makestuff
+msrepo = https://github.com/dushoff
+
+Ignore += makestuff
 Makefile: makestuff/Makefile
-	touch $@
 makestuff/Makefile:
-	ls ../makestuff/Makefile && /bin/ln -s ../makestuff 
+	git clone $(msrepo)/makestuff
+	ls $@
 
 -include makestuff/os.mk
 -include makestuff/git.mk

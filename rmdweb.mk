@@ -1,5 +1,5 @@
 
-## .def??
+## Definitions
 
 mkd = $(wildcard *.mkd)
 Rmd = $(wildcard *.Rmd)
@@ -16,8 +16,7 @@ pageProducts = $(pageProductsLocal:%=pages/%)
 
 Sources += $(pageSources)
 
-## .mk??
-## Started in haste 2019 Sep 01 (Sun)
+## Recipes
 
 ## This rule should FILTER. 
 mds_r = pandoc --mathjax -s -c main.css -B main.header.html -A main.footer.html -o $@ $<
@@ -30,7 +29,7 @@ pages/%.html: %.mkd main.css main.header.html main.footer.html
 pages/%.html: %.rmk main.css main.header.html main.footer.html
 	$(mds_r)
 
-## rmd. It's awkward because rmarkdown library does not play well with piping
+## rmd. This is awkward because rmarkdown library does not play well with piping
 ## At some point could add rmdstep-ish stuff here (automatic dependencies)
 rwm_r = Rscript -e 'library("rmarkdown"); render("$<", output_format="md_document", output_file="$@")'
 Ignore += *.rwm
@@ -54,6 +53,9 @@ Ignore += *.rmk
 ## Outputting
 
 ## Not so clear what the Orphans are about or whether they should break us
+
+pull_all: ship_pages pull
+
 ship_pages:
 	- cd pages && ! git commit -am "Orphan commit!"
 	cd pages && git pull || ( echo "WAIT: Don't ship_pages until you can pull" && false)
