@@ -19,8 +19,6 @@ Sources += Makefile
 
 Ignore += makestuff
 msrepo = https://github.com/dushoff
-
-Ignore += makestuff
 Makefile: makestuff/Makefile
 makestuff/Makefile:
 	git clone $(msrepo)/makestuff
@@ -30,4 +28,3 @@ makestuff/Makefile:
 -include makestuff/git.mk
 -include makestuff/visual.mk
 -include makestuff/projdir.mk
-

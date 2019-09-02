@@ -52,9 +52,10 @@ Ignore += *.rmk
 
 ## Outputting
 
-## Not so clear what the Orphans are about or whether they should break us
-
 pull_all: ship_pages pull
+pullup: ship_pages
+
+## Not so clear what the Orphans are about or whether they should break us
 
 ship_pages:
 	- cd pages && ! git commit -am "Orphan commit!"
@@ -67,3 +68,7 @@ push_pages: ship_pages
 	cd pages && git add $(pageProductsLocal) && git pull && git push
 
 push_all: all.time push_pages
+
+%.direct: %
+	$(CP) $< pages/
+	$(MAKE) $<.pages
