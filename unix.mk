@@ -14,6 +14,7 @@ CPR = /bin/cp -rf
 DIFF = diff
 GVEDIT = ($(VEDIT) $@ || gedit $@ || (echo ERROR: No editor found makestuff/unix.mk && echo set shell VEDIT variable && exit 1))
 RMR = /bin/rm -rf
+LS = /bin/ls
 LN = /bin/ln -s
 LNF = /bin/ln -fs
 TGZ = tar czf $@ $^

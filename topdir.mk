@@ -1,13 +1,18 @@
 
+## Make dirdirs
 $(dirdirs):
 	$(mkdir)
 	cp makestuff/direct.Makefile $@/Makefile
 	cd $@ && $(MAKE) makestuff
 
-## This could go into a small .mk with what else?
-## Maybe an execute variable to make the two main sets of screens
-## Actually this stays here, because screens is unique
-## But we will do related stuff for the dirdirs
-
+## Alling and tracking
+## More of this should be here instead of in the screens Makefile 2019 Sep
 alldirs += makestuff $(dirdirs)
 Ignore += $(knowndirs)
+
+## Get ready for repohome
+%.rhd:
+	$(MAKE) $* && cd $* && make rhdir_drop
+
+rhdd:
+	$(MAKE) $(dirdirs:%=%.rhd)
