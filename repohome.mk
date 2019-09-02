@@ -10,10 +10,12 @@ makestuff/repohome.auto.mk: makestuff/repohome.list makestuff/repohome.pl
 %: rhdir/%
 	$(rcopy)
 
+Makefile: rhdir
+
 rhdir:
 	$(LN) ~/Dropbox/$@ . || ( @echo "You need to make an rhdir to use repohome" && @echo "See example rules rhdir_drop and rhdir_local" && false)
 
-rhmake = $(MAKE) rhdir && git clone $(url) $@
+rhmake = git clone $(url) $@
 
 ## 2019 Aug 30 (Fri) These rules might be fun to generalize
 rhdir_drop:
