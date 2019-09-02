@@ -8,7 +8,7 @@ Makefile: $(ms)
 $(ms):
 	git submodule add -b master https://github.com/dushoff/$@.git
 
-makestuff/%.mk: $(ms)/Makefile
+makestuff/%.mk: makestuff/Makefile
 	touch $@
 
 makestuff/Makefile:

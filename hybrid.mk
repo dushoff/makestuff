@@ -24,7 +24,7 @@ endef
 %.hybridfiles: %
 	! ls $*/Makefile || (echo newhybrid: Makefile exists; return 1)
 	cp makestuff/makefile.mk $*/Makefile
-	cp makestuff/hybrid/makestuff.mk $(ms)/target.mk $*
+	cp makestuff/hybrid/makestuff.mk makestuff/target.mk $*
 
 %.newwork: % %.workfiles
 	$(firstpush)
@@ -32,7 +32,7 @@ endef
 %.workfiles: %
 	! ls $*/Makefile || (echo newwork: Makefile exists; return 1)
 	cp makestuff/work.mk $*/Makefile
-	cp makestuff/hybrid/makestuff.mk $(ms)/target.mk $*
+	cp makestuff/hybrid/makestuff.mk makestuff/target.mk $*
 
 %/Makefile %/link.mk %/target.mk %/sub.mk:
 	$(CP) makestuff/$(notdir $@) $*/
@@ -44,7 +44,7 @@ endef
 %.containerfiles: %
 	! ls $*/Makefile || (echo new files: Makefile exists; return 1)
 	cp makestuff/hybrid/container.mk $*/Makefile
-	cp makestuff/hybrid/upstuff.mk $(ms)/target.mk $*
+	cp makestuff/hybrid/upstuff.mk makestuff/target.mk $*
 
 ## working
 %.newwork: %.workfiles %.first ;
@@ -53,7 +53,7 @@ endef
 	! ls $*/Makefile || (echo new files: Makefile exists; return 1)
 	echo "# $*" > $*/Makefile
 	cat makestuff/hybrid/work.mk >> $*/Makefile
-	cp makestuff/hybrid/substuff.mk $(ms)/target.mk $*
+	cp makestuff/hybrid/substuff.mk makestuff/target.mk $*
 
 %.first:
 	cd $* && $(MAKE) makestuff && $(MAKE) commit.default && $(MAKE) push
@@ -66,5 +66,5 @@ endef
 %.hybridfiles: %
 	! ls $*/Makefile || (echo newhybrid: Makefile exists; return 1)
 	cp makestuff/makefile.mk $*/Makefile
-	cp makestuff/hybrid/makestuff.mk $(ms)/target.mk $*
+	cp makestuff/hybrid/makestuff.mk makestuff/target.mk $*
 
