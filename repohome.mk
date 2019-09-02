@@ -9,11 +9,12 @@ makestuff/repohome.auto.mk: makestuff/repohome.list makestuff/repohome.pl
 ## I have also thought about limiting this to projdirs and rprojdirs
 %: rhdir/%
 	$(rcopy)
+	cd $* && $(MAKE) makestuff && $(MAKE) makestuff.msync && $(MAKE) all.time
 
 Makefile: rhdir
 
 rhdir:
-	$(LN) ~/Dropbox/$@ . || ( @echo "You need to make an rhdir to use repohome" && @echo "See example rules rhdir_drop and rhdir_local" && false)
+	$(LN) ~/Dropbox/$@ . || (echo "You need to make an rhdir to use repohome" && @echo "See example rules rhdir_drop and rhdir_local" && false)
 
 rhmake = git clone $(url) $@
 
