@@ -59,6 +59,8 @@ ship_pages:
 	cd pages && git pull || ( echo "WAIT: Don't ship_pages until you can pull" && false)
 	$(MAKE) $(pageProducts)
 
+local_index: ship_pages pages/index.html.go
+
 push_pages: ship_pages
 	cd pages && git add $(pageProductsLocal) && git pull && git push
 
