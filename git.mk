@@ -543,7 +543,7 @@ makestuff.sub:
 	git config --remove-section submodule.$*
 
 ## Force push a commit
-%.force:
+%.forcepush:
 	git push -f origin  $*:master
 
 ######################################################################
