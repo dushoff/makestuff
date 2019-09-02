@@ -13,6 +13,12 @@ endif
 
 ######################################################################
 
+## Hacking around a glitch
+## Could move real GVEDIT here, but a) it doesn't work for other, and b) this weird recursive error may not be found by others.
+ifndef GVEDIT
+GVEDIT = ($(VEDIT) $@ || gvim $@)
+endif
+
 ## Ignoring
 
 ## Find the git directory and make an exclude file here
