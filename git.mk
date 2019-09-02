@@ -203,6 +203,7 @@ gptargets: $(gptargets)
 	$(MAKE) pages/$*
 	cd pages && git add -f $*
 	-cd pages && git commit -m "Pushed directly from parent"
+	@echo .pagepush to push to web …
 
 %.pagepush: %.pages
 	cd pages && git pull && git push
