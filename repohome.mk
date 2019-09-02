@@ -9,7 +9,7 @@ makestuff/repohome.auto.mk: makestuff/repohome.list makestuff/repohome.pl
 ## I have also thought about limiting this to projdirs and rprojdirs
 %: rhdir/%
 	$(rcopy)
-	cd $* && $(MAKE) makestuff && $(MAKE) makestuff.msync && $(MAKE) all.time
+	cd $* && $(MAKE) && $(MAKE) makestuff && $(MAKE) makestuff.msync && $(MAKE) all.time
 
 Makefile: rhdir
 
