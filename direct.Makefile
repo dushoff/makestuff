@@ -1,6 +1,6 @@
 
-## This is XXX, a DIRect subDIRectory (dirdir) of screens
-## makestuff/direct.mk
+## This is XXX, a dirdir under screens
+## makestuff/direct.Makefile
 current: target
 -include target.mk
 
@@ -26,8 +26,9 @@ vim_session:
 ## repohome
 
 example: rhdir/host_group_name
-	$(rcopy)
+	$(rhsetup)
 
+## This is done automatically in makestuff; just here for hooks
 ## makestuff/repohome.auto.mk: makestuff/repohome.list makestuff/repohome.pl
 
 ## linkdirs

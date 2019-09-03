@@ -8,7 +8,7 @@ makestuff/repohome.auto.mk: makestuff/repohome.list makestuff/repohome.pl
 ## (with dependencies) for the next link
 define rhsetup
 $(rcopy)
-cd $* && $(MAKE) Makefile && $(MAKE) makestuff/Makefile && $(MAKE) makestuff.msync && $(MAKE) all.time
+cd $@ && $(MAKE) Makefile && $(MAKE) makestuff/Makefile && $(MAKE) makestuff.msync && $(MAKE) all.time
 endef
 
 %: rhdir/%

@@ -144,3 +144,11 @@ rhdir/git_wzmli_rdc: url=https://github.com/wzmli/rdc.git
 rhdir/git_wzmli_rdc: ; $(rhmake)
 rhdir/git_mac-theobio_DataViz: url=https://github.com/mac-theobio/DataViz.git
 rhdir/git_mac-theobio_DataViz: ; $(rhmake)
+rhdir/git_Bio1M_Lectures: url=https://github.com/Bio1M/Lectures.git
+rhdir/git_Bio1M_Lectures: ; $(rhmake)
+rhdir/git_Bio1M_Bio1M.github.io: url=https://github.com/Bio1M/Bio1M.github.io.git
+rhdir/git_Bio1M_Bio1M.github.io: ; $(rhmake)
+rhdir/git_Bio1M_Archive: url=https://github.com/Bio1M/Archive.git
+rhdir/git_Bio1M_Archive: ; $(rhmake)
+rhdir/git_Bio1M_Lectures_2017: url=https://github.com/Bio1M/Lectures_2017.git
+rhdir/git_Bio1M_Lectures_2017: ; $(rhmake)
