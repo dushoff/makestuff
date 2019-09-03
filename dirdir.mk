@@ -37,7 +37,7 @@ alldirs += makestuff $(projdirs)
 Ignore += $(knowndirs) $(deepdirs)
 
 pmsync:
-	$(MAKE) $(projdirs:%=%.msync)
+	$(MAKE) $(projdirs:%=%.mmsync)
 
 ######################################################################
 
