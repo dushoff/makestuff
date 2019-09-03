@@ -29,7 +29,7 @@ deptarget:
 	$(MAKE) $(target:.pdf=.deps)
 
 target.mk:
-	$(CP) makestuff/$@ .
+	$(CP) makestuff/newtarget.mk $@
 
 ## 
 %.dscreen: %.dir
