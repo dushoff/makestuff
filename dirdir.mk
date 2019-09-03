@@ -36,8 +36,14 @@ dirnames.mk: Makefile
 alldirs += makestuff $(projdirs)
 Ignore += $(knowndirs) $(deepdirs)
 
+pmsync:
+	$(MAKE) $(projdirs:%=%.msync)
+
+######################################################################
+
 ## Directory locking.
 ## Resist the temptation to be recursive; we want this to work on old directories, too
+## What does this mean?? 2019 Sep 03 (Tue). chmod is a recursive Godzilla
 
 ## QMEE.lockdir:
 %.lockdir:
