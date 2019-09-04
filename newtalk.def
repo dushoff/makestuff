@@ -1,2 +1,2 @@
-talkdir = $(ms)/newtalk
+talkdir = makestuff/newtalk
 
