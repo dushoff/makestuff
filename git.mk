@@ -120,6 +120,11 @@ makestuff.allexclude: ;
 %.exclude: 
 	cd $* && $(MAKE) exclude
 
+amsync:
+	git commit -am "amsync"
+	git pull
+	git push
+
 sync: 
 	$(RM) up.time
 	$(MAKE) up.time
