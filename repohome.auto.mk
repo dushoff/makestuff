@@ -152,3 +152,5 @@ rhdir/git_Bio1M_Archive: url=https://github.com/Bio1M/Archive.git
 rhdir/git_Bio1M_Archive: ; $(rhmake)
 rhdir/git_Bio1M_Lectures_2017: url=https://github.com/Bio1M/Lectures_2017.git
 rhdir/git_Bio1M_Lectures_2017: ; $(rhmake)
+rhdir/git_bbolker_math1mp: url=https://github.com/bbolker/math1mp.git
+rhdir/git_bbolker_math1mp: ; $(rhmake)
