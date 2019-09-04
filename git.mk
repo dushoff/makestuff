@@ -124,6 +124,7 @@ amsync:
 	git commit -am "amsync"
 	git pull
 	git push
+	git status
 
 sync: 
 	$(RM) up.time
