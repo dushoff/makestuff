@@ -12,7 +12,15 @@ Ignore += $(knowndirs)
 
 ## Get ready for repohome
 %.rhd:
-	$(MAKE) $* && cd $* && make rhdir_drop
+	cd $* && make rhdir_drop
 
 rhdd:
 	$(MAKE) $(dirdirs:%=%.rhd)
+
+## Update recursively through dirdirs
+
+%.pmsync:
+	cd $* && $(MAKE) pmsync
+
+dpmsync:
+	$(MAKE) $(dirdirs:%=%.pmsync)
