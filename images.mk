@@ -1,4 +1,6 @@
 
+## This looks course-specific, but which course? 2019 Sep 04 (Wed)
+
 ##################################################################
 
 ## Image drop
