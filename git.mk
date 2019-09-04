@@ -211,6 +211,7 @@ gptargets: $(gptargets)
 	-cd pages && git commit -m "Pushed directly from parent"
 	@echo .pagepush to push to web …
 
+%.pushpage: %.pagepush ;
 %.pagepush: %.pages
 	cd pages && git pull && git push
 
