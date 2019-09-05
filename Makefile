@@ -4,16 +4,6 @@
 current: target
 -include target.mk
 
-## export ms = ./ 2019 Aug 29 (Thu) experimenting with getting ms out!
-Makefile: makestuff/Makefile
-	touch $@
-
-Ignore += makestuff
-makestuff/Makefile:
-	ln -s . makestuff
-
--include makestuff/os.mk
-
 ##################################################################
 
 md = $(wildcard *.md)
@@ -176,6 +166,13 @@ Sources += repohome.list
 Ignore += repohome.auto.mk
 
 ######################################################################
+
+## Hack around makestuff/makestuff problem
+ifeq ($(shell uname), Linux)
+include linux.mk
+else
+include unix.mk
+endif
 
 -include local.mk
 include git.mk

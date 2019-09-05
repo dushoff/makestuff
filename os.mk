@@ -5,6 +5,7 @@ else
 include makestuff/unix.mk
 endif
 
+## This doesn't _seem_ to belong here
 %.var:
 	@echo $($*)
 

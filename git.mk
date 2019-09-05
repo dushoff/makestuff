@@ -30,7 +30,7 @@ git_dir = $(shell git rev-parse --git-dir)
 exclude: $(git_dir)/info/exclude ;
 
 $(git_dir)/info/exclude: $(Sources) Makefile
-	perl -wf makestuff/ignore.pl > $@
+	perl -wf makestuff/ignore.pl > $@ || perl -wf ignore.pl > $@
 
 export Ignore += local.mk target.mk make.log go.log
 
