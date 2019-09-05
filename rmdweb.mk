@@ -75,3 +75,9 @@ push_all: up.time push_pages
 %.direct: %
 	$(CP) $< pages/
 	$(MAKE) $<.pages
+
+## REFACTOR
+
+tangle_r = Rscript -e 'library("knitr"); knit("$<", output="$@", tangle=TRUE)'
+%.tangle.R: %.Rmd
+	$(tangle_r)
