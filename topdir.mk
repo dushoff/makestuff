@@ -24,3 +24,4 @@ rhdd:
 
 dpmsync:
 	$(MAKE) $(dirdirs:%=%.pmsync)
+	$(MAKE) makestuff.msync

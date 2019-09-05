@@ -168,7 +168,7 @@ remotesync: commit.default
 
 makestuff.mmsync: ;
 %.mmsync: 
-	cd $* && git checkout master && $(MAKE) makestuff.master makestuff.sync
+	cd $* && git checkout master && $(MAKE) makestuff && $(MAKE) makestuff.master makestuff.sync
 
 %.sync: %
 	cd $< && $(MAKE) sync
