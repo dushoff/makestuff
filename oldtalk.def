@@ -1,2 +1,0 @@
-talkdir = $(ms)/talk
-format_files = beamer.fmt beamer.tmp outline.fmt outline.tmp

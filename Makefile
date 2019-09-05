@@ -28,7 +28,7 @@ Ignore += $(md:md=html)
 
 # Base files
 
-Sources += Makefile LICENSE README.md static.mk sub.mk todo.md
+Sources += Makefile LICENSE README.md todo.md
 
 Sources += $(wildcard *.mk *.pl *.Makefile *.def)
 
@@ -153,6 +153,8 @@ personal.pdf:
 	echo "This personal image is not found" | groff | ps2pdf - > $@
 
 ######################################################################
+
+## Repos for gitroot
 
 ## Deprecate these. Also, maybe crib some more into repohome.list?
 # Sources += repos/dushoff_repos.mk repos/friends.mk repos/sites.mk
