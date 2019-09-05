@@ -52,14 +52,17 @@ Ignore += *.rmk
 
 ## Outputting
 
-pull_all: ship_pages pull
-pullup: ship_pages
+pull_all: pull_pages pull makestuff.pull
+pullup: pull_pages
 
 ## Not so clear what the Orphans are about or whether they should break us
 
-ship_pages:
+pull_pages:
 	- cd pages && ! git commit -am "Orphan commit!"
-	cd pages && git pull || ( echo "WAIT: Don't ship_pages until you can pull" && false)
+	cd pages && git pull
+
+ship_pages:
+	$(MAKE) pull_pages || ( echo "WAIT: Don't ship_pages until you can pull" && false)
 	$(MAKE) $(pageProducts)
 
 local_index: ship_pages pages/index.html.go
@@ -67,7 +70,7 @@ local_index: ship_pages pages/index.html.go
 push_pages: ship_pages
 	cd pages && git add $(pageProductsLocal) && git pull && git push
 
-push_all: all.time push_pages
+push_all: up.time push_pages
 
 %.direct: %
 	$(CP) $< pages/
