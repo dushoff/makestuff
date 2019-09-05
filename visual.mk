@@ -44,7 +44,7 @@ target.mk:
 ## do the above and open a vim_session
 %.vscreen: %.dir
 	cd $(dir $*) && $(MAKE) "$(notdir $*)" 
-	cd $* && screen -t "$(notdir $*)" bash -cl "vmt"
+	cd $* && screen -t "$(notdir $*)" bash -cl "vvs"
 
 %.dir:
 	cd $(dir $*) && $(MAKE) $(notdir $*)
