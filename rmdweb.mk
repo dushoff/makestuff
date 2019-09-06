@@ -23,6 +23,7 @@ pageProductsLocal += $(lmkd:.lect.mkd=.io.html)
 pageProductsLocal += $(lRmd:.lect.Rmd=.io.html)
 pageProductsLocal += $(lrmd:.lect.rmd=.io.html)
 
+
 pageProducts = $(pageProductsLocal:%=pages/%)
 
 Sources += $(pageSources)
