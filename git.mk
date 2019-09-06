@@ -29,6 +29,8 @@ git_dir = $(shell git rev-parse --git-dir)
 
 exclude: $(git_dir)/info/exclude ;
 
+## Usually .git/info/exclude
+## dirdir ../.git/info/exclude
 $(git_dir)/info/exclude: $(Sources) Makefile
 	perl -wf makestuff/ignore.pl > $@ || perl -wf ignore.pl > $@
 
@@ -168,7 +170,7 @@ remotesync: commit.default
 
 makestuff.mmsync: ;
 %.mmsync: 
-	cd $* && git checkout master && $(MAKE) makestuff.master makestuff.sync
+	cd $* && git checkout master && $(MAKE) makestuff && $(MAKE) makestuff.master makestuff.sync
 
 %.sync: %
 	cd $< && $(MAKE) sync
@@ -411,8 +413,12 @@ hup:
 	git remote get-url origin
 
 ## Outdated version for github ssh 
-upstream:
+supstream:
 	git remote get-url origin | perl -pe "s|:|/|; s|[^@]*@|go https://|; s/\.git.*//" | bash --login
+
+## Github only (not implemented)
+pageLocation:
+	git remote get-url origin
 
 ######################################################################
 
