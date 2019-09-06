@@ -411,8 +411,12 @@ hup:
 	git remote get-url origin
 
 ## Outdated version for github ssh 
-upstream:
+supstream:
 	git remote get-url origin | perl -pe "s|:|/|; s|[^@]*@|go https://|; s/\.git.*//" | bash --login
+
+## Github only (not implemented)
+pageLocation:
+	git remote get-url origin
 
 ######################################################################
 
