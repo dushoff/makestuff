@@ -14,6 +14,8 @@ rhdir/bit_dushoff_qmee_private: url=https://dushoff@bitbucket.org/dushoff/qmee_p
 rhdir/bit_dushoff_qmee_private: ; $(rhmake)
 rhdir/git_bbolker_stat744: url=https://github.com/bbolker/stat744.git
 rhdir/git_bbolker_stat744: ; $(rhmake)
+rhdir/git_bbolker_stat744_private: url=https://github.com/bbolker/stat744_private.git
+rhdir/git_bbolker_stat744_private: ; $(rhmake)
 rhdir/git_Bio3SS_3SS: url=https://github.com/Bio3SS/3SS.git
 rhdir/git_Bio3SS_3SS: ; $(rhmake)
 rhdir/git_cfshi_cannabis: url=https://github.com/cfshi/cannabis.git
