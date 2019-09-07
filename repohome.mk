@@ -14,8 +14,8 @@ endef
 %: rhdir/%
 	$(rhsetup)
 
+## Can't call make from rhdir because of loops
 Makefile: rhdir
-
 rhdir:
 	$(LN) ~/Dropbox/$@ . || (echo "You need to make an rhdir to use repohome" && @echo "See example rules rhdir_drop and rhdir_local" && false)
 
@@ -25,9 +25,12 @@ rhmake = git clone $(url) $@
 rhdir_drop:
 	$(MAKE) ~/Dropbox/rhdir
 
-~/Dropbox/rhdir:
-	$(mkdir)
-
 rhdir_local:
 	$(MD) rhdir
+
+## This doesn't and shouldn't chain. People can decide for themselves
+## whether and where to make an rhdir_drop
+## In fact, why have it; it's just noise?
+~/Dropbox/rhdir:
+	$(mkdir)
 
