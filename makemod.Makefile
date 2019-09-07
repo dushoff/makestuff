@@ -19,7 +19,6 @@ vim_session:
 ## Developing 2019 Sep 07 (Sat); this causes unnecessary confusion if you leave it in at all!
 ## Maybe fixed now; it was chaining to submodule update and now it shouldn't.
 msrepo = https://github.com/dushoff
-Makefile: makestuff
 makestuff:
 	git submodule add -b master $(msrepo)/makestuff
 
@@ -38,6 +37,7 @@ Makefile: makestuff/Makefile
 
 makestuff/%.mk: makestuff/Makefile ;
 makestuff/Makefile:
+	$(MAKE) makestuff
 	git submodule update -i
 
 -include makestuff/os.mk
