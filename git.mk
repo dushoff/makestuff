@@ -136,6 +136,9 @@ allsync:
 	$(RM) all.time
 	$(MAKE) all.time
 
+newpush:
+	git push -u origin master
+
 ######################################################################
 
 ## This probably belongs somewhere else!
