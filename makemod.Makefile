@@ -16,8 +16,10 @@ vim_session:
 ######################################################################
 
 ## This ¶ can be deleted once makestuff is set up
+## Developing 2019 Sep 07 (Sat); this causes unnecessary confusion if you leave it in at all!
+## Maybe fixed now; it was chaining to submodule update and now it shouldn't.
 msrepo = https://github.com/dushoff
-makestuff/Makefile: makestuff
+Makefile: makestuff
 makestuff:
 	git submodule add -b master $(msrepo)/makestuff
 
