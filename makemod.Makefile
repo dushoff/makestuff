@@ -39,8 +39,6 @@ makestuff/Makefile:
 	git submodule update -i
 
 -include makestuff/os.mk
-
--include makestuff/os.mk
 -include makestuff/git.mk
 -include makestuff/visual.mk
 -include makestuff/projdir.mk
