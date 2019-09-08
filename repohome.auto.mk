@@ -158,5 +158,7 @@ rhdir/git_Bio1M_Lectures_2017: url=https://github.com/Bio1M/Lectures_2017.git
 rhdir/git_Bio1M_Lectures_2017: ; $(rhmake)
 rhdir/git_bbolker_math1mp: url=https://github.com/bbolker/math1mp.git
 rhdir/git_bbolker_math1mp: ; $(rhmake)
+rhdir/git_wzmli_phyloglmm: url=https://github.com/wzmli/phyloglmm.git
+rhdir/git_wzmli_phyloglmm: ; $(rhmake)
 rhdir/git_SACEMA_epidemicInsurance: url=https://github.com/SACEMA/epidemicInsurance.git
 rhdir/git_SACEMA_epidemicInsurance: ; $(rhmake)
