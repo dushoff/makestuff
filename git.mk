@@ -226,8 +226,8 @@ gptargets: $(gptargets)
 %.pagepush: %.pages
 	cd pages && git pull && git push
 
+## cd pages && git checkout gh-pages
 pages/%: % pages
-	cd pages && git checkout gh-pages
 	$(copy)
 
 Ignore += pages
