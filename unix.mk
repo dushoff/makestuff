@@ -28,6 +28,7 @@ ZIP = zip $@ $^
 readonly = chmod a-w $@
 RO = chmod a-w $@
 DNE = (! $(LS) $@ > $(null))
+LSD = ($(LS) $@ > $(null))
 
 null = /dev/null
 
@@ -71,7 +72,8 @@ pandocs = pandoc -s -o $@ $<
 ## Maybe think about using dir $@ in future when thinking more clearly
 ## Including for rcopy
 
-dircopy = $(DNE) && $(rcopy)
+dircopy = ($(LSD) && $(touch)) ||  $(rcopy)
+
 # What?
 convert = convert $< $@
 imageconvert = convert -density 600 -trim $< -quality 100 -sharpen 0x1.0 $@
