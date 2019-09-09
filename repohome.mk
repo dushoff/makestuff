@@ -7,7 +7,7 @@ makestuff/repohome.auto.mk: makestuff/repohome.list makestuff/repohome.pl
 ## This rule should be safe now, because it has only generated rules
 ## (with dependencies) for the next link
 define rhsetup
-$(rcopy)
+$(dircopy)
 cd $@ && $(MAKE) Makefile && $(MAKE) makestuff/Makefile && $(MAKE) makestuff.msync && $(MAKE) all.time
 endef
 
