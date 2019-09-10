@@ -216,7 +216,12 @@ gptargets: $(gptargets)
 ## Pages. Sort of like git_push, but for gh_pages (html, private repos)
 ## May want to refactor as for git_push above (break link from pages/* to * for robustness)
 
+## pages is a different branch, so pull first
+## Not clear if the checkout step has any advantages or disadvantages
+## Seems protocolaceous
 %.pages:
+	$(MAKE) pages
+	cd pages && git checkout gh-pages && ($(MAKE) pull || git pull)
 	$(MAKE) pages/$*
 	cd pages && git add -f $*
 	-cd pages && git commit -m "Pushed directly from parent"
@@ -226,8 +231,8 @@ gptargets: $(gptargets)
 %.pagepush: %.pages
 	cd pages && git pull && git push
 
-## cd pages && git checkout gh-pages
-pages/%: % pages
+## Don't call this directly and then we don't need the pages dependency
+pages/%: % 
 	$(copy)
 
 Ignore += pages
