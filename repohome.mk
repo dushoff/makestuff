@@ -15,6 +15,7 @@ endef
 	$(rhsetup)
 
 ## Can't call make from rhdir because of loops
+Ignore += rhdir
 Makefile: rhdir
 rhdir:
 	$(LN) ~/Dropbox/$@ . || (echo "You need to make an rhdir to use repohome" && @echo "See example rules rhdir_drop and rhdir_local" && false)
