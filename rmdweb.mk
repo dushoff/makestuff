@@ -94,7 +94,3 @@ push_pages: ship_pages
 	cd pages && git add $(pageProductsLocal) && git pull && git push
 
 push_all: up.time push_pages
-
-%.direct: %
-	$(CP) $< pages/
-	$(MAKE) $<.pages
