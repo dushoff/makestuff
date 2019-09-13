@@ -23,7 +23,10 @@ pageProductsLocal += $(lmkd:.lect.mkd=.io.html)
 pageProductsLocal += $(lRmd:.lect.Rmd=.io.html)
 pageProductsLocal += $(lrmd:.lect.rmd=.io.html)
 
-pageProducts = $(pageProductsLocal:%=pages/%)
+local_files = $(wildcard *_files/*)
+page_files = $(local_files:%=pages/%)
+
+pageProducts = $(pageProductsLocal:%=pages/%) $(page_files)
 
 Sources += $(pageSources)
 
@@ -31,18 +34,21 @@ Sources += $(pageSources)
 
 ## This rule should filter filenames instead of specifying "main". 
 mdh_r = pandoc --mathjax -s -c main.css -B main.header.html -A main.footer.html -o $@ $<
-rmdfiles_r = - $(CPR) $*_files $(dir $@)
+rmdfiles_r = $(CPR) $*_files $(dir $@)
 
 ## Source ⇒ product
 pages/%.html: %.mkd main.css main.header.html main.footer.html
 	$(mdh_r)
 pages/%.html: %.rmk main.css main.header.html main.footer.html
 	$(mdh_r)
-	$(rmdfiles_r)
+	- $(rmdfiles_r)
 pages/%.notes.html: %.mkd main.css main.header.html main.footer.html
 	$(mdh_r)
 pages/%.notes.html: %.rmk main.css main.header.html main.footer.html
 	$(mdh_r)
+
+## page_files are made as side effects of compilation from rmd. We hope
+$(page_files): ;
 
 ## In some haste now.
 ## pages/intro.io.html:
@@ -50,8 +56,10 @@ mdio_r = echo 'rmarkdown::render("$<",output_format="ioslides_presentation", out
 
 pages/%.io.html: %.lect.mkd
 	$(mdio_r)
-pages/%.io.html: %.lect.rmk
-	$(mdio_r)
+
+## Choose one pipeline; former is more parallel, latter works better up until now.
+## pages/%.io.html: %.lect.rmk; $(mdio_r)
+## pages/%.io.html: %.lect.rmd; $(mdio_r)
 
 ## rmd. This is awkward because rmarkdown library does not play well with piping
 ## At some point could add rmdstep-ish stuff here (automatic dependencies)
