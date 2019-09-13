@@ -31,12 +31,14 @@ Sources += $(pageSources)
 
 ## This rule should filter filenames instead of specifying "main". 
 mdh_r = pandoc --mathjax -s -c main.css -B main.header.html -A main.footer.html -o $@ $<
+rmdfiles_r = - $(CPR) $*_files $(dir $@)
 
 ## Source ⇒ product
 pages/%.html: %.mkd main.css main.header.html main.footer.html
 	$(mdh_r)
 pages/%.html: %.rmk main.css main.header.html main.footer.html
 	$(mdh_r)
+	$(rmdfiles_r)
 pages/%.notes.html: %.mkd main.css main.header.html main.footer.html
 	$(mdh_r)
 pages/%.notes.html: %.rmk main.css main.header.html main.footer.html
