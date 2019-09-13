@@ -23,10 +23,14 @@ pageProductsLocal += $(lmkd:.lect.mkd=.io.html)
 pageProductsLocal += $(lRmd:.lect.Rmd=.io.html)
 pageProductsLocal += $(lrmd:.lect.rmd=.io.html)
 
+## _files refers to rmd _files/ directories here
 local_files = $(wildcard *_files/*)
 page_files = $(local_files:%=pages/%)
 
-pageProducts = $(pageProductsLocal:%=pages/%) $(page_files)
+## Local is used over in pages for adding
+pageProductsLocal += $(local_files)
+
+pageProducts = $(pageProductsLocal:%=pages/%)
 
 Sources += $(pageSources)
 
