@@ -54,6 +54,8 @@ pages/%.notes.html: %.rmk main.css main.header.html main.footer.html
 ## page_files are made as side effects of compilation from rmd. We hope
 $(page_files): ;
 
+Ignore += $(wildcard *_cache *_files)/*
+
 ## In some haste now.
 ## pages/intro.io.html:
 mdio_r = echo 'rmarkdown::render("$<",output_format="ioslides_presentation", output_file="$(notdir $@)", output_dir="$(dir $@)")' | R --vanilla
