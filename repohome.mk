@@ -7,15 +7,16 @@ makestuff/repohome.auto.mk: makestuff/repohome.list makestuff/repohome.pl
 ## This rule should be safe now, because it has only generated rules
 ## (with dependencies) for the next link
 define rhsetup
-$(rcopy)
+$(dircopy)
 cd $@ && $(MAKE) Makefile && $(MAKE) makestuff/Makefile && $(MAKE) makestuff.msync && $(MAKE) all.time
 endef
 
 %: rhdir/%
 	$(rhsetup)
 
+## Can't call make from rhdir because of loops
+Ignore += rhdir
 Makefile: rhdir
-
 rhdir:
 	$(LN) ~/Dropbox/$@ . || (echo "You need to make an rhdir to use repohome" && @echo "See example rules rhdir_drop and rhdir_local" && false)
 
@@ -25,9 +26,12 @@ rhmake = git clone $(url) $@
 rhdir_drop:
 	$(MAKE) ~/Dropbox/rhdir
 
-~/Dropbox/rhdir:
-	$(mkdir)
-
 rhdir_local:
 	$(MD) rhdir
+
+## This doesn't and shouldn't chain. People can decide for themselves
+## whether and where to make an rhdir_drop
+## In fact, why have it; it's just noise?
+~/Dropbox/rhdir:
+	$(mkdir)
 

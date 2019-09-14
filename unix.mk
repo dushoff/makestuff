@@ -27,6 +27,8 @@ CAT = cat
 ZIP = zip $@ $^
 readonly = chmod a-w $@
 RO = chmod a-w $@
+DNE = (! $(LS) $@ > $(null))
+LSD = ($(LS) $@ > $(null))
 
 null = /dev/null
 
@@ -65,6 +67,12 @@ lnf = $(LNF) $< $@
 rm = $(RM) $@
 pandoc = pandoc -o $@ $<
 pandocs = pandoc -s -o $@ $<
+
+## To copy a directory, be recursive, but don't accidentally copy _into_ an existing directory
+## Maybe think about using dir $@ in future when thinking more clearly
+## Including for rcopy
+
+dircopy = ($(LSD) && $(touch)) ||  $(rcopy)
 
 # What?
 convert = convert $< $@
