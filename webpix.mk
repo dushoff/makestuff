@@ -53,8 +53,8 @@ $(imageDrop)/webpix $(imageDrop)/my_images:
 	$(MAKE) $*
 
 ## Use generated make rules appropriately
-Ignore += allsteps.mk
 stepmks = $(steps:.step=.step.mk)
+Ignore += allsteps.mk $(stepmks)
 Makefile: allsteps.mk
 allsteps.mk: $(stepmks)
 	$(cat)
