@@ -54,7 +54,8 @@ pages/%.notes.html: %.rmk main.css main.header.html main.footer.html
 ## page_files are made as side effects of compilation from rmd. We hope
 $(page_files): ;
 
-Ignore += $(wildcard *_cache *_files)/*
+Ignore += $(wildcard *_cache)/*
+Ignore += $(wildcard *_files)/*
 
 ## In some haste now.
 ## pages/intro.io.html:
