@@ -107,7 +107,9 @@ ship_pages:
 
 local_index: ship_pages pages/index.html.go
 
-push_pages: ship_pages
+push_pages: ship_pages sync_pages
+
+sync_pages:
 	cd pages && git add $(pageProductsLocal) && git pull && git push
 
 push_all: up.time push_pages
