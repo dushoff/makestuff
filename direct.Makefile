@@ -36,7 +36,6 @@ example: rhdir/host_group_name
 sample: dir=~
 sample: ; $(linkdir)
 
-
 ######################################################################
 
 ### Makestuff
