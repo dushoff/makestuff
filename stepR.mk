@@ -28,9 +28,15 @@ rflags = --no-environ --no-site-file --no-init-file --no-restore
 %.Rout: %.R
 	$(stepHere)
 
-## Modularize this to make it easier to combine with 
-## other directory stuff
+## 2019 Sep 11 (Wed)
+## For now, _don't do an auto RData; can work on this later (see Extra, below)
 define stepHere
+	- $(RM) .RData Rplots.pdf $*.RData $*.Rout.pdf 
+	( (R $(rflags) --no-save < $*.R > $@) 2> $*.Rlog && cat $*.Rlog ) || ! cat $*.Rlog
+	(perl -wf $(RRd)/pdfcheck.pl Rplots.pdf && $(MV) Rplots.pdf $*.Rout.pdf) || :
+endef
+
+define stepHereExtra
 	- $(RM) .RData Rplots.pdf $*.RData $*.Rout.pdf 
 	( (R $(rflags) --save < $*.R > $@) 2> $*.Rlog && cat $*.Rlog ) || ! cat $*.Rlog
 	- $(MV) .RData $*.RData 

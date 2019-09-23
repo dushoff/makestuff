@@ -2,20 +2,9 @@
 current: target
 -include target.mk
 
-## Makestuff setup (automatically get makestuff if you clone this repo somewhere else)
-Sources += Makefile 
-msrepo = https://github.com/dushoff
-
-Ignore += makestuff
-Makefile: makestuff/Makefile
-makestuff/Makefile:
-	git clone $(msrepo)/makestuff
-	ls $@
-
 ### Makestuff rules you may want. The os is basic and shouldn't hurt
 ### Others can be commented in and out
--include makestuff/os.mk
--include makestuff/perl.def
+## -include makestuff/perl.def
 
 ######################################################################
 
@@ -28,7 +17,16 @@ makestuff/Makefile:
 ######################################################################
 
 ### Makestuff rules
+Sources += Makefile 
+msrepo = https://github.com/dushoff
 
+Ignore += makestuff
+Makefile: makestuff/Makefile
+makestuff/Makefile:
+	git clone $(msrepo)/makestuff
+	ls $@
+
+-include makestuff/os.mk
 -include makestuff/git.mk
 -include makestuff/visual.mk
 

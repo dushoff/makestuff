@@ -21,6 +21,7 @@ stepR also has default products:
 These can be used for chaining.
 
 It is a convention to name manually created R data files `.rda` and allow stepR to call things `.RData`.
+* stepR should not be making .RData if we are making .rda 2019 Sep 11 (Wed)
 
 stepR was first pushed Thanksgiving 2018. It is pre-α.
 

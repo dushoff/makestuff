@@ -23,6 +23,13 @@ pageProductsLocal += $(lmkd:.lect.mkd=.io.html)
 pageProductsLocal += $(lRmd:.lect.Rmd=.io.html)
 pageProductsLocal += $(lrmd:.lect.rmd=.io.html)
 
+## _files refers to rmd _files/ directories here
+local_files = $(wildcard *_files/*)
+page_files = $(local_files:%=pages/%)
+
+## Local is used over in pages for adding
+pageProductsLocal += $(local_files)
+
 pageProducts = $(pageProductsLocal:%=pages/%)
 
 Sources += $(pageSources)
@@ -31,16 +38,24 @@ Sources += $(pageSources)
 
 ## This rule should filter filenames instead of specifying "main". 
 mdh_r = pandoc --mathjax -s -c main.css -B main.header.html -A main.footer.html -o $@ $<
+rmdfiles_r = $(CPR) $*_files $(dir $@)
 
 ## Source ⇒ product
 pages/%.html: %.mkd main.css main.header.html main.footer.html
 	$(mdh_r)
 pages/%.html: %.rmk main.css main.header.html main.footer.html
 	$(mdh_r)
+	- $(rmdfiles_r)
 pages/%.notes.html: %.mkd main.css main.header.html main.footer.html
 	$(mdh_r)
 pages/%.notes.html: %.rmk main.css main.header.html main.footer.html
 	$(mdh_r)
+
+## page_files are made as side effects of compilation from rmd. We hope
+$(page_files): ;
+
+Ignore += $(wildcard *_cache)/*
+Ignore += $(wildcard *_files)/*
 
 ## In some haste now.
 ## pages/intro.io.html:
@@ -48,8 +63,10 @@ mdio_r = echo 'rmarkdown::render("$<",output_format="ioslides_presentation", out
 
 pages/%.io.html: %.lect.mkd
 	$(mdio_r)
-pages/%.io.html: %.lect.rmk
-	$(mdio_r)
+
+## Choose one pipeline; former is more parallel, latter works better up until now.
+## pages/%.io.html: %.lect.rmk; $(mdio_r)
+## pages/%.io.html: %.lect.rmd; $(mdio_r)
 
 ## rmd. This is awkward because rmarkdown library does not play well with piping
 ## At some point could add rmdstep-ish stuff here (automatic dependencies)
@@ -90,7 +107,11 @@ ship_pages:
 
 local_index: ship_pages pages/index.html.go
 
-push_pages: ship_pages
-	cd pages && git add $(pageProductsLocal) && git pull && git push
+push_pages: ship_pages sync_pages
+
+sync_pages:
+	cd pages && git add $(pageProductsLocal)
+	- cd pages && git commit -am "Autosync"
+	cd pages && git pull && git push
 
 push_all: up.time push_pages
