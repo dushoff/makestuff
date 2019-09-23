@@ -1,3 +1,5 @@
+rhdir/git_ICI3D_rubellaSA: url=https://github.com/ICI3D/rubellaSA.git
+rhdir/git_ICI3D_rubellaSA: ; $(rhmake)
 rhdir/bit_dushoff_Correspondence: url=https://bitbucket.org/dushoff/Correspondence.git
 rhdir/bit_dushoff_Correspondence: ; $(rhmake)
 rhdir/bit_dushoff_New_CV: url=https://bitbucket.org/dushoff/New_CV.git
