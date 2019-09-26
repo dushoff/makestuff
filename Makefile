@@ -167,7 +167,6 @@ Ignore += repohome.auto.mk
 
 ######################################################################
 
-## Hack around makestuff/makestuff problem
 ifeq ($(shell uname), Linux)
 include linux.mk
 else

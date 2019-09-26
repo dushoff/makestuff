@@ -19,24 +19,9 @@ ifndef GVEDIT
 GVEDIT = ($(VEDIT) $@ || gvim $@)
 endif
 
-## Ignoring
-
-## Find the git directory and make an exclude file here
-## When we have subdirectories they may compete (overwrite each others' exclude files)
-## Not clear why that would be a problem
-
-git_dir = $(shell git rev-parse --git-dir)
-
-exclude: $(git_dir)/info/exclude ;
-
-## Usually .git/info/exclude
-## dirdir ../.git/info/exclude
-$(git_dir)/info/exclude: $(Sources) Makefile
-	perl -wf makestuff/ignore.pl > $@ || perl -wf ignore.pl > $@
-
-export Ignore += local.mk target.mk make.log go.log
-
-## Personal ignore stuff see ignore.config
+## More makestuff/makestuff weirdness
+-include makestuff/exclude.mk
+-include exclude.mk
 
 ######################################################################
 
@@ -216,12 +201,11 @@ gptargets: $(gptargets)
 ## Pages. Sort of like git_push, but for gh_pages (html, private repos)
 ## May want to refactor as for git_push above (break link from pages/* to * for robustness)
 
-## pages is a different branch, so pull first
-## Not clear if the checkout step has any advantages or disadvantages
-## Seems protocolaceous
+## 2019 Sep 22 (Sun) Keeping checkout, but skipping early pull
+## That can make the remote copy look artificially new
 %.pages:
 	$(MAKE) pages
-	cd pages && git checkout gh-pages && ($(MAKE) pull || git pull)
+	cd pages && git checkout gh-pages
 	$(MAKE) pages/$*
 	cd pages && git add -f $*
 	-cd pages && git commit -m "Pushed directly from parent"

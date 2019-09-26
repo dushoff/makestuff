@@ -11,6 +11,7 @@ rmdh_r = Rscript -e 'library("rmarkdown"); render("$<", output_format="html_docu
 
 tangle_r = Rscript -e 'library("knitr"); knit("$<", output="$@", tangle=TRUE)'
 
-%.tangle.R: %.Rmd
+## Don't want to auto-Source this usually
+%.tangle.r: %.Rmd
 	$(tangle_r)
 

@@ -48,13 +48,13 @@ $(imageDrop)/webpix $(imageDrop)/my_images:
 	$(mkdir)
 
 ## Reload a figure if you messed up the link or something
-%.rmk:
+%.remake:
 	$(RM) $*
 	$(MAKE) $*
 
 ## Use generated make rules appropriately
-Ignore += allsteps.mk
 stepmks = $(steps:.step=.step.mk)
+Ignore += allsteps.mk $(stepmks)
 Makefile: allsteps.mk
 allsteps.mk: $(stepmks)
 	$(cat)
