@@ -6,6 +6,12 @@ PERLEX = perl -wf $(filter %.pl, $^)
 PUSH = perl -wf $(filter %.pl, $^) $(filter-out %.pl, $^) > $@
 PUSHRO = $(rm) $@; $(PUSH); $(RO)
 
+define PUSHRO
+	- $(RM) $@
+	$(PUSH)
+	$(chmod)
+endef
+
 # Pushout adds the name of the output file as the first argument (assuming you only have one .pl dependency)
 PUSHOUT = perl -wf $(filter %.pl, $^) $@ $(filter-out %.pl, $^) > $@
 
