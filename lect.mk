@@ -13,6 +13,7 @@ lect:
 
 Ignore += talkdir
 .PRECIOUS: talkdir/%
+
 talkdir/%:
 	$(MAKE) talkdir
 
