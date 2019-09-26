@@ -162,3 +162,5 @@ rhdir/git_wzmli_phyloglmm: url=https://github.com/wzmli/phyloglmm.git
 rhdir/git_wzmli_phyloglmm: ; $(rhmake)
 rhdir/git_SACEMA_epidemicInsurance: url=https://github.com/SACEMA/epidemicInsurance.git
 rhdir/git_SACEMA_epidemicInsurance: ; $(rhmake)
+rhdir/bit_dushoff_1m_private: url=https://dushoff@bitbucket.org/dushoff/1m_private.git
+rhdir/bit_dushoff_1m_private: ; $(rhmake)
