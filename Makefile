@@ -100,7 +100,7 @@ Sources += $(wildcard *.mk *.pl *.Makefile *.def)
 
 # Sources += linkdirs.mk newtalk.def newtalk.mk newtalk.md $(wildcard newtalk/*.*)
 
-# Sources += lect.mk $(wildcard lect/*.*)
+Sources += $(wildcard lect/*.*)
 
 # Sources += pandoc.mk compare.mk render.mk
 
