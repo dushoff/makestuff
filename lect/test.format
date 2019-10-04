@@ -51,6 +51,10 @@ J ^Q \emph{JD} %%
 Q \vspace{2.0ex plus 8.0ex}\pagebreak[3]\noindent\stepcounter{question}{\arabic{question}.}~%%\vspace{1.0ex}
 test: \vspace{2.0ex plus 8.0ex}\pagebreak[3]\noindent\stepcounter{question}{\bf\arabic{question}.}~%%\vspace{1.0ex}
 
+QQ ^COMMENT %%
+
+QUIET %!
+
 PRE %%
 
 FQ \vspace{2.0ex}\noindent\stepcounter{question}\arabic{question}.~%%
@@ -117,12 +121,16 @@ test: %!
 
 ################################################################
 
-# Figures
+# Figures (kind of old-fashioned; look at a newer file?)
 
 HFIG \includegraphics[height=%\textheight]{%}
 FIG ^HFIG 0.4 %%
 PageFIG ^HFIG 0.5 %%
-WIDEFIG \includegraphics[width=0.9\textwidth]{%}
+HIGHFIG ^FIG %%
+
+WFIG \includegraphics[width=%\textwidth]{%}
+WIDEFIG ^WFIG 0.9 %%
+
 DOUBLEFIG \begin{minipage}{\dfwidth} \centering \n\includegraphics[height=\dfheight]{%} \end{minipage} \hspace{\dfsep} \begin{minipage}{\dfwidth} \centering \n\includegraphics[height=\dfheight]{%} \end{minipage}
 DOUBLEPDF ^DOUBLEFIG %+-0.pdf %+-1.pdf
 
@@ -139,7 +147,7 @@ rub: \uline{%%}
 QUIET %!
 
 # Separate the two sections of an MC/SA test; ENDMC now obsoleted (but still around in Bio3SS)
-## Next time, move sa_inst to sahead?
+## sa_inst is now sa_head!
 ## The parsing is confusing
-STARTSA \cleardoublepage\input{sa_inst.tex}
+STARTSA \cleardoublepage\input{sa_head.tex}
 key rub: %!
