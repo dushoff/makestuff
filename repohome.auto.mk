@@ -22,6 +22,8 @@ rhdir/git_Bio3SS_3SS: url=https://github.com/Bio3SS/3SS.git
 rhdir/git_Bio3SS_3SS: ; $(rhmake)
 rhdir/git_cfshi_cannabis: url=https://github.com/cfshi/cannabis.git
 rhdir/git_cfshi_cannabis: ; $(rhmake)
+rhdir/git_CYGUBICKO_admins: url=https://github.com/CYGUBICKO/admins.git
+rhdir/git_CYGUBICKO_admins: ; $(rhmake)
 rhdir/git_cygubicko_funs: url=https://github.com/cygubicko/funs.git
 rhdir/git_cygubicko_funs: ; $(rhmake)
 rhdir/git_cygubicko_projects: url=https://github.com/cygubicko/projects.git
