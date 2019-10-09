@@ -108,7 +108,8 @@ makestuff.allexclude: ;
 	cd $* && $(MAKE) exclude
 
 amsync:
-	git commit -am "amsync"
+	$(MAKE) exclude
+	$(git_check) || git commit -am "amsync"
 	git pull
 	git push
 	git status

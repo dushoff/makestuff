@@ -137,7 +137,8 @@ DOUBLEPDF ^DOUBLEFIG %+-0.pdf %+-1.pdf
 # Deprecated
 DFIG ^DOUBLEFIG %%
 
-# Rubric only
+# Overall rubric can be for students as well
+# MARK for actual secrets
 RUB %!
 rub key: \textsl{%%}
 
