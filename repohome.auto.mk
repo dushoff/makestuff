@@ -112,6 +112,8 @@ rhdir/git_Outbreak-analysis_madagascar_tb_hiv: url=https://github.com/Outbreak-a
 rhdir/git_Outbreak-analysis_madagascar_tb_hiv: ; $(rhmake)
 rhdir/git_parksw3_bayes_antigen: url=https://github.com/parksw3/bayes_antigen.git
 rhdir/git_parksw3_bayes_antigen: ; $(rhmake)
+rhdir/git_parksw3_bayesantigen2: url=https://github.com/parksw3/bayesantigen2.git
+rhdir/git_parksw3_bayesantigen2: ; $(rhmake)
 rhdir/git_parksw3_contact_trace: url=https://github.com/parksw3/contact_trace.git
 rhdir/git_parksw3_contact_trace: ; $(rhmake)
 rhdir/git_parksw3_latentGeneration: url=https://github.com/parksw3/latentGeneration.git
