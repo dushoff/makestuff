@@ -92,6 +92,8 @@ rhdir/git_ICI3D_RTutorials: url=https://github.com/ICI3D/RTutorials.git
 rhdir/git_ICI3D_RTutorials: ; $(rhmake)
 rhdir/git_mac-theobio_ari_submission: url=https://github.com/mac-theobio/ari_submission.git
 rhdir/git_mac-theobio_ari_submission: ; $(rhmake)
+rhdir/git_mac-theobio_Condom_awareness: url=https://github.com/mac-theobio/Condom_awareness.git
+rhdir/git_mac-theobio_Condom_awareness: ; $(rhmake)
 rhdir/git_mac-theobio_GOS_NMF: url=https://github.com/mac-theobio/GOS_NMF.git
 rhdir/git_mac-theobio_GOS_NMF: ; $(rhmake)
 rhdir/git_mac-theobio_HIV_treatment_Africa: url=https://github.com/mac-theobio/HIV_treatment_Africa.git
