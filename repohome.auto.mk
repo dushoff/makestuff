@@ -1,3 +1,5 @@
+rhdir/git_ICI3D_rubellaSA: url=https://github.com/ICI3D/rubellaSA.git
+rhdir/git_ICI3D_rubellaSA: ; $(rhmake)
 rhdir/bit_dushoff_Correspondence: url=https://bitbucket.org/dushoff/Correspondence.git
 rhdir/bit_dushoff_Correspondence: ; $(rhmake)
 rhdir/bit_dushoff_New_CV: url=https://bitbucket.org/dushoff/New_CV.git
@@ -20,6 +22,8 @@ rhdir/git_Bio3SS_3SS: url=https://github.com/Bio3SS/3SS.git
 rhdir/git_Bio3SS_3SS: ; $(rhmake)
 rhdir/git_cfshi_cannabis: url=https://github.com/cfshi/cannabis.git
 rhdir/git_cfshi_cannabis: ; $(rhmake)
+rhdir/git_CYGUBICKO_admins: url=https://github.com/CYGUBICKO/admins.git
+rhdir/git_CYGUBICKO_admins: ; $(rhmake)
 rhdir/git_cygubicko_funs: url=https://github.com/cygubicko/funs.git
 rhdir/git_cygubicko_funs: ; $(rhmake)
 rhdir/git_cygubicko_projects: url=https://github.com/cygubicko/projects.git
@@ -88,6 +92,8 @@ rhdir/git_ICI3D_RTutorials: url=https://github.com/ICI3D/RTutorials.git
 rhdir/git_ICI3D_RTutorials: ; $(rhmake)
 rhdir/git_mac-theobio_ari_submission: url=https://github.com/mac-theobio/ari_submission.git
 rhdir/git_mac-theobio_ari_submission: ; $(rhmake)
+rhdir/git_mac-theobio_Condom_awareness: url=https://github.com/mac-theobio/Condom_awareness.git
+rhdir/git_mac-theobio_Condom_awareness: ; $(rhmake)
 rhdir/git_mac-theobio_GOS_NMF: url=https://github.com/mac-theobio/GOS_NMF.git
 rhdir/git_mac-theobio_GOS_NMF: ; $(rhmake)
 rhdir/git_mac-theobio_HIV_treatment_Africa: url=https://github.com/mac-theobio/HIV_treatment_Africa.git
@@ -110,6 +116,8 @@ rhdir/git_Outbreak-analysis_madagascar_tb_hiv: url=https://github.com/Outbreak-a
 rhdir/git_Outbreak-analysis_madagascar_tb_hiv: ; $(rhmake)
 rhdir/git_parksw3_bayes_antigen: url=https://github.com/parksw3/bayes_antigen.git
 rhdir/git_parksw3_bayes_antigen: ; $(rhmake)
+rhdir/git_parksw3_bayesantigen2: url=https://github.com/parksw3/bayesantigen2.git
+rhdir/git_parksw3_bayesantigen2: ; $(rhmake)
 rhdir/git_parksw3_contact_trace: url=https://github.com/parksw3/contact_trace.git
 rhdir/git_parksw3_contact_trace: ; $(rhmake)
 rhdir/git_parksw3_latentGeneration: url=https://github.com/parksw3/latentGeneration.git
@@ -162,3 +170,5 @@ rhdir/git_wzmli_phyloglmm: url=https://github.com/wzmli/phyloglmm.git
 rhdir/git_wzmli_phyloglmm: ; $(rhmake)
 rhdir/git_SACEMA_epidemicInsurance: url=https://github.com/SACEMA/epidemicInsurance.git
 rhdir/git_SACEMA_epidemicInsurance: ; $(rhmake)
+rhdir/bit_dushoff_1m_private: url=https://dushoff@bitbucket.org/dushoff/1m_private.git
+rhdir/bit_dushoff_1m_private: ; $(rhmake)

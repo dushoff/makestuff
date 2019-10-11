@@ -5,33 +5,24 @@ Ignore += lect
 lect/%: 
 	$(MAKE) lect
 
-## talk/%: talk ;
+Ignore += newtalk
+.PRECIOUS: newtalk/%
+newtalk/%: 
+	$(MAKE) newtalk
 
-# talk lect: 
-lect: 
+lect newtalk: 
 	/bin/ln -s makestuff/$@ .
-
-Ignore += talkdir
-.PRECIOUS: talkdir/%
-talkdir/%:
-	$(MAKE) talkdir
-
-talkdir:
-	/bin/ln -fs $(talkdir) $@
-
-bdraft.fmt: beamer.fmt $(talkdir)/bd.pl
-	$(PUSH)
 
 ###################################################################
  
 .PRECIOUS: %.course.tex
-%.course.tex: %.dmu beamer.tmp bdraft.fmt $(talkdir)/lect.pl
+%.course.tex: %.dmu beamer.tmp bdraft.fmt newtalk/lect.pl
 	$(PUSH)
  
 .PRECIOUS: %.final.tex
-%.final.tex: %.txt beamer.tmp combined.fmt $(talkdir)/lect.pl
+%.final.tex: %.txt beamer.tmp combined.fmt newtalk/lect.pl
 	$(PUSH)
 
 .PRECIOUS: %.outline.tex
-%.outline.tex: %.txt outline.tmp outline.fmt $(talkdir)/lect.pl
+%.outline.tex: %.txt outline.tmp outline.fmt newtalk/lect.pl
 	$(PUSH)
