@@ -204,6 +204,9 @@ gptargets: $(gptargets)
 
 ## 2019 Sep 22 (Sun) Keeping checkout, but skipping early pull
 ## That can make the remote copy look artificially new
+## 2019 Oct 10 (Thu)
+## But if we don't early pull we get spurious merges
+## Best is to pull pages when you pull
 %.pages:
 	$(MAKE) pages
 	cd pages && git checkout gh-pages
@@ -220,6 +223,13 @@ gptargets: $(gptargets)
 pages/%: % 
 	$(copy)
 
+## If you're going to pushpages automatically, you might want to say
+## pull: pages.gitpull
+
+%.gitpull:
+	cd $* && git pull
+
+## Make an empty pages directory when necessary; or else attaching existing one
 Ignore += pages
 pages:
 	git clone `git remote get-url origin` $@
