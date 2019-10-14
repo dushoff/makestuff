@@ -17,7 +17,7 @@ screen_session:
 ## Vim
 
 vim_session:
-	bash -cl "vi Makefile target.mk"
+	bash -cl "vmt"
 
 ######################################################################
 
