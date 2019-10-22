@@ -165,7 +165,7 @@ makestuff.mmsync: ;
 	cd $< && $(MAKE) sync
 
 %.pull: %
-	cd $< && $(MAKE) pull
+	cd $< && ($(MAKE) pull || git pull)
 
 ## Not tested (hasn't propagated)
 rmpull: $(mdirs:%=%.rmpull) makestuff.pull pull

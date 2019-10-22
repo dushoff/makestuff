@@ -1,4 +1,8 @@
 
+## Better logic for types of subdirectories:
+## screened or not × alled or not
+## LOCKING for things that aren't alled
+
 ## This is XXX, a dirdir under screens
 ## makestuff/direct.Makefile
 current: target

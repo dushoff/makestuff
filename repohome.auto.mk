@@ -218,3 +218,7 @@ rhdir/git_Bio3SS_bio3ss3: url=https://github.com/Bio3SS/bio3ss3.git
 rhdir/git_Bio3SS_bio3ss3: ; $(rhmake)
 rhdir/git_Bio3SS_Teaching_team: url=https://github.com/Bio3SS/Teaching_team.git
 rhdir/git_Bio3SS_Teaching_team: ; $(rhmake)
+rhdir/cron: url=https://github.com/dushoff/cron.git
+rhdir/cron: ; $(rhmake)
+rhdir/git_fishforwish_aging: url=https://github.com/fishforwish/aging.git
+rhdir/git_fishforwish_aging: ; $(rhmake)
