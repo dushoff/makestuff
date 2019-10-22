@@ -36,6 +36,8 @@ Sources += $(pageSources)
 
 ## Recipes
 
+tangle_r = Rscript -e 'library("knitr"); knit("$<", output="$@", tangle=TRUE)'
+
 ## This rule should filter filenames instead of specifying "main". 
 mdh_r = pandoc --mathjax -s -c main.css -B main.header.html -A main.footer.html -o $@ $<
 rmdfiles_r = $(CPR) $*_files $(dir $@)
