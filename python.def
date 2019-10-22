@@ -1,14 +1,19 @@
-# Adapted from python.def
+
+# Adapted from perl.def
 # Runs the first script among its dependencies, using all the other dependencies as arguments
 PITH = python $(filter %.py, $^) $(filter-out %.py, $^) > $@
+PITH3 = python3 $(filter %.py, $^) $(filter-out %.py, $^) > $@
 
 # Adds the name of the output file as the first argument (assuming you only have one script dependency)
 PITHOUT = python $(filter %.py, $^) $@ $(filter-out %.py, $^) > $@
+PITHOUT3 = python3 $(filter %.py, $^) $@ $(filter-out %.py, $^) > $@
 
 # Adds $*
 PITHSTAR = python $(filter %.py, $^) $* $(filter-out %.py, $^) > $@
+PITHSTAR3 = python3 $(filter %.py, $^) $* $(filter-out %.py, $^) > $@
 
 # Appends (pushes onto the file that's already there)
 PITHON = python $(filter %.py, $^) $(filter-out %.py, $^) >> $@
+PITHON3 = python3 $(filter %.py, $^) $(filter-out %.py, $^) >> $@
 
 # PPITH = python -00 $(filter %.py, $^) $(filter-out %.py, $^) > $@

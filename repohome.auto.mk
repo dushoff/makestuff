@@ -172,3 +172,53 @@ rhdir/git_SACEMA_epidemicInsurance: url=https://github.com/SACEMA/epidemicInsura
 rhdir/git_SACEMA_epidemicInsurance: ; $(rhmake)
 rhdir/bit_dushoff_1m_private: url=https://dushoff@bitbucket.org/dushoff/1m_private.git
 rhdir/bit_dushoff_1m_private: ; $(rhmake)
+rhdir/git_Bio3SS_Bio3SS.github.io: url=https://github.com/Bio3SS/Bio3SS.github.io.git
+rhdir/git_Bio3SS_Bio3SS.github.io: ; $(rhmake)
+rhdir/git_Bio3SS_Grading: url=https://github.com/Bio3SS/Grading.git
+rhdir/git_Bio3SS_Grading: ; $(rhmake)
+rhdir/git_Bio3SS_Tests: url=https://github.com/Bio3SS/Tests.git
+rhdir/git_Bio3SS_Tests: ; $(rhmake)
+rhdir/git_Bio3SS_Assignments: url=https://github.com/Bio3SS/Assignments.git
+rhdir/git_Bio3SS_Assignments: ; $(rhmake)
+rhdir/git_Bio3SS_Exploitation_models: url=https://github.com/Bio3SS/Exploitation_models.git
+rhdir/git_Bio3SS_Exploitation_models: ; $(rhmake)
+rhdir/git_Bio3SS_Competition_models: url=https://github.com/Bio3SS/Competition_models.git
+rhdir/git_Bio3SS_Competition_models: ; $(rhmake)
+rhdir/git_Bio3SS_Structured_models: url=https://github.com/Bio3SS/Structured_models.git
+rhdir/git_Bio3SS_Structured_models: ; $(rhmake)
+rhdir/git_Bio3SS_Age_distributions: url=https://github.com/Bio3SS/Age_distributions.git
+rhdir/git_Bio3SS_Age_distributions: ; $(rhmake)
+rhdir/git_Bio3SS_Life_history: url=https://github.com/Bio3SS/Life_history.git
+rhdir/git_Bio3SS_Life_history: ; $(rhmake)
+rhdir/git_Bio3SS_Life_tables: url=https://github.com/Bio3SS/Life_tables.git
+rhdir/git_Bio3SS_Life_tables: ; $(rhmake)
+rhdir/git_Bio3SS_Compensation_models: url=https://github.com/Bio3SS/Compensation_models.git
+rhdir/git_Bio3SS_Compensation_models: ; $(rhmake)
+rhdir/git_Bio3SS_Birth_death_models: url=https://github.com/Bio3SS/Birth_death_models.git
+rhdir/git_Bio3SS_Birth_death_models: ; $(rhmake)
+rhdir/git_Bio3SS_Exponential_figures: url=https://github.com/Bio3SS/Exponential_figures.git
+rhdir/git_Bio3SS_Exponential_figures: ; $(rhmake)
+rhdir/git_Bio3SS_Population_time_series: url=https://github.com/Bio3SS/Population_time_series.git
+rhdir/git_Bio3SS_Population_time_series: ; $(rhmake)
+rhdir/git_Bio3SS_Evaluation_materials: url=https://github.com/Bio3SS/Evaluation_materials.git
+rhdir/git_Bio3SS_Evaluation_materials: ; $(rhmake)
+rhdir/git_Bio3SS_Homework: url=https://github.com/Bio3SS/Homework.git
+rhdir/git_Bio3SS_Homework: ; $(rhmake)
+rhdir/git_Bio3SS_Lectures: url=https://github.com/Bio3SS/Lectures.git
+rhdir/git_Bio3SS_Lectures: ; $(rhmake)
+rhdir/git_Bio3SS_submodLectures: url=https://github.com/Bio3SS/submodLectures.git
+rhdir/git_Bio3SS_submodLectures: ; $(rhmake)
+rhdir/git_Bio3SS_Lecture_images: url=https://github.com/Bio3SS/Lecture_images.git
+rhdir/git_Bio3SS_Lecture_images: ; $(rhmake)
+rhdir/git_Bio3SS_Grading_scripts: url=https://github.com/Bio3SS/Grading_scripts.git
+rhdir/git_Bio3SS_Grading_scripts: ; $(rhmake)
+rhdir/git_Bio3SS_Bio3SS_content: url=https://github.com/Bio3SS/Bio3SS_content.git
+rhdir/git_Bio3SS_Bio3SS_content: ; $(rhmake)
+rhdir/git_Bio3SS_bio3ss3: url=https://github.com/Bio3SS/bio3ss3.git
+rhdir/git_Bio3SS_bio3ss3: ; $(rhmake)
+rhdir/git_Bio3SS_Teaching_team: url=https://github.com/Bio3SS/Teaching_team.git
+rhdir/git_Bio3SS_Teaching_team: ; $(rhmake)
+rhdir/cron: url=https://github.com/dushoff/cron.git
+rhdir/cron: ; $(rhmake)
+rhdir/git_fishforwish_aging: url=https://github.com/fishforwish/aging.git
+rhdir/git_fishforwish_aging: ; $(rhmake)
