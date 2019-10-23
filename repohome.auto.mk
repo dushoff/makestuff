@@ -222,3 +222,7 @@ rhdir/cron: url=https://github.com/dushoff/cron.git
 rhdir/cron: ; $(rhmake)
 rhdir/git_fishforwish_aging: url=https://github.com/fishforwish/aging.git
 rhdir/git_fishforwish_aging: ; $(rhmake)
+rhdir/git_CYGUBICKO_proview: url=https://github.com/CYGUBICKO/proview.git
+rhdir/git_CYGUBICKO_proview: ; $(rhmake)
+rhdir/git_wzmli_glasgow: url=https://github.com/wzmli/glasgow.git
+rhdir/git_wzmli_glasgow: ; $(rhmake)
