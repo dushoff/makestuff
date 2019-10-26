@@ -52,8 +52,6 @@ rhdir/dushoff.github.io: url=https://github.com/dushoff/dushoff.github.io.git
 rhdir/dushoff.github.io: ; $(rhmake)
 rhdir/generation_links: url=https://github.com/dushoff/generation_links.git
 rhdir/generation_links: ; $(rhmake)
-rhdir/Generation_talks: url=https://github.com/dushoff/Generation_talks.git
-rhdir/Generation_talks: ; $(rhmake)
 rhdir/Latent_incidence_fitting: url=https://github.com/dushoff/Latent_incidence_fitting.git
 rhdir/Latent_incidence_fitting: ; $(rhmake)
 rhdir/link_calculations: url=https://github.com/dushoff/link_calculations.git
@@ -226,3 +224,5 @@ rhdir/git_CYGUBICKO_proview: url=https://github.com/CYGUBICKO/proview.git
 rhdir/git_CYGUBICKO_proview: ; $(rhmake)
 rhdir/git_wzmli_glasgow: url=https://github.com/wzmli/glasgow.git
 rhdir/git_wzmli_glasgow: ; $(rhmake)
+rhdir/Generation_talks: url=https://github.com/dushoff/Generation_talks.git
+rhdir/Generation_talks: ; $(rhmake)
