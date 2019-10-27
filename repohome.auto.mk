@@ -226,3 +226,9 @@ rhdir/git_CYGUBICKO_proview: url=https://github.com/CYGUBICKO/proview.git
 rhdir/git_CYGUBICKO_proview: ; $(rhmake)
 rhdir/git_wzmli_glasgow: url=https://github.com/wzmli/glasgow.git
 rhdir/git_wzmli_glasgow: ; $(rhmake)
+rhdir/Generation_distributions: url=https://github.com/dushoff/Generation_distributions.git
+rhdir/Generation_distributions: ; $(rhmake)
+rhdir/Endemic_curves: url=https://github.com/dushoff/Endemic_curves.git
+rhdir/Endemic_curves: ; $(rhmake)
+rhdir/git_mac-theobio_Disease_data: url=https://github.com/mac-theobio/Disease_data.git
+rhdir/git_mac-theobio_Disease_data: ; $(rhmake)
