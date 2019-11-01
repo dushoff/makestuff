@@ -40,12 +40,13 @@ tangle_r = Rscript -e 'library("knitr"); knit("$<", output="$@", tangle=TRUE)'
 
 ## This rule should filter filenames instead of specifying "main". 
 ## Fiddling with knitr arguments
-mdh_r = pandoc --to html4 --from markdown+autolink_bare_uris+ascii_identifiers+tex_math_single_backslash+smart --mathjax -s -c main.css -B main.header.html -A main.footer.html -o $@ $<
+mdh_r = pandoc --filter pandoc-citeproc --to html4 --from markdown+autolink_bare_uris+ascii_identifiers+tex_math_single_backslash+smart --mathjax -s -c main.css -B main.header.html -A main.footer.html -o $@ $<
 rmdfiles_r = $(CPR) $*_files $(dir $@)
 
 ## Source ⇒ product
 pages/%.html: %.mkd main.css main.header.html main.footer.html
 	$(mdh_r)
+	- $(rmdfiles_r)
 pages/%.html: %.rmk main.css main.header.html main.footer.html
 	$(mdh_r)
 	- $(rmdfiles_r)
