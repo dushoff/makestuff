@@ -52,8 +52,6 @@ rhdir/dushoff.github.io: url=https://github.com/dushoff/dushoff.github.io.git
 rhdir/dushoff.github.io: ; $(rhmake)
 rhdir/generation_links: url=https://github.com/dushoff/generation_links.git
 rhdir/generation_links: ; $(rhmake)
-rhdir/Generation_talks: url=https://github.com/dushoff/Generation_talks.git
-rhdir/Generation_talks: ; $(rhmake)
 rhdir/Latent_incidence_fitting: url=https://github.com/dushoff/Latent_incidence_fitting.git
 rhdir/Latent_incidence_fitting: ; $(rhmake)
 rhdir/link_calculations: url=https://github.com/dushoff/link_calculations.git
@@ -226,3 +224,21 @@ rhdir/git_CYGUBICKO_proview: url=https://github.com/CYGUBICKO/proview.git
 rhdir/git_CYGUBICKO_proview: ; $(rhmake)
 rhdir/git_wzmli_glasgow: url=https://github.com/wzmli/glasgow.git
 rhdir/git_wzmli_glasgow: ; $(rhmake)
+rhdir/Generation_distributions: url=https://github.com/dushoff/Generation_distributions.git
+rhdir/Generation_distributions: ; $(rhmake)
+rhdir/Endemic_curves: url=https://github.com/dushoff/Endemic_curves.git
+rhdir/Endemic_curves: ; $(rhmake)
+rhdir/git_mac-theobio_Disease_data: url=https://github.com/mac-theobio/Disease_data.git
+rhdir/git_mac-theobio_Disease_data: ; $(rhmake)
+rhdir/Generation_talks: url=https://github.com/dushoff/Generation_talks.git
+rhdir/Generation_talks: ; $(rhmake)
+rhdir/SIR_model_family: url=https://github.com/dushoff/SIR_model_family.git
+rhdir/SIR_model_family: ; $(rhmake)
+rhdir/git_Outbreak-analysis_WA_Ebola_Outbreak: url=https://github.com/Outbreak-analysis/WA_Ebola_Outbreak.git
+rhdir/git_Outbreak-analysis_WA_Ebola_Outbreak: ; $(rhmake)
+rhdir/SIR_simulations: url=https://github.com/dushoff/SIR_simulations.git
+rhdir/SIR_simulations: ; $(rhmake)
+rhdir/ss_pix: url=https://github.com/dushoff/ss_pix.git
+rhdir/ss_pix: ; $(rhmake)
+rhdir/git_ICI3D_rabies2019: url=https://github.com/ICI3D/rabies2019.git
+rhdir/git_ICI3D_rabies2019: ; $(rhmake)
