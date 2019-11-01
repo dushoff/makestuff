@@ -240,3 +240,5 @@ rhdir/SIR_simulations: url=https://github.com/dushoff/SIR_simulations.git
 rhdir/SIR_simulations: ; $(rhmake)
 rhdir/ss_pix: url=https://github.com/dushoff/ss_pix.git
 rhdir/ss_pix: ; $(rhmake)
+rhdir/git_ICI3D_rabies2019: url=https://github.com/ICI3D/rabies2019.git
+rhdir/git_ICI3D_rabies2019: ; $(rhmake)
