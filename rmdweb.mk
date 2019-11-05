@@ -5,22 +5,18 @@
 ## All this redundancy could presumably be avoided, but only 
 ## by learning more than I know about string manipulation
 mkd = $(wildcard *.mkd)
-Rmd = $(wildcard *.Rmd)
 rmd = $(wildcard *.rmd)
 
 lmkd = $(wildcard *.lect.mkd)
-lRmd = $(wildcard *.lect.Rmd)
 lrmd = $(wildcard *.lect.rmd)
 
 ## pageSources already include lectSources, so the latter is not a thing
-pageSources += $(mkd) $(Rmd) $(rmd)
+pageSources += $(mkd) $(rmd)
 
 pageProductsLocal += $(mkd:.mkd=.html)
-pageProductsLocal += $(Rmd:.Rmd=.html)
 pageProductsLocal += $(rmd:.rmd=.html)
 pageProductsLocal += $(mkd:.mkd=.html)
 pageProductsLocal += $(lmkd:.lect.mkd=.io.html)
-pageProductsLocal += $(lRmd:.lect.Rmd=.io.html)
 pageProductsLocal += $(lrmd:.lect.rmd=.io.html)
 
 ## _files refers to rmd _files/ directories here
@@ -47,12 +43,12 @@ rmdfiles_r = $(CPR) $*_files $(dir $@)
 pages/%.html: %.mkd main.css main.header.html main.footer.html
 	$(mdh_r)
 	- $(rmdfiles_r)
-pages/%.html: %.rmk main.css main.header.html main.footer.html
+pages/%.html: %.rmk main.css main.header.html main.footer.html %.rmd
 	$(mdh_r)
 	- $(rmdfiles_r)
 pages/%.notes.html: %.mkd main.css main.header.html main.footer.html
 	$(mdh_r)
-pages/%.notes.html: %.rmk main.css main.header.html main.footer.html
+pages/%.notes.html: %.rmk main.css main.header.html main.footer.html %.rmd
 	$(mdh_r)
 
 ## page_files are made as side effects of compilation from rmd. We hope
@@ -78,15 +74,11 @@ rwm_r = Rscript -e 'library("rmarkdown"); render("$<", output_format="md_documen
 Ignore += *.rwm
 %.rwm: %.rmd
 	$(rwm_r)
-%.rwm: %.Rmd
-	$(rwm_r)
 
 ## Treat up to the first blank line as yaml
 Ignore += *.rym
 rym_r = perl -nE "last if /^$$/; print; END{say}" $< > $@
 %.rym: %.rmd
-	$(rym_r)
-%.rym: %.Rmd
 	$(rym_r)
 
 Ignore += *.rmk
