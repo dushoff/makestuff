@@ -446,7 +446,7 @@ rup: rupdate
 rupex: rup
 	git submodule foreach --recursive make exclude
 
-pullup: pull rup
+pullup: pull
 
 ## What does this do? Endless loops of commits?
 rmaster: 

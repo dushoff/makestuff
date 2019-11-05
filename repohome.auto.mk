@@ -242,3 +242,7 @@ rhdir/ss_pix: url=https://github.com/dushoff/ss_pix.git
 rhdir/ss_pix: ; $(rhmake)
 rhdir/git_ICI3D_rabies2019: url=https://github.com/ICI3D/rabies2019.git
 rhdir/git_ICI3D_rabies2019: ; $(rhmake)
+rhdir/git_davidearn_LBoM: url=https://github.com/davidearn/LBoM.git
+rhdir/git_davidearn_LBoM: ; $(rhmake)
+rhdir/git_davidearn_onmort: url=https://github.com/davidearn/onmort.git
+rhdir/git_davidearn_onmort: ; $(rhmake)
