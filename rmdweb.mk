@@ -20,10 +20,10 @@ pageProductsLocal += $(lmkd:.lect.mkd=.io.html)
 pageProductsLocal += $(lrmd:.lect.rmd=.io.html)
 
 ## _files refers to rmd _files/ directories here
-local_files = $(wildcard *_files/*)
 page_files = $(local_files:%=pages/%)
 
-## Local is used over in pages for adding
+## Probably unnecessary
+local_files = $(wildcard *_files/*)
 pageProductsLocal += $(local_files)
 
 pageProducts = $(pageProductsLocal:%=pages/%)
@@ -36,10 +36,11 @@ tangle_r = Rscript -e 'library("knitr"); knit("$<", output="$@", tangle=TRUE)'
 
 ## This rule should filter filenames instead of specifying "main". 
 ## Fiddling with knitr arguments
-mdh_r = pandoc --filter pandoc-citeproc --to html4 --from markdown+autolink_bare_uris+ascii_identifiers+tex_math_single_backslash+smart --mathjax -s -c main.css -B main.header.html -A main.footer.html -o $@ $<
+mdh_r = pandoc --filter pandoc-citeproc --to html4 --from markdown+autolink_bare_uris+ascii_identifiers+tex_math_single_backslash+smart --mathjax -s -c main.css -B main.header.html -A main.footer.html -o $(notdir $@) $<; $(MV) $(notdir $@) $(dir $@)
 rmdfiles_r = $(CPR) $*_files $(dir $@)
 
 ## Source ⇒ product
+## rmdfiles_r is probably unnecessary!
 pages/%.html: %.mkd main.css main.header.html main.footer.html
 	$(mdh_r)
 	- $(rmdfiles_r)
