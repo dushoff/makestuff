@@ -69,22 +69,18 @@ pages/%.io.html: %.lect.mkd
 ## pages/%.io.html: %.lect.rmk; $(mdio_r)
 ## pages/%.io.html: %.lect.rmd; $(mdio_r)
 
-## rmd. This is awkward because rmarkdown library does not play well with piping
-## At some point could add rmdstep-ish stuff here (automatic dependencies)
-rwm_r = Rscript -e 'library("rmarkdown"); render("$<", output_format="md_document", output_file="$@")'
-Ignore += *.rwm
-%.rwm: %.rmd
-	$(rwm_r)
 
 ## Treat up to the first blank line as yaml
-Ignore += *.rym
-rym_r = perl -nE "last if /^$$/; print; END{say}" $< > $@
-%.rym: %.rmd
-	$(rym_r)
+Ignore += *.rym *.rwm
+rym_r = perl -nE "last if /^$$/; print; END{say}" $< > $*.rym
+rwm_r = Rscript -e 'library("rmarkdown"); render("$<", output_format="md_document", output_file="$*.rwm")'
 
 Ignore += *.rmk
-%.rmk: %.rym %.rwm
-	$(cat)
+%.rmk: %.rmd
+	$(rym_r)
+	$(rwm_r)
+	$(CAT) $*.rym $*.rwm > $@
+	$(RM) $*.rym $*.rwm
 
 ## Outputting
 
