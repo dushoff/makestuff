@@ -76,6 +76,9 @@ Ignore += *.rwm
 %.rwm: %.rmd
 	$(rwm_r)
 
+## 2019 Nov 08 (Fri)
+## Not sure why there's so much remaking; something about this gap?
+## Make it all one step?
 ## Treat up to the first blank line as yaml
 Ignore += *.rym
 rym_r = perl -nE "last if /^$$/; print; END{say}" $< > $@
