@@ -38,6 +38,8 @@ rhdir/1M: url=https://github.com/dushoff/1M.git
 rhdir/1M: ; $(rhmake)
 rhdir/bio: url=https://github.com/dushoff/bio.git
 rhdir/bio: ; $(rhmake)
+rhdir/tp: url=https://github.com/dushoff/tp.git
+rhdir/tp: ; $(rhmake)
 rhdir/branches: url=https://github.com/dushoff/branches.git
 rhdir/branches: ; $(rhmake)
 rhdir/CIHR_Ebola: url=https://github.com/dushoff/CIHR_Ebola.git
