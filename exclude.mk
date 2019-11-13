@@ -15,5 +15,6 @@ $(git_dir)/info/exclude: $(Sources) Makefile
 
 export Ignore += local.mk target.mk make.log go.log
 
-## Personal ignore stuff see ignore.config
+ignore.config: ~/.config/git
+	cat makestuff/ignore.vim makestuff/ignore.auth $</ignore
 

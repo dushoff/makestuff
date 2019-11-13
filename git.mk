@@ -258,9 +258,6 @@ abort:
 ~/.config/git:
 	$(mkdir)
 
-ignore.config: ~/.config/git
-	cat makestuff/ignore.vim makestuff/ignore.auth $</ignore
-
 README.md LICENSE.md:
 	touch $@
 
