@@ -134,6 +134,8 @@ rhdir/math_talks: url=https://github.com/dushoff/math_talks.git
 rhdir/math_talks: ; $(rhmake)
 rhdir/notebook: url=https://github.com/dushoff/notebook.git
 rhdir/notebook: ; $(rhmake)
+rhdir/polarization: url=https://github.com/dushoff/polarization.git
+rhdir/polarization: ; $(rhmake)
 rhdir/Planning: url=https://github.com/dushoff/Planning.git
 rhdir/Planning: ; $(rhmake)
 rhdir/scratch: url=https://github.com/dushoff/scratch.git
