@@ -23,7 +23,7 @@ $(projdirs) $(rprojdirs):
 ## Making screens automatically
 ## recipes to be included in screen_session
 pvscreens = $(MAKE) Makefile $(projdirs:%=%.vscreen)
-lvscreens = $(MAKE) Makefile $(linkdirs:%=%.vscreen)
+lvscreens = $(MAKE) $(linkdirs:%=%.vscreen)
 plvscreens = $(pvscreens) && $(lvscreens)
 
 ## Hooks for bash so we can autocomplete from dirdir and get what we want
