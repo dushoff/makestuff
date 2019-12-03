@@ -324,7 +324,7 @@ dotdir: $(Sources)
 	$(MAKE) commit.time
 	-/bin/rm -rf $@
 	git clone . $@
-	-cp target.mk $@
+	$(CP) dottarget.mk $@/target.mk || $(CP) target.mk $@
 
 ## Still working on rev-parse line
 %.branchdir: $(Sources)
