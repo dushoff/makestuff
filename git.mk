@@ -42,7 +42,7 @@ Ignore += commit.time commit.default
 commit.time: $(Sources)
 	$(MAKE) exclude
 	-git add -f $?
-	cat ~/.commitnow > $@
+	cat ~/.commitnow > $@ || echo Autocommit > $@
 	echo "## $(CURDIR)" >> $@
 	!(git commit --dry-run >> $@) || (perl -pi -e 's/^/#/ unless $$.==1' $@ && $(GVEDIT))
 	$(git_check) || (perl -ne 'print unless /#/' $@ | git commit -F -)
@@ -321,7 +321,7 @@ gitprune:
 
 Ignore += dotdir/ clonedir/
 dotdir: $(Sources)
-	$(MAKE) commit.time
+	$(MAKE) amsync
 	-/bin/rm -rf $@
 	git clone . $@
 	$(CP) dottarget.mk $@/target.mk || $(CP) target.mk $@
