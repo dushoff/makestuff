@@ -341,6 +341,14 @@ clonedir: $(Sources)
 	git clone `git remote get-url origin` $@
 	-cp target.mk $@
 
+repodir: $(Sources)
+	-/bin/rm -rf $@
+	mkdir $@
+	tar czf $@.tgz `git ls-tree -r --name-only master`
+	cp $@.tgz $@
+	cd $@ && tar xzf $@.tgz && $(RM) $@.tgz
+	-cp target.mk $@
+
 sourcedir: $(Sources)
 	-/bin/rm -rf $@
 	mkdir $@
