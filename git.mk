@@ -324,6 +324,7 @@ dotdir: $(Sources)
 	$(MAKE) amsync
 	-/bin/rm -rf $@
 	git clone . $@
+	cd $@ && $(MAKE) Makefile && $(MAKE) makestuff
 	$(CP) dottarget.mk $@/target.mk || $(CP) target.mk $@
 
 ## Still working on rev-parse line
@@ -352,7 +353,7 @@ sourcedir: $(Sources)
 	-$(CP) local.mk $*
 
 %.dirtest: %
-	cd $< && $(MAKE) Makefile && $(MAKE) makestuff && $(MAKE) rum && $(MAKE) && $(MAKE) vtarget
+	cd $< && $(MAKE) Makefile && $(MAKE) makestuff && $(MAKE) && $(MAKE) vtarget
 
 %.localtest: % %.localdir %.dirtest ;
 
