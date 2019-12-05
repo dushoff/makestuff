@@ -108,9 +108,12 @@ makestuff.allexclude: ;
 %.exclude: 
 	cd $* && $(MAKE) exclude
 
-amsync:
+autocommit:
 	$(MAKE) exclude
-	$(git_check) || git commit -am "amsync"
+	$(git_check) || git commit -am "autocommit from git.mk"
+	git status
+
+amsync: autocommit
 	git pull
 	git push
 	git status
