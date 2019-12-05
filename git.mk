@@ -364,7 +364,11 @@ sourcedir: $(Sources)
 	-$(CP) local.mk $*
 
 %.dirtest: %
-	cd $< && $(MAKE) Makefile && $(MAKE) makestuff && $(MAKE) && $(MAKE) vtarget
+	cd $< && $(MAKE) Makefile && $(MAKE) makestuff && $(MAKE)
+
+## To open the dirtest final target when appropriate (and properly set up) 
+%.vdtest: %.dirtest
+	$(MAKE) vtarget
 
 %.localtest: % %.localdir %.dirtest ;
 
