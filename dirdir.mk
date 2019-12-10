@@ -1,3 +1,4 @@
+## Maybe this whole thing should be redone to make spinning out easier?
 ## alling can fail if dirdir doesn't run _before_ git.mk
 ifdef git_dir
 $(error dirdir.mk does not work after git.mk)
@@ -16,8 +17,12 @@ dirdir = TRUE
 ## deepdirs are deep resting
 ## deepdirs should be locked, and sometimes linkdirs will be, too
 
+$(projdirs) $(rprojdirs):
+	$(rhsetup)
+
 ## Making screens automatically
 ## recipes to be included in screen_session
+## Makefile to avoid disaster when one of the variables is blank
 pvscreens = $(MAKE) Makefile $(projdirs:%=%.vscreen)
 lvscreens = $(MAKE) Makefile $(linkdirs:%=%.vscreen)
 plvscreens = $(pvscreens) && $(lvscreens)

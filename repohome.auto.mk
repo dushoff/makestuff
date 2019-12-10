@@ -162,6 +162,8 @@ rhdir/git_fishforwish_fgc: url=https://github.com/fishforwish/fgc.git
 rhdir/git_fishforwish_fgc: ; $(rhmake)
 rhdir/git_ICI3D_coreFaculty: url=https://github.com/ICI3D/coreFaculty.git
 rhdir/git_ICI3D_coreFaculty: ; $(rhmake)
+rhdir/git_ICI3D_DAIDD: url=https://github.com/ICI3D/DAIDD.git
+rhdir/git_ICI3D_DAIDD: ; $(rhmake)
 rhdir/git_ICI3D_malariaImmunity: url=https://github.com/ICI3D/malariaImmunity.git
 rhdir/git_ICI3D_malariaImmunity: ; $(rhmake)
 rhdir/git_ICI3D_MMED: url=https://github.com/ICI3D/MMED.git
@@ -174,6 +176,8 @@ rhdir/git_ICI3D_RTutorials: url=https://github.com/ICI3D/RTutorials.git
 rhdir/git_ICI3D_RTutorials: ; $(rhmake)
 rhdir/git_ICI3D_rubellaSA: url=https://github.com/ICI3D/rubellaSA.git
 rhdir/git_ICI3D_rubellaSA: ; $(rhmake)
+rhdir/git_ICI3D_ICI3D.github.io: url=https://github.com/ICI3D/ICI3D.github.io.git
+rhdir/git_ICI3D_ICI3D.github.io: ; $(rhmake)
 rhdir/git_mac-theobio_ari_submission: url=https://github.com/mac-theobio/ari_submission.git
 rhdir/git_mac-theobio_ari_submission: ; $(rhmake)
 rhdir/git_mac-theobio_Condom_awareness: url=https://github.com/mac-theobio/Condom_awareness.git
