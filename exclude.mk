@@ -18,3 +18,5 @@ export Ignore += local.mk target.mk make.log go.log
 ignore.config: ~/.config/git
 	cat makestuff/ignore.vim makestuff/ignore.auth $</ignore
 
+ignorehere: $(git_dir)/info/exclude
+	$(CP) $< ~/.gitignore
