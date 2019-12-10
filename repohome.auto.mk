@@ -254,3 +254,5 @@ rhdir/git_wzmli_rabies_report: url=https://github.com/wzmli/rabies_report.git
 rhdir/git_wzmli_rabies_report: ; $(rhmake)
 rhdir/git_wzmli_rdc: url=https://github.com/wzmli/rdc.git
 rhdir/git_wzmli_rdc: ; $(rhmake)
+rhdir/checkPlots: url=https://github.com/dushoff/checkPlots.git
+rhdir/checkPlots: ; $(rhmake)
