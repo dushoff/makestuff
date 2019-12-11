@@ -79,6 +79,9 @@ convert = convert $< $@
 imageconvert = convert -density 600 -trim $< -quality 100 -sharpen 0x1.0 $@
 shell_execute = sh < $@
 
+%.png: %.pdf
+	$(convert)
+
 pdfcat = pdfjoin --outfile $@ $(filter %.pdf, $^) 
 
 latexdiff = latexdiff $^ > $@
