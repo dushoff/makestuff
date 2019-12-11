@@ -1,3 +1,4 @@
+## Should auto stuff be here, or just in the staging directory?
 -include makestuff/repohome.auto.mk
 
 makestuff/repohome.auto.mk: makestuff/repohome.list makestuff/repohome.pl
