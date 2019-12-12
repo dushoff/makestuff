@@ -41,8 +41,8 @@ branch:
 Ignore += commit.time commit.default
 commit.time: $(Sources)
 	$(MAKE) exclude
-	-git add -f $?
-	cat ~/.commitnow > $@
+	-git add -f $? $(trackedTargets)
+	cat ~/.commitnow > $@ || echo Autocommit > $@
 	echo "## $(CURDIR)" >> $@
 	!(git commit --dry-run >> $@) || (perl -pi -e 's/^/#/ unless $$.==1' $@ && $(GVEDIT))
 	$(git_check) || (perl -ne 'print unless /#/' $@ | git commit -F -)
@@ -108,9 +108,12 @@ makestuff.allexclude: ;
 %.exclude: 
 	cd $* && $(MAKE) exclude
 
-amsync:
+autocommit:
 	$(MAKE) exclude
-	$(git_check) || git commit -am "amsync"
+	$(git_check) || git commit -am "autocommit from git.mk"
+	git status
+
+amsync: autocommit
 	git pull
 	git push
 	git status
@@ -321,10 +324,11 @@ gitprune:
 
 Ignore += dotdir/ clonedir/
 dotdir: $(Sources)
-	$(MAKE) commit.time
+	$(MAKE) amsync
 	-/bin/rm -rf $@
 	git clone . $@
-	-cp target.mk $@
+	cd $@ && $(MAKE) Makefile && $(MAKE) makestuff
+	$(CP) dottarget.mk $@/target.mk || $(CP) target.mk $@
 
 ## Still working on rev-parse line
 %.branchdir: $(Sources)
@@ -340,6 +344,14 @@ clonedir: $(Sources)
 	git clone `git remote get-url origin` $@
 	-cp target.mk $@
 
+repodir: $(Sources)
+	-/bin/rm -rf $@
+	mkdir $@
+	tar czf $@.tgz `git ls-tree -r --name-only master`
+	cp $@.tgz $@
+	cd $@ && tar xzf $@.tgz && $(RM) $@.tgz
+	-cp target.mk $@
+
 sourcedir: $(Sources)
 	-/bin/rm -rf $@
 	mkdir $@
@@ -352,7 +364,11 @@ sourcedir: $(Sources)
 	-$(CP) local.mk $*
 
 %.dirtest: %
-	cd $< && $(MAKE) Makefile && $(MAKE) makestuff && $(MAKE) rum && $(MAKE) && $(MAKE) vtarget
+	cd $< && $(MAKE) Makefile && $(MAKE) makestuff && $(MAKE)
+
+## To open the dirtest final target when appropriate (and properly set up) 
+%.vdtest: %.dirtest
+	$(MAKE) vtarget
 
 %.localtest: % %.localdir %.dirtest ;
 

@@ -254,3 +254,13 @@ rhdir/git_wzmli_rabies_report: url=https://github.com/wzmli/rabies_report.git
 rhdir/git_wzmli_rabies_report: ; $(rhmake)
 rhdir/git_wzmli_rdc: url=https://github.com/wzmli/rdc.git
 rhdir/git_wzmli_rdc: ; $(rhmake)
+rhdir/checkPlots: url=https://github.com/dushoff/checkPlots.git
+rhdir/checkPlots: ; $(rhmake)
+rhdir/git_Bio3SS_top: url=https://github.com/Bio3SS/top.git
+rhdir/git_Bio3SS_top: ; $(rhmake)
+rhdir/disease_talks: url=https://github.com/dushoff/disease_talks.git
+rhdir/disease_talks: ; $(rhmake)
+rhdir/disease_dynamics: url=https://github.com/dushoff/disease_dynamics.git
+rhdir/disease_dynamics: ; $(rhmake)
+rhdir/git_ICI3D_LatexTemplates: url=https://github.com/ICI3D/LatexTemplates.git
+rhdir/git_ICI3D_LatexTemplates: ; $(rhmake)
