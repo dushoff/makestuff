@@ -258,3 +258,5 @@ rhdir/checkPlots: url=https://github.com/dushoff/checkPlots.git
 rhdir/checkPlots: ; $(rhmake)
 rhdir/git_Bio3SS_top: url=https://github.com/Bio3SS/top.git
 rhdir/git_Bio3SS_top: ; $(rhmake)
+rhdir/disease_talks: url=https://github.com/dushoff/disease_talks.git
+rhdir/disease_talks: ; $(rhmake)
