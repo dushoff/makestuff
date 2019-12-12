@@ -2,7 +2,7 @@
 ifeq ($(shell uname), Linux)
 include makestuff/linux.mk
 else
-include makestuff/unix.mk
+include makestuff/apple.mk
 endif
 
 ## This doesn't _seem_ to belong here
