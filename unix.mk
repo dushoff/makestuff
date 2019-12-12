@@ -56,6 +56,7 @@ alwayslinkdir = (ls $(dir)/$@ > $(null) || $(MD) $(dir)/$@) && $(LNF) $(dir)/$@ 
 
 forcelink = $(LNF) $< $@
 rcopy = $(CPR) $< $@
+rdcopy = $(CPR) $(dir) $@
 copy = $(CP) $< $@
 hardcopy = $(CPF) $< $@
 allcopy =  $(CP) $^ $@
@@ -73,6 +74,7 @@ pandocs = pandoc -s -o $@ $<
 ## Including for rcopy
 
 dircopy = ($(LSD) && $(touch)) ||  $(rcopy)
+ddcopy = ($(LSD) && $(touch)) ||  $(rdcopy)
 
 # What?
 convert = convert $< $@
