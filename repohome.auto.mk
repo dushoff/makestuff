@@ -264,3 +264,5 @@ rhdir/disease_dynamics: url=https://github.com/dushoff/disease_dynamics.git
 rhdir/disease_dynamics: ; $(rhmake)
 rhdir/git_ICI3D_LatexTemplates: url=https://github.com/ICI3D/LatexTemplates.git
 rhdir/git_ICI3D_LatexTemplates: ; $(rhmake)
+rhdir/git_eliminaterabies_top: url=https://github.com/eliminaterabies/top.git
+rhdir/git_eliminaterabies_top: ; $(rhmake)
