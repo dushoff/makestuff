@@ -10,9 +10,11 @@ endef
 ## This is circular; what would happen if we used a wildcard scope before the percent rule?
 define coldmake
 $(1)/%.mk: ;
-$(1)/%: $(1)/Makefile 
+$(filter-out $(1)/Makefile, $(wildcard $(1)/*)): $(1)/%: $(1)/Makefile 
 	$(maketouch)
 endef
+
+torq:
 
 ## Adding to call from elsewhere
 $(foreach dir,$(hotdirs),$(eval $(call hotmake,$(dir))))
