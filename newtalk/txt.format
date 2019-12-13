@@ -55,7 +55,7 @@ WORKSHOP NOFRAME
 draft final: NOFRAME \date{\jddate} \title{\jdtitle} \subtitle{\jdsub} \author{\jdauth}\date{\wdate}\maketitle
 handouts: {\centering \textsf{ \textbf{ {\Large\jdtitle} \\ {\large\jdsub} }} \\ {\large \jddate} \\ \mbox{} } }
 
-ICI3D NOFRAME
+ICI3DTHEME NOFRAME
 draft final: NOFRAME \date{\jddate} \title{\jdtitle} \subtitle{\jdsub} \author{\jdauth} {\topBar\maketitle}
 handouts: \noindent\includegraphics[width=\textwidth]{LatexTemplates/bar.pdf} {\centering \textsf{ \textbf{ {\Large\jdtitle} \\ {\large\jdsub} }} \\ {\large \jddate} \\ \mbox{}} 
 
