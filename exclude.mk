@@ -8,6 +8,9 @@ git_dir = $(shell git rev-parse --git-dir)
 
 exclude: $(git_dir)/info/exclude ;
 
+ignore: exclude
+	git status
+
 ## Usually .git/info/exclude
 ## dirdir ../.git/info/exclude
 $(git_dir)/info/exclude: $(Sources) Makefile
