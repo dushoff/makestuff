@@ -14,8 +14,6 @@ $(filter-out $(1)/Makefile, $(wildcard $(1)/*)): $(1)/%: $(1)/Makefile
 	$(maketouch)
 endef
 
-torq:
-
 ## Adding to call from elsewhere
 $(foreach dir,$(hotdirs),$(eval $(call hotmake,$(dir))))
 $(foreach dir,$(colddirs),$(eval $(call coldmake,$(dir))))

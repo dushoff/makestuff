@@ -153,6 +153,8 @@ draft: ^DEFHEAD {\sl %% (present)}
 PICSLIDE NULLSLIDE
 draft final: ^%%
 
+## Also, I don't actually have any idea how to do this!
+
 # Slides with purely repetitive information (for classroom exposition)
 RSLIDE NULLSLIDE
 final: ^DEFHEAD {\sl %% (repeat)}
