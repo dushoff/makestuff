@@ -5,6 +5,6 @@ use 5.10.0;
 
 
 while (<>){
-	s/\\pause//
+	s/\\pause//;
 	say;
 }
