@@ -51,7 +51,7 @@ Ignore += *.draft.*
 
 Ignore += *.slides.*
 .PRECIOUS: %.slides.tex
-%.slides.tex: %.final.txt  $(talkdir)/nopause.pl
+%.slides.tex: %.final.tex  $(talkdir)/nopause.pl
 	$(PUSH)
 
 Ignore += *.handouts.*
