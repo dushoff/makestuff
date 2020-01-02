@@ -22,4 +22,4 @@ ignore.config: ~/.config/git
 	cat makestuff/ignore.vim makestuff/ignore.auth $</ignore
 
 ignorehere: $(git_dir)/info/exclude
-	$(CP) $< ~/.gitignore
+	$(CP) $< .gitignore
