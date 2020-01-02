@@ -266,3 +266,5 @@ rhdir/git_ICI3D_LatexTemplates: url=https://github.com/ICI3D/LatexTemplates.git
 rhdir/git_ICI3D_LatexTemplates: ; $(rhmake)
 rhdir/git_eliminaterabies_top: url=https://github.com/eliminaterabies/top.git
 rhdir/git_eliminaterabies_top: ; $(rhmake)
+rhdir/git_ElishaBayode_Babies_mummies_growth_rates_MS: url=https://github.com/ElishaBayode/Babies_mummies_growth_rates_MS.git
+rhdir/git_ElishaBayode_Babies_mummies_growth_rates_MS: ; $(rhmake)
