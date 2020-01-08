@@ -63,3 +63,4 @@
 %.pdf: %.md
 	pandoc -o $@ --pdf-engine=lualatex --variable fontsize=12pt $<
 
+rmdpdf = Rscript -e 'library("rmarkdown"); render("$<", output_format="pdf_document")'
