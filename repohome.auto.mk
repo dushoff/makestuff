@@ -20,6 +20,8 @@ rhdir/git_bbolker_stat744: url=https://github.com/bbolker/stat744.git
 rhdir/git_bbolker_stat744: ; $(rhmake)
 rhdir/git_bbolker_stat744_private: url=https://github.com/bbolker/stat744_private.git
 rhdir/git_bbolker_stat744_private: ; $(rhmake)
+rhdir/git_bbolker_louseplague: url=https://github.com/bbolker/louseplague.git
+rhdir/git_bbolker_louseplague: ; $(rhmake)
 rhdir/git_Bio1M_Archive: url=https://github.com/Bio1M/Archive.git
 rhdir/git_Bio1M_Archive: ; $(rhmake)
 rhdir/git_Bio1M_Bio1M.github.io: url=https://github.com/Bio1M/Bio1M.github.io.git
