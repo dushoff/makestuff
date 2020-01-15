@@ -12,6 +12,10 @@
 %.emb.html: %.md
 	pandoc --self-contained -S -o $@ $<
 
+## 
+%.jax.html: %.md
+	pandoc --mathjax -s -o $@ $<
+
 %.html: %.mkd
 	pandoc -s -o $@ $<
 
