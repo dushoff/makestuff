@@ -13,8 +13,10 @@ $(ddcopy)
 cd $@ && $(MAKE) Makefile && $(MAKE) makestuff/Makefile && $(MAKE) makestuff.msync && $(MAKE) all.time
 endef
 
+## Not working because rhsetup uses ddcopy which depends on dir variable
+## Patch 2020 Jan 16 (Thu)
 %: rhdir/%
-	$(rhsetup)
+	$(rhsetup) || $(dircopy)
 
 ## Can't call make from rhdir because of loops
 Ignore += rhdir
