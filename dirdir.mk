@@ -17,6 +17,7 @@ dirdir = TRUE
 ## deepdirs are deep resting
 ## deepdirs should be locked, and sometimes linkdirs will be, too
 
+notebook: dir=rhdir/notebook
 $(projdirs) $(rprojdirs):
 	$(rhsetup)
 
