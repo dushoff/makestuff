@@ -68,3 +68,5 @@ Ignore += *.jax.html
 	pandoc -o $@ --pdf-engine=lualatex --variable fontsize=12pt $<
 
 rmdpdf = Rscript -e 'library("rmarkdown"); render("$<", output_format="pdf_document")'
+
+rmdpdfBang = Rscript -e 'library("rmarkdown"); render("$<", output_format="pdf_document")'
