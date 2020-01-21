@@ -230,6 +230,8 @@ rhdir/git_SACEMA_epidemicInsurance: url=https://github.com/SACEMA/epidemicInsura
 rhdir/git_SACEMA_epidemicInsurance: ; $(rhmake)
 rhdir/git_wzmli_glasgow: url=https://github.com/wzmli/glasgow.git
 rhdir/git_wzmli_glasgow: ; $(rhmake)
+rhdir/git_wzmli_corona: url=https://github.com/wzmli/corona.git
+rhdir/git_wzmli_corona: ; $(rhmake)
 rhdir/git_wzmli_ImpSamp: url=https://github.com/wzmli/ImpSamp.git
 rhdir/git_wzmli_ImpSamp: ; $(rhmake)
 rhdir/git_wzmli_impSamp: url=https://github.com/wzmli/impSamp.git
