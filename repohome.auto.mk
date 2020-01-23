@@ -272,3 +272,5 @@ rhdir/git_eliminaterabies_top: url=https://github.com/eliminaterabies/top.git
 rhdir/git_eliminaterabies_top: ; $(rhmake)
 rhdir/git_ElishaBayode_Babies_mummies_growth_rates_MS: url=https://github.com/ElishaBayode/Babies_mummies_growth_rates_MS.git
 rhdir/git_ElishaBayode_Babies_mummies_growth_rates_MS: ; $(rhmake)
+rhdir/git_Outbreak-analysis_top: url=https://github.com/Outbreak-analysis/top.git
+rhdir/git_Outbreak-analysis_top: ; $(rhmake)
