@@ -276,3 +276,5 @@ rhdir/git_Outbreak-analysis_top: url=https://github.com/Outbreak-analysis/top.gi
 rhdir/git_Outbreak-analysis_top: ; $(rhmake)
 rhdir/git_parksw3_wuhan: url=https://github.com/parksw3/wuhan.git
 rhdir/git_parksw3_wuhan: ; $(rhmake)
+rhdir/git_Outbreak-analysis_startingPoints: url=https://github.com/Outbreak-analysis/startingPoints.git
+rhdir/git_Outbreak-analysis_startingPoints: ; $(rhmake)
