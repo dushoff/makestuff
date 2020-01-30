@@ -109,8 +109,9 @@ Ignore += *.ld.tex
 %.makelog: %.log ;
 
 ## Jekyll stuff
+Ignore += jekyll.log
 serve:
-	bundle exec jekyll serve &
+	bundle exec jekyll serve > jekyll.log 2>&1 &
 
 killserve:
 	killall jekyll
