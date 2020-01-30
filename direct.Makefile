@@ -29,8 +29,7 @@ vim_session:
 
 ## repohome
 
-example: rhdir/host_group_name
-	$(rhsetup)
+example: dir=rhdir/host_group_name
 
 ## This is done automatically in makestuff; just here for hooks
 ## makestuff/repohome.auto.mk: makestuff/repohome.list makestuff/repohome.pl

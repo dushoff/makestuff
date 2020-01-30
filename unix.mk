@@ -20,15 +20,17 @@ RMR = /bin/rm -rf
 LS = /bin/ls
 LN = /bin/ln -s
 LNF = /bin/ln -fs
-TGZ = tar czf $@ $^
 MD = mkdir
 MKDIR = mkdir
 CAT = cat
-ZIP = zip $@ $^
 readonly = chmod a-w $@
 RO = chmod a-w $@
 DNE = (! $(LS) $@ > $(null))
 LSD = ($(LS) $@ > $(null))
+
+## These two are weird (don't follow the convention)
+TGZ = tar czf $@ $^
+ZIP = zip $@ $^
 
 null = /dev/null
 
