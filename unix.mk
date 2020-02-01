@@ -83,7 +83,7 @@ ddcopy = ($(LSD) && $(touch)) ||  $(rdcopy)
 %.ro:
 	chmod -R a-w $*
 %.rw:
-	chmod -R a+w $*
+	chmod -R u+w $*
 
 # What?
 convert = convert $< $@
