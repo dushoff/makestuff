@@ -8,7 +8,7 @@ noms:
 %.noms:
 	perl -pi -e 's|.\(ms\)/|makestuff/|' $*/Makefile $*/*.mk || perl -pi -e 's|.\(ms\)/|makestuff/|' $*/*.mk || perl -pi -e 's|.\(ms\)/|makestuff/|' $*/Makefile
 	
-# Unix basics
+# Unix basics (this is a hodge-podge of spelling conventions ☹)
 MVF = /bin/mv -f
 MV = /bin/mv
 CP = /bin/cp
@@ -25,6 +25,7 @@ MKDIR = mkdir
 CAT = cat
 readonly = chmod a-w $@
 RO = chmod a-w $@
+RW = chmod a+w $@
 DNE = (! $(LS) $@ > $(null))
 LSD = ($(LS) $@ > $(null))
 
@@ -77,6 +78,12 @@ pandocs = pandoc -s -o $@ $<
 
 dircopy = ($(LSD) && $(touch)) ||  $(rcopy)
 ddcopy = ($(LSD) && $(touch)) ||  $(rdcopy)
+
+## Lock and unlock directories to avoid making changes that aren't on the sink path
+%.ro:
+	chmod -R a-w $*
+%.rw:
+	chmod -R a+w $*
 
 # What?
 convert = convert $< $@
