@@ -6,3 +6,5 @@ In-process notes about using newtalk. Building from stat744, based on working st
 * Boom! (nice)
 
 * local.txt.format: add (if you have content) or Ignore
+
+2020 Feb 01 (Sat) It is not making newtalk and lect, but seems to want them (sometimes?)
