@@ -1,4 +1,8 @@
 
+## Better logic for types of subdirectories:
+## screened or not × alled or not
+## LOCKING for things that aren't alled
+
 ## This is XXX, a dirdir under screens
 ## makestuff/direct.Makefile
 current: target
@@ -17,7 +21,7 @@ screen_session:
 ## Vim
 
 vim_session:
-	bash -cl "vi Makefile target.mk"
+	bash -cl "vmt"
 
 ######################################################################
 
@@ -25,8 +29,7 @@ vim_session:
 
 ## repohome
 
-example: rhdir/host_group_name
-	$(rhsetup)
+example: dir=rhdir/host_group_name
 
 ## This is done automatically in makestuff; just here for hooks
 ## makestuff/repohome.auto.mk: makestuff/repohome.list makestuff/repohome.pl

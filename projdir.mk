@@ -1,1 +1,2 @@
 Ignore += $(pardirs)
+Ignore += $(dropdirs)

@@ -41,9 +41,10 @@ branch:
 Ignore += commit.time commit.default
 commit.time: $(Sources)
 	$(MAKE) exclude
-	-git add -f $?
-	echo "Autocommit ($(notdir $(CURDIR)))" > $@
-	!(git commit --dry-run >> $@) || (perl -pi -e 's/^/#/ unless /Autocommit/' $@ && $(GVEDIT))
+	-git add -f $? $(trackedTargets)
+	cat ~/.commitnow > $@ || echo Autocommit > $@
+	echo "## $(CURDIR)" >> $@
+	!(git commit --dry-run >> $@) || (perl -pi -e 's/^/#/ unless $$.==1' $@ && $(GVEDIT))
 	$(git_check) || (perl -ne 'print unless /#/' $@ | git commit -F -)
 	date >> $@
 
@@ -107,8 +108,12 @@ makestuff.allexclude: ;
 %.exclude: 
 	cd $* && $(MAKE) exclude
 
-amsync:
-	git commit -am "amsync"
+autocommit:
+	$(MAKE) exclude
+	$(git_check) || git commit -am "autocommit from git.mk"
+	git status
+
+amsync: autocommit
 	git pull
 	git push
 	git status
@@ -164,7 +169,7 @@ makestuff.mmsync: ;
 	cd $< && $(MAKE) sync
 
 %.pull: %
-	cd $< && $(MAKE) pull
+	cd $< && ($(MAKE) pull || git pull)
 
 ## Not tested (hasn't propagated)
 rmpull: $(mdirs:%=%.rmpull) makestuff.pull pull
@@ -203,6 +208,9 @@ gptargets: $(gptargets)
 
 ## 2019 Sep 22 (Sun) Keeping checkout, but skipping early pull
 ## That can make the remote copy look artificially new
+## 2019 Oct 10 (Thu)
+## But if we don't early pull we get spurious merges
+## Best is to pull pages when you pull
 %.pages:
 	$(MAKE) pages
 	cd pages && git checkout gh-pages
@@ -219,6 +227,13 @@ gptargets: $(gptargets)
 pages/%: % 
 	$(copy)
 
+## If you're going to pushpages automatically, you might want to say
+## pull: pages.gitpull
+
+%.gitpull:
+	cd $* && git pull
+
+## Make an empty pages directory when necessary; or else attaching existing one
 Ignore += pages
 pages:
 	git clone `git remote get-url origin` $@
@@ -246,9 +261,6 @@ abort:
 
 ~/.config/git:
 	$(mkdir)
-
-ignore.config: ~/.config/git
-	cat makestuff/ignore.vim makestuff/ignore.auth $</ignore
 
 README.md LICENSE.md:
 	touch $@
@@ -312,10 +324,11 @@ gitprune:
 
 Ignore += dotdir/ clonedir/
 dotdir: $(Sources)
-	$(MAKE) commit.time
+	$(MAKE) amsync
 	-/bin/rm -rf $@
 	git clone . $@
-	-cp target.mk $@
+	cd $@ && $(MAKE) Makefile && $(MAKE) makestuff
+	$(CP) dottarget.mk $@/target.mk || $(CP) target.mk $@
 
 ## Still working on rev-parse line
 %.branchdir: $(Sources)
@@ -331,6 +344,14 @@ clonedir: $(Sources)
 	git clone `git remote get-url origin` $@
 	-cp target.mk $@
 
+repodir: $(Sources)
+	-/bin/rm -rf $@
+	mkdir $@
+	tar czf $@.tgz `git ls-tree -r --name-only master`
+	cp $@.tgz $@
+	cd $@ && tar xzf $@.tgz && $(RM) $@.tgz
+	-cp target.mk $@
+
 sourcedir: $(Sources)
 	-/bin/rm -rf $@
 	mkdir $@
@@ -343,7 +364,11 @@ sourcedir: $(Sources)
 	-$(CP) local.mk $*
 
 %.dirtest: %
-	cd $< && $(MAKE) Makefile && $(MAKE) makestuff && $(MAKE) rum && $(MAKE) && $(MAKE) vtarget
+	cd $< && $(MAKE) Makefile && $(MAKE) makestuff && $(MAKE)
+
+## To open the dirtest final target when appropriate (and properly set up) 
+%.vdtest: %.dirtest
+	$(MAKE) vtarget
 
 %.localtest: % %.localdir %.dirtest ;
 
@@ -435,7 +460,7 @@ rup: rupdate
 rupex: rup
 	git submodule foreach --recursive make exclude
 
-pullup: pull rup
+pullup: pull
 
 ## What does this do? Endless loops of commits?
 rmaster: 

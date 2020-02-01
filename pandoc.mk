@@ -12,6 +12,10 @@
 %.emb.html: %.md
 	pandoc --self-contained -S -o $@ $<
 
+Ignore += *.jax.html
+%.jax.html: %.md
+	pandoc --mathjax -s -o $@ $<
+
 %.html: %.mkd
 	pandoc -s -o $@ $<
 
@@ -63,3 +67,6 @@
 %.pdf: %.md
 	pandoc -o $@ --pdf-engine=lualatex --variable fontsize=12pt $<
 
+rmdpdf = Rscript -e 'library("rmarkdown"); render("$<", output_format="pdf_document")'
+
+rmdpdfBang = Rscript -e 'library("rmarkdown"); render("$<", output_format="pdf_document")'

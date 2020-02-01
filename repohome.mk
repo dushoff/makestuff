@@ -1,3 +1,4 @@
+## Should auto stuff be here, or just in the staging directory?
 -include makestuff/repohome.auto.mk
 
 makestuff/repohome.auto.mk: makestuff/repohome.list makestuff/repohome.pl
@@ -7,12 +8,14 @@ makestuff/repohome.auto.mk: makestuff/repohome.list makestuff/repohome.pl
 ## This rule should be safe now, because it has only generated rules
 ## (with dependencies) for the next link
 define rhsetup
-$(dircopy)
+$(MAKE) $(dir)
+$(ddcopy)
 cd $@ && $(MAKE) Makefile && $(MAKE) makestuff/Makefile && $(MAKE) makestuff.msync && $(MAKE) all.time
 endef
 
-%: rhdir/%
-	$(rhsetup)
+## Not working because rhsetup uses ddcopy which depends on dir variable
+## Patch 2020 Jan 16 (Thu)
+## %: rhdir/%; $(rhsetup) || $(dircopy)
 
 ## Can't call make from rhdir because of loops
 Ignore += rhdir

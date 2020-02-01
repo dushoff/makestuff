@@ -8,7 +8,7 @@ noms:
 %.noms:
 	perl -pi -e 's|.\(ms\)/|makestuff/|' $*/Makefile $*/*.mk || perl -pi -e 's|.\(ms\)/|makestuff/|' $*/*.mk || perl -pi -e 's|.\(ms\)/|makestuff/|' $*/Makefile
 	
-# Unix basics
+# Unix basics (this is a hodge-podge of spelling conventions ☹)
 MVF = /bin/mv -f
 MV = /bin/mv
 CP = /bin/cp
@@ -20,15 +20,18 @@ RMR = /bin/rm -rf
 LS = /bin/ls
 LN = /bin/ln -s
 LNF = /bin/ln -fs
-TGZ = tar czf $@ $^
 MD = mkdir
 MKDIR = mkdir
 CAT = cat
-ZIP = zip $@ $^
 readonly = chmod a-w $@
 RO = chmod a-w $@
+RW = chmod a+w $@
 DNE = (! $(LS) $@ > $(null))
 LSD = ($(LS) $@ > $(null))
+
+## These two are weird (don't follow the convention)
+TGZ = tar czf $@ $^
+ZIP = zip $@ $^
 
 null = /dev/null
 
@@ -56,6 +59,7 @@ alwayslinkdir = (ls $(dir)/$@ > $(null) || $(MD) $(dir)/$@) && $(LNF) $(dir)/$@ 
 
 forcelink = $(LNF) $< $@
 rcopy = $(CPR) $< $@
+rdcopy = $(CPR) $(dir) $@
 copy = $(CP) $< $@
 hardcopy = $(CPF) $< $@
 allcopy =  $(CP) $^ $@
@@ -73,11 +77,21 @@ pandocs = pandoc -s -o $@ $<
 ## Including for rcopy
 
 dircopy = ($(LSD) && $(touch)) ||  $(rcopy)
+ddcopy = ($(LSD) && $(touch)) ||  $(rdcopy)
+
+## Lock and unlock directories to avoid making changes that aren't on the sink path
+%.ro:
+	chmod -R a-w $*
+%.rw:
+	chmod -R u+w $*
 
 # What?
 convert = convert $< $@
 imageconvert = convert -density 600 -trim $< -quality 100 -sharpen 0x1.0 $@
 shell_execute = sh < $@
+
+%.png: %.pdf
+	$(convert)
 
 pdfcat = pdfjoin --outfile $@ $(filter %.pdf, $^) 
 
@@ -104,8 +118,9 @@ Ignore += *.ld.tex
 %.makelog: %.log ;
 
 ## Jekyll stuff
+Ignore += jekyll.log
 serve:
-	bundle exec jekyll serve &
+	bundle exec jekyll serve > jekyll.log 2>&1 &
 
 killserve:
 	killall jekyll

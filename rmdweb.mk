@@ -5,29 +5,25 @@
 ## All this redundancy could presumably be avoided, but only 
 ## by learning more than I know about string manipulation
 mkd = $(wildcard *.mkd)
-Rmd = $(wildcard *.Rmd)
 rmd = $(wildcard *.rmd)
 
 lmkd = $(wildcard *.lect.mkd)
-lRmd = $(wildcard *.lect.Rmd)
 lrmd = $(wildcard *.lect.rmd)
 
 ## pageSources already include lectSources, so the latter is not a thing
-pageSources += $(mkd) $(Rmd) $(rmd)
+pageSources += $(mkd) $(rmd)
 
 pageProductsLocal += $(mkd:.mkd=.html)
-pageProductsLocal += $(Rmd:.Rmd=.html)
 pageProductsLocal += $(rmd:.rmd=.html)
 pageProductsLocal += $(mkd:.mkd=.html)
 pageProductsLocal += $(lmkd:.lect.mkd=.io.html)
-pageProductsLocal += $(lRmd:.lect.Rmd=.io.html)
 pageProductsLocal += $(lrmd:.lect.rmd=.io.html)
 
 ## _files refers to rmd _files/ directories here
-local_files = $(wildcard *_files/*)
 page_files = $(local_files:%=pages/%)
 
-## Local is used over in pages for adding
+## Probably unnecessary
+local_files = $(wildcard *_files/*)
 pageProductsLocal += $(local_files)
 
 pageProducts = $(pageProductsLocal:%=pages/%)
@@ -36,19 +32,24 @@ Sources += $(pageSources)
 
 ## Recipes
 
+tangle_r = Rscript -e 'library("knitr"); knit("$<", output="$@", tangle=TRUE)'
+
 ## This rule should filter filenames instead of specifying "main". 
-mdh_r = pandoc --mathjax -s -c main.css -B main.header.html -A main.footer.html -o $@ $<
+## Fiddling with knitr arguments
+mdh_r = pandoc --filter pandoc-citeproc --to html4 --from markdown+autolink_bare_uris+ascii_identifiers+tex_math_single_backslash+smart --mathjax -s -c main.css -B main.header.html -A main.footer.html -o $(notdir $@) $<; $(MV) $(notdir $@) $(dir $@)
 rmdfiles_r = $(CPR) $*_files $(dir $@)
 
 ## Source ⇒ product
+## rmdfiles_r is probably unnecessary!
 pages/%.html: %.mkd main.css main.header.html main.footer.html
 	$(mdh_r)
-pages/%.html: %.rmk main.css main.header.html main.footer.html
+	- $(rmdfiles_r)
+pages/%.html: %.rmk main.css main.header.html main.footer.html %.rmd
 	$(mdh_r)
 	- $(rmdfiles_r)
 pages/%.notes.html: %.mkd main.css main.header.html main.footer.html
 	$(mdh_r)
-pages/%.notes.html: %.rmk main.css main.header.html main.footer.html
+pages/%.notes.html: %.rmk main.css main.header.html main.footer.html %.rmd
 	$(mdh_r)
 
 ## page_files are made as side effects of compilation from rmd. We hope
@@ -68,26 +69,20 @@ pages/%.io.html: %.lect.mkd
 ## pages/%.io.html: %.lect.rmk; $(mdio_r)
 ## pages/%.io.html: %.lect.rmd; $(mdio_r)
 
-## rmd. This is awkward because rmarkdown library does not play well with piping
-## At some point could add rmdstep-ish stuff here (automatic dependencies)
-rwm_r = Rscript -e 'library("rmarkdown"); render("$<", output_format="md_document", output_file="$@")'
-Ignore += *.rwm
-%.rwm: %.rmd
-	$(rwm_r)
-%.rwm: %.Rmd
-	$(rwm_r)
 
+## 2019 Nov 08 (Fri)
+## Not sure why there's so much remaking; something about this gap?
 ## Treat up to the first blank line as yaml
-Ignore += *.rym
-rym_r = perl -nE "last if /^$$/; print; END{say}" $< > $@
-%.rym: %.rmd
-	$(rym_r)
-%.rym: %.Rmd
-	$(rym_r)
+Ignore += *.rym *.rwm
+rym_r = perl -nE "last if /^$$/; print; END{say}" $< > $*.rym
+rwm_r = Rscript -e 'library("rmarkdown"); render("$<", output_format="md_document", output_file="$*.rwm")'
 
 Ignore += *.rmk
-%.rmk: %.rym %.rwm
-	$(cat)
+%.rmk: %.rmd
+	$(rym_r)
+	$(rwm_r)
+	$(CAT) $*.rym $*.rwm > $@
+	$(RM) $*.rym $*.rwm
 
 ## Outputting
 

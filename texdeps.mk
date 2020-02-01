@@ -6,8 +6,6 @@ ifeq ($(bibtex),)
 bibtex = biber $* || bibtex $*
 endif
 
-%.alltex: %.deps %.pdf ;
-
 %.pdf: %.tex .texdeps/%.out
 	$(MAKE) .texdeps/$*.mk
 	-$(MAKE) $*.deps ## Try the dependencies, but continue regardless
@@ -50,10 +48,17 @@ endif
 %.ltx:
 	-$(latex) $*
 
-# Update dependencies for a .tex file
+## 2019 Dec 02 (Mon) Workflow
+## It's a bit confusing that .deps always succeeds
+
 # A phony target
 %.deps: .texdeps/%.mk %.tex
-	-$(MAKE) -f $< -f Makefile .texdeps/$*.out | tee .texdeps/$*.make.log 2>&1
+	$(MAKE) -f $< -f Makefile .texdeps/$*.out | tee .texdeps/$*.make.log 2>&1
+
+## Try harder (and try to stop in the right place)
+%.alltex: 
+	- $(MAKE) $*.deps
+	$(MAKE) $*.pdf || ($(MAKE) $*.deps && $(MAKE) $*.pdf)
 
 Ignore += .texdeps/
 

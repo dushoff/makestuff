@@ -32,3 +32,16 @@ It can do this by default, and handle simple dependencies. But for complicated p
 * rdaname <dottarget>.RData
 
 The <dottarget> is an attempt to make a hidden file (requested by Mike Li). `wrapR.mk` is supposed to understand how to make these dependencies, and how to unhide them when necessary.
+
+3) By default, saves the whole environment at the end of a completed run (no quit statement) into a hidden .RData file. To overrule this, use 
+
+* `# rdsave(…)` This works like save, but saves to the default hidden .RData file
+* `# rdnosave()`
+
+Recommended style is to put a single comment character in case the script will ever be run in a different context. More than one comment character will actually comment out the line.
+
+## To do
+
+* What is the best way to fit rmd in?
+* Work with Ben to come up with something sensible for rds (rds_list?)
+

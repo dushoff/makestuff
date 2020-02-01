@@ -1,5 +1,5 @@
-## This is XXX, a screens project directory
-## makestuff/project.Makefile
+## This is a screens project subdirectory
+## makestuff/up.Makefile
 
 current: target
 -include target.mk
@@ -26,8 +26,8 @@ Ignore += makestuff
 msrepo = https://github.com/dushoff
 Makefile: makestuff/Makefile
 makestuff/Makefile:
-	git clone $(msrepo)/makestuff
-	ls $@
+	cd .. && $(MAKE)
+	ls ../makestuff/Makefile && /bin/ln -s ../makestuff 
 
 -include makestuff/os.mk
 
