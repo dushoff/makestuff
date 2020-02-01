@@ -80,6 +80,7 @@ dircopy = ($(LSD) && $(touch)) ||  $(rcopy)
 ddcopy = ($(LSD) && $(touch)) ||  $(rdcopy)
 
 ## Lock and unlock directories to avoid making changes that aren't on the sink path
+## git will not track this for you ☹
 %.ro:
 	chmod -R a-w $*
 %.rw:
