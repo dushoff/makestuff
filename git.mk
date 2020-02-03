@@ -119,7 +119,7 @@ amsync: autocommit
 	git status
 
 sync: 
-	$(RM) up.time
+	-$(RM) up.time
 	$(MAKE) up.time
 
 allsync: 
