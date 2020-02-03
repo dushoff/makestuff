@@ -126,7 +126,7 @@ allsync:
 	$(RM) all.time
 	$(MAKE) all.time
 
-newpush:
+newpush: commit.time
 	git push -u origin master
 
 ######################################################################
