@@ -98,6 +98,7 @@ Sources += $(wildcard *.mk *.pl *.Makefile *.def)
 
 ## Various talkish stuff. Need to find out what's hot, what's not.
 
+Sources += $(wildcard newtalk/*.*)
 # Sources += linkdirs.mk newtalk.def newtalk.mk newtalk.md $(wildcard newtalk/*.*)
 
 Sources += $(wildcard lect/*.*)

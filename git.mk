@@ -119,14 +119,14 @@ amsync: autocommit
 	git status
 
 sync: 
-	$(RM) up.time
+	-$(RM) up.time
 	$(MAKE) up.time
 
 allsync: 
 	$(RM) all.time
 	$(MAKE) all.time
 
-newpush:
+newpush: commit.time
 	git push -u origin master
 
 ######################################################################

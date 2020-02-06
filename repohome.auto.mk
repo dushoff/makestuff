@@ -20,6 +20,8 @@ rhdir/git_bbolker_stat744: url=https://github.com/bbolker/stat744.git
 rhdir/git_bbolker_stat744: ; $(rhmake)
 rhdir/git_bbolker_stat744_private: url=https://github.com/bbolker/stat744_private.git
 rhdir/git_bbolker_stat744_private: ; $(rhmake)
+rhdir/git_bbolker_louseplague: url=https://github.com/bbolker/louseplague.git
+rhdir/git_bbolker_louseplague: ; $(rhmake)
 rhdir/git_Bio1M_Archive: url=https://github.com/Bio1M/Archive.git
 rhdir/git_Bio1M_Archive: ; $(rhmake)
 rhdir/git_Bio1M_Bio1M.github.io: url=https://github.com/Bio1M/Bio1M.github.io.git
@@ -228,6 +230,8 @@ rhdir/git_SACEMA_epidemicInsurance: url=https://github.com/SACEMA/epidemicInsura
 rhdir/git_SACEMA_epidemicInsurance: ; $(rhmake)
 rhdir/git_wzmli_glasgow: url=https://github.com/wzmli/glasgow.git
 rhdir/git_wzmli_glasgow: ; $(rhmake)
+rhdir/git_wzmli_corona: url=https://github.com/wzmli/corona.git
+rhdir/git_wzmli_corona: ; $(rhmake)
 rhdir/git_wzmli_ImpSamp: url=https://github.com/wzmli/ImpSamp.git
 rhdir/git_wzmli_ImpSamp: ; $(rhmake)
 rhdir/git_wzmli_impSamp: url=https://github.com/wzmli/impSamp.git
@@ -266,3 +270,11 @@ rhdir/git_ICI3D_LatexTemplates: url=https://github.com/ICI3D/LatexTemplates.git
 rhdir/git_ICI3D_LatexTemplates: ; $(rhmake)
 rhdir/git_eliminaterabies_top: url=https://github.com/eliminaterabies/top.git
 rhdir/git_eliminaterabies_top: ; $(rhmake)
+rhdir/git_ElishaBayode_Babies_mummies_growth_rates_MS: url=https://github.com/ElishaBayode/Babies_mummies_growth_rates_MS.git
+rhdir/git_ElishaBayode_Babies_mummies_growth_rates_MS: ; $(rhmake)
+rhdir/git_Outbreak-analysis_top: url=https://github.com/Outbreak-analysis/top.git
+rhdir/git_Outbreak-analysis_top: ; $(rhmake)
+rhdir/git_parksw3_wuhan: url=https://github.com/parksw3/wuhan.git
+rhdir/git_parksw3_wuhan: ; $(rhmake)
+rhdir/git_Outbreak-analysis_startingPoints: url=https://github.com/Outbreak-analysis/startingPoints.git
+rhdir/git_Outbreak-analysis_startingPoints: ; $(rhmake)

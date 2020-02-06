@@ -8,6 +8,9 @@ git_dir = $(shell git rev-parse --git-dir)
 
 exclude: $(git_dir)/info/exclude ;
 
+ignore: exclude
+	git status
+
 ## Usually .git/info/exclude
 ## dirdir ../.git/info/exclude
 $(git_dir)/info/exclude: $(Sources) Makefile
@@ -19,4 +22,4 @@ ignore.config: ~/.config/git
 	cat makestuff/ignore.vim makestuff/ignore.auth $</ignore
 
 ignorehere: $(git_dir)/info/exclude
-	$(CP) $< ~/.gitignore
+	$(CP) $< .gitignore
