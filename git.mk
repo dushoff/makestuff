@@ -58,6 +58,9 @@ pull: commit.time
 	git pull
 	touch $<
 
+pardirpull: $(pardirs:%=%.pull)
+parpull: pull pardirpull
+
 newSource:
 	git add $(Sources)
 
