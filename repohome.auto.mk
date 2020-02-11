@@ -272,3 +272,9 @@ rhdir/git_eliminaterabies_top: url=https://github.com/eliminaterabies/top.git
 rhdir/git_eliminaterabies_top: ; $(rhmake)
 rhdir/git_ElishaBayode_Babies_mummies_growth_rates_MS: url=https://github.com/ElishaBayode/Babies_mummies_growth_rates_MS.git
 rhdir/git_ElishaBayode_Babies_mummies_growth_rates_MS: ; $(rhmake)
+rhdir/git_Outbreak-analysis_top: url=https://github.com/Outbreak-analysis/top.git
+rhdir/git_Outbreak-analysis_top: ; $(rhmake)
+rhdir/git_parksw3_wuhan: url=https://github.com/parksw3/wuhan.git
+rhdir/git_parksw3_wuhan: ; $(rhmake)
+rhdir/git_Outbreak-analysis_startingPoints: url=https://github.com/Outbreak-analysis/startingPoints.git
+rhdir/git_Outbreak-analysis_startingPoints: ; $(rhmake)

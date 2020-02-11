@@ -17,9 +17,9 @@ dirdir = TRUE
 ## deepdirs are deep resting
 ## deepdirs should be locked, and sometimes linkdirs will be, too
 
-notebook: dir=rhdir/notebook
-$(projdirs) $(rprojdirs):
-	$(rhsetup)
+## Start to deprecate rhdir: rhsetup needs to be called manually now 2020 Jan 29 (Wed)
+## notebook: dir=rhdir/notebook
+## $(projdirs) $(rprojdirs): ; $(rhsetup)
 
 ## Making screens automatically
 ## recipes to be included in screen_session
