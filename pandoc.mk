@@ -5,8 +5,10 @@
 %.html: %.md
 	pandoc -s -o $@ $<
 
+ghh_r = pandoc -s -f gfm -o $@ $<
 %.gh.html: %.md
-	pandoc -s -f gfm -o $@ $<
+	$(ghh_r)
+
 
 ## Not tested; may cause trouble with mathjax? Just shut up and test it.
 %.emb.html: %.md
