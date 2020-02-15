@@ -17,6 +17,9 @@ ghh_r = pandoc -s -f gfm -o $@ $<
 %.emb.html: %.md
 	pandoc --self-contained -S -o $@ $<
 
+%.md: %.docx
+	pandoc -o $@ $<
+
 Ignore += *.jax.html
 %.jax.html: %.md
 	pandoc --mathjax -s -o $@ $<
