@@ -10,6 +10,9 @@ ghh_r = pandoc -s -f gfm -o $@ $<
 %.gh.html: %.md
 	$(ghh_r)
 
+%.gh.html: %.mkd
+	$(ghh_r)
+
 ## Not tested; may cause trouble with mathjax? Just shut up and test it.
 %.emb.html: %.md
 	pandoc --self-contained -S -o $@ $<
