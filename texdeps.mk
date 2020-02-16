@@ -25,6 +25,8 @@ endif
 	@grep "Stop." .texdeps/$*.make.log || :
 	@grep "failed" .texdeps/$*.make.log || :
 
+## 2020 Feb 16 (Sun)
+## Not chaining hardly at all. Neither of these seem to depend on included files for example
 %.bbl: %.tex %.ltx
 	($(bibtex)) || ($(RM) $@ && false)
 
