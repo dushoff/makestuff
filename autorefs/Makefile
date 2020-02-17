@@ -70,8 +70,9 @@ Sources += test.rmu
 
 %.md: %.int $(autorefs)/md.pl
 	$(MAKE) $*.bib
+	$(MAKE) $*.point
 	$(MAKE) $*.mdmk
-	$(MAKE) -f $*.mdmk -f $(autorefs)/Makefile mdrec
+	$(MAKE) -f $*.point -f $*.mdmk -f $(autorefs)/Makefile mdrec
 	$(PUSH)
 
 ######################################################################

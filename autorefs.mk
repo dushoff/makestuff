@@ -1,6 +1,6 @@
 Makefile: bibdir
 Ignore += bibdir
-bibdir: 
+bibdir_not: 
 	@echo Checking for bibdir or Drop link
 	(touch $(Drop)/autorefs/testfile && $(LNF) $(Drop)/autorefs $@)
 
