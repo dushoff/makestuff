@@ -8,6 +8,9 @@ bibdir:
 export ms
 export autorefs = makestuff/autorefs
 
+## rmu is run through nodoi and everything else through rmu
+## Does this mean we can't doi?
+## Apparently so 2020 Feb 17 (Mon)
 pmr = $(wildcard *.pmr)
 %.rmu: %.pmr
 	perl -wf $(autorefs)/nodoi.pl $< > $@
