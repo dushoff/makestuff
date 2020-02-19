@@ -72,6 +72,9 @@ Ignore += *.jax.html
 %.pan.pdf: %.mkd
 	pandoc -o $@ --variable fontsize=12pt $<
 
+%.ltx.pdf: %.md
+	pandoc -o $@ --variable fontsize=12pt $<
+
 %.pan.pdf: %.md
 	pandoc -o $@ --pdf-engine=lualatex --variable fontsize=12pt $<
 
