@@ -1,16 +1,24 @@
 ## Thinking about pandoc 2 and less-random rules 
 ## 2019 Feb 12 (Tue)
+## Quite a mess here; maybe legacy it and come up with a different name or structure 2020 Feb 15 (Sat)
 
 ## -S for “smart” quotes (those quotes were a failed message to myself)
 %.html: %.md
 	pandoc -s -o $@ $<
 
+ghh_r = pandoc -s -f gfm -o $@ $<
 %.gh.html: %.md
-	pandoc -s -f gfm -o $@ $<
+	$(ghh_r)
+
+%.gh.html: %.mkd
+	$(ghh_r)
 
 ## Not tested; may cause trouble with mathjax? Just shut up and test it.
 %.emb.html: %.md
 	pandoc --self-contained -S -o $@ $<
+
+%.md: %.docx
+	pandoc -o $@ $<
 
 Ignore += *.jax.html
 %.jax.html: %.md
@@ -61,10 +69,13 @@ Ignore += *.jax.html
 	pandoc -o $@ $<
 
 ## This is becoming pretty random
-%.pdf: %.mkd
+%.pan.pdf: %.mkd
 	pandoc -o $@ --variable fontsize=12pt $<
 
-%.pdf: %.md
+%.ltx.pdf: %.md
+	pandoc -o $@ --variable fontsize=12pt $<
+
+%.pan.pdf: %.md
 	pandoc -o $@ --pdf-engine=lualatex --variable fontsize=12pt $<
 
 rmdpdf = Rscript -e 'library("rmarkdown"); render("$<", output_format="pdf_document")'

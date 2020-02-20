@@ -6,3 +6,5 @@ In-process notes about using newtalk. Building from stat744, based on working st
 * Boom! (nice)
 
 * local.txt.format: add (if you have content) or Ignore
+
+Still using the older lect.mk for some test applications (at least)

@@ -8,7 +8,7 @@ noms:
 %.noms:
 	perl -pi -e 's|.\(ms\)/|makestuff/|' $*/Makefile $*/*.mk || perl -pi -e 's|.\(ms\)/|makestuff/|' $*/*.mk || perl -pi -e 's|.\(ms\)/|makestuff/|' $*/Makefile
 	
-# Unix basics
+# Unix basics (this is a hodge-podge of spelling conventions ☹)
 MVF = /bin/mv -f
 MV = /bin/mv
 CP = /bin/cp
@@ -25,6 +25,7 @@ MKDIR = mkdir
 CAT = cat
 readonly = chmod a-w $@
 RO = chmod a-w $@
+RW = chmod a+w $@
 DNE = (! $(LS) $@ > $(null))
 LSD = ($(LS) $@ > $(null))
 
@@ -78,6 +79,13 @@ pandocs = pandoc -s -o $@ $<
 dircopy = ($(LSD) && $(touch)) ||  $(rcopy)
 ddcopy = ($(LSD) && $(touch)) ||  $(rdcopy)
 
+## Lock and unlock directories to avoid making changes that aren't on the sink path
+## git will not track this for you ☹
+%.ro:
+	chmod -R a-w $*
+%.rw:
+	chmod -R u+w $*
+
 # What?
 convert = convert $< $@
 imageconvert = convert -density 600 -trim $< -quality 100 -sharpen 0x1.0 $@
@@ -111,8 +119,9 @@ Ignore += *.ld.tex
 %.makelog: %.log ;
 
 ## Jekyll stuff
+Ignore += jekyll.log
 serve:
-	bundle exec jekyll serve &
+	bundle exec jekyll serve > jekyll.log 2>&1 &
 
 killserve:
 	killall jekyll

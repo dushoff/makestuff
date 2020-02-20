@@ -1,12 +1,16 @@
 Makefile: bibdir
 Ignore += bibdir
 bibdir: 
-	(touch $(Drop)/autorefs/testfile && $(LNF) $(Drop)/autorefs $@) || mkdir $@
+	@echo Checking for bibdir or Drop link
+	(touch $(Drop)/autorefs/testfile && $(LNF) $(Drop)/autorefs $@)
 
 ## Awkward holdovers from wiki setup?
 export ms
 export autorefs = makestuff/autorefs
 
+## rmu is run through nodoi and everything else through rmu
+## Does this mean we can't doi?
+## Apparently so 2020 Feb 17 (Mon)
 pmr = $(wildcard *.pmr)
 %.rmu: %.pmr
 	perl -wf $(autorefs)/nodoi.pl $< > $@

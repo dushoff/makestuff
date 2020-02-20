@@ -298,7 +298,7 @@ outline: %!
 
 HREF \href{%}{%%}
 draft final: \href{%}{\color{linkcolor}%%}
-handouts: Link: \href{%}{%%}
+handouts: \nhref{%}{%%}
 outline: %!
 
 ### Input
