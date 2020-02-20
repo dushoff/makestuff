@@ -18,8 +18,9 @@ dirdir = TRUE
 ## deepdirs should be locked, and sometimes linkdirs will be, too
 
 notebook: dir=rhdir/notebook
-$(projdirs) $(rprojdirs):
-	$(rhsetup)
+
+## No more rhsetup by default; deprecate where possible
+## $(projdirs) $(rprojdirs): $(rhsetup);
 
 ## Making screens automatically
 ## recipes to be included in screen_session
