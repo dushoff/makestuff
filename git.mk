@@ -89,7 +89,7 @@ all.time: $(alldirs:%=%.all) exclude up.time
 	touch $@
 	git status
 
-allin: $(alldirs) $(alldirs:%=%.mmsync)
+allin: $(alldirs) $(alldirs:%=%.msync)
 
 Ignore += *.all
 makestuff.all: %.all: %
@@ -97,7 +97,7 @@ makestuff.all: %.all: %
 
 ## Should there be a dependency here? Better chaining?
 %.all: 
-	$(MAKE) $* && cd $* && $(MAKE) all.time
+	$(MAKE) $* && cd $* && $(MAKE) makestuff && $(MAKE) all.time
 
 ## Bridge rules maybe? Eventually this should be part of all.time
 ## and all.time does not need to be part of rup
@@ -129,12 +129,15 @@ allsync:
 newpush:
 	git push -u origin master
 
-######################################################################
+## Use pullup to add stuff to routine pulls
+## without adding to all pulls; maybe not useful?
+## or maybe had some submodule something?
+pullup: pull
 
-## This probably belongs somewhere else!
-addsync: $(add_cache)
-	touch Makefile
-	$(MAKE) sync
+git_check:
+	$(git_check)
+
+######################################################################
 
 tsync:
 	touch Makefile
@@ -160,10 +163,6 @@ remotesync: commit.default
 
 %.msync: 
 	$(MAKE) $*.master $*.sync
-
-makestuff.mmsync: ;
-%.mmsync: 
-	cd $* && git checkout master && $(MAKE) makestuff && $(MAKE) makestuff.master makestuff.sync
 
 %.sync: %
 	cd $< && $(MAKE) sync
@@ -429,105 +428,7 @@ hupstream:
 hup:
 	git remote get-url origin
 
-## Outdated version for github ssh 
-supstream:
-	git remote get-url origin | perl -pe "s|:|/|; s|[^@]*@|go https://|; s/\.git.*//" | bash --login
-
-## Github only (not implemented)
-pageLocation:
-	git remote get-url origin
-
 ######################################################################
-
-## Recursive updating using git submodule functions
-
-## Improved from https://stackoverflow.com/questions/10168449/git-update-submodule-recursive
-## Ideal approach would be to have all submodules made with -b from now on.
-
-## Get branch tracking and see how much it helps
-## Check https://stackoverflow.com/questions/1777854/git-submodules-specify-a-branch-tag/18799234#18799234 maybe?
-
-rum: rupdate rmaster
-ruc: rupdate rcheck
-rumfetch: rupdate rfetch rmaster
-
-rupdate:
-	git submodule update --init --recursive
-
-rup: rupdate
-	git submodule foreach --recursive touch commit.time up.time all.time
-
-rupex: rup
-	git submodule foreach --recursive make exclude
-
-pullup: pull
-
-## What does this do? Endless loops of commits?
-rmaster: 
-	git submodule foreach --recursive git checkout master
-
-rcheck: 
-	(git submodule foreach --recursive git branch | grep -B1 detached) ||:
-
-## Not sure what's good about this, nor why it apparently needs to be combined with rmaster
-## Should we be doing rum; rpull instead? Or nothing?
-rfetch:
-	git submodule foreach --recursive git fetch
-
-######################################################################
-
-## Keep makestuff up to date without pointless manual commits
-## ls -d makestuff is a cheap test for "is this makestuff"?
-## Should figure out the right way to test .==makestuff
-
-git_check:
-	$(git_check)
-
-## Push new makestuff (probably from this section) to all submodules
-## Locally if makestuffs aren't submodules)
-shortstuff:
-	git submodule foreach '(ls -d makestuff && cd makestuff && git checkout master && git pull) ||:'
-## Recursively
-newstuff: makestuff.sync
-	git submodule foreach --recursive 'ls -d makestuff || (git checkout master && git pull)'
-
-## The principled way to do this seems to be with update merge
-## It seems to require config variables?
-allmaster: 
-	git submodule foreach --recursive 'git checkout master'
-
-upsub:
-	git submodule update --init --merge
-
-## This goes through directories that have makestuff and adds and commits just the makestuff
-comstuff:
-	git submodule foreach --recursive '(ls -d makestuff && make syncstuff) ||: '
-
-## Used to have pull/push manually; should it work instead with rmsync?
-## No idea!
-syncstuff: makestuff
-	git add $< 
-	git commit -m $@
-
-rmsync: $(mdirs:%=%.rmsync) makestuff.msync commit.time
-	git checkout master
-	$(MAKE) sync
-	git status
-
-%.rmsync:
-	cd $* && $(MAKE) rmsync
-
-pushstuff: newstuff comstuff rmsync
-
-######################################################################
-
-## Is srstuff covered by clone stuff below it?
-
-## Push makestuff changes to subrepos
-srstuff:  $(mdirs:%=%.srstuff) $(clonedirs:%=%.srstuff)
-
-%.srstuff:
-	cd $*/makestuff && git checkout master && $(MAKE) pull
 
 ## Initializing and pulling clones
 
