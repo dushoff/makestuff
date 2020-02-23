@@ -32,7 +32,7 @@ bank: HEAD %%
 
 ## These are weird; in future, only keep FIRST, SECOND etc. Rest can just be DEFHEADs
 
-FIRST19 NULLSLIDE
+FIRST NULLSLIDE
 bank: HEAD FIRST %!
 midterm1: %!
 

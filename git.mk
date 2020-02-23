@@ -58,6 +58,9 @@ pull: commit.time
 	git pull
 	touch $<
 
+pardirpull: $(pardirs:%=%.pull) makestuff.pull
+parpull: pull pardirpull
+
 newSource:
 	git add $(Sources)
 
@@ -119,14 +122,14 @@ amsync: autocommit
 	git status
 
 sync: 
-	$(RM) up.time
+	-$(RM) up.time
 	$(MAKE) up.time
 
 allsync: 
 	$(RM) all.time
 	$(MAKE) all.time
 
-newpush:
+newpush: commit.time
 	git push -u origin master
 
 ## Use pullup to add stuff to routine pulls
