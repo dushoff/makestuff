@@ -401,6 +401,7 @@ master:
 # %.master: %
 #	cd $< && git checkout master
 
+## What the $#@! is this?
 update: sync
 	git rebase $(cmain) 
 	git push origin --delete $*
