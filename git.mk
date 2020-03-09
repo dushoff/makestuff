@@ -130,7 +130,6 @@ makestuff.pullall: makestuff.pull
 pullmake: $(alldirs:%=%.pullmake)
 
 makestuff.pullmake: ;
-	cd $* && $(MAKE) up.time
 
 %.pullmake: 
 	$(MAKE) $* && cd $* && $(MAKE) makestuff && $(MAKE) makestuff.pull
