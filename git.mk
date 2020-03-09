@@ -123,7 +123,7 @@ autocommit:
 	$(git_check) || git commit -am "autocommit from git.mk"
 	git status
 
-amsync: autocommit
+amsync:
 	$(MAKE) exclude
 	$(git_check) || $(do_amsync)
 
