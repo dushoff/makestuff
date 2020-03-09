@@ -124,6 +124,7 @@ autocommit:
 	git status
 
 amsync: autocommit
+	die like a doG
 	$(MAKE) exclude
 	$(git_check) || $(do_amsync)
 
