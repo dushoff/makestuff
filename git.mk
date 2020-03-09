@@ -115,6 +115,17 @@ amsync:
 
 ######################################################################
 
+## 2020 Mar 09 (Mon) pull via all
+pullall: $(alldirs:%=%.pullall)
+
+Ignore += *.all
+makestuff.pullall: makestuff.pull
+	cd $* && $(MAKE) up.time
+
+## Should there be a dependency here? Better chaining?
+%.pullall: 
+	$(MAKE) $* && cd $* && $(MAKE) makestuff && $(MAKE) pullall
+
 ## Bridge rules maybe? Eventually this should be part of all.time
 ## and all.time does not need to be part of rup
 all.exclude: makestuff.exclude $(alldirs:%=%.allexclude) exclude ;
