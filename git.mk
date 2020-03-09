@@ -87,12 +87,12 @@ $(subdirs):
 	$(mkdir)
 	$(CP) makestuff/subdir.mk $@/Makefile
 
+######################################################################
+
 ## 2018 Nov 07 (Wed). Trying to make these rules finish better
 all.time: $(alldirs:%=%.all) exclude up.time
 	touch $@
 	git status
-
-allin: $(alldirs) $(alldirs:%=%.msync)
 
 Ignore += *.all
 makestuff.all: %.all: %
@@ -101,15 +101,6 @@ makestuff.all: %.all: %
 ## Should there be a dependency here? Better chaining?
 %.all: 
 	$(MAKE) $* && cd $* && $(MAKE) makestuff && $(MAKE) all.time
-
-## Bridge rules maybe? Eventually this should be part of all.time
-## and all.time does not need to be part of rup
-all.exclude: makestuff.exclude $(alldirs:%=%.allexclude) exclude ;
-makestuff.allexclude: ;
-%.allexclude:
-	cd $* && $(MAKE) all.exclude
-%.exclude: 
-	cd $* && $(MAKE) exclude
 
 do_amsync = (git commit -am "amsync"; git pull; git push; git status)
 
@@ -122,13 +113,20 @@ amsync:
 	$(MAKE) exclude
 	$(git_check) || $(do_amsync)
 
+######################################################################
+
+## Bridge rules maybe? Eventually this should be part of all.time
+## and all.time does not need to be part of rup
+all.exclude: makestuff.exclude $(alldirs:%=%.allexclude) exclude ;
+makestuff.allexclude: ;
+%.allexclude:
+	cd $* && $(MAKE) all.exclude
+%.exclude: 
+	cd $* && $(MAKE) exclude
+
 sync: 
 	-$(RM) up.time
 	$(MAKE) up.time
-
-allsync: 
-	$(RM) all.time
-	$(MAKE) all.time
 
 newpush: commit.time
 	git push -u origin master
@@ -136,7 +134,7 @@ newpush: commit.time
 ## Use pullup to add stuff to routine pulls
 ## without adding to all pulls; maybe not useful?
 ## or maybe had some submodule something?
-pullup: pull
+pullup: makestuff.pull pull
 
 git_check:
 	$(git_check)
@@ -164,9 +162,6 @@ remotesync: commit.default
 
 %.status: %
 	cd $< && git status
-
-%.msync: 
-	$(MAKE) $*.master $*.sync
 
 %.sync: %
 	cd $< && $(MAKE) sync
@@ -435,45 +430,13 @@ hup:
 
 ######################################################################
 
-## Initializing and pulling clones
-
-%.makeclone: % 
-	cd $* && $(MAKE) makestuff && $(MAKE) makestuff.master && $(MAKE) makestuff.sync && $(MAKE) makeclones
-
-makeclones: $(clonedirs:%=%.makeclone) ;
-
-## Transitional, doesn't recurse (yet?)
-
-## Just pull
-cpstuff: makestuff.pull $(clonedirs:%=%.cpstuff) ;
-
-%.cpstuff: 
-	cd $* && $(MAKE) makestuff.pull
-
-csstuff: makestuff.push $(clonedirs:%=%.csstuff) ;
-
-%.csstuff: 
-	cd $* && $(MAKE) makestuff.msync && $(MAKE) csstuff
-
-######################################################################
-
 ## Moved a bunch of confusing stuff to hybrid.mk
+## Cleaned out a bunch of stuff (much later) 2020 Mar 09 (Mon)
 
 ######################################################################
 
 ## Switch makestuff style in repo made by gitroot 
-
-makestuff.clone:
-	cd makestuff && $(MAKE) up.time
-	$(MAKE) makestuff.rmsub
-	git clone $(msrepo)/makestuff
-	perl -pi -e 's/Sources(.*ms)/Ignore$$1/' Makefile
-
-makestuff.sub:
-	cd makestuff && $(MAKE) up.time
-	$(RMR) makestuff
-	git submodule add -f -b master $(msrepo)/makestuff
-	perl -pi -e 's/Ignore(.*ms)/Sources $$1/' Makefile
+## Killed 2020 Mar 09 (Mon)
 
 ######################################################################
 
