@@ -111,12 +111,7 @@ makestuff.allexclude: ;
 %.exclude: 
 	cd $* && $(MAKE) exclude
 
-define do_amsync
-	git commit -am "amsync"
-	git pull
-	git push
-	git status
-endef
+do_amsync = (git commit -am "amsync"; git pull; git push; git status)
 
 autocommit:
 	$(MAKE) exclude
