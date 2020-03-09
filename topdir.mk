@@ -5,9 +5,12 @@ $(dirdirs):
 	cp makestuff/direct.Makefile $@/Makefile
 	cd $@ && $(MAKE) makestuff
 
+$(containers):
+	$(rhsetup)
+
 ## Alling and tracking
 ## More of this should be here instead of in the screens Makefile 2019 Sep
-alldirs += makestuff $(dirdirs)
+alldirs += makestuff $(dirdirs) $(containers)
 Ignore += $(knowndirs)
 
 ## Get ready for repohome

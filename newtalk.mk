@@ -49,6 +49,11 @@ Ignore += *.draft.*
 %.draft.tex: %.txt beamer.tmp draft.txt.fmt $(talkdir)/lect.pl
 	$(PUSH)
 
+Ignore += *.slides.*
+.PRECIOUS: %.slides.tex
+%.slides.tex: %.final.tex  $(talkdir)/nopause.pl
+	$(PUSH)
+
 Ignore += *.handouts.*
 .PRECIOUS: %.handouts.tex
 %.handouts.tex: %.txt notes.tmp handouts.txt.fmt $(talkdir)/lect.pl

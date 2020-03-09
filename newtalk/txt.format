@@ -53,9 +53,9 @@ outline: \n
 
 WORKSHOP NOFRAME
 draft final: NOFRAME \date{\jddate} \title{\jdtitle} \subtitle{\jdsub} \author{\jdauth}\date{\wdate}\maketitle
-handouts: {\centering \textsf{ \textbf{ {\Large\jdtitle} \\ {\large\jdsub} }} \\ {\large \jddate} \\ \mbox{} } }
+handouts: {\centering \textsf{ \textbf{ {\Large\jdtitle} \\ {\large\jdsub} }} \\ {\large \wdate} \\ \mbox{} } }
 
-ICI3D NOFRAME
+ICI3DTHEME NOFRAME
 draft final: NOFRAME \date{\jddate} \title{\jdtitle} \subtitle{\jdsub} \author{\jdauth} {\topBar\maketitle}
 handouts: \noindent\includegraphics[width=\textwidth]{LatexTemplates/bar.pdf} {\centering \textsf{ \textbf{ {\Large\jdtitle} \\ {\large\jdsub} }} \\ {\large \jddate} \\ \mbox{}} 
 
@@ -152,6 +152,8 @@ draft: ^DEFHEAD {\sl %% (present)}
 # Just one pic (no header)
 PICSLIDE NULLSLIDE
 draft final: ^%%
+
+## Also, I don't actually have any idea how to do this!
 
 # Slides with purely repetitive information (for classroom exposition)
 RSLIDE NULLSLIDE
@@ -296,7 +298,7 @@ outline: %!
 
 HREF \href{%}{%%}
 draft final: \href{%}{\color{linkcolor}%%}
-handouts: Link: \href{%}{%%}
+handouts: \nhref{%}{%%}
 outline: %!
 
 ### Input

@@ -1,9 +1,10 @@
-## This is XXX
+## This is a screens project subdirectory
+## makestuff/up.Makefile
 
 current: target
 -include target.mk
 
-# -include makestuff/perl.def
+# include makestuff/perl.def
 
 ######################################################################
 
@@ -25,8 +26,8 @@ Ignore += makestuff
 msrepo = https://github.com/dushoff
 Makefile: makestuff/Makefile
 makestuff/Makefile:
-	git clone $(msrepo)/makestuff
-	ls $@
+	cd .. && $(MAKE)
+	ls ../makestuff/Makefile && /bin/ln -s ../makestuff 
 
 -include makestuff/os.mk
 
