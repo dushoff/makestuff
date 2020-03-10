@@ -54,6 +54,8 @@ final: %!
 Zero NULLSLIDE
 bank: HEAD Zero %!
 
+SUPPRESS NULLSLIDE
+
 ## Unsorted, and often repetitive
 Omega NULLSLIDE
 bank: HEAD Omega %!
