@@ -1,10 +1,9 @@
-## This is XXX, a screens project directory
-## makestuff/project.Makefile
+## This is XXX
 
 current: target
 -include target.mk
 
-# include makestuff/perl.def
+# -include makestuff/perl.def
 
 ######################################################################
 

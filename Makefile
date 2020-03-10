@@ -133,7 +133,7 @@ wrapRpl = $(wildcard wrapR/*.pl)
 # Sources += masterR.mk masterR.pl masterRfiles.pl masterR.md
 
 ## New autorefs stuff
-# Sources += autorefs.mk $(wildcard autorefs/*.pl) autorefs/Makefile autorefs.md
+Sources += autorefs.mk $(wildcard autorefs/*.pl) autorefs/Makefile autorefs.md
 
 ######################################################################
 

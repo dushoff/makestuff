@@ -40,6 +40,7 @@ refspage.auto.html: $(paste)/simple.css refspage.mkd
 ######################################################################
 
 # refs
+## Probably made during the first very-weird pilot and probably highly deprecated
 
 Sources += $(wildcard *.ref)
 
