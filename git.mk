@@ -122,7 +122,7 @@ makestuff.pullall: makestuff.pull
 	cd $* && $(MAKE) up.time
 
 %.pullall: 
-	$(MAKE) $* && cd $* && $(MAKE) makestuff && $(MAKE) pullall
+	$(MAKE) $* && cd $* && $(MAKE) makestuff && ($(MAKE) pullall || $(MAKE) pull)
 
 ######################################################################
 
