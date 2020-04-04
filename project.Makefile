@@ -1,4 +1,4 @@
-## This is McMaster pandemic
+## This is …
 
 current: target
 -include target.mk
