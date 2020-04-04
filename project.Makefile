@@ -1,4 +1,4 @@
-## This is XXX
+## This is McMaster pandemic
 
 current: target
 -include target.mk
@@ -26,7 +26,9 @@ msrepo = https://github.com/dushoff
 Makefile: makestuff/Makefile
 ## makestuff: makestuff/Makefile
 makestuff/Makefile:
-	(ls ../makestuff/Makefile && /bin/ln -s ../makestuff) || git clone $(msrepo)/makestuff
+
+localstuff: 
+	git clone $(msrepo)/makestuff
 	ls $@
 
 -include makestuff/os.mk
