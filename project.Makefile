@@ -1,4 +1,4 @@
-## This is ...
+## This is …
 
 current: target
 -include target.mk
