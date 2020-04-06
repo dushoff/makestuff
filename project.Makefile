@@ -26,10 +26,12 @@ msrepo = https://github.com/dushoff
 Makefile: makestuff/Makefile
 ## makestuff: makestuff/Makefile
 makestuff/Makefile:
-
-localstuff: 
 	git clone $(msrepo)/makestuff
 	ls $@
+
+localstuff: 
+	ln -s ../makestuff .
+	ls makestuff/Makefile
 
 -include makestuff/os.mk
 
