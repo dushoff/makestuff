@@ -5,10 +5,6 @@ current: target
 
 # -include makestuff/perl.def
 
-######################################################################
-
-# Content
-
 vim_session:
 	bash -cl "vmt"
 
