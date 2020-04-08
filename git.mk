@@ -418,12 +418,6 @@ master:
 # %.master: %
 #	cd $< && git checkout master
 
-## What the $#@! is this?
-update: sync
-	git rebase $(cmain) 
-	git push origin --delete $*
-	git push -u origin $*
-
 ## Destroy a branch
 ## Usually call from upmerge (which hasn't been tested for a long time)
 %.nuke:
