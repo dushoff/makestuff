@@ -10,17 +10,16 @@ date.txt:
 up_date: 
 	date +"%d %b %Y" > date.txt
 
-%.img.jpg: %.pdf
-	$(imageconvert)
-
-%.img.png: %.pdf
-	$(imageconvert)
-
-%.txt.ps: %.txt
-	groff $< > $@
-
 %.txt.pdf: %.txt.ps
 	ps2pdf $< > $@
+
+## This all seems like a disaster; files are sometimes local and sometimes in formDrop!
+
+text.pdf: text.txt
+	pdfroff $< | cpdf -crop "0.9in 10.8in 0.9in 0.2in" -stdin -o $@ 
+
+name.pdf: name.txt
+	pdfroff $< | cpdf -crop "0.9in 10.8in 0.9in 0.2in" -stdin -o $@ 
 
 date.pdf: date.txt
 	pdfroff $< | cpdf -crop "0.9in 10.8in 0.9in 0.2in" -stdin -o $@ 
@@ -28,6 +27,9 @@ date.pdf: date.txt
 date_%.pdf: date.pdf
 	cpdf -scale-page "$* $*" -o $@ $<
 
+######################################################################
+
+## Deprecate this stuff?
 date.png: date.pdf
 	$(imageconvert)
 
@@ -37,11 +39,19 @@ date.%.png: date.png
 date.%.jpg: date.jpg
 	convert -scale $*% $< $@
 
-name.pdf: name.txt
-	pdfroff $< > $@
-
 name.%.png: name.png
 	convert -scale $*% $< $@
+
+%.img.jpg: %.pdf
+	$(imageconvert)
+
+%.img.png: %.pdf
+	$(imageconvert)
+
+%.txt.ps: %.txt
+	groff $< > $@
+
+######################################################################
 
 formDrop/csig.%.jpg: formDrop/csig.jpg
 	convert -scale $*% $< $@

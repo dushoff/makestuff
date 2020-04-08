@@ -1,13 +1,9 @@
-## This is XXX
+## This is …
 
 current: target
 -include target.mk
 
 # -include makestuff/perl.def
-
-######################################################################
-
-# Content
 
 vim_session:
 	bash -cl "vmt"
@@ -26,8 +22,12 @@ msrepo = https://github.com/dushoff
 Makefile: makestuff/Makefile
 ## makestuff: makestuff/Makefile
 makestuff/Makefile:
-	(ls ../makestuff/Makefile && /bin/ln -s ../makestuff) || git clone $(msrepo)/makestuff
+	git clone $(msrepo)/makestuff
 	ls $@
+
+localstuff: 
+	ln -s ../makestuff .
+	ls makestuff/Makefile
 
 -include makestuff/os.mk
 
