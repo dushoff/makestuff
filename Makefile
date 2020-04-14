@@ -14,7 +14,7 @@ Ignore += $(md:md=html)
 
 ## Make a list of .mk files that are here and go through them!
 
-## README.html: README.md
+## README.gh.html: README.md
 
 ######################################################################
 
