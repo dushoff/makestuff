@@ -59,7 +59,7 @@ endef
 
 %.Rout.png: %.Rout.pdf
 	/bin/rm -f $@
-	convert $<[0] $@
+	convert $<[0] $@ || gm convert $< $@
 
 %.Routput: %.Rout
 	perl -f $(RRd)/Rcalc.pl $< > $@ 
