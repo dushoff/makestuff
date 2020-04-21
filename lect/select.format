@@ -19,7 +19,7 @@
 
 !SLIDESEP -{40,}
 !PERC %
-!ESL ----------------------------------------
+!ESL \n----------------------------------------
 
 ################################################################
 
@@ -40,7 +40,7 @@ SECOND NULLSLIDE
 bank: HEAD SECOND %!
 midterm2: %!
 
-EXAM NULLSLIDE
+EXAM19 NULLSLIDE
 bank: HEAD EXAM %!
 final: %!
 
