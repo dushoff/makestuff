@@ -23,3 +23,6 @@ ignore.config: ~/.config/git
 
 ignorehere: $(git_dir)/info/exclude
 	$(CP) $< .gitignore
+
+noexclude: 
+	- $(RM) $(git_dir)/info/exclude
