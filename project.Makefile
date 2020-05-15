@@ -19,7 +19,7 @@ Sources += Makefile
 
 Ignore += makestuff
 msrepo = https://github.com/dushoff
-Makefile: makestuff/Makefile
+## Makefile: makestuff/Makefile
 ## makestuff: makestuff/Makefile
 makestuff/Makefile:
 	git clone $(msrepo)/makestuff
