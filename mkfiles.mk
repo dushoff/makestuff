@@ -2,7 +2,7 @@
 Sources += $(wildcard mkfiles/*.make)
 .PRECIOUS: mkfiles/%.make
 mkfiles/%.make:
-	cp mkfiles/mkfiles.make $@
+	cp makestuff/mkfiles.make $@
 
 %/Makefile: mkfiles/%.make
 	cd $* && $(LN) ../$< Makefile
