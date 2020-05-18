@@ -4,8 +4,9 @@ Sources += $(wildcard mkfiles/*.make)
 mkfiles/%.make:
 	cp makestuff/mkfiles.make $@
 
-%/Makefile: mkfiles/%.make
-	cd $* && $(LN) ../$< Makefile
+%/Makefile: 
+	cd $* && $(LN) ../mkfiles/$*.make Makefile
 
-%/project:
-	cp makestuff/project.Makefile $*/Makefile
+%.project:
+	- git rm mkfiles/$*.make
+	$(CPF) makestuff/project.Makefile $*/Makefile

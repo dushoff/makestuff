@@ -30,7 +30,7 @@ Ignore += $(screendirs)
 ## Completion file
 
 dirnames.mk: Makefile
-	echo $(knowndirs:%=%.vscreen) : > $@
+	echo $(screendirs:%=%.vscreen) : > $@
 
 -include dirnames.mk
 

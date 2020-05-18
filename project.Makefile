@@ -19,13 +19,16 @@ Sources += Makefile
 
 Ignore += makestuff
 msrepo = https://github.com/dushoff
-Makefile: stuff
+
+## Want to chain and make makestuff if it doesn't exist
+## Compress this ¶ to choose default makestuff route
+Makefile: makestuff/Makefile
+makestuff/Makefile:
 clonestuff:
 	git clone $(msrepo)/makestuff
-	ls makestuff/Makefile
-
 localstuff: 
 	ln -s ../makestuff .
+bothstuff:
 	ls makestuff/Makefile
 
 -include makestuff/os.mk
