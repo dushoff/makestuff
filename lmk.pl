@@ -1,8 +1,10 @@
 use strict;
 use 5.10.0;
 
+my $dvar = "screendirs";
+
 while(<>){
-	last if /-------------------------------/;
+	$dvar = "otherdirs" if /-------------------------------/;
 	## Space and comments
 	next if /^$/;
 	next if /^#/;
@@ -13,7 +15,7 @@ while(<>){
 	if (s/^[0-9]+\.\s*//){
 		my $name = $_;
 		$name =~ s/\W.*//;
-		say "screendirs += $name"
+		say "$dvar += $name"
 	}
 
 	## URL specifications
