@@ -100,9 +100,7 @@ makestuff.all: %.all: %
 
 ## Should there be a dependency here? Better chaining?
 %.all: 
-	$(MAKE) $*/Makefile && cd $* && $(MAKE) makestuff && $(MAKE) all.time
-
-%/Makefile: %
+	$(MAKE) $* $*/Makefile && cd $* && $(MAKE) makestuff && $(MAKE) all.time
 
 do_amsync = (git commit -am "amsync"; git pull; git push; git status)
 
