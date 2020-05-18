@@ -22,6 +22,7 @@ screens.mk: screens.list
 ## Syncing
 
 alldirs += $(screendirs)
+alldirs += makestuff
 Ignore += $(screendirs) $(otherdirs)
 
 ######################################################################
