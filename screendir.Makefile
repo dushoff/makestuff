@@ -8,7 +8,7 @@ current: target
 ######################################################################
 
 vim_session: 
-	bash -cl "vmt"
+	bash -cl "vmt screens.list"
 	
 screen_session:
 	$(MAKE) $(vscreens)
@@ -22,7 +22,6 @@ Sources += Makefile
 Ignore += makestuff
 msrepo = https://github.com/dushoff
 Makefile: makestuff/Makefile
-## makestuff: makestuff/Makefile
 makestuff/Makefile:
 	git clone $(msrepo)/makestuff
 	ls $@

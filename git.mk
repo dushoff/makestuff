@@ -443,6 +443,9 @@ hupstream:
 hup:
 	git remote get-url origin
 
+%.hup:
+	cd $* && echo 0. $*: && $(MAKE) hup
+
 ######################################################################
 
 ## Moved a bunch of confusing stuff to hybrid.mk
