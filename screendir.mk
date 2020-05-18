@@ -6,9 +6,6 @@
 screen_session:
 	$(MAKE) Makefile $(screendirs:%=%.vscreen)
 
-alldirs += $(screendirs)
-Ignore += $(screendirs) $(otherdirs)
-
 ######################################################################
 
 ## Completion file

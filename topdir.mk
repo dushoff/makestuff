@@ -1,35 +1,20 @@
 
-## Make dirdirs
-$(dirdirs):
-	$(mkdir)
-	cp makestuff/direct.Makefile $@/Makefile
-	cd $@ && $(MAKE) makestuff
+### A bit repetitive with screendir.mk ☹
 
-## Alling and tracking
-## More of this should be here instead of in the screens Makefile 2019 Sep
-alldirs += makestuff $(dirdirs) $(containers)
-Ignore += $(knowndirs)
+######################################################################
 
-## repohome is deprecated and we don't know how to make most of our containers
-## 2020 Apr 04 (Sat)
+## Session and sync
 
-## $(containers): ; $(rhsetup)
-## Get ready for repohome
-%.rhd:
-	cd $* && make rhdir_drop
+screen_session:
+	$(MAKE) Makefile $(screendirs:%=%.subscreen)
 
-rhdd:
-	$(MAKE) $(dirdirs:%=%.rhd)
+######################################################################
 
-## Update recursively through dirdirs
+## Completion file
 
-%.pmsync:
-	cd $* && $(MAKE) pmsync
+dirnames.mk: Makefile
+	echo $(screendirs:%=%.subscreen) : > $@
 
-dpmsync:
-	$(MAKE) $(dirdirs:%=%.pmsync)
-	$(MAKE) makestuff.msync
+-include dirnames.mk
 
-all.time: dirdirs.sync
-
-dirdirs.sync: $(dirdirs:%=%.sync)
+######################################################################

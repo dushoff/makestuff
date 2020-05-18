@@ -17,6 +17,15 @@ screens.mk: screens.list
 
 -include screens.mk
 
+######################################################################
+
+## Syncing
+
+alldirs += $(screendirs)
+Ignore += $(screendirs) $(otherdirs)
+
+######################################################################
+
 ## clones
 $(clonedirs):
 	git clone $(url) $@
