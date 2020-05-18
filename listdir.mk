@@ -2,27 +2,39 @@ ifdef git_dir
 $(error listdir.mk should go before git.mk)
 endif
 
+## Screen list and rules
+
+Sources += screens.list 
+screen_number: screens.list makestuff/io.pl
+	$(PIPUSH)
+
+Ignore += screens.mk
+screens.mk: screens.list makestuff/lmk.pl
+	$(MAKE) screen_number
+	$(PUSH)
+
+-include screens.mk
+
+######################################################################
+
+## Session and sync
+
+screen_session:
+	$(MAKE) Makefile $(screendirs:%=%.vscreen)
+
+alldirs += $(screendirs)
+Ignore += $(screendirs)
+
+######################################################################
+
+## Completion file
+
 dirnames.mk: Makefile
 	echo $(knowndirs:%=%.vscreen) : > $@
 
 -include dirnames.mk
 
 ######################################################################
-
-Sources += screens.list 
-screen_number: screens.list makestuff/io.pl
-	$(PIPUSH)
-
-screens.mk: screens.list makestuff/lmk.pl
-	$(MAKE) screen_number
-	$(PUSH)
-
-screen_session:
-	$(MAKE) Makefile $(screendirs:%=%.vscreen)
-
-## Syncing and alling
-alldirs += $(screendirs)
-Ignore += $(screendirs)
 
 ## clones
 $(clonedirs):
