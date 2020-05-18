@@ -26,6 +26,6 @@ PUSHON = perl -wf $(filter %.pl, $^) $(filter-out %.pl, $^) >> $@
 ## Paragraph perl for short programs that operate on paragraphs
 PPUSH = perl -00 -wf $(filter %.pl, $^) $(filter-out %.pl, $^) > $@
 
-## Perl in place (use with fake targets, obviously)
-## Could you explain better 2019 Aug 29 (Thu)?
-PIPUSH = perl -pi -wf $(filter %.pl, $^) $(filter-out %.pl, $^)
+## Perl in place
+## Target not made, use a fake
+PIPUSH = perl -i -wf $(filter %.pl, $^) $(filter-out %.pl, $^)
