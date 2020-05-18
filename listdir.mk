@@ -17,30 +17,6 @@ screens.mk: screens.list
 
 -include screens.mk
 
-######################################################################
-
-## Session and sync
-
-screen_session:
-	$(MAKE) Makefile $(screendirs:%=%.vscreen)
-
-top_session:
-	$(MAKE) Makefile $(screendirs:%=%.subscreen)
-
-alldirs += $(screendirs)
-Ignore += $(screendirs)
-
-######################################################################
-
-## Completion file
-
-dirnames.mk: Makefile
-	echo $(screendirs:%=%.vscreen) : > $@
-
--include dirnames.mk
-
-######################################################################
-
 ## clones
 $(clonedirs):
 	git clone $(url) $@
