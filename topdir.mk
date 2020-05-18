@@ -26,6 +26,6 @@ now:
 	@echo $(clonemake)
 
 $(clonemake): %/Makefile:
-	$(CP) makestuff/list.Makefile $@
+	$(CP) makestuff/screendir.Makefile $@
 	$(CP) makestuff/screens.list $*
 
