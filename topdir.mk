@@ -12,9 +12,20 @@ screen_session:
 
 ## Completion file
 
+Ignore += dirnames.mk
 dirnames.mk: Makefile
 	echo $(screendirs:%=%.subscreen) : > $@
 
 -include dirnames.mk
 
 ######################################################################
+
+clonemake = $(clonedirs:%=%/Makefile)
+
+now:
+	@echo $(clonemake)
+
+$(clonemake): %/Makefile:
+	$(CP) makestuff/list.Makefile $@
+	$(CP) makestuff/screens.list $*
+
