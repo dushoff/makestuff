@@ -29,5 +29,5 @@ Ignore += $(screendirs) $(otherdirs)
 ######################################################################
 
 ## clones
-$(clonedirs):
-	git clone $(url) $@
+$(listdirs):
+	$(MV) $(old) $@ || git clone $(url) $@

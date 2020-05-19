@@ -18,9 +18,18 @@ while(<>){
 		say "$dvar += $name"
 	}
 
+	## Accumulate listdirs
+	if (my ($d) = /([\w]*):/) {
+		say "listdirs += $d";
+	}
+
 	## URL specifications
-	if (my ($d, $u) = /([^:]*):\s*(https:[^\s]*)/){
-		say "clonedirs += $d";
+	if (my ($d, $u) = /([^:]*):.*(https:[^\s]*)/){
 		say "$d: url=$u";
+	}
+
+	## legacy specifications
+	if (my ($d, $u) = /([^:]*):.*(\.\.[^\s]*)/){
+		say "$d: old=$u";
 	}
 }
