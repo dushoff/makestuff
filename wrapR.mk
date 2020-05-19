@@ -28,9 +28,11 @@ endef
 %.objects.Rout: %.Rout $(RRd)/objects.R
 	$(run-R)
 
+ifndef disable_automatic_wrapR
 .PRECIOUS: %.Rout
 %.Rout: %.R
 	$(run-R)
+endif
 
 .PRECIOUS: %.wrapR.r
 %.wrapR.r: %.Rout ;
