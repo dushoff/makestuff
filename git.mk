@@ -90,7 +90,7 @@ $(subdirs):
 ######################################################################
 
 ## 2018 Nov 07 (Wed). Trying to make these rules finish better
-all.time: $(alldirs:%=%.all) exclude up.time
+all.time: exclude up.time $(alldirs:%=%.all)
 	touch $@
 	git status
 
