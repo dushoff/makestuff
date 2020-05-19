@@ -11,8 +11,9 @@ endif
 Sources += screens.list 
 
 Ignore += screens.mk
-screens.mk: screens.list
+screens_update:
 	perl -i -wf makestuff/io.pl screens.list
+screens.mk: screens.list
 	perl -wf makestuff/lmk.pl $< > $@
 
 -include screens.mk
