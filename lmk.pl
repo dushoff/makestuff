@@ -2,6 +2,7 @@ use strict;
 use 5.10.0;
 
 my $dvar = "screendirs";
+my %listdirs;
 
 while(<>){
 	$dvar = "otherdirs" if /-------------------------------/;
@@ -12,6 +13,7 @@ while(<>){
 	die ("Non-blank line at $.") if /^\s*$/;
 
 	## Numbered things are screens
+	## They don't necessarily need auto-rules (so don't need colons)
 	if (s/^[0-9]+\.\s*//){
 		my $name = $_;
 		$name =~ s/\W.*//;
@@ -20,7 +22,8 @@ while(<>){
 
 	## Accumulate listdirs
 	if (my ($d) = /([\w]*):/) {
-		say "listdirs += $d";
+		die "multiple rules for $d on line $." if defined $listdirs{$d};
+		$listdirs{$d} = 0;
 	}
 
 	## URL specifications
@@ -33,3 +36,5 @@ while(<>){
 		say "$d: old=$u";
 	}
 }
+
+say "listdirs = " . join " ", keys %listdirs;

@@ -11,11 +11,12 @@ endif
 Sources += screens.list 
 
 Ignore += screens.mk
+screens.mk: screens.list
+	perl -wf makestuff/lmk.pl $< > $@
+
 screens_update:
 	perl -i -wf makestuff/io.pl screens.list
 	perl -i -wf makestuff/screensource.pl screens.list
-screens.mk: screens.list
-	perl -wf makestuff/lmk.pl $< > $@
 screens_old:
 	perl -i -wf makestuff/oldsource.pl screens.list
 
