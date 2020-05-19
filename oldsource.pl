@@ -6,7 +6,7 @@ undef $/;
 my @f = split /\n/, <>;
 
 foreach (@f){
-	next unless my ($w) = /^[0-9]+[.]\s*(\w*):/;
+	next unless my ($w) = /^[0-9]+[.]\s*\w*:\s*(\.\.\S*)/;
 	next if /https:/;
 	my $fn = "$w/.git/config";
 	next unless (-e $fn);
@@ -14,7 +14,6 @@ foreach (@f){
 	$url =~ s/.*url =//;
 	$url =~ s/\s*$//;
 	s/:/: $url/;
-
 }
 
 say join "\n", @f;
