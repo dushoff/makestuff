@@ -11,10 +11,14 @@ endif
 Sources += screens.list 
 
 Ignore += screens.mk
-screens_update:
-	perl -i -wf makestuff/io.pl screens.list
 screens.mk: screens.list
 	perl -wf makestuff/lmk.pl $< > $@
+
+screens_update:
+	perl -i -wf makestuff/io.pl screens.list
+	perl -i -wf makestuff/screensource.pl screens.list
+screens_old:
+	perl -i -wf makestuff/oldsource.pl screens.list
 
 -include screens.mk
 
@@ -29,5 +33,5 @@ Ignore += $(screendirs) $(otherdirs)
 ######################################################################
 
 ## clones
-$(clonedirs):
-	git clone $(url) $@
+$(listdirs):
+	$(MV) $(old) $@ || git clone $(url) $@
