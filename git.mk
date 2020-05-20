@@ -487,7 +487,7 @@ Ignore += *.oldfile *.olddiff
 ## Not clear it works
 %.olddiff: %.old.diff ;
 %.old.diff: %
-	-$(DIFF) $* $*.*.oldfile > $*.olddiff
+	-$(DIFF) $*.*.oldfile $* > $*.olddiff
 
 ######################################################################
 
