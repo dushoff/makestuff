@@ -1,6 +1,12 @@
 use strict;
 use 5.10.0;
 
+## dvar is for numbered directories
+## the early ones are alled
+## all of them are ignored
+## Accumulate all directories?; only accumulate screendirs
+## above the break
+## Make sure to ignore at the root
 my $dvar = "screendirs";
 my %listdirs;
 
@@ -18,7 +24,7 @@ while(<>){
 		my $name = $_;
 		$name =~ s/[\s:].*//;
 		say "$dvar += $name";
-		say "$dvar/%: $dvar" if $dvar =~ s|/.*||;
+		say "$name/%: $name" if $name =~ s|/.*||;
 	}
 
 	## Accumulate listdirs
