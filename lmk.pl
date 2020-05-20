@@ -16,8 +16,9 @@ while(<>){
 	## They don't necessarily need auto-rules (so don't need colons)
 	if (s/^[0-9]+\.\s*//){
 		my $name = $_;
-		$name =~ s/\W.*//;
-		say "$dvar += $name"
+		$name =~ s/[\s:].*//;
+		say "$dvar += $name";
+		say "$dvar/%: $dvar" if $dvar =~ s|/.*||;
 	}
 
 	## Accumulate listdirs
