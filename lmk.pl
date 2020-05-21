@@ -1,17 +1,15 @@
 use strict;
 use 5.10.0;
 
-## dvar is for numbered directories
-## the early ones are alled
-## all of them are ignored
+## Numbered directories _before_ the break go into screendirs
 ## Accumulate all directories?; only accumulate screendirs
 ## above the break
-## Make sure to ignore at the root
-my $dvar = "screendirs";
+## Make sure to listdirs at the root
+my %ruledirs;
 my %listdirs;
+my %parents;
 
 while(<>){
-	$dvar = "otherdirs" if /-------------------------------/;
 	## Space and comments
 	next if /^$/;
 	next if /^#/;
@@ -20,28 +18,33 @@ while(<>){
 
 	## Numbered things are screens
 	## They don't necessarily need auto-rules (so don't need colons)
+	## screens after divider aren't screened, but are still listdirsd
 	if (s/^[0-9]+\.\s*//){
 		my $name = $_;
 		$name =~ s/[\s:].*//;
-		say "$dvar += $name";
-		say "$name/%: $name" if $name =~ s|/.*||;
+		say "screendirs += $name" if 1../-------------------------------/;
+		$listdirs{$name}=0;
+		$parents{$name} = 0 if $name =~ s|/.*||;
 	}
 
-	## Accumulate listdirs
-	if (my ($d) = /([\w]*):/) {
-		die "multiple rules for $d on line $." if defined $listdirs{$d};
+	## First word followed by colon is a rule
+	if (my ($d, $l) = /^([\w]*)(:.*)/){
+		die "multiple rules for $d on line $." if defined $ruledirs{$d};
+		$ruledirs{$d} = 0;
 		$listdirs{$d} = 0;
-	}
 
-	## URL specifications
-	if (my ($d, $u) = /([^:]*):.*(https:[^\s]*)/){
-		say "$d: url=$u";
-	}
+		## URL specifications
+		if (my ($u) = /(https:[^\s]*)/){
+			say "$d: url=$u";
+		}
 
-	## legacy specifications
-	if (my ($d, $u) = /([^:]*):.*(\.\.[^\s]*)/){
-		say "$d: old=$u";
+		## legacy specifications
+		if (my ($u) = /(\.\.[^\s]*)/){
+			say "$d: old=$u";
+		}
 	}
 }
 
-say "listdirs = " . join " ", keys %listdirs;
+say "ruledirs = " . (join " ", keys %ruledirs);
+say "listdirs = " . (join " ", keys %listdirs);
+foreach (keys %parents){ say "$_/%: $_"; }

@@ -28,10 +28,10 @@ screens_old:
 
 alldirs += $(screendirs)
 alldirs += makestuff
-Ignore += $(screendirs) $(otherdirs)
+Ignore += $(listdirs)
 
 ######################################################################
 
 ## clones
-$(listdirs):
+$(ruledirs):
 	$(MV) $(old) $@ || git clone $(url) $@
