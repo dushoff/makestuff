@@ -12,7 +12,7 @@ Sources += screens.list
 
 Ignore += screens.mk
 screens.mk: screens.list
-	perl -wf makestuff/lmk.pl $< > $@
+	perl -wf makestuff/lmk.pl $< > $@ || cat /dev/null > $@
 
 screens_update:
 	perl -i -wf makestuff/io.pl screens.list
