@@ -4,7 +4,7 @@ Sources += $(wildcard mkfiles/*.make)
 mkfiles/%.make:
 	cp makestuff/mkfiles.make $@
 
-%/Makefile: 
+%/Makefile: mkfiles/%.make
 	cd $* && $(LN) ../mkfiles/$*.make Makefile
 
 %.project:
