@@ -120,7 +120,7 @@ Sources += $(wildcard lect/*.*)
 
 ## mkfiles
 
-Sources += mkfiles.make
+Sources += mkfiles.Makefile
 
 ######################################################################
 

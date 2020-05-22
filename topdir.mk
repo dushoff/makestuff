@@ -14,6 +14,7 @@ screen_session:
 
 Ignore += dirnames.mk
 dirnames.mk: Makefile
+	echo $(screendirs:%=%.screen) : > $@
 	echo $(screendirs:%=%.subscreen) : > $@
 
 -include dirnames.mk
