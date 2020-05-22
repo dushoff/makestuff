@@ -8,15 +8,16 @@ endif
 
 ## Screen list and rules
 
-Sources += screens.list 
+Sources += screens.update screens.list 
 
 Ignore += screens.mk
 screens.mk: screens.list
 	perl -wf makestuff/lmk.pl $< > $@ || cat /dev/null > $@
 
-screens_update:
+screens.update: screens.list
 	perl -i -wf makestuff/io.pl screens.list
 	perl -i -wf makestuff/screensource.pl screens.list
+	touch $@
 screens_old:
 	perl -i -wf makestuff/oldsource.pl screens.list
 
