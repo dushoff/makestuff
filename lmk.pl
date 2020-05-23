@@ -8,6 +8,7 @@ use 5.10.0;
 my %ruledirs;
 my %listdirs;
 my %parents;
+my $divide;
 
 while(<>){
 	## Space and comments
@@ -18,16 +19,18 @@ while(<>){
 
 	## Numbered things are screens
 	## They don't necessarily need auto-rules (so don't need colons)
-	## screens after divider aren't screened, but are still listdirsd
+	## screens after divider aren't screened, but are still listdirs
 	if (s/^[0-9]+\.\s*//){
 		my $name = $_;
 		$name =~ s/[\s:].*//;
-		say "screendirs += $name" if 1../-------------------------------/;
+		$divide =1 if /-------------------------/;
+		say "screendirs += $name" unless $divide;
 		$listdirs{$name}=0;
 		$parents{$name} = 0 if $name =~ s|/.*||;
 	}
 
 	## First word followed by colon is a rule
+	## a ruledir is also a listdir
 	if (my ($d, $l) = /^([\w]*)(:.*)/){
 		die "multiple rules for $d on line $." if defined $ruledirs{$d};
 		$ruledirs{$d} = 0;
