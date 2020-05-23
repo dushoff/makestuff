@@ -115,7 +115,9 @@ amsync:
 
 ######################################################################
 
-## 2020 Mar 09 (Mon) pull via alldirs
+## 2020 Mar 09 (Mon) pull via alldirs 
+## 2020 May 23 (Sat) not clear why this would work
+## maybe designed to work with pullall recipes?
 pullall: $(alldirs:%=%.pullall)
 
 makestuff.pullall: makestuff.pull
@@ -124,9 +126,24 @@ makestuff.pullall: makestuff.pull
 %.pullall: 
 	$(MAKE) $* && cd $* && $(MAKE) makestuff && ($(MAKE) pullall || $(MAKE) pull)
 
+## 2020 May 23 (Sat) ## Different from above? Worse than below?
+## Propagates better than pullmake
+## Still not clear who pulls (or syncs) what
+## What is up doing in pull rules?
+## Maybe what is wanted is commit (to check for merge?)
+## Or nothing (since pull merges)
+pullstuff: $(alldirs:%=%.pullstuff)
+
+makestuff.pullstuff: makestuff.pull
+	cd $* && $(MAKE) up.time
+
+%.pullstuff: 
+	$(MAKE) $* && cd $* && $(MAKE) makestuff && ($(MAKE) pullstuff || $(MAKE) pull)
+
 ######################################################################
 
 ## 2020 Mar 09 (Mon) pull via all
+## Doesn't propagate
 pullmake: $(alldirs:%=%.pullmake)
 
 makestuff.pullmake: ;
