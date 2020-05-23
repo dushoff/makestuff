@@ -16,6 +16,7 @@ while(<>){
 	next if /^#/;
 	chomp;
 	die ("Non-blank line at $.") if /^\s*$/;
+	$divide = 1 if /-------------------------/;
 
 	## Numbered things are screens
 	## They don't necessarily need auto-rules (so don't need colons)
@@ -23,7 +24,6 @@ while(<>){
 	if (s/^[0-9]+\.\s*//){
 		my $name = $_;
 		$name =~ s/[\s:].*//;
-		$divide =1 if /-------------------------/;
 		say "screendirs += $name" unless $divide;
 		$listdirs{$name}=0;
 		$parents{$name} = 0 if $name =~ s|/.*||;
