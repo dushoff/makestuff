@@ -8,15 +8,14 @@ use 5.10.0;
 my %ruledirs;
 my %listdirs;
 my %parents;
-my $divide;
 
 while(<>){
 	## Space and comments
+	my $active = 1 .. /-------------------------/;
 	next if /^$/;
 	next if /^#/;
 	chomp;
 	die ("Non-blank line at $.") if /^\s*$/;
-	$divide = 1 if /-------------------------/;
 
 	## Numbered things are screens
 	## They don't necessarily need auto-rules (so don't need colons)
@@ -24,7 +23,8 @@ while(<>){
 	if (s/^[0-9]+\.\s*//){
 		my $name = $_;
 		$name =~ s/[\s:].*//;
-		say "screendirs += $name" unless $divide;
+		$name =~ s|/$||;
+		say "screendirs += $name" if $active;
 		$listdirs{$name}=0;
 		$parents{$name} = 0 if $name =~ s|/.*||;
 	}
