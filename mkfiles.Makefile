@@ -17,6 +17,7 @@ vim_session:
 ## Sources += $(wildcard *.mk)
 ## include $(wildcard *.mk)
 
+Ignore += Makefile
 Ignore += makestuff
 msrepo = https://github.com/dushoff
 Makefile: makestuff/Makefile
