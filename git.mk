@@ -115,7 +115,9 @@ amsync:
 
 ######################################################################
 
-## 2020 Mar 09 (Mon) pull via alldirs
+## 2020 Mar 09 (Mon) pull via alldirs 
+## 2020 May 23 (Sat) not clear why this would work
+## maybe designed to work with pullall recipes?
 pullall: $(alldirs:%=%.pullall)
 
 makestuff.pullall: makestuff.pull
@@ -123,6 +125,15 @@ makestuff.pullall: makestuff.pull
 
 %.pullall: 
 	$(MAKE) $* && cd $* && $(MAKE) makestuff && ($(MAKE) pullall || $(MAKE) pull)
+
+## 2020 May 23 (Sat) ## Different from above? Worse than below?
+pullstuff: $(alldirs:%=%.pullstuff)
+
+makestuff.pullstuff: makestuff.pull
+	cd $* && $(MAKE) up.time
+
+%.pullstuff: 
+	$(MAKE) $* && cd $* && $(MAKE) makestuff && ($(MAKE) pullstuff || $(MAKE) pull)
 
 ######################################################################
 
