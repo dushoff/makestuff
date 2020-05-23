@@ -39,9 +39,11 @@ target.mk:
 ## meant to be called from within screen (otherwise makes a new one)
 %.rscreen: %.dir
 	cd $(dir $*) && $(MAKE) "$(notdir $*)" 
+	- cd $* && $(MAKE) startscreen
 	cd $* && screen -t "$(notdir $*)"
 
 ## do the above and open a vim_session
+## (instead of trying to make startscreen, would merging work?)
 %.vscreen: %.dir
 	cd $(dir $*) && $(MAKE) "$(notdir $*)" 
 	cd $* && screen -t "$(notdir $*)" bash -cl "vvs"
