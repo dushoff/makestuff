@@ -9,7 +9,7 @@ endif
 ## Screen list and rules
 
 Sources += screens.arc
-Ignore += screens.mk screens.list
+Ignore += screens.mk screens.list .screens.list
 screens.mk: screens.list
 	perl -wf makestuff/lmk.pl $< > $@ || cat /dev/null > $@
 
