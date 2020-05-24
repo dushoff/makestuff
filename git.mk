@@ -120,11 +120,10 @@ amsync:
 ## maybe designed to work with pullall recipes?
 pullall: $(alldirs:%=%.pullall)
 
-makestuff.pullall: makestuff.pull
-	cd $* && $(MAKE) up.time
+makestuff.pullall: makestuff.pull ;
 
 %.pullall: 
-	$(MAKE) $* && cd $* && $(MAKE) makestuff && ($(MAKE) pullall || $(MAKE) pull)
+	$(MAKE) $* && cd $* && $(MAKE) makestuff && ($(MAKE) pullall || $(MAKE) pull || $(MAKE) makestuff.pull || (cd makestuff && $(MAKE) pull))
 
 ## 2020 May 23 (Sat) ## Different from above? Worse than below?
 ## Propagates better than pullmake
@@ -134,11 +133,10 @@ makestuff.pullall: makestuff.pull
 ## Or nothing (since pull merges)
 pullstuff: $(alldirs:%=%.pullstuff)
 
-makestuff.pullstuff: makestuff.pull
-	cd $* && $(MAKE) up.time
+makestuff.pullstuff: makestuff.pull ;
 
 %.pullstuff: 
-	$(MAKE) $* && cd $* && $(MAKE) makestuff && ($(MAKE) pullstuff || $(MAKE) pull)
+	$(MAKE) $* && cd $* && $(MAKE) makestuff && ($(MAKE) pullstuff || $(MAKE) makestuff.pull || (cd makestuff && $(MAKE) pull))
 
 ######################################################################
 
