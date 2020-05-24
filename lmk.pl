@@ -50,4 +50,4 @@ while(<>){
 
 say "ruledirs = " . (join " ", keys %ruledirs);
 say "listdirs = " . (join " ", keys %listdirs);
-foreach (keys %parents){ say "$_/%: $_"; }
+foreach (keys %parents){ say "$_/%: $_ ;"; }
