@@ -16,7 +16,7 @@ screens.mk: screens.list
 screens.arc: screens.list makestuff/io.pl
 	$(PUSH)
 screens.update:
-	$(call hide, screens.list)
+	- $(call hide, screens.list)
 	$(CP) screens.arc screens.list
 screens_resource:
 	perl -i -wf makestuff/screensource.pl screens.list
