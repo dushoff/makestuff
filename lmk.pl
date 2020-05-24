@@ -7,7 +7,6 @@ use 5.10.0;
 ## Make sure to listdirs at the root
 my %ruledirs;
 my %listdirs;
-my %parents;
 
 while(<>){
 	## Space and comments
@@ -26,7 +25,10 @@ while(<>){
 		$name =~ s|/$||;
 		say "screendirs += $name" if $active;
 		$listdirs{$name}=0;
-		$parents{$name} = 0 if $name =~ s|/.*||;
+		my $top;
+		while (($name, $top) = $name =~ m|(.*)/([^/]*)|){
+			say "$name/$top: $name";
+		}
 	}
 
 	## First word followed by colon is a rule
@@ -50,4 +52,3 @@ while(<>){
 
 say "ruledirs = " . (join " ", keys %ruledirs);
 say "listdirs = " . (join " ", keys %listdirs);
-foreach (keys %parents){ say "$_/%: $_ ;"; }
