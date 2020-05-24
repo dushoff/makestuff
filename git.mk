@@ -120,8 +120,7 @@ amsync:
 ## maybe designed to work with pullall recipes?
 pullall: $(alldirs:%=%.pullall)
 
-makestuff.pullall: makestuff.pull
-## Why?	cd $* && $(MAKE) up.time
+makestuff.pullall: makestuff.pull ;
 
 %.pullall: 
 	$(MAKE) $* && cd $* && $(MAKE) makestuff && ($(MAKE) pullall || $(MAKE) pull || $(MAKE) makestuff.pull || (cd makestuff && $(MAKE) pull))
@@ -134,8 +133,7 @@ makestuff.pullall: makestuff.pull
 ## Or nothing (since pull merges)
 pullstuff: $(alldirs:%=%.pullstuff)
 
-makestuff.pullstuff: makestuff.pull
-## Why?	cd $* && $(MAKE) up.time
+makestuff.pullstuff: makestuff.pull ;
 
 %.pullstuff: 
 	$(MAKE) $* && cd $* && $(MAKE) makestuff && ($(MAKE) pullstuff || $(MAKE) makestuff.pull || (cd makestuff && $(MAKE) pull))
