@@ -31,7 +31,7 @@ while(<>){
 	## First word followed by colon is a rule
 	## a ruledir is also a listdir
 	if (my ($d, $l) = /^([\w]*)(:.*)/){
-		die "multiple rules for $d on line $." if defined $ruledirs{$d};
+		die "repeated rule for $d on line $." if defined $ruledirs{$d};
 		$ruledirs{$d} = 0;
 		$listdirs{$d} = 0;
 
