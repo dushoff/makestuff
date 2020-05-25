@@ -11,7 +11,7 @@ endif
 Sources += screens.arc
 Ignore += screens.mk screens.list .screens.list
 screens.mk: screens.list
-	perl -wf makestuff/lmk.pl $< > $@ || cat /dev/null > $@
+	perl -wf makestuff/lmk.pl $< > $@
 
 screens.arc: screens.list makestuff/listarc.pl
 	$(PUSH)
