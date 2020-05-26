@@ -7,7 +7,8 @@ my %knowndirs; ## Things we should recognize and ignore ## tagged with NOALL in 
 
 while(<>){
 	## Space and comments
-	my $active = 1 .. /-------------------------/;
+	my $top = 1 .. /-------------------------/;
+	my $active =  (! /#.*NOSCREEN/) && $top;
 	next if /^$/;
 	next if /^#/;
 	chomp;
@@ -16,25 +17,26 @@ while(<>){
 	## Numbered things are screens
 	## They don't necessarily need auto-rules (so don't need colons)
 	## screens after divider aren't screened, but are still listdirs
-	if (s/^[0-9]+\.\s*//){
-		my $name = $_;
-		$name =~ s/[\s:].*//;
-		$name =~ s|/$||;
-		if ($active){ say "screendirs += $name" unless /#.*NOSCREEN/; }
+	my $number  = (s/^[0-9]+\.\s*//);
+	my $name = $_;
+	$name =~ s/[\s:].*//;
+	$name =~ s|/$||;
+
+	my $rule = (my ($d, $l) = /^([\w]*)(:.*)/);
+
+	if ($active and $number){ say "screendirs += $name" }
+	if ($rule or $number){
 		if(/#.*NOALL/){$knowndirs{$name}=0} else{$listdirs{$name}=0};
-		my $top;
-		while (($name, $top) = $name =~ m|(.*)/([^/]*)|){
-			say "$name/$top: $name";
-		}
 	}
 
+	my $branch;
+	while (($name, $branch) = $name =~ m|(.*)/([^/]*)|){
+		say "$name/$branch: $name";
+	}
 
-	## First word followed by colon is a rule
-	## a ruledir is also a listdir
-	if (my ($d, $l) = /^([\w]*)(:.*)/){
+	if ($rule){
 		die "repeated rule for $d on line $." if defined $ruledirs{$d};
 		$ruledirs{$d} = 0;
-		$listdirs{$d} = 0;
 
 		## URL specifications
 		if (my ($u) = /(https:[^\s]*)/){
