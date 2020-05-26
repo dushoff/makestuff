@@ -20,13 +20,14 @@ while(<>){
 		my $name = $_;
 		$name =~ s/[\s:].*//;
 		$name =~ s|/$||;
-		say "screendirs += $name" if $active;
+		if ($active){ say "screendirs += $name" unless /#.*NOSCREEN/; }
 		if(/#.*NOALL/){$knowndirs{$name}=0} else{$listdirs{$name}=0};
 		my $top;
 		while (($name, $top) = $name =~ m|(.*)/([^/]*)|){
 			say "$name/$top: $name";
 		}
 	}
+
 
 	## First word followed by colon is a rule
 	## a ruledir is also a listdir
