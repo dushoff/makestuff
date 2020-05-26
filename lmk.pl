@@ -26,7 +26,8 @@ while(<>){
 
 	if ($active and $number){ say "screendirs += $name" }
 	if ($rule or $number){
-		if(/#.*NOALL/){$knowndirs{$name}=0} else{$listdirs{$name}=0};
+		if(/#.*NOALL/ || ! $active)
+			{$knowndirs{$name}=0} else{$listdirs{$name}=0};
 	}
 
 	my $branch;
