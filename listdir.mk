@@ -29,12 +29,10 @@ screens_resource:
 
 ## Syncing
 
-alldirs += $(screendirs)
+alldirs += $(listdirs)
 alldirs += makestuff
 Ignore += $(listdirs) $(knowndirs)
 
-######################################################################
-
-## clones
+## making
 $(ruledirs):
 	$(MV) $(old) $@ || git clone $(url) $@
