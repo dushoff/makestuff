@@ -18,12 +18,12 @@ endif
 ## Are we geting everything we need from make log?
 %.texcheck: 
 	@!(grep "Fatal error occurred" $*.log)
-	@(grep "Rerun to get" $*.log && touch $*.tex) || :
+	@(grep "Rerun to get" $*.log && touch $*.tex) || true
 
 %.logreport: 
-	@(grep "Error:" $*.log && touch $*.tex) || :
-	@grep "Stop." .texdeps/$*.make.log || :
-	@grep "failed" .texdeps/$*.make.log || :
+	@(grep "Error:" $*.log && touch $*.tex) || true
+	@grep "Stop." .texdeps/$*.make.log || true
+	@grep "failed" .texdeps/$*.make.log || true
 
 ## 2020 Feb 16 (Sun)
 ## Not chaining hardly at all. Neither of these seem to depend on included files for example
