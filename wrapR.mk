@@ -67,7 +67,8 @@ endif
 	perl -f $(RRd)/Rcalc.pl $< > $@ 
 
 .PRECIOUS: %.Rds
-%.Rds: %.Rout ;
+%.Rds: %.Rout
+	$(CP) $(call hiddenfile, $@) $@
 
 .PRECIOUS: .%.RData
 .%.RData: %.Rout ;

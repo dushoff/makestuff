@@ -11,9 +11,10 @@ endif
 Sources += screens.arc
 Ignore += screens.mk screens.list .screens.list
 screens.mk: screens.list
-	perl -wf makestuff/lmk.pl $< > $@ || cat /dev/null > $@
+	perl -wf makestuff/lmk.pl $< > $@ || ($(RM) $@ && false)
 
 screens.arc: screens.list makestuff/listarc.pl
+	$(MAKE) screens.mk
 	$(PUSH)
 screens.update:
 	- $(call hide, screens.list)
@@ -28,12 +29,10 @@ screens_resource:
 
 ## Syncing
 
-alldirs += $(screendirs)
+alldirs += $(listdirs)
 alldirs += makestuff
 Ignore += $(listdirs) $(knowndirs)
 
-######################################################################
-
-## clones
+## making
 $(ruledirs):
 	$(MV) $(old) $@ || git clone $(url) $@
