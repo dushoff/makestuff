@@ -42,7 +42,7 @@ Ignore += commit.time commit.default
 commit.time: $(Sources)
 	$(MAKE) exclude
 	-git add -f $? $(trackedTargets)
-	cat ~/.commitnow > $@ || echo Autocommit > $@
+	(cat ~/.commitnow > $@ && echo " ~/.commitnow" >> $@) || echo Autocommit > $@
 	echo "## $(CURDIR)" >> $@
 	!(git commit --dry-run >> $@) || (perl -pi -e 's/^/#/ unless $$.==1' $@ && $(GVEDIT))
 	$(git_check) || (perl -ne 'print unless /#/' $@ | git commit -F -)
@@ -90,7 +90,7 @@ $(subdirs):
 ######################################################################
 
 ## 2018 Nov 07 (Wed). Trying to make these rules finish better
-all.time: $(alldirs:%=%.all) exclude up.time
+all.time: exclude up.time $(alldirs:%=%.all)
 	touch $@
 	git status
 
@@ -100,7 +100,7 @@ makestuff.all: %.all: %
 
 ## Should there be a dependency here? Better chaining?
 %.all: 
-	$(MAKE) $* && cd $* && $(MAKE) makestuff && $(MAKE) all.time
+	$(MAKE) $* $*/Makefile && cd $* && $(MAKE) makestuff && $(MAKE) all.time
 
 do_amsync = (git commit -am "amsync"; git pull; git push; git status)
 
@@ -115,18 +115,33 @@ amsync:
 
 ######################################################################
 
-## 2020 Mar 09 (Mon) pull via alldirs
+## 2020 Mar 09 (Mon) pull via alldirs 
+## 2020 May 23 (Sat) not clear why this would work
+## maybe designed to work with pullall recipes?
 pullall: $(alldirs:%=%.pullall)
 
-makestuff.pullall: makestuff.pull
-	cd $* && $(MAKE) up.time
+makestuff.pullall: makestuff.pull ;
 
 %.pullall: 
-	$(MAKE) $* && cd $* && $(MAKE) makestuff && ($(MAKE) pullall || $(MAKE) pull)
+	$(MAKE) $* && cd $* && $(MAKE) makestuff && ($(MAKE) pullall || $(MAKE) pull || $(MAKE) makestuff.pull || (cd makestuff && $(MAKE) pull))
+
+## 2020 May 23 (Sat) ## Different from above? Worse than below?
+## Propagates better than pullmake
+## Still not clear who pulls (or syncs) what
+## What is up doing in pull rules?
+## Maybe what is wanted is commit (to check for merge?)
+## Or nothing (since pull merges)
+pullstuff: $(alldirs:%=%.pullstuff)
+
+makestuff.pullstuff: makestuff.pull ;
+
+%.pullstuff: 
+	$(MAKE) $* && cd $* && $(MAKE) makestuff && ($(MAKE) pullstuff || $(MAKE) makestuff.pull || (cd makestuff && $(MAKE) pull))
 
 ######################################################################
 
 ## 2020 Mar 09 (Mon) pull via all
+## Doesn't propagate
 pullmake: $(alldirs:%=%.pullmake)
 
 makestuff.pullmake: ;
@@ -443,6 +458,9 @@ hupstream:
 hup:
 	git remote get-url origin
 
+%.hup:
+	cd $* && echo 0. $*: && $(MAKE) hup
+
 ######################################################################
 
 ## Moved a bunch of confusing stuff to hybrid.mk
@@ -484,7 +502,7 @@ Ignore += *.oldfile *.olddiff
 ## Not clear it works
 %.olddiff: %.old.diff ;
 %.old.diff: %
-	-$(DIFF) $* $*.*.oldfile > $*.olddiff
+	-$(DIFF) $*.*.oldfile $* > $*.olddiff
 
 ######################################################################
 

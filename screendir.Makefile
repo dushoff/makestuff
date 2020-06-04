@@ -1,12 +1,17 @@
-## This is …
+## This is the screendir …
 
 current: target
 -include target.mk
 
-# -include makestuff/perl.def
+-include makestuff/perl.def
 
-vim_session:
-	bash -cl "vmt"
+######################################################################
+
+vim_session: 
+	bash -cl "vmt screens.list"
+	
+screen_session: screens_update
+	$(MAKE) $(vscreens)
 
 ######################################################################
 
@@ -14,27 +19,22 @@ vim_session:
 
 Sources += Makefile
 
-## Sources += content.mk
-## include content.mk
-
 Ignore += makestuff
 msrepo = https://github.com/dushoff
-
-## Want to chain and make makestuff if it doesn't exist
-## Compress this ¶ to choose default makestuff route
 Makefile: makestuff/Makefile
 makestuff/Makefile:
-clonestuff:
 	git clone $(msrepo)/makestuff
-localstuff: 
-	ln -s ../makestuff .
-bothstuff:
-	ls makestuff/Makefile
+	ls $@
+
+### Includes
 
 -include makestuff/os.mk
 
 ## -include makestuff/wrapR.mk
 
+-include makestuff/listdir.mk
+-include makestuff/screendir.mk
+-include makestuff/mkfiles.mk
+
 -include makestuff/git.mk
 -include makestuff/visual.mk
--include makestuff/projdir.mk

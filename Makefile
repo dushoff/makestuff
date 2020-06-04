@@ -118,6 +118,12 @@ Sources += $(wildcard lect/*.*)
 
 ######################################################################
 
+## mkfiles
+
+Sources += mkfiles.Makefile
+
+######################################################################
+
 # wrapR scripts
 
 wrapRR = $(wildcard wrapR/*.R)

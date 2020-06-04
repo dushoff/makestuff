@@ -28,9 +28,11 @@ endef
 %.objects.Rout: %.Rout $(RRd)/objects.R
 	$(run-R)
 
+ifndef disable_automatic_wrapR
 .PRECIOUS: %.Rout
 %.Rout: %.R
 	$(run-R)
+endif
 
 .PRECIOUS: %.wrapR.r
 %.wrapR.r: %.Rout ;
@@ -65,7 +67,8 @@ endef
 	perl -f $(RRd)/Rcalc.pl $< > $@ 
 
 .PRECIOUS: %.Rds
-%.Rds: %.Rout ;
+%.Rds: %.Rout
+	$(CP) $(call hiddenfile, $@) $@
 
 .PRECIOUS: .%.RData
 .%.RData: %.Rout ;
