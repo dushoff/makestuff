@@ -22,7 +22,7 @@ while(<>){
 	$name =~ s/[\s:].*//;
 	$name =~ s|/$||;
 
-	my $rule = (my ($d, $l) = /^([\w]*)(:.*)/);
+	my $rule = (my ($d, $l) = /^([\w]*)(: .*)/);
 
 	if ($active and $number){ say "screendirs += $name" }
 	if ($rule or $number){
