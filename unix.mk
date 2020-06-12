@@ -51,6 +51,7 @@ link = $(LN) $< $@
 alwayslinkdir = (ls $(dir)/$@ > $(null) || $(MD) $(dir)/$@) && $(LNF) $(dir)/$@ .
 linkdir = ls $(dir)/$@ > $(null) && $(LNF) $(dir)/$@ .
 linkdirname = ls $(dir) > $(null) && $(LNF) $(dir) $@ 
+linkexisting = ls $< > /dev/null && $(link)
 
 ## This will make directory if it doesn't exist
 ## Possibly good for shared projects. Problematic if central user makes two 
