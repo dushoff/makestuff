@@ -50,9 +50,6 @@ endif
 %.ltx:
 	-$(latex) $*
 
-## 2019 Dec 02 (Mon) Workflow
-## It's a bit confusing that .deps always succeeds
-
 # A phony target
 %.deps: .texdeps/%.mk %.tex
 	$(MAKE) -f $< -f Makefile .texdeps/$*.out | tee .texdeps/$*.make.log 2>&1
