@@ -58,9 +58,10 @@ endif
 	$(MAKE) -f $< -f Makefile .texdeps/$*.out | tee .texdeps/$*.make.log 2>&1
 
 ## Try harder (and try to stop in the right place)
+## Fiddling with this 2020 Jun 13 (Sat)
 %.alltex: 
-	- $(MAKE) $*.deps
-	$(MAKE) $*.pdf || ($(MAKE) $*.deps && $(MAKE) $*.pdf)
+	$(MAKE) $*.deps || $(MAKE) $*.ltx
+	$(MAKE) $*.deps && $(MAKE) $*.pdf
 
 Ignore += .texdeps/
 
