@@ -67,6 +67,7 @@ hardcopy = $(CPF) $< $@
 allcopy =  $(CP) $^ $@
 ccrib = $(CP) $(crib)/$@ .
 mkdir = $(MD) $@
+makedir = cd $(dir $@) && $(MD) $(notdir $@)
 cat = $(CAT) /dev/null $^ > $@
 ln = $(LN) $< $@
 lnf = $(LNF) $< $@
