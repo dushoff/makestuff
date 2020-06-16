@@ -95,7 +95,7 @@ shell_execute = sh < $@
 %.png: %.pdf
 	$(convert)
 
-pdfcat = pdfjoin --outfile $@ $(filter %.pdf, $^) 
+pdfcat = pdfjam --outfile $@ $(filter %.pdf, $^) 
 
 latexdiff = latexdiff $^ > $@
 
