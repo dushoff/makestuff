@@ -42,7 +42,8 @@ hcopy = $(CPF) $1 $(dir $1).$(notdir $1)
 difftouch = diff $1 $(dir $1).$(notdir $1) > /dev/null || touch $1
 touch = touch $@
 
-makethere = cd $(dir $@) && $(MAKE) $(notdir $@)
+makethere = cd $(dir $@) && $(MAKE) makestuff && $(MAKE) $(notdir $@)
+makestuffthere = cd $(dir $@) && $(MAKE) makestuff && $(MAKE) $(notdir $@)
 
 diff = $(DIFF) $^ > $@
 
@@ -66,6 +67,7 @@ hardcopy = $(CPF) $< $@
 allcopy =  $(CP) $^ $@
 ccrib = $(CP) $(crib)/$@ .
 mkdir = $(MD) $@
+makedir = cd $(dir $@) && $(MD) $(notdir $@)
 cat = $(CAT) /dev/null $^ > $@
 ln = $(LN) $< $@
 lnf = $(LNF) $< $@
