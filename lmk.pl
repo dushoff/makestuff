@@ -3,7 +3,7 @@ use 5.10.0;
 
 my %listdirs; ## The main thing, they are alled, ignored and screened above the line
 my %ruledirs; ## Things we can make by cloning (or sometimes moving)
-my %knowndirs; ## Things we should recognize and ignore ## tagged with NOALL in the infile
+my %resting; ## Things we should recognize and ignore ## tag with NOALL in
 
 while(<>){
 	## Space and comments
@@ -21,7 +21,7 @@ while(<>){
 		$name =~ s/[\s:].*//;
 		$name =~ s|/$||;
 		say "screendirs += $name" if $active;
-		if(/#.*NOALL/){$knowndirs{$name}=0} else{$listdirs{$name}=0};
+		if(/#.*NOALL/){$resting{$name}=0} else{$listdirs{$name}=0};
 		my $top;
 		while (($name, $top) = $name =~ m|(.*)/([^/]*)|){
 			say "$name/$top: $name";
@@ -49,4 +49,4 @@ while(<>){
 
 say "ruledirs = " . (join " ", keys %ruledirs);
 say "listdirs = " . (join " ", keys %listdirs);
-say "knowndirs = " . (join " ", keys %knowndirs);
+say "resting = " . (join " ", keys %resting);
