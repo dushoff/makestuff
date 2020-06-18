@@ -296,9 +296,6 @@ abort:
 ~/.config/git:
 	$(mkdir)
 
-README.md LICENSE.md:
-	touch $@
-
 %/target.mk:
 	$(CP) target.mk $*
 
