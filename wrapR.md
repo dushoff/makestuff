@@ -12,6 +12,8 @@ Ben Bolker has proposed the idea, which I like, of making wrapR more transparent
 
 It can do this by default, and handle simple dependencies. But for complicated pipelines, you're often better off to help make's chaining and sense of order by adding an explicit `$(run-R)` recipe line after the dependency line
 
+If you have implicit rules that are chaining, you can disable the default by defining the make variable disable_automatic_wrapR before including wrapR.mk
+
 ## wrapper.pl
 
 `makestuff/wrapR/wrapper.pl` is the workhorse of the wrapR machinery.  It makes a wrapped R file that:

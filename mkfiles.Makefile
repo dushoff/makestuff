@@ -1,4 +1,6 @@
-## This is …
+
+## This is a linked Makefile for …
+## 
 
 current: target
 -include target.mk
@@ -12,23 +14,15 @@ vim_session:
 
 ### Makestuff
 
-Sources += Makefile
+## Sources += $(wildcard *.mk)
+## include $(wildcard *.mk)
 
-## Sources += content.mk
-## include content.mk
-
+Ignore += Makefile
 Ignore += makestuff
 msrepo = https://github.com/dushoff
-
-## Want to chain and make makestuff if it doesn't exist
-## Compress this ¶ to choose default makestuff route
 Makefile: makestuff/Makefile
 makestuff/Makefile:
-clonestuff:
-	git clone $(msrepo)/makestuff
-localstuff: 
 	ln -s ../makestuff .
-bothstuff:
 	ls makestuff/Makefile
 
 -include makestuff/os.mk
