@@ -31,7 +31,7 @@ screens_resource:
 
 alldirs += $(listdirs)
 alldirs += makestuff
-Ignore += $(listdirs) $(knowndirs)
+Ignore += $(listdirs) $(resting)
 
 ## making
 $(ruledirs):

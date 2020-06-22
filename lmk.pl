@@ -3,7 +3,8 @@ use 5.10.0;
 
 my %listdirs; ## The main thing, they are alled, ignored and screened above the line
 my %ruledirs; ## Things we can make by cloning (or sometimes moving)
-my %resting; ## Things we should recognize and ignore ## tag with NOALL in
+my %resting; ## Things we should recognize and ignore
+## tag with NOALL in top section
 
 while(<>){
 	## Space and comments
