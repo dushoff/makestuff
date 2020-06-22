@@ -1,8 +1,4 @@
 
-### A bit repetitive with screendir.mk ☹
-
-######################################################################
-
 ## Session and sync
 
 screen_session:
