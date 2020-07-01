@@ -37,6 +37,7 @@ target.mk:
 
 ## open directory in a screen window (for running things)
 ## meant to be called from within screen (otherwise makes a new one)
+## startscreen part is clumsy
 %.rscreen: %.dir
 	cd $(dir $*) && $(MAKE) "$(notdir $*)" 
 	- cd $* && $(MAKE) startscreen
