@@ -126,10 +126,7 @@ Sources += mkfiles.Makefile
 
 # wrapR scripts
 
-wrapRR = $(wildcard wrapR/*.R)
-wrapRpl = $(wildcard wrapR/*.pl)
-
-# Sources += wrapR.md wrapR.mk $(wrapRR) $(wrapRpl)
+Sources += $(wildcard wrapR/*.R) $(wildcard wrapR/*.pl)
 
 ## pdf manipulation
 # Sources += wrapR/pdf.mk forms.def forms.mk wrapR/up.mk
