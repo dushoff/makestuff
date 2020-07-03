@@ -1,7 +1,4 @@
 
-2020 Jul 03 (Fri)
-=================
-
 ## Base
 
 * ONE directory (cache/)
@@ -19,6 +16,7 @@ Rules to _use_ slow files should request them from the cache
 To actually _make_ a slow file, use `.cache`:
 `make slow.RData.cache`
 
+2020 Jul 03 (Fri): This is now supposed to play nicely with the wrapR .Rout/.RData duality. Please let me know if not.
 
 ----------------------------------------------------------------------
 
