@@ -17,7 +17,7 @@ makecache = $(MAKE) cachestuff || (echo $(nocachestuff) && false)
 ## This should be part of conditional fanciness eventually
 cachestuff/%:
 	$(makecache)
-	@echo $(cachenotice) You need to make $@ manually && false
+	@echo $(cachenotice) You need to make $*.cache manually && false
 
 ## Fanciness
 ## Not even vaguely implemented 2020 Jul 04 (Sat)
