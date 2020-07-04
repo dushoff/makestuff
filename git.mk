@@ -267,6 +267,10 @@ pages/%: %
 %.gitpull:
 	cd $* && git pull
 
+%.filesync:
+	cd $* && git add *.* && git commit -m "Commited by $(CURDIR)"
+	cd $* && git pull && git push
+
 ## Make an empty pages directory when necessary; or else attaching existing one
 Ignore += pages
 pages:
@@ -489,10 +493,10 @@ hup:
 Ignore += *.oldfile *.olddiff
 %.oldfile:
 	-$(RM) $(basename $*).*.oldfile
-	$(MVF) $(basename $*) tmp_$(basename $*)
+	-$(MVF) $(basename $*) tmp_$(basename $*)
 	-git checkout $(subst .,,$(suffix $*)) -- $(basename $*)
 	-cp $(basename $*) $@
-	$(MV) tmp_$(basename $*) $(basename $*)
+	-$(MV) tmp_$(basename $*) $(basename $*)
 	ls $@
 
 ## Chaining trick to always remake

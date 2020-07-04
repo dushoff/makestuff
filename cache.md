@@ -1,4 +1,18 @@
 
+## 2020 Jul 04 (Sat)
+
+Redoing everything again
+
+cacheflow for checkvalves
+
+cacherepo for a disposable cache repo
+
+Everything is called "cachestuff" this can be retrofitted using ifndef later, but probably won't be
+
+----------------------------------------------------------------------
+
+# Old 2020 Jul 04 (Sat)
+
 ## Base
 
 * ONE directory (cache/)

@@ -171,12 +171,7 @@ Ignore += repohome.auto.mk
 
 ######################################################################
 
-ifeq ($(shell uname), Linux)
-include linux.mk
-else
-include unix.mk
-endif
-
+-include unix.mk
 -include local.mk
 include git.mk
 include pandoc.mk
