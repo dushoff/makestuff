@@ -1,9 +1,20 @@
 define makeR 
-	((R --vanilla --args $@ $^ < $< > $(@:%.Rout=%.rtmp)) 2> $(@:%.Rout=%.Rlog) && cat $(@:%.Rout=%.Rlog)) || (cat $(@:%.Rout=%.Rlog) && false)
+	((R --vanilla --args $@ $^ < $(word 1, $(filter %.R, $^)) > $(@:%.Rout=%.rtmp)) 2> $(@:%.Rout=%.Rlog) && cat $(@:%.Rout=%.Rlog)) || (cat $(@:%.Rout=%.Rlog) && false)
 	$(MVF) $(@:%.Rout=%.rtmp) $@
 endef
 
-ifndef disable_automatic_makeR
+define run-R 
+	((R --vanilla --args $@ $^ < makestuff/wrapmake.R > $(@:%.Rout=%.rtmp)) 2> $(@:%.Rout=%.Rlog) && cat $(@:%.Rout=%.Rlog)) || (cat $(@:%.Rout=%.Rlog) && false)
+	$(MVF) $(@:%.Rout=%.rtmp) $@
+endef
+
+ifdef runmake
+.PRECIOUS: %.Rout
+%.Rout: %.R
+	$(run-R)
+endif
+
+ifdef automatic_makeR
 .PRECIOUS: %.Rout
 %.Rout: %.R
 	$(makeR)
