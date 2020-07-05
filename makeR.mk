@@ -1,3 +1,5 @@
+pdfcheck = perl -wf makestuff/wrapR/pdfcheck.pl
+
 define makeR 
 	((R --vanilla --args $@ $^ < $(word 1, $(filter %.R, $^)) > $(@:%.Rout=%.rtmp)) 2> $(@:%.Rout=%.Rlog) && cat $(@:%.Rout=%.Rlog)) || (cat $(@:%.Rout=%.Rlog) && false)
 	$(MVF) $(@:%.Rout=%.rtmp) $@
@@ -25,6 +27,12 @@ endif
 
 %.rds %.Rds: %.Rout
 	@ls $@ > /dev/null
+
+%.Rout.pdf.tmp %.Rout.png %.Rout.jpeg: %.Rout
+	@ls $@ > /dev/null
+
+%.Rout.pdf: %.Rout
+	@ls $@ > /dev/null || ($(pdfcheck) $@.tmp && $(MVF) $@.tmp $@)
 
 Ignore += .Rhistory .RData
 Ignore += *.RData *.Rlog *.rdata *.rda
