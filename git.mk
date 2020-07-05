@@ -268,7 +268,7 @@ pages/%: %
 	cd $* && git pull
 
 %.filesync:
-	cd $* && ($(git_check) || (git add *.* && git commit -m "Commited by $(CURDIR)"))
+	cd $* && git add *.* && ($(git_check) || (git commit -m "Commited by $(CURDIR)"))
 	cd $* && git pull && git push
 
 ## Make an empty pages directory when necessary; or else attaching existing one
