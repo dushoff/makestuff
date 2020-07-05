@@ -12,3 +12,11 @@ endif
 %.rda %.rdata %.RData: %.Rout
 	@ls $@ > /dev/null
 
+%.rds %.Rds: %.Rout
+	@ls $@ > /dev/null
+
+Ignore += .Rhistory .RData
+Ignore += *.RData *.Rlog *.rdata *.rda
+Ignore += *.Rout*
+Ignore += *.Rds *.rds
+
