@@ -265,9 +265,11 @@ pages/%: %
 ## pull: pages.gitpull
 
 %.gitpull:
+	$(MAKE) $*
 	cd $* && git pull
 
 %.filesync:
+	$(MAKE) $*
 	cd $* && git add *.* && ($(git_check) || (git commit -m "Commited by $(CURDIR)"))
 	cd $* && git pull && git push
 
