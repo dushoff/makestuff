@@ -100,11 +100,19 @@ saveVars <- function(..., target = targetname(), ext="rdata"){
 	save(file=paste(target, ext, sep="."), ...)
 }
 
+## FIXME: I have the wrong environment for objects
 saveList <-  function(..., target = targetname(), ext="rds"){
-	inl <- list(...)
+	l <- list(...)
 	if(length(l)==0){
-		n <- objects()
+		names <- objects()
 	} else {
-		as.character(substitute(list(...)))[-1]
+		names <- as.character(substitute(list(...)))[-1]
 	}
+
+	outl <- list()
+	for (n in names){
+		outl[[n]] <- get(n)
+	}
+	saveRDS(outl, file=paste(target, ext, sep="."))
+	return(invisible(outl))
 }
