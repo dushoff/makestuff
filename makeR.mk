@@ -39,6 +39,9 @@ endif
 %.Rout.pdf.tmp %.Rout.png %.Rout.jpeg: %.Rout
 	@ls $@ > /dev/null
 
+%.Rout.csv: %.Rout
+	@ls $@ > /dev/null
+
 %.Rout.pdf: %.Rout
 	@ls $@ > /dev/null || ($(pdfcheck) $@.tmp && $(MVF) $@.tmp $@)
 

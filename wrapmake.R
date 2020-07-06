@@ -8,7 +8,7 @@ commandEnvirLists()
 makeGraphics()
 
 input_files <- fileSelect(commandArgs(TRUE), 
-	c("csv", "tsv", "ssv", "txt")
+	c("csv", "tsv", "ssv", "txt", "xlsx", "xls")
 )
 
 rtargetname <- targetname()
