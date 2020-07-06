@@ -10,3 +10,10 @@ makeR is meant to be the main recipe
 run-R is the backward-compatible recipe
 * it uses a special-purpose script as the master script
 	* script dependencies are sourced in order
+
+File conventions:
+* images
+	* Default dumps (save.image) are called .rda (or .RData, for compatibility)
+	* Limited dumps (save) are called .rdata
+* objects
+	* For now, call them all rds (I'm starting to worry about case issues!).

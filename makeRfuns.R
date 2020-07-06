@@ -92,12 +92,19 @@ makeGraphics <- function(...
 
 #### Saving
 
-saveEnvironment <- function(fl = commandArgs(TRUE)[[1]], ext="rda"){
-	base <- sub("Rout$", "", fl)
-	save.image(file=paste0(base, ext))
+saveEnvironment <- function(target = targetname(), ext="rda"){
+	save.image(file=paste(target, ext, sep="."))
 }
 
-saveVars <- function(..., target = commandArgs(TRUE)[[1]], ext="rdata"){
-	base <- sub("Rout$", "", target)
-	save(file=paste0(base, ext), ...)
+saveVars <- function(..., target = targetname(), ext="rdata"){
+	save(file=paste(target, ext, sep="."), ...)
+}
+
+saveList <-  function(..., target = targetname(), ext="rds"){
+	inl <- list(...)
+	if(length(l)==0){
+		n <- objects()
+	} else {
+		as.character(substitute(list(...)))[-1]
+	}
 }
