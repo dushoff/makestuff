@@ -1,14 +1,11 @@
-## This is a screens project subdirectory
-## makestuff/up.Makefile
+
+## This is a _linked_ Makefile for …
+## 
 
 current: target
 -include target.mk
 
-# include makestuff/perl.def
-
-######################################################################
-
-# Content
+# -include makestuff/perl.def
 
 vim_session:
 	bash -cl "vmt"
@@ -17,17 +14,16 @@ vim_session:
 
 ### Makestuff
 
-Sources += Makefile
+## Sources += $(wildcard *.mk)
+## include $(wildcard *.mk)
 
-## Sources += content.mk
-## include content.mk
-
+Ignore += Makefile
 Ignore += makestuff
 msrepo = https://github.com/dushoff
 Makefile: makestuff/Makefile
 makestuff/Makefile:
-	cd .. && $(MAKE)
-	ls ../makestuff/Makefile && /bin/ln -s ../makestuff 
+	ln -s ../makestuff .
+	ls makestuff/Makefile
 
 -include makestuff/os.mk
 

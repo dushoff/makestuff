@@ -1,4 +1,3 @@
-## Fake dependency to avoid looping (since master.R is a source)
 
 ## Make a master.R script, but not run files (safer to do after making .Rout)
 %.masterscript: 

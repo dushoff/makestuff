@@ -1,35 +1,28 @@
 
-## Make dirdirs
-$(dirdirs):
-	$(mkdir)
-	cp makestuff/direct.Makefile $@/Makefile
-	cd $@ && $(MAKE) makestuff
+## Session and sync
 
-## Alling and tracking
-## More of this should be here instead of in the screens Makefile 2019 Sep
-alldirs += makestuff $(dirdirs) $(containers)
-Ignore += $(knowndirs)
+screen_session:
+	$(MAKE) Makefile $(screendirs:%=%.subscreen)
 
-## repohome is deprecated and we don't know how to make most of our containers
-## 2020 Apr 04 (Sat)
+######################################################################
 
-## $(containers): ; $(rhsetup)
-## Get ready for repohome
-%.rhd:
-	cd $* && make rhdir_drop
+## Completion file
 
-rhdd:
-	$(MAKE) $(dirdirs:%=%.rhd)
+Ignore += dirnames.mk
+dirnames.mk: Makefile
+	echo $(screendirs:%=%.screen) : > $@
+	echo $(screendirs:%=%.subscreen) : > $@
 
-## Update recursively through dirdirs
+-include dirnames.mk
 
-%.pmsync:
-	cd $* && $(MAKE) pmsync
+######################################################################
 
-dpmsync:
-	$(MAKE) $(dirdirs:%=%.pmsync)
-	$(MAKE) makestuff.msync
+clonemake = $(clonedirs:%=%/Makefile)
 
-all.time: dirdirs.sync
+now:
+	@echo $(clonemake)
 
-dirdirs.sync: $(dirdirs:%=%.sync)
+$(clonemake): %/Makefile:
+	$(CP) makestuff/screendir.Makefile $@
+	$(CP) makestuff/screens.list $*
+
