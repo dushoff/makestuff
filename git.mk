@@ -78,14 +78,7 @@ up.time: commit.time
 	git push -u origin $(BRANCH)
 	touch $@
 
-## trying to switch to alldirs
-ifndef alldirs
-alldirs = $(mdirs) $(clonedirs) $(subdirs) makestuff
-endif
-
-$(subdirs):
-	$(mkdir)
-	$(CP) makestuff/subdir.mk $@/Makefile
+alldirs += makestuff
 
 ######################################################################
 
@@ -265,10 +258,12 @@ pages/%: %
 ## pull: pages.gitpull
 
 %.gitpull:
+	$(MAKE) $*
 	cd $* && git pull
 
 %.filesync:
-	cd $* && git add *.* && git commit -m "Commited by $(CURDIR)"
+	$(MAKE) $*
+	cd $* && git add *.* && ($(git_check) || (git commit -m "Commited by $(CURDIR)"))
 	cd $* && git pull && git push
 
 ## Make an empty pages directory when necessary; or else attaching existing one

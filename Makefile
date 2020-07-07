@@ -6,6 +6,16 @@ current: target
 
 ##################################################################
 
+## makeR
+
+Ignore += *.manual
+
+## 2020 Jul 05 (Sun): Think about how to partition this later 
+## Do we want R files in this main directory)?
+Sources += $(wildcard *.R)
+
+##################################################################
+
 md = $(wildcard *.md)
 Sources += $(md)
 Ignore += $(md:md=html)
