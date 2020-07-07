@@ -78,14 +78,7 @@ up.time: commit.time
 	git push -u origin $(BRANCH)
 	touch $@
 
-## trying to switch to alldirs
-ifndef alldirs
-alldirs = $(mdirs) $(clonedirs) $(subdirs) makestuff
-endif
-
-$(subdirs):
-	$(mkdir)
-	$(CP) makestuff/subdir.mk $@/Makefile
+alldirs += makestuff
 
 ######################################################################
 
