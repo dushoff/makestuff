@@ -1,10 +1,16 @@
 use strict;
 use 5.10.0;
 
-my %listdirs; ## The main thing, they are alled, ignored and screened above the line
-my %ruledirs; ## Things we can make by cloning (or sometimes moving)
-my %resting; ## Things we should recognize and ignore
-## tag with NOALL in top section
+## If I have a number, I'm a screendir
+## If I have a rule, I'm a ruledir
+## If I have a rule _or_ a number, I'm a dir (to be split as listdir or resting)
+## listdir and resting should be changed to activedir and restingdir
+## both the perl names AND the .mk variables (which is why I don't just do it)
+
+## screendirs are printed out immediately, based on numbers
+my %listdirs; ## These are ignored and added to alldirs
+my %resting; ## These are just ignored 
+my %ruledirs; ## Things we can make by cloning and moving
 
 while(<>){
 	## Space and comments
@@ -17,7 +23,6 @@ while(<>){
 
 	## Numbered things are screens
 	## They don't necessarily need auto-rules (so don't need colons)
-	## screens after divider aren't screened, but are still listdirs
 	my $number  = (s/^[0-9]+\.\s*//);
 	my $name = $_;
 	$name =~ s/[\s:].*//;
