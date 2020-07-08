@@ -4,7 +4,7 @@ vscreens = $(screendirs:%=%.vscreen)
 ## Completion file
 
 Ignore += dirnames.mk
-dirnames.mk: Makefile
+dirnames.mk: screens.mk
 	echo $(vscreens) : > $@
 
 -include dirnames.mk
