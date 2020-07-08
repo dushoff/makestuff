@@ -23,7 +23,7 @@ fileSelect <- function(fl = commandArgs(TRUE), exts)
 commandFiles <- function(fl = commandArgs(TRUE)){
 	commandEnvironments(fl)
 	commandEnvirLists(fl)
-	## commandVarLists(fl)
+	commandLists(fl)
 	sourceFiles(fl, first=FALSE)
 }
 
@@ -48,7 +48,18 @@ commandEnvironments <- function(fl = commandArgs(TRUE)
 	invisible(envl)
 }
 
+## Read rds lists from a file list to a single environment
+commandLists <- function(fl = commandArgs(TRUE)
+	, exts = c("Rds", "rds"), parent=.GlobalEnv
+)
+{
+	varl <- fileSelect(fl, exts)
+	loadVarLists(varl, parent)
+	invisible(varl)
+}
+
 ## Wrapper for legacy makefiles
+## By default takes Rout dependencies and assumes rda environments
 legacyEnvironments <- function(fl = commandArgs(TRUE)
 	, dep = "Rout", ext="rda")
 {
@@ -70,10 +81,22 @@ commandEnvirLists <- function(fl = commandArgs(TRUE)
 	invisible(0)
 }
 
+## Load every environment found into GlobalEnv
+## This is the simple-minded default
 loadEnvironments <- function(envl, parent=.GlobalEnv)
 {
 	for (env in envl){
 		load(env, parent)
+	}
+}
+
+## Load every list found into GlobalEnv
+## This is the efficient rds analogue of the simple-minded default
+loadVarLists <- function(varl, parent=parent.frame())
+{
+	for (v in varl){
+		l <- readRDS(v)
+    	list2env(l, envir=parent)
 	}
 }
 
@@ -104,7 +127,7 @@ saveVars <- function(..., target = targetname(), ext="rdata"){
 saveList <-  function(..., target = targetname(), ext="rds"){
 	l <- list(...)
 	if(length(l)==0){
-		names <- objects()
+		names <- objects(parent.frame())
 	} else {
 		names <- as.character(substitute(list(...)))[-1]
 	}
@@ -114,5 +137,5 @@ saveList <-  function(..., target = targetname(), ext="rds"){
 		outl[[n]] <- get(n)
 	}
 	saveRDS(outl, file=paste(target, ext, sep="."))
-	return(invisible(outl))
+	return(invisible(names(outl)))
 }
