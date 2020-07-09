@@ -1,6 +1,10 @@
 
 ## Utilities
-fileSelect <- function(fl, exts)
+targetname <- function(fl = commandArgs(TRUE)){
+	return(sub("\\.Rout$", "", fl[[1]]))
+}
+
+fileSelect <- function(fl = commandArgs(TRUE), exts)
 {
 	outl <- character(0)
 	for (ext in exts){
@@ -19,7 +23,7 @@ fileSelect <- function(fl, exts)
 commandFiles <- function(fl = commandArgs(TRUE)){
 	commandEnvironments(fl)
 	commandEnvirLists(fl)
-	## commandVarLists(fl)
+	commandLists(fl)
 	sourceFiles(fl, first=FALSE)
 }
 
@@ -44,7 +48,18 @@ commandEnvironments <- function(fl = commandArgs(TRUE)
 	invisible(envl)
 }
 
+## Read rds lists from a file list to a single environment
+commandLists <- function(fl = commandArgs(TRUE)
+	, exts = c("Rds", "rds"), parent=.GlobalEnv
+)
+{
+	varl <- fileSelect(fl, exts)
+	loadVarLists(varl, parent)
+	invisible(varl)
+}
+
 ## Wrapper for legacy makefiles
+## By default takes Rout dependencies and assumes rda environments
 legacyEnvironments <- function(fl = commandArgs(TRUE)
 	, dep = "Rout", ext="rda")
 {
@@ -66,10 +81,22 @@ commandEnvirLists <- function(fl = commandArgs(TRUE)
 	invisible(0)
 }
 
+## Load every environment found into GlobalEnv
+## This is the simple-minded default
 loadEnvironments <- function(envl, parent=.GlobalEnv)
 {
 	for (env in envl){
 		load(env, parent)
+	}
+}
+
+## Load every list found into GlobalEnv
+## This is the efficient rds analogue of the simple-minded default
+loadVarLists <- function(varl, parent=parent.frame())
+{
+	for (v in varl){
+		l <- readRDS(v)
+    	list2env(l, envir=parent)
 	}
 }
 
@@ -88,12 +115,27 @@ makeGraphics <- function(...
 
 #### Saving
 
-saveEnvironment <- function(fl = commandArgs(TRUE)[[1]], ext="rda"){
-	base <- sub("Rout$", "", fl)
-	save.image(file=paste0(base, ext))
+saveEnvironment <- function(target = targetname(), ext="rda"){
+	save.image(file=paste(target, ext, sep="."))
 }
 
-saveVars <- function(..., target = commandArgs(TRUE)[[1]], ext="rdata"){
-	base <- sub("Rout$", "", target)
-	save(file=paste0(base, ext), ...)
+saveVars <- function(..., target = targetname(), ext="rdata"){
+	save(file=paste(target, ext, sep="."), ...)
+}
+
+## FIXME: I have the wrong environment for objects
+saveList <-  function(..., target = targetname(), ext="rds"){
+	l <- list(...)
+	if(length(l)==0){
+		names <- objects(parent.frame())
+	} else {
+		names <- as.character(substitute(list(...)))[-1]
+	}
+
+	outl <- list()
+	for (n in names){
+		outl[[n]] <- get(n)
+	}
+	saveRDS(outl, file=paste(target, ext, sep="."))
+	return(invisible(names(outl)))
 }
