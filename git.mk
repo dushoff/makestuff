@@ -449,10 +449,21 @@ upmerge:
 ## Not clear why sometimes one of these works, and sometimes the other
 hub:
 	echo go `git remote get-url origin` | bash 
+
+gitremote = git remote get-url origin
+gitremoteopen = echo go `$(gitremote) | perl -pe "s/[.]git$$//"` | bash --login
+
 hupstream:
-	echo go `git remote get-url origin | perl -pe "s/[.]git$$//"` | bash --login
+	$(gitremoteopen)
+
 hup:
-	git remote get-url origin
+	$(gitremote)
+
+%.gr:
+	cd $* && $(gitremote)
+
+%.gro:
+	cd $* && $(gitremoteopen)
 
 %.hup:
 	cd $* && echo 0. $*: && $(MAKE) hup

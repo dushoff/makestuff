@@ -16,6 +16,9 @@ screens.mk: screens.list
 screens.arc: screens.list makestuff/listarc.pl
 	$(MAKE) screens.mk
 	$(PUSH)
+
+## Experimenting 2020 Jul 08 (Wed)
+## Shouldn't update unless .arc is up to date. 
 screens.update: screens.arc
 	- $(call hide, screens.list)
 	 perl -wf makestuff/arclist.pl screens.arc > screens.list
