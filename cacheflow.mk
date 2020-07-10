@@ -1,4 +1,8 @@
 
+ifndef pushdir
+pushdir = cachestuff
+endif
+
 cachenotice =  NOTICE from cacheflow.mk:
 nocachestuff =  $(cachenotice) You need to make a cachestuff/ directory
 makecache = $(MAKE) cachestuff || (echo $(nocachestuff) && false)
