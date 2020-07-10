@@ -16,7 +16,10 @@ screens.mk: screens.list
 screens.arc: screens.list makestuff/listarc.pl
 	$(MAKE) screens.mk
 	$(PUSH)
-screens.update:
+
+## Experimenting 2020 Jul 08 (Wed)
+## Shouldn't update unless .arc is up to date. Which should put update out-of-date, right?
+screens.update: screens.arc
 	- $(call hide, screens.list)
 	 perl -wf makestuff/arclist.pl screens.arc > screens.list
 screens_resource:

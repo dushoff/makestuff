@@ -18,11 +18,14 @@ $(git_dir)/info/exclude: $(Sources) Makefile
 
 export Ignore += local.mk target.mk make.log go.log
 
+## I guess this is done manually from time to time?
 ignore.config: ~/.config/git
 	cat makestuff/ignore.vim makestuff/ignore.auth $</ignore || cat makestuff/ignore.vim makestuff/ignore.auth $</ignore
 
 ignorehere: $(git_dir)/info/exclude
 	$(CP) $< .gitignore
+
+## Would this work, or does it just get made again?
 
 noexclude: 
 	- $(RM) $(git_dir)/info/exclude
