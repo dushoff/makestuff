@@ -1,5 +1,5 @@
 ifdef git_dir
-$(error listdir.mk should go before git.mk)
+$(error load listdir.mk before git.mk)
 endif
 
 ifndef PUSH
@@ -16,7 +16,7 @@ screens.mk: screens.list
 screens.arc: screens.list makestuff/listarc.pl
 	$(MAKE) screens.mk
 	$(PUSH)
-screens.update:
+screens.update: screens.arc
 	- $(call hide, screens.list)
 	 perl -wf makestuff/arclist.pl screens.arc > screens.list
 screens_resource:
