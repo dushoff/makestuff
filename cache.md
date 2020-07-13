@@ -1,27 +1,47 @@
 
-2019 Mar 13 (Wed)
-=================
+## 2020 Jul 04 (Sat)
 
-Starting over, and I basically have no principles I agree with.
+Redoing everything again
 
-We want to mark steps as slow, and not do slow steps by default.
+cacheflow.md for checkvalves
+
+cacherepo for a disposable cache repo
+
+Everything is called "cachestuff" this can be retrofitted using ifndef later, but probably won't be
 
 ----------------------------------------------------------------------
 
-There was an older thing. It's hiding in the history. I'm not convinced I've done anything good so far. 
+# Old 2020 Jul 04 (Sat)
+
+## Base
+
+* ONE directory (cache/)
+* NEVER have a Makefile rule that points there
+
+Rules to _make_ slow files should _not_ change when caching is introduced
+* instead, avoid directly making them
+
+`slow.RData: good.dat slow.R`
+
+Rules to _use_ slow files should request them from the cache
+
+`final.Rout: cache/slow.RData`
+
+To actually _make_ a slow file, use `.cache`:
+`make slow.RData.cache`
+
+2020 Jul 03 (Fri): This is now supposed to play nicely with the wrapR .Rout/.RData duality. Please let me know if not.
 
 ----------------------------------------------------------------------
 
-We want to have rules for three types of make:
+TODO
+====
 
-* fast: the default
-* lazy: make if possible, but don't do anything marked as slow, unless it is necessary (buildcache)
-* full: make updated targets, pay no attention to what is marked as slow (rebuildcache)
+## wrapR
+* Special rules for .rds
 
-There's also a question about time stamps: it is hard to be sure that time stamps are consistent between platforms (or even within git, if we are pushing output files).
+## Make variables
 
-We want to mark targets as slow where we make them. We can do that by making them in a cache directory. In general, these should have weird names also, so that there is no other way to make them.
-* This idea depends on assuming a flat directory structure for now
-* Later we could use some sort of directory logic (like hide uses)
-
-This whole project is a disaster, I think
+* buildcache
+* pipecache
+* checkcache

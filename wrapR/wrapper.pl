@@ -16,6 +16,7 @@ my @env;
 my @envir;
 my @R;
 my @input;
+my @flags;
 
 my $target = shift(@ARGV);
 die "ERROR -- wrapR.pl: Illegal target $target (does not end with .Rout) \n" unless $target =~ s/.Rout$//;
@@ -37,8 +38,10 @@ foreach(@ARGV){
 		s/.envir//;
 		s/([^\/]*)\.Rout$/.$1.RData/;
 		push @envir, "\"$_\"";
-	} else {
+	} elsif (/\./){
 		push @input, "\"$_\"";
+	} else {
+		push @flags, "\"$_\"";
 	}
 }
 
@@ -53,14 +56,21 @@ if (@input){
 	print ")\n";
 }
 
+if (@flags){
+	print "\nmake_flags <- c(";
+	print join ", ", @flags;
+	print ")\n";
+}
+
 say "rtargetname <- \"$target\"";
 say "pdfname <- \"$dottarget.Rout.pdf\"";
 say "csvname <- \"$target.Rout.csv\"";
 say "rdsname <- \"$dottarget.Rds\"";
 say "rdaname <- \"$dottarget.RData\"";
 
-my $savetext = "save.image(file=\"$dottarget.RData\")";
+my $savetext = "save.image(file=rdaname)";
 my $save = $savetext;
+my $rdsSave = "";
 
 if (@envir){
 	print "\nenvir_list <- list(); ";
@@ -86,12 +96,18 @@ foreach my $f (@R){
 		next if /^#\s*#/;
 		if (/rdsave/){
 			$save = $_;
-			$save =~ s/^[ #]*rdsave\s*\(/save(file="$dottarget.RData", /
+			$save =~ s/^[ #]*rdsave\s*\(/save(file=rdaname, /
 				or die("Problem with special statement $save");
 		}
 
 		if (/rdnosave/){
 			$save = "";
+		}
+
+		if (/rdsSave/){
+			$rdsSave = $_;
+			$rdsSave =~ s/^[ #]*rdsSave\s*\(/saveRDS(file=rdsname, /
+				or die("Problem with special statement $save");
 		}
 	}
 }
@@ -105,4 +121,8 @@ say "proc.time()";
 
 say "\n# If you see this in your terminal, the R script $target.wrapR.r (or something it called) did not close properly";
 say "$save\n";
+
+if ($rdsSave){
+	say "$rdsSave\n";
+}
 

@@ -1,5 +1,5 @@
 ifdef git_dir
-$(error listdir.mk should go before git.mk)
+$(error load listdir.mk before git.mk)
 endif
 
 ifndef PUSH
@@ -11,11 +11,15 @@ endif
 Sources += screens.arc
 Ignore += screens.mk screens.list .screens.list
 screens.mk: screens.list
-	perl -wf makestuff/lmk.pl $< > $@ || cat /dev/null > $@
+	perl -wf makestuff/lmk.pl $< > $@ || ($(RM) $@ && false)
 
 screens.arc: screens.list makestuff/listarc.pl
+	$(MAKE) screens.mk
 	$(PUSH)
-screens.update:
+
+## Experimenting 2020 Jul 08 (Wed)
+## Shouldn't update unless .arc is up to date. 
+screens.update: screens.arc
 	- $(call hide, screens.list)
 	 perl -wf makestuff/arclist.pl screens.arc > screens.list
 screens_resource:
@@ -28,12 +32,10 @@ screens_resource:
 
 ## Syncing
 
-alldirs += $(screendirs)
+alldirs += $(listdirs)
 alldirs += makestuff
-Ignore += $(listdirs) $(knowndirs)
+Ignore += $(listdirs) $(resting)
 
-######################################################################
-
-## clones
+## making
 $(ruledirs):
 	$(MV) $(old) $@ || git clone $(url) $@

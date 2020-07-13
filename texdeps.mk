@@ -18,12 +18,12 @@ endif
 ## Are we geting everything we need from make log?
 %.texcheck: 
 	@!(grep "Fatal error occurred" $*.log)
-	@(grep "Rerun to get" $*.log && touch $*.tex) || :
+	@(grep "Rerun to get" $*.log && touch $*.tex) || true
 
 %.logreport: 
-	@(grep "Error:" $*.log && touch $*.tex) || :
-	@grep "Stop." .texdeps/$*.make.log || :
-	@grep "failed" .texdeps/$*.make.log || :
+	@(grep "Error:" $*.log && touch $*.tex) || true
+	@grep "Stop." .texdeps/$*.make.log || true
+	@grep "failed" .texdeps/$*.make.log || true
 
 ## 2020 Feb 16 (Sun)
 ## Not chaining hardly at all. Neither of these seem to depend on included files for example
@@ -50,17 +50,15 @@ endif
 %.ltx:
 	-$(latex) $*
 
-## 2019 Dec 02 (Mon) Workflow
-## It's a bit confusing that .deps always succeeds
-
 # A phony target
 %.deps: .texdeps/%.mk %.tex
 	$(MAKE) -f $< -f Makefile .texdeps/$*.out | tee .texdeps/$*.make.log 2>&1
 
 ## Try harder (and try to stop in the right place)
+## Fiddling with this 2020 Jun 13 (Sat)
 %.alltex: 
-	- $(MAKE) $*.deps
-	$(MAKE) $*.pdf || ($(MAKE) $*.deps && $(MAKE) $*.pdf)
+	$(MAKE) $*.deps || $(MAKE) $*.ltx
+	$(MAKE) $*.deps && $(MAKE) $*.pdf
 
 Ignore += .texdeps/
 
@@ -76,4 +74,5 @@ Ignore += *.run.xml
 
 %_olddiff.tex: %.tex.*.oldfile %.tex makestuff/latexdiff.pl
 	$(PUSH)
+
 

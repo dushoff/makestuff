@@ -35,6 +35,8 @@ ZIP = zip $@ $^
 
 null = /dev/null
 
+lscheck = @$(LS) > $(null)
+
 hiddenfile = $(dir $1).$(notdir $1)
 hide = $(MVF) $1 $(dir $1).$(notdir $1)
 unhide = $(MVF) $(dir $1).$(notdir $1) $1
@@ -42,7 +44,8 @@ hcopy = $(CPF) $1 $(dir $1).$(notdir $1)
 difftouch = diff $1 $(dir $1).$(notdir $1) > /dev/null || touch $1
 touch = touch $@
 
-makethere = cd $(dir $@) && $(MAKE) $(notdir $@)
+makethere = cd $(dir $@) && $(MAKE) makestuff && $(MAKE) $(notdir $@)
+makestuffthere = cd $(dir $@) && $(MAKE) makestuff && $(MAKE) $(notdir $@)
 
 diff = $(DIFF) $^ > $@
 
@@ -51,6 +54,7 @@ link = $(LN) $< $@
 alwayslinkdir = (ls $(dir)/$@ > $(null) || $(MD) $(dir)/$@) && $(LNF) $(dir)/$@ .
 linkdir = ls $(dir)/$@ > $(null) && $(LNF) $(dir)/$@ .
 linkdirname = ls $(dir) > $(null) && $(LNF) $(dir) $@ 
+linkexisting = ls $< > /dev/null && $(link)
 
 ## This will make directory if it doesn't exist
 ## Possibly good for shared projects. Problematic if central user makes two 
@@ -65,6 +69,7 @@ hardcopy = $(CPF) $< $@
 allcopy =  $(CP) $^ $@
 ccrib = $(CP) $(crib)/$@ .
 mkdir = $(MD) $@
+makedir = cd $(dir $@) && $(MD) $(notdir $@)
 cat = $(CAT) /dev/null $^ > $@
 ln = $(LN) $< $@
 lnf = $(LNF) $< $@
@@ -106,7 +111,7 @@ shell_execute = sh < $@
 %.png: %.pdf
 	$(convert)
 
-pdfcat = pdfjoin --outfile $@ $(filter %.pdf, $^) 
+pdfcat = pdfjam --outfile $@ $(filter %.pdf, $^) 
 
 latexdiff = latexdiff $^ > $@
 

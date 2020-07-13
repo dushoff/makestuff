@@ -78,14 +78,7 @@ up.time: commit.time
 	git push -u origin $(BRANCH)
 	touch $@
 
-## trying to switch to alldirs
-ifndef alldirs
-alldirs = $(mdirs) $(clonedirs) $(subdirs) makestuff
-endif
-
-$(subdirs):
-	$(mkdir)
-	$(CP) makestuff/subdir.mk $@/Makefile
+alldirs += makestuff
 
 ######################################################################
 
@@ -265,7 +258,13 @@ pages/%: %
 ## pull: pages.gitpull
 
 %.gitpull:
+	$(MAKE) $*
 	cd $* && git pull
+
+%.filesync:
+	$(MAKE) $*
+	cd $* && git add *.* && ($(git_check) || (git commit -m "Commited by $(CURDIR)"))
+	cd $* && git pull && git push
 
 ## Make an empty pages directory when necessary; or else attaching existing one
 Ignore += pages
@@ -295,9 +294,6 @@ abort:
 
 ~/.config/git:
 	$(mkdir)
-
-README.md LICENSE.md:
-	touch $@
 
 %/target.mk:
 	$(CP) target.mk $*
@@ -453,10 +449,21 @@ upmerge:
 ## Not clear why sometimes one of these works, and sometimes the other
 hub:
 	echo go `git remote get-url origin` | bash 
+
+gitremote = git remote get-url origin
+gitremoteopen = echo go `$(gitremote) | perl -pe "s/[.]git$$//"` | bash --login
+
 hupstream:
-	echo go `git remote get-url origin | perl -pe "s/[.]git$$//"` | bash --login
+	$(gitremoteopen)
+
 hup:
-	git remote get-url origin
+	$(gitremote)
+
+%.gr:
+	cd $* && $(gitremote)
+
+%.gro:
+	cd $* && $(gitremoteopen)
 
 %.hup:
 	cd $* && echo 0. $*: && $(MAKE) hup
@@ -492,10 +499,10 @@ hup:
 Ignore += *.oldfile *.olddiff
 %.oldfile:
 	-$(RM) $(basename $*).*.oldfile
-	$(MVF) $(basename $*) tmp_$(basename $*)
+	-$(MVF) $(basename $*) tmp_$(basename $*)
 	-git checkout $(subst .,,$(suffix $*)) -- $(basename $*)
 	-cp $(basename $*) $@
-	$(MV) tmp_$(basename $*) $(basename $*)
+	-$(MV) tmp_$(basename $*) $(basename $*)
 	ls $@
 
 ## Chaining trick to always remake
