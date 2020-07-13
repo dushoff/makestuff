@@ -27,7 +27,7 @@ readonly = chmod a-w $@
 RO = chmod a-w $@
 RW = chmod ug+w $@
 DNE = (! $(LS) $@ > $(null))
-LSD = ($(LS) $@ > $(null))
+LSN = ($(LS) $@ > $(null))
 
 ## These two are weird (don't follow the convention)
 TGZ = tar czf $@ $^
@@ -76,8 +76,8 @@ pandocs = pandoc -s -o $@ $<
 ## Maybe think about using dir $@ in future when thinking more clearly
 ## Including for rcopy
 
-dircopy = ($(LSD) && $(touch)) ||  $(rcopy)
-ddcopy = ($(LSD) && $(touch)) ||  $(rdcopy)
+dircopy = ($(LSN) && $(touch)) ||  $(rcopy)
+ddcopy = ($(LSN) && $(touch)) ||  $(rdcopy)
 
 ## Lock and unlock directories to avoid making changes that aren't on the sink path
 ## git will not track this for you ☹
@@ -85,6 +85,18 @@ ddcopy = ($(LSD) && $(touch)) ||  $(rdcopy)
 	chmod -R a-w $*
 %.rw:
 	chmod -R u+w $*
+
+## File listing and merging
+%.ls: %
+	ls $* > $@
+%.lsd: %
+	ls $*/* > $@
+
+## Track a directory from the parent directory, using <dir>.md
+%.filemerge: %.lsd %.md makestuff/filemerge.pl
+	$(PUSH)
+	- $(DIFF) $*.md $@
+	$(MV) $@ $*.md
 
 # What?
 convert = convert $< $@
