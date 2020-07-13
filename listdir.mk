@@ -1,5 +1,5 @@
 ifdef git_dir
-$(error listdir.mk should go before git.mk)
+$(error load listdir.mk before git.mk)
 endif
 
 ifndef PUSH
@@ -18,7 +18,7 @@ screens.arc: screens.list makestuff/listarc.pl
 	$(PUSH)
 
 ## Experimenting 2020 Jul 08 (Wed)
-## Shouldn't update unless .arc is up to date. Which should put update out-of-date, right?
+## Shouldn't update unless .arc is up to date. 
 screens.update: screens.arc
 	- $(call hide, screens.list)
 	 perl -wf makestuff/arclist.pl screens.arc > screens.list
