@@ -44,6 +44,7 @@ hcopy = $(CPF) $1 $(dir $1).$(notdir $1)
 difftouch = diff $1 $(dir $1).$(notdir $1) > /dev/null || touch $1
 touch = touch $@
 
+justmakethere = cd $(dir $@) && $(MAKE) $(notdir $@)
 makethere = cd $(dir $@) && $(MAKE) makestuff && $(MAKE) $(notdir $@)
 makestuffthere = cd $(dir $@) && $(MAKE) makestuff && $(MAKE) $(notdir $@)
 
