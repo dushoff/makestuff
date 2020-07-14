@@ -95,7 +95,7 @@ ddcopy = ($(LSN) && $(touch)) ||  $(rdcopy)
 %.ls: %
 	ls $* > $@
 %.lsd: %
-	ls $*/* > $@
+	ls -d $*/* > $@
 
 ## Track a directory from the parent directory, using <dir>.md
 %.filemerge: %.lsd %.md makestuff/filemerge.pl

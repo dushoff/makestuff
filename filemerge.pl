@@ -1,6 +1,8 @@
 use strict;
 use 5.10.0;
 
+my $separator = "### Untracked files ###";
+
 open(LS,  "<", shift @ARGV);
 
 my %ls;
@@ -12,6 +14,7 @@ while(<LS>)
 
 while(<>)
 {
+	last if /$separator/;
 	chomp;
 	if(my ($fn) = m|(^[\w/]+\.\w+)|){
 		s/^/MISSING: / unless defined $ls{$fn};
@@ -20,6 +23,8 @@ while(<>)
 	say;
 }
 
+say "\n\n$separator\n\n";
+
 foreach my $fn (keys %ls){
-	say "UNTRACKED: $fn" if $ls{$fn} == 0;
+	say "$fn" if $ls{$fn} == 0;
 }
