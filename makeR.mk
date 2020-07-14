@@ -50,3 +50,6 @@ Ignore += *.RData *.Rlog *.rdata *.rda
 Ignore += *.Rout*
 Ignore += *.Rds *.rds
 
+wrapdelete:
+	$(RMF) *.wrapR.* .*.wrapR.* 
+
