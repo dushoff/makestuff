@@ -15,7 +15,11 @@ CP = /bin/cp
 CPF = /bin/cp -f
 CPR = /bin/cp -rf
 DIFF = diff
+
+## VEDIT is set in bashrc (and inherited)
+## Not sure what I should do if it doesn't work?
 GVEDIT = ($(VEDIT) $@ || gedit $@ || (echo ERROR: No editor found makestuff/unix.mk && echo set shell VEDIT variable && exit 1))
+GVEDIT = (gedit $@ || (echo ERROR: No editor found makestuff/unix.mk && echo set shell VEDIT variable && exit 1))
 RMR = /bin/rm -rf
 LS = /bin/ls
 LN = /bin/ln -s
