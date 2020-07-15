@@ -37,4 +37,3 @@ bothstuff:
 
 -include makestuff/git.mk
 -include makestuff/visual.mk
--include makestuff/projdir.mk
