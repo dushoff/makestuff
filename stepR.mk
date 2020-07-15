@@ -23,7 +23,7 @@ Ignore += $(wildcard *.rdeps)
 %.rdeps: % makestuff/rmdstep.pl
 	$(PUSH)
 
-Ignore += $(wildcard *.RData *.Rlog *.Rout *.Rout.pdf)
+Ignore += $(wildcard *.RData *.Rlog *.Rout *.Rout.pdf *.rda)
 rflags = --no-environ --no-site-file --no-init-file --no-restore
 %.Rout: %.R
 	$(stepHere)

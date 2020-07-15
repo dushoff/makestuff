@@ -1,8 +1,4 @@
 
-### A bit repetitive with screendir.mk ☹
-
-######################################################################
-
 ## Session and sync
 
 screen_session:
@@ -13,7 +9,7 @@ screen_session:
 ## Completion file
 
 Ignore += dirnames.mk
-dirnames.mk: Makefile
+dirnames.mk: screens.list
 	echo $(screendirs:%=%.screen) : > $@
 	echo $(screendirs:%=%.subscreen) : > $@
 

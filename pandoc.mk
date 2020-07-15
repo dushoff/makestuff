@@ -80,4 +80,6 @@ Ignore += *.jax.html
 
 rmdpdf = Rscript -e 'library("rmarkdown"); render("$<", output_format="pdf_document")'
 
+knitpdf = Rscript -e 'knitr::knit2pdf("$<")'
+
 rmdpdfBang = Rscript -e 'library("rmarkdown"); render("$<", output_format="pdf_document")'
