@@ -18,6 +18,12 @@ ifdef runmake
 	$(run-R)
 endif
 
+ifdef wrap_makeR
+.PRECIOUS: %.Rout
+%.Rout: %.R
+	$(run-R)
+endif
+
 ifdef automatic_makeR
 .PRECIOUS: %.Rout
 %.Rout: %.R
