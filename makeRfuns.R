@@ -27,9 +27,10 @@ matchFile <-  function(pat, fl = commandArgs(TRUE)){
 
 ## This is meant to be a default starting point for $(makeR) scripts
 ## wrapmake encodes the current defaults for $(run-R) scripts
-commandFiles <- function(fl = commandArgs(TRUE)){
+commandFiles <- function(fl = commandArgs(TRUE), gr=TRUE){
 	commandEnvironments(fl)
 	commandLists(fl)
+	if(gr) makeGraphics()
 	sourceFiles(fl, first=FALSE)
 }
 
@@ -110,6 +111,7 @@ makeGraphics <- function(...
 	if(is.null(ext)) ext = "pdf.tmp"
 	if(is.null(otype)) otype = "pdf"
 	fn <- paste0(target, ".", ext)
+	dev.off()
 	get(otype)(..., file=fn)
 }
 
