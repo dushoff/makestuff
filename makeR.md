@@ -55,3 +55,13 @@ images
 
 objects
 * rds
+
+Problem
+=======
+
+2020 Jul 20 (Mon)
+
+Rout is the standard target and that's who we want to tell about the dependencies. But this means that things won't chain through .rda. So there are two choices:
+
+* use Rout as a fake dependency (this still has chaining problems, though)
+* make horrible eval rules in makeR.mk so that it chains anyway
