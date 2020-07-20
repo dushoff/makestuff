@@ -16,6 +16,13 @@ fileSelect <- function(fl = commandArgs(TRUE), exts)
 	return(outl)
 }
 
+matchFile <-  function(pat, fl = commandArgs(TRUE)){
+	f <- grep(pat, fl, value=TRUE)
+	if (length(f) == 0) die("No match for", pat, "in", fl)
+	if (length(f) > 1) die("More than one match for", pat, "in", fl)
+	return(f)
+}
+
 ### Loading and reading
 
 ## This is meant to be a default starting point for $(makeR) scripts

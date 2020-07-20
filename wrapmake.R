@@ -2,7 +2,7 @@ source("makestuff/makeRfuns.R")
 
 commandEnvironments()
 legacyEnvironments()
-commandEnvirLists()
+## commandEnvirLists()
 ## commandVarLists(fl)
 
 makeGraphics()
