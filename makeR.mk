@@ -57,5 +57,5 @@ Ignore += *.Rout*
 Ignore += *.Rds *.rds
 
 wrapdelete:
-	$(RMF) *.wrapR.* .*.wrapR.* 
+	$(RM) *.wrapR.* .*.wrapR.* 
 
