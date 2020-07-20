@@ -82,8 +82,12 @@ alldirs += makestuff
 
 ######################################################################
 
-## 2018 Nov 07 (Wed). Trying to make these rules finish better
-all.time: exclude up.time $(alldirs:%=%.all)
+## 2020 Jul 19 (Sun) Don't automatically try to sync things that
+## haven't been cloned yet
+## malldirs are made alldirs
+## pullall might fill in things that aren't here
+malldirs = $(filter $(alldirs), $(wildcard *))
+all.time: exclude up.time $(malldirs:%=%.all)
 	touch $@
 	git status
 
