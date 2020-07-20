@@ -1,7 +1,7 @@
 
 ## Utilities
-targetname <- function(fl = commandArgs(TRUE)){
-	return(sub("\\.Rout$", "", fl[[1]]))
+targetname <- function(ext="", fl = commandArgs(TRUE)){
+	return(sub("\\.Rout$", ext, fl[[1]]))
 }
 
 fileSelect <- function(fl = commandArgs(TRUE), exts)
