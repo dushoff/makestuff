@@ -37,19 +37,19 @@ endif
 	touch $@
 
 %.rda %.rdata %.RData: %.Rout
-	@ls $@ > /dev/null
+	$(lscheck)
 
 %.rds %.Rds: %.Rout
-	@ls $@ > /dev/null
+	$(lscheck)
 
 %.Rout.pdf.tmp %.Rout.png %.Rout.jpeg: %.Rout
-	@ls $@ > /dev/null
+	$(lscheck)
 
 %.Rout.csv: %.Rout
-	@ls $@ > /dev/null
+	$(lscheck)
 
 %.Rout.pdf: %.Rout
-	@ls $@ > /dev/null || ($(pdfcheck) $@.tmp && $(MVF) $@.tmp $@)
+	$(lscheck) || ($(pdfcheck) $@.tmp && $(MVF) $@.tmp $@)
 
 Ignore += .Rhistory .RData
 Ignore += *.RData *.Rlog *.rdata *.rda *.rtmp
