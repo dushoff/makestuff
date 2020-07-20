@@ -36,18 +36,23 @@ endif
 %.manual: %
 	touch $@
 
+.PRECIOUS: %.rda %.rdata %.RData
 %.rda %.rdata %.RData: %.Rout
 	@ls $@ > /dev/null
 
+.PRECIOUS: %.rds %.Rds
 %.rds %.Rds: %.Rout
 	@ls $@ > /dev/null
 
+## This is a pure intermediate; require .pdf, not .pdf.tmp
 %.Rout.pdf.tmp %.Rout.png %.Rout.jpeg: %.Rout
 	@ls $@ > /dev/null
 
+.PRECIOUS: %.Rout.csv
 %.Rout.csv: %.Rout
 	@ls $@ > /dev/null
 
+.PRECIOUS: %.Rout.pdf
 %.Rout.pdf: %.Rout
 	@ls $@ > /dev/null || ($(pdfcheck) $@.tmp && $(MVF) $@.tmp $@)
 
