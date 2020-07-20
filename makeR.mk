@@ -68,12 +68,10 @@ wrapdelete:
 
 ## Horrible eval rules
 
-impmakerda: $(impmakeR:%=%.rda)
-impmakeRout: $(impmakeR:%=%.Rout)
-.PRECIOUS: $(impmakerda) $(impmakeRout)
-
 define impdep
 %.$(1).rda: %.$(1).Rout ; $(lscheck)
+%.$(1).rdata: %.$(1).Rout ; $(lscheck)
+.PRECIOUS: %.$(1).rdata %.$(1).rda %.$(1).Rout
 endef
 
 $(foreach stem,$(impmakeR),$(eval $(call impdep,$(stem))))

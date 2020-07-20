@@ -1,7 +1,7 @@
 
 ## Utilities
-targetname <- function(ext="", fl = commandArgs(TRUE)){
-	return(sub("\\.Rout$", ext, fl[[1]]))
+targetname <- function(ext="", fl = commandArgs(TRUE)[[1]]){
+	return(sub("\\.Rout$", ext, fl))
 }
 
 fileSelect <- function(fl = commandArgs(TRUE), exts)
@@ -22,7 +22,6 @@ fileSelect <- function(fl = commandArgs(TRUE), exts)
 ## wrapmake encodes the current defaults for $(run-R) scripts
 commandFiles <- function(fl = commandArgs(TRUE)){
 	commandEnvironments(fl)
-	commandEnvirLists(fl)
 	commandLists(fl)
 	sourceFiles(fl, first=FALSE)
 }
@@ -40,7 +39,7 @@ sourceFiles <- function(fl=commandArgs(TRUE)
 
 ## Read environments from a file list to a single environment
 commandEnvironments <- function(fl = commandArgs(TRUE)
-	, exts = c("RData", "rda"), parent=.GlobalEnv
+	, exts = c("RData", "rda", "rdata"), parent=.GlobalEnv
 )
 {
 	envl <- fileSelect(fl, exts)
@@ -74,12 +73,6 @@ legacyEnvironments <- function(fl = commandArgs(TRUE)
 
 ## Read environments from a file list to separate places
 ## NOT implemented
-commandEnvirLists <- function(fl = commandArgs(TRUE)
-	, exts = c("RData", "Rdata", "rdata", "rda")
-)
-{
-	invisible(0)
-}
 
 ## Load every environment found into GlobalEnv
 ## This is the simple-minded default
