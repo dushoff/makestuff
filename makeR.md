@@ -1,6 +1,20 @@
 
 makeR is being developed here but meant to be an R package to do what wrapR does, but based more in R and more transparent. This will also mean it's a little less magic.
 
+Quick start
+===========
+
+* Change dependencies to `rda` (full environment) or `rdata` (saveVars)
+* Change the recipe to $(makeR)
+* If you are using a pattern rule, say `impmakeR += <stem>`
+* At the top
+	* `source("makestuff/makeRfuns.R")`
+	* `commandFiles()`
+	* `makeGraphics()` __if__ you have graphics
+* At the bottom
+	* saveEnvironment()
+	* saveVars(vars to save)
+
 Overview
 ===========
 
