@@ -12,8 +12,8 @@ Quick start
 	* `commandFiles()`
 	* `makeGraphics()` __if__ you have graphics
 * At the bottom
-	* saveEnvironment()
-	* saveVars(vars to save)
+	* saveEnvironment() (default, makes .rda) __or__
+	* saveVars(vars to save, makes .rdata)
 
 Overview
 ===========
