@@ -52,7 +52,7 @@ endif
 	@ls $@ > /dev/null || ($(pdfcheck) $@.tmp && $(MVF) $@.tmp $@)
 
 Ignore += .Rhistory .RData
-Ignore += *.RData *.Rlog *.rdata *.rda
+Ignore += *.RData *.Rlog *.rdata *.rda *.rtmp
 Ignore += *.Rout*
 Ignore += *.Rds *.rds
 
