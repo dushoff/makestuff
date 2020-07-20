@@ -36,18 +36,23 @@ endif
 %.manual: %
 	touch $@
 
+.PRECIOUS: %.rda %.rdata %.RData
 %.rda %.rdata %.RData: %.Rout
 	$(lscheck)
 
+.PRECIOUS: %.rds %.Rds
 %.rds %.Rds: %.Rout
 	$(lscheck)
 
+## This is a pure intermediate; require .pdf, not .pdf.tmp
 %.Rout.pdf.tmp %.Rout.png %.Rout.jpeg: %.Rout
 	$(lscheck)
 
+.PRECIOUS: %.Rout.csv
 %.Rout.csv: %.Rout
 	$(lscheck)
 
+.PRECIOUS: %.Rout.pdf
 %.Rout.pdf: %.Rout
 	$(lscheck) || ($(pdfcheck) $@.tmp && $(MVF) $@.tmp $@)
 
