@@ -111,7 +111,7 @@ makeGraphics <- function(...
 	if(is.null(ext)) ext = "pdf.tmp"
 	if(is.null(otype)) otype = "pdf"
 	fn <- paste0(target, ".", ext)
-	dev.off()
+	## dev.off()
 	get(otype)(..., file=fn)
 }
 
