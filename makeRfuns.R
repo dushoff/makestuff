@@ -4,6 +4,7 @@ targetname <- function(ext="", suffix="\\.Rout", fl = commandArgs(TRUE)[[1]]){
 	return(sub(suffix, ext, fl))
 }
 
+## Just selects extensions, not clear that it's good (used for legacy)
 fileSelect <- function(fl = commandArgs(TRUE), exts)
 {
 	outl <- character(0)
@@ -53,6 +54,16 @@ commandEnvironments <- function(fl = commandArgs(TRUE)
 	envl <- fileSelect(fl, exts)
 	loadEnvironments(envl, parent)
 	invisible(envl)
+}
+
+csvRead <- function(pat, fl = commandArgs(TRUE), ...){
+	return(readr::read_csv(matchFile(pat, fl), ...))
+}
+
+csvReadList <- function(pat, fl = commandArgs(TRUE), ...){
+	return(lapply(grep(pat, fl, value=TRUE)
+		, function(fn){readr::read_csv(fn, ...)}
+	))
 }
 
 ## Read rds lists from a file list to a single environment
