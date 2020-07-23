@@ -88,3 +88,5 @@ $(foreach stem,$(impmakeR),$(eval $(call impdep,$(stem))))
 	$(MAKE) dotdir.mslink
 	cd dotdir && $(MAKE) -n $*.Rout > make.log
 	perl -wf makestuff/makeRscript.pl dotdir/make.log > $@
+
+Sources += $(wildcard *.makeR.script)
