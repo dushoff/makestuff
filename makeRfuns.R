@@ -4,11 +4,11 @@
 ##' what does the function do?
 ##'
 ##' @param ext file extension for output
-##' @param suffix file extension of input
-##' @param fl \emph{not} a list of files
+##' @param suffix file extension of provided name
+##' @param fn provided file name (first of commandArgs by default)
 ##' @export
-targetname <- function(ext="", suffix="\\.Rout", fl = commandArgs(TRUE)[[1]]){
-	return(sub(suffix, ext, fl))
+targetname <- function(ext="", suffix="\\.Rout", fn = commandArgs(TRUE)[[1]]){
+	return(sub(suffix, ext, fn))
 }
 
 ## Just selects extensions, not clear that it's good (used for legacy)
@@ -145,7 +145,6 @@ saveVars <- function(..., target = targetname(), ext="rdata"){
 	save(file=paste(target, ext, sep="."), ...)
 }
 
-## FIXME: I have the wrong environment for objects
 saveList <-  function(..., target = targetname(), ext="rds"){
 	l <- list(...)
 	if(length(l)==0){
@@ -160,4 +159,10 @@ saveList <-  function(..., target = targetname(), ext="rds"){
 	}
 	saveRDS(outl, file=paste(target, ext, sep="."))
 	return(invisible(names(outl)))
+}
+
+### Output
+
+csvSave <- function(..., target = targetname(), ext="Rout.csv"){
+	write.csv(file=paste(target, ext, sep="."), ...)
 }
