@@ -22,14 +22,15 @@ We currently call makeR using:
 
 `source("makestuff/makeRfuns.R")`
 
-The default way to run makeR is:
+i.e. this should be included (if not using legacy workflow) in every R script that will be using this machinery. The default way to run makeR is:
 
-* use `$(makeR)` as the recipe
-* `source("makestuff/makeRfuns.R")` at the beginning
+* use `$(makeR)` as the recipe in the Makefile
+* `source("makestuff/makeRfuns.R")` at the beginning of the R script
 * use makeR functions to read environments and files (at the beginning of script)
 * use makeR functions to save environments and files (at the end of script)
 
 We then have functions for doing what wrapR used to do:
+
 * reading or loading files named as dependencies
 	* including loading them sometimes into separate environments or something
 * saving environments and writing csv files
@@ -37,6 +38,8 @@ We then have functions for doing what wrapR used to do:
 There is some parallel machinery for dealing automatically with rds files. This does _not_ have the big efficiency advantages that were advertised, but may still be worth saving for special purposes. In particular, rds could provide a better way to merge pipes in the future.
 
 Looking at `makestuff/makeRfuns.R` and `makestuff/wrapmake.R` (see below) is a good way to get started on these functions
+
+**fixme**: add a non-legacy example??
 
 Legacy
 ======
