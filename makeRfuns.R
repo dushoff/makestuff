@@ -1,9 +1,10 @@
 
 ## Utilities
-targetname <- function(ext="", fl = commandArgs(TRUE)[[1]]){
-	return(sub("\\.Rout$", ext, fl))
+targetname <- function(ext="", suffix="\\.Rout", fl = commandArgs(TRUE)[[1]]){
+	return(sub(suffix, ext, fl))
 }
 
+## Just selects extensions, not clear that it's good (used for legacy)
 fileSelect <- function(fl = commandArgs(TRUE), exts)
 {
 	outl <- character(0)
@@ -16,13 +17,21 @@ fileSelect <- function(fl = commandArgs(TRUE), exts)
 	return(outl)
 }
 
+matchFile <-  function(pat, fl = commandArgs(TRUE)){
+	f <- grep(pat, fl, value=TRUE)
+	if (length(f) == 0) die("No match for", pat, "in", fl)
+	if (length(f) > 1) die("More than one match for", pat, "in", fl)
+	return(f)
+}
+
 ### Loading and reading
 
 ## This is meant to be a default starting point for $(makeR) scripts
 ## wrapmake encodes the current defaults for $(run-R) scripts
-commandFiles <- function(fl = commandArgs(TRUE)){
+commandFiles <- function(fl = commandArgs(TRUE), gr=TRUE){
 	commandEnvironments(fl)
 	commandLists(fl)
+	if(gr) makeGraphics()
 	sourceFiles(fl, first=FALSE)
 }
 
@@ -45,6 +54,16 @@ commandEnvironments <- function(fl = commandArgs(TRUE)
 	envl <- fileSelect(fl, exts)
 	loadEnvironments(envl, parent)
 	invisible(envl)
+}
+
+csvRead <- function(pat, fl = commandArgs(TRUE), ...){
+	return(readr::read_csv(matchFile(pat, fl), ...))
+}
+
+csvReadList <- function(pat, fl = commandArgs(TRUE), ...){
+	return(lapply(grep(pat, fl, value=TRUE)
+		, function(fn){readr::read_csv(fn, ...)}
+	))
 }
 
 ## Read rds lists from a file list to a single environment
@@ -103,6 +122,7 @@ makeGraphics <- function(...
 	if(is.null(ext)) ext = "pdf.tmp"
 	if(is.null(otype)) otype = "pdf"
 	fn <- paste0(target, ".", ext)
+	graphics.off()
 	get(otype)(..., file=fn)
 }
 
