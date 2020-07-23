@@ -136,7 +136,6 @@ saveVars <- function(..., target = targetname(), ext="rdata"){
 	save(file=paste(target, ext, sep="."), ...)
 }
 
-## FIXME: I have the wrong environment for objects
 saveList <-  function(..., target = targetname(), ext="rds"){
 	l <- list(...)
 	if(length(l)==0){
