@@ -24,7 +24,7 @@ commandFiles <- function(fl = commandArgs(TRUE)){
 	commandEnvironments(fl)
 	commandEnvirLists(fl)
 	commandLists(fl)
-	sourceFiles(fl, first=FALSE)
+	sourceFiles(fl, first=FALSE, verbose=FALSE)
 }
 
 ## Source certain files from a file list
