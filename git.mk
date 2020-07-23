@@ -361,8 +361,6 @@ dotdir: $(Sources)
 	$(MAKE) amsync
 	-/bin/rm -rf $@
 	git clone . $@
-	cd $@ && $(MAKE) Makefile && $(MAKE) makestuff
-	$(CP) dottarget.mk $@/target.mk || $(CP) target.mk $@
 
 ## Still working on rev-parse line
 %.branchdir: $(Sources)
@@ -397,7 +395,11 @@ sourcedir: $(Sources)
 %.localdir: %
 	-$(CP) local.mk $*
 
+%.mslink: %
+	cd $* && $(LN) ../makestuff
+
 %.dirtest: %
+	$(CP) dottarget.mk $@/target.mk || $(CP) target.mk $@
 	cd $< && $(MAKE) Makefile && $(MAKE) makestuff && $(MAKE)
 
 ## To open the dirtest final target when appropriate (and properly set up) 

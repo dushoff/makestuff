@@ -1,6 +1,20 @@
 
 makeR is being developed here but meant to be an R package to do what wrapR does, but based more in R and more transparent. This will also mean it's a little less magic.
 
+Quick start
+===========
+
+* Change dependencies to `rda` (full environment) or `rdata` (saveVars)
+* Change the recipe to $(makeR)
+* If you are using a pattern rule, say `impmakeR += <stem>`
+* At the top
+	* `source("makestuff/makeRfuns.R")`
+	* `commandFiles()`
+	* `makeGraphics()` __if__ you have graphics
+* At the bottom
+	* saveEnvironment() (default, makes .rda) __or__
+	* saveVars(vars to save, makes .rdata)
+
 Overview
 ===========
 
@@ -55,3 +69,13 @@ images
 
 objects
 * rds
+
+Problem
+=======
+
+2020 Jul 20 (Mon)
+
+Rout is the standard target and that's who we want to tell about the dependencies. But this means that things won't chain through .rda. So there are two choices:
+
+* use Rout as a fake dependency (this still has chaining problems, though)
+* make horrible eval rules in makeR.mk so that it chains anyway

@@ -38,7 +38,7 @@ ZIP = zip $@ $^
 
 null = /dev/null
 
-lscheck = @$(LS) > $(null)
+lscheck = @$(LS) $@ > $(null)
 
 hiddenfile = $(dir $1).$(notdir $1)
 hide = $(MVF) $1 $(dir $1).$(notdir $1)
