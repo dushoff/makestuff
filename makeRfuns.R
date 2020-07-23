@@ -1,5 +1,12 @@
 
 ## Utilities
+
+##' what does the function do?
+##'
+##' @param ext file extension for output
+##' @param suffix file extension of input
+##' @param fl \emph{not} a list of files
+##' @export
 targetname <- function(ext="", suffix="\\.Rout", fl = commandArgs(TRUE)[[1]]){
 	return(sub(suffix, ext, fl))
 }
@@ -60,6 +67,8 @@ commandEnvironments <- function(fl = commandArgs(TRUE)
 	invisible(envl)
 }
 
+## having readr:: means that readr must be in Imports: in the DESCRIPTION file
+##' @importFrom readr read_csv  ## this is redundant with 'readr::'
 csvRead <- function(pat, fl = commandArgs(TRUE), ...){
 	return(readr::read_csv(matchFile(pat, fl), ...))
 }
