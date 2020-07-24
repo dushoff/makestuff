@@ -16,6 +16,6 @@ csvname <- paste0(rtargetname, ".Rout.csv")
 rdsname <- paste0(rtargetname, ".Rds")
 rdaname <- paste0(rtargetname, ".rda")
 
-sourceFiles(first=TRUE)
+sourceFiles(first=TRUE, verbose=TRUE)
 
 saveEnvironment()

@@ -45,12 +45,12 @@ commandFiles <- function(fl = commandArgs(TRUE), gr=TRUE){
 
 ## Source certain files from a file list
 sourceFiles <- function(fl=commandArgs(TRUE) 
-	, exts=c("R", "r"), first=TRUE)
+	, exts=c("R", "r"), first=TRUE, verbose=FALSE)
 {
 	fl <- fileSelect(fl, exts)
 	if (!first) fl <- fl[-1]
 	for (f in fl){
-		source(f)
+		source(f, verbose=verbose)
 	}
 }
 
