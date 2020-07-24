@@ -38,12 +38,9 @@ matchFile <-  function(pat, fl = commandArgs(TRUE)){
 commandFiles <- function(fl = commandArgs(TRUE), gr=TRUE){
 	commandEnvironments(fl)
 	commandLists(fl)
-<<<<<<< HEAD
 	sourceFiles(fl, first=FALSE, verbose=FALSE)
-=======
 	if(gr) makeGraphics()
 	sourceFiles(fl, first=FALSE)
->>>>>>> 58c73c84f83fe90beee09b4533dc5f85ef6d9944
 }
 
 ## Source certain files from a file list
