@@ -132,7 +132,7 @@ saveEnvironment <- function(target = targetname(), ext="rda"){
 	save.image(file=paste(target, ext, sep="."))
 }
 
-saveVars <- function(..., target = targetname(), ext="rdata"){
+saveVars <- function(..., target = targetname(), ext="rda"){
 	save(file=paste(target, ext, sep="."), ...)
 }
 
