@@ -1,7 +1,14 @@
 
 ## Utilities
-targetname <- function(ext="", suffix="\\.Rout", fl = commandArgs(TRUE)[[1]]){
-	return(sub(suffix, ext, fl))
+
+##' what does the function do?
+##'
+##' @param ext file extension for output
+##' @param suffix file extension of provided name
+##' @param fn provided file name (first of commandArgs by default)
+##' @export
+targetname <- function(ext="", suffix="\\.Rout", fn = commandArgs(TRUE)[[1]]){
+	return(sub(suffix, ext, fn))
 }
 
 ## Just selects extensions, not clear that it's good (used for legacy)
@@ -31,18 +38,19 @@ matchFile <-  function(pat, fl = commandArgs(TRUE)){
 commandFiles <- function(fl = commandArgs(TRUE), gr=TRUE){
 	commandEnvironments(fl)
 	commandLists(fl)
+	sourceFiles(fl, first=FALSE, verbose=FALSE)
 	if(gr) makeGraphics()
 	sourceFiles(fl, first=FALSE)
 }
 
 ## Source certain files from a file list
 sourceFiles <- function(fl=commandArgs(TRUE) 
-	, exts=c("R", "r"), first=TRUE)
+	, exts=c("R", "r"), first=TRUE, verbose=FALSE)
 {
 	fl <- fileSelect(fl, exts)
 	if (!first) fl <- fl[-1]
 	for (f in fl){
-		source(f)
+		source(f, verbose=verbose)
 	}
 }
 
@@ -56,6 +64,8 @@ commandEnvironments <- function(fl = commandArgs(TRUE)
 	invisible(envl)
 }
 
+## having readr:: means that readr must be in Imports: in the DESCRIPTION file
+##' @importFrom readr read_csv  ## this is redundant with 'readr::'
 csvRead <- function(pat, fl = commandArgs(TRUE), ...){
 	return(readr::read_csv(matchFile(pat, fl), ...))
 }
@@ -136,7 +146,6 @@ saveVars <- function(..., target = targetname(), ext="rda"){
 	save(file=paste(target, ext, sep="."), ...)
 }
 
-## FIXME: I have the wrong environment for objects
 saveList <-  function(..., target = targetname(), ext="rds"){
 	l <- list(...)
 	if(length(l)==0){
@@ -151,4 +160,10 @@ saveList <-  function(..., target = targetname(), ext="rds"){
 	}
 	saveRDS(outl, file=paste(target, ext, sep="."))
 	return(invisible(names(outl)))
+}
+
+### Output
+
+csvSave <- function(..., target = targetname(), ext="Rout.csv"){
+	write.csv(file=paste(target, ext, sep="."), ...)
 }

@@ -67,6 +67,8 @@ wrapdelete:
 ######################################################################
 
 ## Horrible eval rules
+## These are necessary so that we can chain through .rda and other products
+## but specify dependencies centrally through .Rout
 
 define impdep
 %.$(1).rda: %.$(1).Rout ; $(lscheck)
@@ -75,3 +77,16 @@ define impdep
 endef
 
 $(foreach stem,$(impmakeR),$(eval $(call impdep,$(stem))))
+
+######################################################################
+
+## Scripts
+## Disentangle how things work, and empower people who don't use make
+
+%.makeR.script:
+	- $(RMR) dotdir
+	$(MAKE) dotdir.mslink
+	cd dotdir && $(MAKE) -n $*.Rout > make.log
+	perl -wf makestuff/makeRscript.pl dotdir/make.log > $@
+
+Sources += $(wildcard *.makeR.script)
