@@ -12,8 +12,9 @@ Quick start
 	* `commandFiles()`
 	* `makeGraphics()` __if__ you have graphics
 * At the bottom
-	* saveEnvironment() (default, makes .rda) __or__
-	* saveVars(vars to save, makes .rdata)
+	* saveVars(vars to save) __or__
+	* saveEnvironment() (if you are feeling lazy)
+* There is an empty script for starting "real" makeR at makestuff/ 
 
 Overview
 ===========

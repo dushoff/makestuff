@@ -1,6 +1,6 @@
 
-source("makestuff/makeRfuns.R")
+source("makestuff/makeRfuns.R") ## Will eventually be a package
 
-commandEnvironments()
+commandEnvironments() ## Read in any environments specified as dependencies
 
 ## saveVars()
