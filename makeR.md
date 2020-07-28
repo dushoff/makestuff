@@ -14,7 +14,7 @@ Quick start
 * At the bottom
 	* saveVars(vars to save) __or__
 	* saveEnvironment() (if you are feeling lazy)
-* There is an empty script for starting "real" makeR at makestuff/ 
+* There is an empty script for starting "real" makeR at makestuff/makeRex.R
 
 Overview
 ===========
