@@ -1,9 +1,17 @@
 
 ## Utilities
-targetname <- function(fl = commandArgs(TRUE)){
-	return(sub("\\.Rout$", "", fl[[1]]))
+
+##' what does the function do?
+##'
+##' @param ext file extension for output
+##' @param suffix file extension of provided name
+##' @param fn provided file name (first of commandArgs by default)
+##' @export
+targetname <- function(ext="", suffix="\\.Rout", fn = commandArgs(TRUE)[[1]]){
+	return(sub(suffix, ext, fn))
 }
 
+## Just selects extensions, not clear that it's good (used for legacy)
 fileSelect <- function(fl = commandArgs(TRUE), exts)
 {
 	outl <- character(0)
@@ -16,36 +24,56 @@ fileSelect <- function(fl = commandArgs(TRUE), exts)
 	return(outl)
 }
 
+matchFile <-  function(pat, fl = commandArgs(TRUE)){
+	f <- grep(pat, fl, value=TRUE)
+	if (length(f) == 0) die("No match for", pat, "in", fl)
+	if (length(f) > 1) die("More than one match for", pat, "in", fl)
+	return(f)
+}
+
 ### Loading and reading
 
 ## This is meant to be a default starting point for $(makeR) scripts
 ## wrapmake encodes the current defaults for $(run-R) scripts
-commandFiles <- function(fl = commandArgs(TRUE)){
+commandFiles <- function(fl = commandArgs(TRUE), gr=TRUE){
 	commandEnvironments(fl)
-	commandEnvirLists(fl)
 	commandLists(fl)
+	sourceFiles(fl, first=FALSE, verbose=FALSE)
+	if(gr) makeGraphics()
 	sourceFiles(fl, first=FALSE)
 }
 
 ## Source certain files from a file list
 sourceFiles <- function(fl=commandArgs(TRUE) 
-	, exts=c("R", "r"), first=TRUE)
+	, exts=c("R", "r"), first=TRUE, verbose=FALSE)
 {
 	fl <- fileSelect(fl, exts)
 	if (!first) fl <- fl[-1]
 	for (f in fl){
-		source(f)
+		source(f, verbose=verbose)
 	}
 }
 
 ## Read environments from a file list to a single environment
 commandEnvironments <- function(fl = commandArgs(TRUE)
-	, exts = c("RData", "rda"), parent=.GlobalEnv
+	, exts = c("RData", "rda", "rdata"), parent=.GlobalEnv
 )
 {
 	envl <- fileSelect(fl, exts)
 	loadEnvironments(envl, parent)
 	invisible(envl)
+}
+
+## having readr:: means that readr must be in Imports: in the DESCRIPTION file
+##' @importFrom readr read_csv  ## this is redundant with 'readr::'
+csvRead <- function(pat, fl = commandArgs(TRUE), ...){
+	return(readr::read_csv(matchFile(pat, fl), ...))
+}
+
+csvReadList <- function(pat, fl = commandArgs(TRUE), ...){
+	return(lapply(grep(pat, fl, value=TRUE)
+		, function(fn){readr::read_csv(fn, ...)}
+	))
 }
 
 ## Read rds lists from a file list to a single environment
@@ -74,12 +102,6 @@ legacyEnvironments <- function(fl = commandArgs(TRUE)
 
 ## Read environments from a file list to separate places
 ## NOT implemented
-commandEnvirLists <- function(fl = commandArgs(TRUE)
-	, exts = c("RData", "Rdata", "rdata", "rda")
-)
-{
-	invisible(0)
-}
 
 ## Load every environment found into GlobalEnv
 ## This is the simple-minded default
@@ -110,6 +132,7 @@ makeGraphics <- function(...
 	if(is.null(ext)) ext = "pdf.tmp"
 	if(is.null(otype)) otype = "pdf"
 	fn <- paste0(target, ".", ext)
+	graphics.off()
 	get(otype)(..., file=fn)
 }
 
@@ -119,11 +142,10 @@ saveEnvironment <- function(target = targetname(), ext="rda"){
 	save.image(file=paste(target, ext, sep="."))
 }
 
-saveVars <- function(..., target = targetname(), ext="rdata"){
+saveVars <- function(..., target = targetname(), ext="rda"){
 	save(file=paste(target, ext, sep="."), ...)
 }
 
-## FIXME: I have the wrong environment for objects
 saveList <-  function(..., target = targetname(), ext="rds"){
 	l <- list(...)
 	if(length(l)==0){
@@ -138,4 +160,10 @@ saveList <-  function(..., target = targetname(), ext="rds"){
 	}
 	saveRDS(outl, file=paste(target, ext, sep="."))
 	return(invisible(names(outl)))
+}
+
+### Output
+
+csvSave <- function(..., target = targetname(), ext="Rout.csv"){
+	write.csv(file=paste(target, ext, sep="."), ...)
 }

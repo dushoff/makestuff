@@ -18,6 +18,12 @@ ifdef runmake
 	$(run-R)
 endif
 
+ifdef wrap_makeR
+.PRECIOUS: %.Rout
+%.Rout: %.R
+	$(run-R)
+endif
+
 ifdef automatic_makeR
 .PRECIOUS: %.Rout
 %.Rout: %.R
@@ -30,23 +36,57 @@ endif
 %.manual: %
 	touch $@
 
+.PRECIOUS: %.rda %.rdata %.RData
 %.rda %.rdata %.RData: %.Rout
-	@ls $@ > /dev/null
+	$(lscheck)
 
+.PRECIOUS: %.rds %.Rds
 %.rds %.Rds: %.Rout
-	@ls $@ > /dev/null
+	$(lscheck)
 
+## This is a pure intermediate; require .pdf, not .pdf.tmp
 %.Rout.pdf.tmp %.Rout.png %.Rout.jpeg: %.Rout
-	@ls $@ > /dev/null
+	$(lscheck)
 
+.PRECIOUS: %.Rout.csv
 %.Rout.csv: %.Rout
-	@ls $@ > /dev/null
+	$(lscheck)
 
+.PRECIOUS: %.Rout.pdf
 %.Rout.pdf: %.Rout
-	@ls $@ > /dev/null || ($(pdfcheck) $@.tmp && $(MVF) $@.tmp $@)
+	$(lscheck) || ($(pdfcheck) $@.tmp && $(MVF) $@.tmp $@)
 
 Ignore += .Rhistory .RData
-Ignore += *.RData *.Rlog *.rdata *.rda
+Ignore += *.RData *.Rlog *.rdata *.rda *.rtmp
 Ignore += *.Rout*
 Ignore += *.Rds *.rds
 
+wrapdelete:
+	$(RM) *.wrapR.* .*.wrapR.* 
+
+######################################################################
+
+## Horrible eval rules
+## These are necessary so that we can chain through .rda and other products
+## but specify dependencies centrally through .Rout
+
+define impdep
+%.$(1).rda: %.$(1).Rout ; $(lscheck)
+%.$(1).rdata: %.$(1).Rout ; $(lscheck)
+.PRECIOUS: %.$(1).rdata %.$(1).rda %.$(1).Rout
+endef
+
+$(foreach stem,$(impmakeR),$(eval $(call impdep,$(stem))))
+
+######################################################################
+
+## Scripts
+## Disentangle how things work, and empower people who don't use make
+
+%.makeR.script:
+	- $(RMR) dotdir
+	$(MAKE) dotdir.mslink
+	cd dotdir && $(MAKE) -n $*.Rout > make.log
+	perl -wf makestuff/makeRscript.pl dotdir/make.log > $@
+
+Sources += $(wildcard *.makeR.script)

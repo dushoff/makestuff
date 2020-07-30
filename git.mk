@@ -82,8 +82,12 @@ alldirs += makestuff
 
 ######################################################################
 
-## 2018 Nov 07 (Wed). Trying to make these rules finish better
-all.time: exclude up.time $(alldirs:%=%.all)
+## 2020 Jul 19 (Sun) Don't automatically try to sync things that
+## haven't been cloned yet
+## malldirs are made alldirs
+## pullall might fill in things that aren't here
+malldirs = $(filter $(alldirs), $(wildcard *))
+all.time: exclude up.time $(malldirs:%=%.all)
 	touch $@
 	git status
 
@@ -261,6 +265,10 @@ pages/%: %
 	$(MAKE) $*
 	cd $* && git pull
 
+%.gitpush:
+	$(MAKE) $*
+	cd $* && (git add *.* && ($(git_check))) || ((git commit -m "Commited by $(CURDIR)") && git pull && git push))
+
 %.filesync:
 	$(MAKE) $*
 	cd $* && git add *.* && ($(git_check) || (git commit -m "Commited by $(CURDIR)"))
@@ -357,8 +365,6 @@ dotdir: $(Sources)
 	$(MAKE) amsync
 	-/bin/rm -rf $@
 	git clone . $@
-	cd $@ && $(MAKE) Makefile && $(MAKE) makestuff
-	$(CP) dottarget.mk $@/target.mk || $(CP) target.mk $@
 
 ## Still working on rev-parse line
 %.branchdir: $(Sources)
@@ -393,7 +399,11 @@ sourcedir: $(Sources)
 %.localdir: %
 	-$(CP) local.mk $*
 
+%.mslink: %
+	cd $* && $(LN) ../makestuff
+
 %.dirtest: %
+	$(CP) dottarget.mk $@/target.mk || $(CP) target.mk $@
 	cd $< && $(MAKE) Makefile && $(MAKE) makestuff && $(MAKE)
 
 ## To open the dirtest final target when appropriate (and properly set up) 
