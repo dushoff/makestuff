@@ -83,10 +83,15 @@ $(foreach stem,$(impmakeR),$(eval $(call impdep,$(stem))))
 ## Scripts
 ## Disentangle how things work, and empower people who don't use make
 
-%.makeR.script:
+%.makeRproj.script:
 	- $(RMR) dotdir
 	$(MAKE) dotdir.mslink
 	cd dotdir && $(MAKE) -n $*.Rout > make.log
 	perl -wf makestuff/makeRscript.pl dotdir/make.log > $@
+
+%.makeR.script:
+	$(MAKE) cpdir.mslink
+	cd cpdir && $(MAKE) -n $*.Rout > make.log
+	perl -wf makestuff/makeRscript.pl cpdir/make.log > $@
 
 Sources += $(wildcard *.makeR.script)
