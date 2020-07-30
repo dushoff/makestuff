@@ -267,7 +267,7 @@ pages/%: %
 
 %.gitpush:
 	$(MAKE) $*
-	cd $* && (git add *.* && ($(git_check))) || ((git commit -m "Commited by $(CURDIR)") && git pull && git push))
+	cd $* && (git add *.* && ($(git_check))) || ((git commit -m "Commited by $(CURDIR)") && git pull && git push)
 
 %.filesync:
 	$(MAKE) $*
