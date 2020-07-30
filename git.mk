@@ -366,6 +366,12 @@ dotdir: $(Sources)
 	-/bin/rm -rf $@
 	git clone . $@
 
+## Note cpdir really means directory (usually) dotdir means the whole repo
+cpdir: $(Sources)
+	-/bin/rm -rf $@
+	$(mkdir)
+	cp $^ $@
+
 ## Still working on rev-parse line
 %.branchdir: $(Sources)
 	$(MAKE) commit.time
