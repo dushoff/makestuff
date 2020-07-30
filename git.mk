@@ -360,7 +360,7 @@ gitprune:
 
 ### Testing
 
-Ignore += dotdir/ clonedir/
+Ignore += dotdir/ clonedir/ cpdir/
 dotdir: $(Sources)
 	$(MAKE) amsync
 	-/bin/rm -rf $@
