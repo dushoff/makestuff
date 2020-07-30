@@ -23,7 +23,7 @@ while(<>)
 	say;
 }
 
-say "\n\n$separator\n\n";
+say "$separator\n";
 
 foreach my $fn (keys %ls){
 	say "$fn" if $ls{$fn} == 0;
