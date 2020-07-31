@@ -23,8 +23,10 @@ while(<>)
 	say;
 }
 
-say "$separator\n";
-
+my $sep=0;
 foreach my $fn (keys %ls){
-	say "$fn" if $ls{$fn} == 0;
+	if ($ls{$fn} == 0){
+		say $separator unless $sep++;
+		say "$fn";
+	}
 }
