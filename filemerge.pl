@@ -27,6 +27,8 @@ my $sep=0;
 foreach my $fn (keys %ls){
 	if ($ls{$fn} == 0){
 		say $separator unless $sep++;
-		say "$fn";
+		say $fn;
+		$fn =~ s|.*(^[\w/]+\.\w+).*|$1|;
+		## say "$fn\n";
 	}
 }
