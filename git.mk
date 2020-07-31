@@ -267,7 +267,7 @@ pages/%: %
 
 %.gitpush:
 	$(MAKE) $*
-	cd $* && (git add *.* && ($(git_check))) || ((git commit -m "Commited by $(CURDIR)") && git pull && git push))
+	cd $* && (git add *.* && ($(git_check))) || ((git commit -m "Commited by $(CURDIR)") && git pull && git push)
 
 %.filesync:
 	$(MAKE) $*
@@ -360,11 +360,17 @@ gitprune:
 
 ### Testing
 
-Ignore += dotdir/ clonedir/
+Ignore += dotdir/ clonedir/ cpdir/
 dotdir: $(Sources)
 	$(MAKE) amsync
 	-/bin/rm -rf $@
 	git clone . $@
+
+## Note cpdir really means directory (usually) dotdir means the whole repo
+cpdir: $(Sources)
+	-/bin/rm -rf $@
+	$(mkdir)
+	cp $^ $@
 
 ## Still working on rev-parse line
 %.branchdir: $(Sources)

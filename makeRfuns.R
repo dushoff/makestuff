@@ -33,14 +33,13 @@ matchFile <-  function(pat, fl = commandArgs(TRUE)){
 
 ### Loading and reading
 
-## This is meant to be a default starting point for $(makeR) scripts
+## This is now deprecated; refer to these steps, but do them manually.
 ## wrapmake encodes the current defaults for $(run-R) scripts
 commandFiles <- function(fl = commandArgs(TRUE), gr=TRUE){
 	commandEnvironments(fl)
 	commandLists(fl)
 	sourceFiles(fl, first=FALSE, verbose=FALSE)
 	if(gr) makeGraphics()
-	sourceFiles(fl, first=FALSE)
 }
 
 ## Source certain files from a file list
