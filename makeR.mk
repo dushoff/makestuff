@@ -78,6 +78,20 @@ endef
 
 $(foreach stem,$(impmakeR),$(eval $(call impdep,$(stem))))
 
+## These rules are apparently only needed for make3?
+## 2020 Aug 01 (Sat)
+
+expR += $(wildcard *.R)
+expmakeR += $(expR:%.R=%)
+
+define expdep
+$(1).rda: $(1).Rout ; $(lscheck)
+$(1).rdata: $(1).Rout ; $(lscheck)
+.PRECIOUS: $(1).rdata %.$(1).rda %.$(1).Rout
+endef
+
+$(foreach stem,$(expmakeR),$(eval $(call expdep,$(stem))))
+
 ######################################################################
 
 ## Scripts
