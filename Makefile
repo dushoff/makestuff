@@ -10,6 +10,8 @@ current: target
 ## Do we want R files in this main directory)?
 Sources += $(wildcard *.R)
 
+Ignore += chain
+
 ##################################################################
 
 md = $(wildcard *.md)
