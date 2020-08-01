@@ -64,6 +64,8 @@ or
 
 `wrap_makeR = something ## legacy mode`
 
+The Calibrators convention is to set this if you want to short-cut but _never_ use it with dependencies (if you need a rule, explicitly say $(makeR))
+
 File conventions:
 =================
 
