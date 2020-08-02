@@ -2,6 +2,7 @@
 
 ## Bailed on getting the regex syntax write for the $. Watch out?
 ## Try [$$] if you're bored.
+## This is a pain for scripts; see filemerge instead
 noms:
 	perl -pi -e 's|.\(ms\)/|makestuff/|' Makefile *.mk
 
@@ -100,12 +101,16 @@ ddcopy = ($(LSN) && $(touch)) ||  $(rdcopy)
 	ls $* > $@
 %.lsd: %
 	ls -d $*/* > $@
-
+ 
 ## Track a directory from the parent directory, using <dir>.md
 %.filemerge: %.lsd %.md makestuff/filemerge.pl
 	$(PUSH)
 	- $(DIFF) $*.md $@
 	$(MV) $@ $*.md
+
+%.voice: voice.pl %
+	$(PUSH)
+	$(MV) $@ $*
 
 # What?
 convert = convert $< $@
