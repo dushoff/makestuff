@@ -64,6 +64,18 @@ commandEnvironments <- function(fl = commandArgs(TRUE)
 	invisible(envl)
 }
 
+getEnvironment <- function(pat="", fl = commandArgs(TRUE)
+	, exts = c("RData", "rda", "rdata")
+)
+{
+	ff <- fileSelect(fl, exts)
+	f <- matchFile(pat, ff)
+	e <- new.env()
+	load(f, e)
+	return(e)
+}
+
+## Developing 2020 Aug 03 (Mon)
 loadEnvironmentList <- function(fl = commandArgs(TRUE)
 	, exts = c("RData", "rda", "rdata"), names=NULL
 	, trim = "\\.[^.]*$"
