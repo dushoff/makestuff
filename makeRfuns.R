@@ -26,8 +26,8 @@ fileSelect <- function(fl = commandArgs(TRUE), exts)
 
 matchFile <-  function(pat, fl = commandArgs(TRUE)){
 	f <- grep(pat, fl, value=TRUE)
-	if (length(f) == 0) die("No match for", pat, "in", fl)
-	if (length(f) > 1) die("More than one match for", pat, "in", fl)
+	if (length(f) == 0) stop("No match for ", pat, " in ", fl)
+	if (length(f) > 1) stop("More than one match for ", pat, " in ", fl)
 	return(f)
 }
 
