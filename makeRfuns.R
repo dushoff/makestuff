@@ -26,8 +26,8 @@ fileSelect <- function(fl = commandArgs(TRUE), exts)
 
 matchFile <-  function(pat, fl = commandArgs(TRUE)){
 	f <- grep(pat, fl, value=TRUE)
-	if (length(f) == 0) die("No match for", pat, "in", fl)
-	if (length(f) > 1) die("More than one match for", pat, "in", fl)
+	if (length(f) == 0) stop("No match for ", pat, " in ", fl)
+	if (length(f) > 1) stop("More than one match for ", pat, " in ", fl)
 	return(f)
 }
 
@@ -53,6 +53,7 @@ sourceFiles <- function(fl=commandArgs(TRUE)
 	}
 }
 
+## What are the advantages of .GlobalEnv vs parent.frame()?
 ## Read environments from a file list to a single environment
 commandEnvironments <- function(fl = commandArgs(TRUE)
 	, exts = c("RData", "rda", "rdata"), parent=.GlobalEnv
@@ -63,12 +64,30 @@ commandEnvironments <- function(fl = commandArgs(TRUE)
 	invisible(envl)
 }
 
+loadEnvironmentList <- function(fl = commandArgs(TRUE)
+	, exts = c("RData", "rda", "rdata"), names=NULL
+	, trim = "\\.[^.]*$"
+)
+{
+	envl <- fileSelect(fl, exts)
+	if(is.null(names)){
+		names = sub(trim, "", envl)
+	}
+	stopifnot(length(names)==length(envl))
+	for (i in 1:length(envl)){
+		load(envl[[i]], names[[i]])
+	}
+	names(envl) <- names
+	invisible(envl)
+}
+
 ## having readr:: means that readr must be in Imports: in the DESCRIPTION file
 ##' @importFrom readr read_csv  ## this is redundant with 'readr::'
 csvRead <- function(pat, fl = commandArgs(TRUE), ...){
 	return(readr::read_csv(matchFile(pat, fl), ...))
 }
 
+## This should take extensions and be less slick (make the list as a separate step)
 csvReadList <- function(pat, fl = commandArgs(TRUE), ...){
 	return(lapply(grep(pat, fl, value=TRUE)
 		, function(fn){readr::read_csv(fn, ...)}
@@ -113,6 +132,7 @@ loadEnvironments <- function(envl, parent=.GlobalEnv)
 
 ## Load every list found into GlobalEnv
 ## This is the efficient rds analogue of the simple-minded default
+## But it's not more efficient and should probably be deprecated
 loadVarLists <- function(varl, parent=parent.frame())
 {
 	for (v in varl){
