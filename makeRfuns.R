@@ -74,11 +74,13 @@ loadEnvironmentList <- function(fl = commandArgs(TRUE)
 		names = sub(trim, "", envl)
 	}
 	stopifnot(length(names)==length(envl))
+	el <- list()
 	for (i in 1:length(envl)){
-		load(envl[[i]], names[[i]])
+		el[[i]] <- new.env()
+		load(envl[[i]], el[[i]])
 	}
-	names(envl) <- names
-	invisible(envl)
+	names(el) <- names
+	return(el)
 }
 
 ## having readr:: means that readr must be in Imports: in the DESCRIPTION file
