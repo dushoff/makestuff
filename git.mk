@@ -84,7 +84,7 @@ alldirs += makestuff
 
 ## 2020 Jul 19 (Sun) Don't automatically try to sync things that
 ## haven't been cloned yet
-## malldirs are made alldirs
+## malldirs are alldirs that have already been made
 ## pullall might fill in things that aren't here
 malldirs = $(filter $(alldirs), $(wildcard *))
 all.time: exclude up.time $(malldirs:%=%.all)
