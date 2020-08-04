@@ -5,4 +5,4 @@ Ignore += cachestuff
 
 all.time: cachestuff.gitpush
 
-pull: cachestuff.gitpull
+pullup: cachestuff.gitpull
