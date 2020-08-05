@@ -13,12 +13,6 @@ endif
 
 ######################################################################
 
-## Hacking around a glitch
-## Could move real GVEDIT here, but a) it doesn't work for other, and b) this weird recursive error may not be found by others.
-ifndef GVEDIT
-GVEDIT = ($(VEDIT) $@ || gvim $@)
-endif
-
 ## More makestuff/makestuff weirdness
 -include makestuff/exclude.mk
 -include exclude.mk
@@ -44,7 +38,7 @@ commit.time: $(Sources)
 	-git add -f $? $(trackedTargets)
 	(cat ~/.commitnow > $@ && echo " ~/.commitnow" >> $@) || echo Autocommit > $@
 	echo "## $(CURDIR)" >> $@
-	!(git commit --dry-run >> $@) || (perl -pi -e 's/^/#/ unless $$.==1' $@ && $(GVEDIT))
+	!(git commit --dry-run >> $@) || (perl -pi -e 's/^/#/ unless $$.==1' $@ && $(MSEDIT))
 	$(git_check) || (perl -ne 'print unless /#/' $@ | git commit -F -)
 	date >> $@
 
