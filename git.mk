@@ -128,7 +128,7 @@ makestuff.pullall: makestuff.pull ;
 ## What is up doing in pull rules?
 ## Maybe what is wanted is commit (to check for merge?)
 ## Or nothing (since pull merges)
-pullstuff: $(alldirs:%=%.pullstuff)
+pullstuff: $(malldirs:%=%.pullstuff)
 
 makestuff.pullstuff: makestuff.pull ;
 
@@ -137,20 +137,10 @@ makestuff.pullstuff: makestuff.pull ;
 
 ######################################################################
 
-## 2020 Mar 09 (Mon) pull via all
-## Doesn't propagate
-pullmake: $(alldirs:%=%.pullmake)
-
-makestuff.pullmake: ;
-
-%.pullmake: 
-	$(MAKE) $* && cd $* && $(MAKE) makestuff && $(MAKE) makestuff.pull
-
-######################################################################
 
 ## Bridge rules maybe? Eventually this should be part of all.time
 ## and all.time does not need to be part of rup
-all.exclude: makestuff.exclude $(alldirs:%=%.allexclude) exclude ;
+all.exclude: makestuff.exclude $(malldirs:%=%.allexclude) exclude ;
 makestuff.allexclude: ;
 %.allexclude:
 	cd $* && $(MAKE) all.exclude
