@@ -336,8 +336,8 @@ $(Outside):
 	- $(RMR) $*.new
 	$(MKDIR) $*.new
 	cd $*.new && git init
-	$(CPF) $*/.git/config $*.new/git
-	cd $*.
+	$(CPF) $*/.git/config $*.new/.git/
+	cd $*.new && git push origin --force --all && git push origin --force --tags
 
 ######################################################################
 
