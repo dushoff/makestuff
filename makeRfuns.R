@@ -76,6 +76,22 @@ getEnvironment <- function(pat="", fl = commandArgs(TRUE)
 }
 
 ## Developing 2020 Aug 03 (Mon)
+loadRdsList <- function(fl = commandArgs(TRUE)
+	, exts = "rds", names=NULL
+	, trim = "\\.[^.]*$"
+){
+	rf <- fileSelect(fl, exts)
+	if(is.null(names)){
+		names = sub(trim, "", rf)
+	}
+	stopifnot(length(names)==length(rf))
+	rl <- list()
+	for (i in 1:length(rf)){
+		rl[[names[[i]]]] <- readRDS(rf[[i]])
+	}
+	return(rl)
+}
+
 loadEnvironmentList <- function(fl = commandArgs(TRUE)
 	, exts = c("RData", "rda", "rdata"), names=NULL
 	, trim = "\\.[^.]*$"
@@ -177,6 +193,10 @@ saveEnvironment <- function(target = targetname(), ext="rda"){
 
 saveVars <- function(..., target = targetname(), ext="rda"){
 	save(file=paste(target, ext, sep="."), ...)
+}
+
+rdsSave <- function(vname, target = targetname(), ext="rds"){
+	saveRDS(vname, file=paste(target, ext, sep="."))
 }
 
 saveList <-  function(..., target = targetname(), ext="rds"){
