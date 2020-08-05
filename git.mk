@@ -331,13 +331,27 @@ $(Outside):
 ######################################################################
 
 ## Burn it down!
+## 2020 Aug 05 (Wed) This went terribly. Easier to go to github and destroy
+## the repo there.
+
+%.warn:
+	@echo ctrl-c if you "don't" want to DESTROY $* repo!
+	read input
+	@echo BOOM
 
 %.destroy:
+	@echo ctrl-c if you "don't" want to DESTROY $* repo!
+	read input
 	- $(RMR) $*.new
 	$(MKDIR) $*.new
 	cd $*.new && git init
 	$(CPF) $*/.git/config $*.new/.git/
-	cd $*.new && git push origin --force --all && git push origin --force --tags
+	cd $*.new && touch .fake && git add .fake && git commit -m "nuking repo"
+	cd $*.new && git push --force --set-upstream origin master
+	mv $* $*.old
+
+%.what:
+	rm -fr $*.new
 
 ######################################################################
 
