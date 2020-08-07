@@ -373,7 +373,7 @@ dotdir: $(Sources)
 	-/bin/rm -rf $@
 	git clone . $@
 
-## Note cpdir really means directory (usually) dotdir means the whole repo
+## Note cpdir really means directory (usually); dotdir means the whole repo
 cpdir: $(Sources)
 	-/bin/rm -rf $@
 	$(mkdir)
@@ -415,9 +415,19 @@ sourcedir: $(Sources)
 %.mslink: %
 	cd $* && $(LN) ../makestuff
 
-%.dirtest: %
-	$(CP) dottarget.mk $@/target.mk || $(CP) target.mk $@
-	cd $< && $(MAKE) Makefile && $(MAKE) makestuff && $(MAKE)
+testsetup:
+
+%.dirtest: % 
+	$(MAKE) $*.makestuff
+	cd $* && $(MAKE) testsetup
+	$(MAKE) $*.testtarget
+	cd $* && $(MAKE)
+
+%.makestuff: %
+	cd $* && $(MAKE) Makefile && $(MAKE) makestuff
+
+%.testtarget: %
+	$(CP) testtarget.mk $*/target.mk || $(CP) target.mk $@
 
 ## To open the dirtest final target when appropriate (and properly set up) 
 %.vdtest: %.dirtest
