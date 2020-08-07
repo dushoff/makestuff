@@ -335,9 +335,13 @@ $(Outside):
 	$(MKDIR) $*.new
 	cd $*.new && git init
 	$(CPF) $*/.git/config $*.new/.git/
-	cd $*.new && touch .fake && git add .fake && git commit -m "nuking repo"
+	cd $*.new && git add . && git commit -m "nuking repo"
 	cd $*.new && git push --force --set-upstream origin master
-	mv $* $*.old
+	$(MAKE) $*.reset
+
+%.reset:
+	- $(RMR) $*.olddir
+	mv $* $*.olddir
 
 %.what:
 	rm -fr $*.new
