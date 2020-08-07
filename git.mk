@@ -423,7 +423,7 @@ testsetup:
 	cd $* && $(MAKE)
 
 %.testsetup: %
-	cd $* && $(MAKE) Makefile && $(MAKE) makestuff && $(MAKE) testsetup
+	cd $* && $(MAKE) Makefile && $(MAKE) testsetup && $(MAKE) makestuff 
 
 %.makestuff: %
 	cd $* && $(MAKE) Makefile && $(MAKE) makestuff
