@@ -257,12 +257,7 @@ pages/%: %
 
 %.gitpush:
 	$(MAKE) $*
-	cd $* && (git add *.* && ($(git_check))) || ((git commit -m "Commited by $(CURDIR)") && git pull && git push)
-
-%.filesync:
-	$(MAKE) $*
-	cd $* && git add *.* && ($(git_check) || (git commit -m "Commited by $(CURDIR)"))
-	cd $* && git pull && git push
+	cd $* && (git add *.* && ($(git_check))) || ((git commit -m "Commited by $(CURDIR)") && git pull && git push && git status)
 
 ## Make an empty pages directory when necessary; or else attaching existing one
 Ignore += pages
