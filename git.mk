@@ -418,10 +418,12 @@ sourcedir: $(Sources)
 testsetup:
 
 %.dirtest: % 
-	$(MAKE) $*.makestuff
-	cd $* && $(MAKE) testsetup
+	$(MAKE) $*.testsetup
 	$(MAKE) $*.testtarget
 	cd $* && $(MAKE)
+
+%.testsetup: %
+	cd $* && $(MAKE) Makefile && $(MAKE) makestuff && $(MAKE) testsetup
 
 %.makestuff: %
 	cd $* && $(MAKE) Makefile && $(MAKE) makestuff
