@@ -113,7 +113,7 @@ loadEnvironmentList <- function(fl = commandArgs(TRUE)
 
 ## having readr:: means that readr must be in Imports: in the DESCRIPTION file
 ##' @importFrom readr read_csv  ## this is redundant with 'readr::'
-csvRead <- function(pat, fl = commandArgs(TRUE), ...){
+csvRead <- function(pat="csv$", fl = commandArgs(TRUE), ...){
 	return(readr::read_csv(matchFile(pat, fl), ...))
 }
 
