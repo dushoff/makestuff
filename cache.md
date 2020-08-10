@@ -3,7 +3,7 @@
 
 Redoing everything again
 
-cacheflow.md for checkvalves
+cacheflow.mk for checkvalves
 
 cacherepo for a disposable cache repo
 

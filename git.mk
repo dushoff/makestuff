@@ -13,12 +13,6 @@ endif
 
 ######################################################################
 
-## Hacking around a glitch
-## Could move real GVEDIT here, but a) it doesn't work for other, and b) this weird recursive error may not be found by others.
-ifndef GVEDIT
-GVEDIT = ($(VEDIT) $@ || gvim $@)
-endif
-
 ## More makestuff/makestuff weirdness
 -include makestuff/exclude.mk
 -include exclude.mk
@@ -44,7 +38,7 @@ commit.time: $(Sources)
 	-git add -f $? $(trackedTargets)
 	(cat ~/.commitnow > $@ && echo " ~/.commitnow" >> $@) || echo Autocommit > $@
 	echo "## $(CURDIR)" >> $@
-	!(git commit --dry-run >> $@) || (perl -pi -e 's/^/#/ unless $$.==1' $@ && $(GVEDIT))
+	!(git commit --dry-run >> $@) || (perl -pi -e 's/^/#/ unless $$.==1' $@ && $(MSEDIT))
 	$(git_check) || (perl -ne 'print unless /#/' $@ | git commit -F -)
 	date >> $@
 
@@ -82,8 +76,12 @@ alldirs += makestuff
 
 ######################################################################
 
-## 2018 Nov 07 (Wed). Trying to make these rules finish better
-all.time: exclude up.time $(alldirs:%=%.all)
+## 2020 Jul 19 (Sun) Don't automatically try to sync things that
+## haven't been cloned yet
+## malldirs are alldirs that have already been made
+## pullall might fill in things that aren't here
+malldirs = $(filter $(alldirs), $(wildcard *))
+all.time: exclude up.time $(malldirs:%=%.all)
 	touch $@
 	git status
 
@@ -124,7 +122,7 @@ makestuff.pullall: makestuff.pull ;
 ## What is up doing in pull rules?
 ## Maybe what is wanted is commit (to check for merge?)
 ## Or nothing (since pull merges)
-pullstuff: $(alldirs:%=%.pullstuff)
+pullstuff: $(malldirs:%=%.pullstuff)
 
 makestuff.pullstuff: makestuff.pull ;
 
@@ -133,20 +131,10 @@ makestuff.pullstuff: makestuff.pull ;
 
 ######################################################################
 
-## 2020 Mar 09 (Mon) pull via all
-## Doesn't propagate
-pullmake: $(alldirs:%=%.pullmake)
-
-makestuff.pullmake: ;
-
-%.pullmake: 
-	$(MAKE) $* && cd $* && $(MAKE) makestuff && $(MAKE) makestuff.pull
-
-######################################################################
 
 ## Bridge rules maybe? Eventually this should be part of all.time
 ## and all.time does not need to be part of rup
-all.exclude: makestuff.exclude $(alldirs:%=%.allexclude) exclude ;
+all.exclude: makestuff.exclude $(malldirs:%=%.allexclude) exclude ;
 makestuff.allexclude: ;
 %.allexclude:
 	cd $* && $(MAKE) all.exclude
@@ -261,10 +249,9 @@ pages/%: %
 	$(MAKE) $*
 	cd $* && git pull
 
-%.filesync:
+%.gitpush:
 	$(MAKE) $*
-	cd $* && git add *.* && ($(git_check) || (git commit -m "Commited by $(CURDIR)"))
-	cd $* && git pull && git push
+	cd $* && (git add *.* && ($(git_check))) || ((git commit -m "Commited by $(CURDIR)") && git pull && git push && git status)
 
 ## Make an empty pages directory when necessary; or else attaching existing one
 Ignore += pages
@@ -332,8 +319,36 @@ $(Outside):
 
 ######################################################################
 
-## For security breaches
+## Burn it down!
+## 2020 Aug 05 (Wed) This went terribly. Easier to go to github and destroy
+## the repo there.
 
+%.warn:
+	@echo ctrl-c if you "don't" want to DESTROY $* repo!
+	read input
+	@echo BOOM
+
+%.destroy:
+	@echo ctrl-c if you "don't" want to DESTROY $* repo!
+	read input
+	- $(RMR) $*.new
+	$(MKDIR) $*.new
+	cd $*.new && git init
+	$(CPF) $*/.git/config $*.new/.git/
+	cd $*.new && touch .fake && git add .fake && git commit -m "nuking repo"
+	cd $*.new && git push --force --set-upstream origin master
+	$(MAKE) $*.reset
+
+%.reset:
+	- $(RMR) $*.olddir
+	mv $* $*.olddir
+
+%.what:
+	rm -fr $*.new
+
+######################################################################
+
+## For security breaches
 ##### Annihilation
 %.annihilate: sync
 	git filter-branch --force --index-filter 'git rm --cached --ignore-unmatch $*' --prune-empty --tag-name-filter cat -- --all
@@ -352,13 +367,17 @@ gitprune:
 
 ### Testing
 
-Ignore += dotdir/ clonedir/
+Ignore += dotdir/ clonedir/ cpdir/
 dotdir: $(Sources)
 	$(MAKE) amsync
 	-/bin/rm -rf $@
 	git clone . $@
-	cd $@ && $(MAKE) Makefile && $(MAKE) makestuff
-	$(CP) dottarget.mk $@/target.mk || $(CP) target.mk $@
+
+## Note cpdir really means directory (usually); dotdir means the whole repo
+cpdir: $(Sources)
+	-/bin/rm -rf $@
+	$(mkdir)
+	cp $^ $@
 
 ## Still working on rev-parse line
 %.branchdir: $(Sources)
@@ -393,8 +412,24 @@ sourcedir: $(Sources)
 %.localdir: %
 	-$(CP) local.mk $*
 
-%.dirtest: %
-	cd $< && $(MAKE) Makefile && $(MAKE) makestuff && $(MAKE)
+%.mslink: %
+	cd $* && $(LN) ../makestuff
+
+testsetup:
+
+%.dirtest: % 
+	$(MAKE) $*.testsetup
+	$(MAKE) $*.testtarget
+	cd $* && $(MAKE)
+
+%.testsetup: %
+	cd $* && $(MAKE) Makefile && $(MAKE) testsetup && $(MAKE) makestuff 
+
+%.makestuff: %
+	cd $* && $(MAKE) Makefile && $(MAKE) makestuff
+
+%.testtarget: %
+	$(CP) testtarget.mk $*/target.mk || $(CP) target.mk $@
 
 ## To open the dirtest final target when appropriate (and properly set up) 
 %.vdtest: %.dirtest
@@ -411,6 +446,7 @@ testclean:
 %.newbranch:
 	git checkout -b $*
 	$(MAKE) commit.time
+	git push --set-upstream origin $(BRANCH)
 	git push -u origin $(BRANCH)
 
 %.branch: commit.time

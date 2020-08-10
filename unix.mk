@@ -2,6 +2,7 @@
 
 ## Bailed on getting the regex syntax write for the $. Watch out?
 ## Try [$$] if you're bored.
+## This is a pain for scripts; see filemerge instead
 noms:
 	perl -pi -e 's|.\(ms\)/|makestuff/|' Makefile *.mk
 
@@ -15,8 +16,10 @@ CP = /bin/cp
 CPF = /bin/cp -f
 CPR = /bin/cp -rf
 DIFF = diff
-GVEDIT = ($(VEDIT) $@ || gedit $@ || (echo ERROR: No editor found makestuff/unix.mk && echo set shell VEDIT variable && exit 1))
-GVEDIT = nano $@
+
+## VEDIT is set in bashrc (and inherited)
+## Not sure what I should do if it doesn't work?
+MSEDIT = $(MSEDITOR) $@ || $(EDITOR) $@ || $(VISUAL) $@ || gvim -f $@ || vim $@ || ((echo ERROR: No editor found makestuff/unix.mk && echo set shell MSEDITOR variable && false))
 RMR = /bin/rm -rf
 LS = /bin/ls
 LN = /bin/ln -s
@@ -36,7 +39,7 @@ ZIP = zip $@ $^
 
 null = /dev/null
 
-lscheck = @$(LS) > $(null)
+lscheck = @$(LS) $@ > $(null)
 
 hiddenfile = $(dir $1).$(notdir $1)
 hide = $(MVF) $1 $(dir $1).$(notdir $1)
@@ -98,12 +101,16 @@ ddcopy = ($(LSN) && $(touch)) ||  $(rdcopy)
 	ls $* > $@
 %.lsd: %
 	ls -d $*/* > $@
-
+ 
 ## Track a directory from the parent directory, using <dir>.md
 %.filemerge: %.lsd %.md makestuff/filemerge.pl
 	$(PUSH)
 	- $(DIFF) $*.md $@
 	$(MV) $@ $*.md
+
+%.voice: voice.pl %
+	$(PUSH)
+	$(MV) $@ $*
 
 # What?
 convert = convert $< $@

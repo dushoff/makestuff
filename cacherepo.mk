@@ -3,6 +3,6 @@
 
 Ignore += cachestuff
 
-all.time: cachestuff.filesync
+all.time: cachestuff.gitpush
 
-pull: cachestuff.gitpull
+pullup: cachestuff.gitpull

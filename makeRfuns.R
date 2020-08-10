@@ -1,9 +1,17 @@
 
 ## Utilities
-targetname <- function(fl = commandArgs(TRUE)){
-	return(sub("\\.Rout$", "", fl[[1]]))
+
+##' what does the function do?
+##'
+##' @param ext file extension for output
+##' @param suffix file extension of provided name
+##' @param fn provided file name (first of commandArgs by default)
+##' @export
+targetname <- function(ext="", suffix="\\.Rout", fn = commandArgs(TRUE)[[1]]){
+	return(sub(suffix, ext, fn))
 }
 
+## Just selects extensions, not clear that it's good (used for legacy)
 fileSelect <- function(fl = commandArgs(TRUE), exts)
 {
 	outl <- character(0)
@@ -16,36 +24,104 @@ fileSelect <- function(fl = commandArgs(TRUE), exts)
 	return(outl)
 }
 
+matchFile <-  function(pat, fl = commandArgs(TRUE)){
+	f <- grep(pat, fl, value=TRUE)
+	if (length(f) == 0) stop("No match for ", pat, " in ", fl)
+	if (length(f) > 1) stop("More than one match for ", pat, " in ", fl)
+	return(f)
+}
+
 ### Loading and reading
 
-## This is meant to be a default starting point for $(makeR) scripts
+## This is now deprecated; refer to these steps, but do them manually.
 ## wrapmake encodes the current defaults for $(run-R) scripts
-commandFiles <- function(fl = commandArgs(TRUE)){
+commandFiles <- function(fl = commandArgs(TRUE), gr=TRUE){
 	commandEnvironments(fl)
-	commandEnvirLists(fl)
 	commandLists(fl)
-	sourceFiles(fl, first=FALSE)
+	sourceFiles(fl, first=FALSE, verbose=FALSE)
+	if(gr) makeGraphics()
 }
 
 ## Source certain files from a file list
 sourceFiles <- function(fl=commandArgs(TRUE) 
-	, exts=c("R", "r"), first=TRUE)
+	, exts=c("R", "r"), first=TRUE, verbose=FALSE)
 {
 	fl <- fileSelect(fl, exts)
 	if (!first) fl <- fl[-1]
 	for (f in fl){
-		source(f)
+		source(f, verbose=verbose)
 	}
 }
 
+## What are the advantages of .GlobalEnv vs parent.frame()?
 ## Read environments from a file list to a single environment
 commandEnvironments <- function(fl = commandArgs(TRUE)
-	, exts = c("RData", "rda"), parent=.GlobalEnv
+	, exts = c("RData", "rda", "rdata"), parent=.GlobalEnv
 )
 {
 	envl <- fileSelect(fl, exts)
 	loadEnvironments(envl, parent)
 	invisible(envl)
+}
+
+getEnvironment <- function(pat="", fl = commandArgs(TRUE)
+	, exts = c("RData", "rda", "rdata")
+)
+{
+	ff <- fileSelect(fl, exts)
+	f <- matchFile(pat, ff)
+	e <- new.env()
+	load(f, e)
+	return(e)
+}
+
+## Developing 2020 Aug 03 (Mon)
+loadRdsList <- function(fl = commandArgs(TRUE)
+	, exts = "rds", names=NULL
+	, trim = "\\.[^.]*$"
+){
+	rf <- fileSelect(fl, exts)
+	if(is.null(names)){
+		names = sub(trim, "", rf)
+	}
+	stopifnot(length(names)==length(rf))
+	rl <- list()
+	for (i in 1:length(rf)){
+		rl[[names[[i]]]] <- readRDS(rf[[i]])
+	}
+	return(rl)
+}
+
+loadEnvironmentList <- function(fl = commandArgs(TRUE)
+	, exts = c("RData", "rda", "rdata"), names=NULL
+	, trim = "\\.[^.]*$"
+)
+{
+	envl <- fileSelect(fl, exts)
+	if(is.null(names)){
+		names = sub(trim, "", envl)
+	}
+	stopifnot(length(names)==length(envl))
+	el <- list()
+	for (i in 1:length(envl)){
+		el[[i]] <- new.env()
+		load(envl[[i]], el[[i]])
+	}
+	names(el) <- names
+	return(el)
+}
+
+## having readr:: means that readr must be in Imports: in the DESCRIPTION file
+##' @importFrom readr read_csv  ## this is redundant with 'readr::'
+csvRead <- function(pat="csv$", fl = commandArgs(TRUE), ...){
+	return(readr::read_csv(matchFile(pat, fl), ...))
+}
+
+## This should take extensions and be less slick (make the list as a separate step)
+csvReadList <- function(pat, fl = commandArgs(TRUE), ...){
+	return(lapply(grep(pat, fl, value=TRUE)
+		, function(fn){readr::read_csv(fn, ...)}
+	))
 }
 
 ## Read rds lists from a file list to a single environment
@@ -74,12 +150,6 @@ legacyEnvironments <- function(fl = commandArgs(TRUE)
 
 ## Read environments from a file list to separate places
 ## NOT implemented
-commandEnvirLists <- function(fl = commandArgs(TRUE)
-	, exts = c("RData", "Rdata", "rdata", "rda")
-)
-{
-	invisible(0)
-}
 
 ## Load every environment found into GlobalEnv
 ## This is the simple-minded default
@@ -92,6 +162,7 @@ loadEnvironments <- function(envl, parent=.GlobalEnv)
 
 ## Load every list found into GlobalEnv
 ## This is the efficient rds analogue of the simple-minded default
+## But it's not more efficient and should probably be deprecated
 loadVarLists <- function(varl, parent=parent.frame())
 {
 	for (v in varl){
@@ -110,6 +181,7 @@ makeGraphics <- function(...
 	if(is.null(ext)) ext = "pdf.tmp"
 	if(is.null(otype)) otype = "pdf"
 	fn <- paste0(target, ".", ext)
+	graphics.off()
 	get(otype)(..., file=fn)
 }
 
@@ -119,11 +191,14 @@ saveEnvironment <- function(target = targetname(), ext="rda"){
 	save.image(file=paste(target, ext, sep="."))
 }
 
-saveVars <- function(..., target = targetname(), ext="rdata"){
+saveVars <- function(..., target = targetname(), ext="rda"){
 	save(file=paste(target, ext, sep="."), ...)
 }
 
-## FIXME: I have the wrong environment for objects
+rdsSave <- function(vname, target = targetname(), ext="rds"){
+	saveRDS(vname, file=paste(target, ext, sep="."))
+}
+
 saveList <-  function(..., target = targetname(), ext="rds"){
 	l <- list(...)
 	if(length(l)==0){
@@ -138,4 +213,10 @@ saveList <-  function(..., target = targetname(), ext="rds"){
 	}
 	saveRDS(outl, file=paste(target, ext, sep="."))
 	return(invisible(names(outl)))
+}
+
+### Output
+
+csvSave <- function(..., target = targetname(), ext="Rout.csv"){
+	write.csv(file=paste(target, ext, sep="."), ...)
 }
