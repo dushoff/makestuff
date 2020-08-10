@@ -426,6 +426,7 @@ testclean:
 %.newbranch:
 	git checkout -b $*
 	$(MAKE) commit.time
+	git push --set-upstream origin $(BRANCH)
 	git push -u origin $(BRANCH)
 
 %.branch: commit.time
