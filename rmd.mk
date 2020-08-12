@@ -18,5 +18,6 @@ tangle_r = Rscript -e 'library("knitr"); knit("$<", output="$@", tangle=TRUE)'
 ## Use weird extensions for default rules in case we want to make fancy rules for normal extension?
 
 ## This also allows a single rule for Rmd/rmd !
+Ignore += *md.html
 %md.html: %md
 	$(rmdh_r)
