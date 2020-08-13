@@ -2,6 +2,7 @@ pdfcheck = perl -wf makestuff/wrapR/pdfcheck.pl
 
 define makeR 
 	-$(RM) $@ $@.*
+	echo callArgs "<-" \"$@ $^\" "## Only works interactively" > $@.args
 	((R --vanilla --args $@ $^ < $(word 1, $(filter %.R, $^)) > $(@:%.Rout=%.rtmp)) 2> $(@:%.Rout=%.Rlog) && cat $(@:%.Rout=%.Rlog)) || (cat $(@:%.Rout=%.Rlog) && false)
 	$(MVF) $(@:%.Rout=%.rtmp) $@
 endef
