@@ -44,7 +44,7 @@ commandFiles <- function(fl = commandArgs(TRUE), gr=TRUE){
 
 ## Source certain files from a file list
 sourceFiles <- function(fl=commandArgs(TRUE) 
-	, exts=c("R", "r"), first=TRUE, verbose=FALSE)
+	, exts=c("R", "r"), first=FALSE, verbose=FALSE)
 {
 	fl <- fileSelect(fl, exts)
 	if (!first) fl <- fl[-1]
