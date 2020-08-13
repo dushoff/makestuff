@@ -1,8 +1,14 @@
 pdfcheck = perl -wf makestuff/wrapR/pdfcheck.pl
 
+define makeArgs
+	echo callArgs  "## callArgs Only works interactively and is target-dependent" > $@.args
+	echo callArgs "<-" \"$@ $^\"  >> $@.args
+	echo >> $@.args
+endef
+
 define makeR 
 	-$(RM) $@ $@.*
-	echo callArgs "<-" \"$@ $^\" "## Only works interactively" > $@.args
+	$(makeArgs)
 	((R --vanilla --args $@ $^ < $(word 1, $(filter %.R, $^)) > $(@:%.Rout=%.rtmp)) 2> $(@:%.Rout=%.Rlog) && cat $(@:%.Rout=%.Rlog)) || (cat $(@:%.Rout=%.Rlog) && false)
 	$(MVF) $(@:%.Rout=%.rtmp) $@
 endef
