@@ -42,6 +42,17 @@ Looking at `makestuff/makeRfuns.R` and `makestuff/wrapmake.R` (see below) is a g
 
 **fixme**: add a non-legacy example??
 
+Startup functions
+==============
+
+_commandEnvironments()_ reads any environments that were passed through the command line. It takes an exts argument. Default extensions are c("RData", "rda", "rdata")
+
+_sourceFiles()_ sources .R files passed through the command line. It has a default of first=FALSE to ignore the first script, which by convention is the main script for the run
+
+_makeGraphics()_ sets up the graphics to print to a default location (almost always .Rout.pdf; other things will work fine with R, but maybe not chain with make FIXME). It has a weird back-compatible default of writing the pdf file to .pdf.tmp, which make handles very nicely, but you can also say makeGraphics(otype="pdf") to make your file structure a bit more beautiful (TEST). It takes other arguments (and passes them to the graphics call). It should also work fine to make multiple files when called in ways that imply different file names.
+
+_commandFiles()_ is a convenience function that wraps the three things above in some sort of sensible way (and takes advantage of the .pdf.tmp thing).
+
 Legacy
 ======
 
@@ -85,3 +96,5 @@ Rout is the standard target and that's who we want to tell about the dependencie
 
 * use Rout as a fake dependency (this still has chaining problems, though)
 * make horrible eval rules in makeR.mk so that it chains anyway
+
+This is apparently solved now with eval rules. Less transparent than I would like, but seems robust enough. See impmakeR above.
