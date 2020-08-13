@@ -33,9 +33,9 @@ matchFile <-  function(pat, fl = makeArgs()){
 
 makeArgs <- function(){
 	if(interactive()){
-		if (!exists(callArgs))
+		if (!exists("callArgs"))
 			stop("Define callArgs to use makeR files; see .args file?")
-		return(0)
+		return(strsplit(callArgs, " ")[[1]])
 	}
 	return(commandArgs(TRUE))
 }
