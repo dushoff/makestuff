@@ -4,6 +4,7 @@
 
 node_makejobs = $(nodes:%=%.makejobs)
 
+Ignore += nodes.makejobs
 nodes.makejobs: $(node_makejobs)
 	$(cat)
 
