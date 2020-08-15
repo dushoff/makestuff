@@ -110,7 +110,8 @@ $(foreach stem,$(expmakeR),$(eval $(call expdep,$(stem))))
 	cd dotdir && $(MAKE) -n $*.Rout > make.log
 	perl -wf makestuff/makeRscript.pl dotdir/make.log > $@
 
-%.makeR.script:
+## Still messing with this: it warns if .makeR.script is a source, I think
+%.makeR.script: cpdir.mslink
 	$(MAKE) cpdir.mslink
 	cd cpdir && $(MAKE) -n $*.Rout > make.log
 	perl -wf makestuff/makeRscript.pl cpdir/make.log > $@

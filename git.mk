@@ -413,7 +413,7 @@ sourcedir: $(Sources)
 	-$(CP) local.mk $*
 
 %.mslink: %
-	cd $* && $(LN) ../makestuff
+	cd $* && (ls makestuff/Makefile || $(LN) ../makestuff)
 
 testsetup:
 
