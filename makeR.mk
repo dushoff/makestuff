@@ -51,7 +51,7 @@ endif
 %.rds %.Rds: %.Rout
 	$(lscheck)
 
-## This is a pure intermediate; require .pdf, not .pdf.tmp
+## .pdf.tmp is a pure intermediate; you should require .pdf, not .pdf.tmp
 %.Rout.pdf.tmp %.Rout.png %.Rout.jpeg: %.Rout
 	$(lscheck)
 
