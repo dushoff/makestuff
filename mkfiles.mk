@@ -8,7 +8,7 @@ mkfiles/:
 	$(mkdir)
 
 %/Makefile: 
-	$(MAKE) mkfiles/%.make
+	$(MAKE) mkfiles/$*.make
 	cd $* && $(LN) ../mkfiles/$*.make Makefile
 
 %.project:
