@@ -1,7 +1,7 @@
 pdfcheck = perl -wf makestuff/wrapR/pdfcheck.pl
 
 define makeArgs
-	echo callArgs  "## callArgs Only works interactively and is target-dependent" > $@.args
+	echo "## callArgs Only works interactively and is target-dependent" > $@.args
 	echo callArgs "<-" \"$@ $^\"  >> $@.args
 	echo >> $@.args
 endef
