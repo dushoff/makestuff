@@ -374,7 +374,7 @@ dotdir: $(Sources)
 	git clone . $@
 
 ## Note cpdir really means directory (usually); dotdir means the whole repo
-cpdir: $(Sources)
+cpdir: $(filter-out %.script, $(Sources))
 	-/bin/rm -rf $@
 	$(mkdir)
 	cp $^ $@
