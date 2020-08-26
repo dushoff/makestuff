@@ -11,7 +11,13 @@ rmdh_r = Rscript -e 'library("rmarkdown"); render("$<", output_format="html_docu
 
 tangle_r = Rscript -e 'library("knitr"); knit("$<", output="$@", tangle=TRUE)'
 
-## Don't want to auto-Source this usually
+## Use small r here to avoid accidental commits?
 %.tangle.r: %.Rmd
 	$(tangle_r)
 
+## Use weird extensions for default rules in case we want to make fancy rules for normal extension?
+
+## This also allows a single rule for Rmd/rmd !
+Ignore += *md.html
+%md.html: %md
+	$(rmdh_r)
