@@ -129,7 +129,7 @@ Ignore += *.ld.tex
 	latexdiff $*.tex.*.oldfile $< > $@
 
 %.pd: %
-	$(CP) $< $(pushdir)
+	$(CP) $< $(pushdir) || $(CP) $< ~/Downloads
 
 %.pdown: %
 	$(CP) $< ~/Downloads/
