@@ -1,3 +1,4 @@
+## Deprecated 2020 Jun 22 (Mon)
 
 ## Better logic for types of subdirectories:
 ## screened or not × alled or not

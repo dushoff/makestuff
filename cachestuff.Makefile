@@ -1,14 +1,8 @@
 
-## This is a _linked_ Makefile for …
-## 
+## This is the _linked_ cachestuff Makefile
 
 current: target
 -include target.mk
-
-# -include makestuff/perl.def
-
-vim_session:
-	bash -cl "vmt"
 
 ######################################################################
 
@@ -31,4 +25,4 @@ makestuff/Makefile:
 
 -include makestuff/git.mk
 -include makestuff/visual.mk
--include makestuff/projdir.mk
+

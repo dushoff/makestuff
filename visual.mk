@@ -44,8 +44,12 @@ target.mk:
 	cd $* && screen -t "$(notdir $*)"
 
 ## do the above and open a vim_session
-## (instead of trying to make startscreen, would merging work?)
 %.vscreen: %.dir
+	cd $(dir $*) && $(MAKE) "$(notdir $*)" 
+	cd $* && screen -t "$*" bash -cl "vvs"
+
+## Old-style vscreen (short names)
+%.svscreen: %.dir
 	cd $(dir $*) && $(MAKE) "$(notdir $*)" 
 	cd $* && screen -t "$(notdir $*)" bash -cl "vvs"
 

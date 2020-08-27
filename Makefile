@@ -6,6 +6,14 @@ current: target
 
 ##################################################################
 
+## 2020 Jul 05 (Sun): Think about how to partition this later 
+## Do we want R files in this main directory)?
+Sources += $(wildcard *.R)
+
+Ignore += chain
+
+##################################################################
+
 md = $(wildcard *.md)
 Sources += $(md)
 Ignore += $(md:md=html)
@@ -14,6 +22,7 @@ Ignore += $(md:md=html)
 
 ## Make a list of .mk files that are here and go through them!
 
+Ignore += README.gh.html
 ## README.gh.html: README.md
 
 ######################################################################
@@ -126,10 +135,7 @@ Sources += mkfiles.Makefile
 
 # wrapR scripts
 
-wrapRR = $(wildcard wrapR/*.R)
-wrapRpl = $(wildcard wrapR/*.pl)
-
-# Sources += wrapR.md wrapR.mk $(wrapRR) $(wrapRpl)
+Sources += $(wildcard wrapR/*.R) $(wildcard wrapR/*.pl)
 
 ## pdf manipulation
 # Sources += wrapR/pdf.mk forms.def forms.mk wrapR/up.mk
@@ -174,12 +180,7 @@ Ignore += repohome.auto.mk
 
 ######################################################################
 
-ifeq ($(shell uname), Linux)
-include linux.mk
-else
-include unix.mk
-endif
-
+-include unix.mk
 -include local.mk
 include git.mk
 include pandoc.mk

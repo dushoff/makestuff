@@ -2,6 +2,7 @@
 
 ## Bailed on getting the regex syntax write for the $. Watch out?
 ## Try [$$] if you're bored.
+## This is a pain for scripts; see filemerge instead
 noms:
 	perl -pi -e 's|.\(ms\)/|makestuff/|' Makefile *.mk
 
@@ -15,7 +16,10 @@ CP = /bin/cp
 CPF = /bin/cp -f
 CPR = /bin/cp -rf
 DIFF = diff
-GVEDIT = ($(VEDIT) $@ || gedit $@ || (echo ERROR: No editor found makestuff/unix.mk && echo set shell VEDIT variable && exit 1))
+
+## VEDIT is set in bashrc (and inherited)
+## Not sure what I should do if it doesn't work?
+MSEDIT = $(MSEDITOR) $@ || $(EDITOR) $@ || $(VISUAL) $@ || gvim -f $@ || vim $@ || ((echo ERROR: No editor found makestuff/unix.mk && echo set shell MSEDITOR variable && false))
 RMR = /bin/rm -rf
 LS = /bin/ls
 LN = /bin/ln -s
@@ -27,13 +31,15 @@ readonly = chmod a-w $@
 RO = chmod a-w $@
 RW = chmod ug+w $@
 DNE = (! $(LS) $@ > $(null))
-LSD = ($(LS) $@ > $(null))
+LSN = ($(LS) $@ > $(null))
 
 ## These two are weird (don't follow the convention)
 TGZ = tar czf $@ $^
 ZIP = zip $@ $^
 
 null = /dev/null
+
+lscheck = @$(LS) $@ > $(null)
 
 hiddenfile = $(dir $1).$(notdir $1)
 hide = $(MVF) $1 $(dir $1).$(notdir $1)
@@ -42,7 +48,9 @@ hcopy = $(CPF) $1 $(dir $1).$(notdir $1)
 difftouch = diff $1 $(dir $1).$(notdir $1) > /dev/null || touch $1
 touch = touch $@
 
-makethere = cd $(dir $@) && $(MAKE) $(notdir $@)
+justmakethere = cd $(dir $@) && $(MAKE) $(notdir $@)
+makethere = cd $(dir $@) && $(MAKE) makestuff && $(MAKE) $(notdir $@)
+makestuffthere = cd $(dir $@) && $(MAKE) makestuff && $(MAKE) $(notdir $@)
 
 diff = $(DIFF) $^ > $@
 
@@ -51,6 +59,7 @@ link = $(LN) $< $@
 alwayslinkdir = (ls $(dir)/$@ > $(null) || $(MD) $(dir)/$@) && $(LNF) $(dir)/$@ .
 linkdir = ls $(dir)/$@ > $(null) && $(LNF) $(dir)/$@ .
 linkdirname = ls $(dir) > $(null) && $(LNF) $(dir) $@ 
+linkexisting = ls $< > /dev/null && $(link)
 
 ## This will make directory if it doesn't exist
 ## Possibly good for shared projects. Problematic if central user makes two 
@@ -65,6 +74,7 @@ hardcopy = $(CPF) $< $@
 allcopy =  $(CP) $^ $@
 ccrib = $(CP) $(crib)/$@ .
 mkdir = $(MD) $@
+makedir = cd $(dir $@) && $(MD) $(notdir $@)
 cat = $(CAT) /dev/null $^ > $@
 ln = $(LN) $< $@
 lnf = $(LNF) $< $@
@@ -76,8 +86,8 @@ pandocs = pandoc -s -o $@ $<
 ## Maybe think about using dir $@ in future when thinking more clearly
 ## Including for rcopy
 
-dircopy = ($(LSD) && $(touch)) ||  $(rcopy)
-ddcopy = ($(LSD) && $(touch)) ||  $(rdcopy)
+dircopy = ($(LSN) && $(touch)) ||  $(rcopy)
+ddcopy = ($(LSN) && $(touch)) ||  $(rdcopy)
 
 ## Lock and unlock directories to avoid making changes that aren't on the sink path
 ## git will not track this for you ☹
@@ -85,6 +95,22 @@ ddcopy = ($(LSD) && $(touch)) ||  $(rdcopy)
 	chmod -R a-w $*
 %.rw:
 	chmod -R u+w $*
+
+## File listing and merging
+%.ls: %
+	ls $* > $@
+%.lsd: %
+	ls -d $*/* > $@
+ 
+## Track a directory from the parent directory, using <dir>.md
+%.filemerge: %.lsd %.md makestuff/filemerge.pl
+	$(PUSH)
+	- $(DIFF) $*.md $@
+	$(MV) $@ $*.md
+
+%.voice: voice.pl %
+	$(PUSH)
+	$(MV) $@ $*
 
 # What?
 convert = convert $< $@
@@ -94,7 +120,7 @@ shell_execute = sh < $@
 %.png: %.pdf
 	$(convert)
 
-pdfcat = pdfjoin --outfile $@ $(filter %.pdf, $^) 
+pdfcat = pdfjam --outfile $@ $(filter %.pdf, $^) 
 
 latexdiff = latexdiff $^ > $@
 
@@ -103,7 +129,7 @@ Ignore += *.ld.tex
 	latexdiff $*.tex.*.oldfile $< > $@
 
 %.pd: %
-	$(CP) $< $(pushdir)
+	$(CP) $< $(pushdir) || $(CP) $< ~/Downloads
 
 %.pdown: %
 	$(CP) $< ~/Downloads/
