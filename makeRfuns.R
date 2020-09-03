@@ -117,6 +117,10 @@ csvRead <- function(pat="csv$", fl = commandArgs(TRUE), ...){
 	return(readr::read_csv(matchFile(pat, fl), ...))
 }
 
+tsvRead <- function(pat="tsv$", fl = commandArgs(TRUE), ...){
+	return(readr::read_tsv(matchFile(pat, fl), ...))
+}
+
 ## This should take extensions and be less slick (make the list as a separate step)
 csvReadList <- function(pat, fl = commandArgs(TRUE), ...){
 	return(lapply(grep(pat, fl, value=TRUE)
