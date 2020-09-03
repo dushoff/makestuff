@@ -374,7 +374,7 @@ dotdir: $(Sources)
 	git clone . $@
 
 ## Note cpdir really means directory (usually); dotdir means the whole repo
-cpdir: $(Sources)
+cpdir: $(filter-out %.script, $(Sources))
 	-/bin/rm -rf $@
 	$(mkdir)
 	cp $^ $@
@@ -413,7 +413,7 @@ sourcedir: $(Sources)
 	-$(CP) local.mk $*
 
 %.mslink: %
-	cd $* && $(LN) ../makestuff
+	cd $* && (ls makestuff/Makefile || $(LN) ../makestuff)
 
 testsetup:
 
@@ -446,6 +446,7 @@ testclean:
 %.newbranch:
 	git checkout -b $*
 	$(MAKE) commit.time
+	git push --set-upstream origin $(BRANCH)
 	git push -u origin $(BRANCH)
 
 %.branch: commit.time

@@ -7,12 +7,12 @@
 ##' @param suffix file extension of provided name
 ##' @param fn provided file name (first of commandArgs by default)
 ##' @export
-targetname <- function(ext="", suffix="\\.Rout", fn = commandArgs(TRUE)[[1]]){
+targetname <- function(ext="", suffix="\\.Rout", fn = makeArgs()[[1]]){
 	return(sub(suffix, ext, fn))
 }
 
 ## Just selects extensions, not clear that it's good (used for legacy)
-fileSelect <- function(fl = commandArgs(TRUE), exts)
+fileSelect <- function(fl = makeArgs(), exts)
 {
 	outl <- character(0)
 	for (ext in exts){
@@ -24,18 +24,26 @@ fileSelect <- function(fl = commandArgs(TRUE), exts)
 	return(outl)
 }
 
-matchFile <-  function(pat, fl = commandArgs(TRUE)){
+matchFile <-  function(pat, fl = makeArgs()){
 	f <- grep(pat, fl, value=TRUE)
 	if (length(f) == 0) stop("No match for ", pat, " in ", fl)
 	if (length(f) > 1) stop("More than one match for ", pat, " in ", fl)
 	return(f)
 }
 
+makeArgs <- function(){
+	if(interactive()){
+		if (!exists("callArgs"))
+			stop("Define callArgs to use makeR files; see .args file?")
+		return(strsplit(callArgs, " ")[[1]])
+	}
+	return(commandArgs(TRUE))
+}
 ### Loading and reading
 
 ## This is now deprecated; refer to these steps, but do them manually.
 ## wrapmake encodes the current defaults for $(run-R) scripts
-commandFiles <- function(fl = commandArgs(TRUE), gr=TRUE){
+commandFiles <- function(fl = makeArgs(), gr=TRUE){
 	commandEnvironments(fl)
 	commandLists(fl)
 	sourceFiles(fl, first=FALSE, verbose=FALSE)
@@ -43,8 +51,8 @@ commandFiles <- function(fl = commandArgs(TRUE), gr=TRUE){
 }
 
 ## Source certain files from a file list
-sourceFiles <- function(fl=commandArgs(TRUE) 
-	, exts=c("R", "r"), first=TRUE, verbose=FALSE)
+sourceFiles <- function(fl=makeArgs() 
+	, exts=c("R", "r"), first=FALSE, verbose=FALSE)
 {
 	fl <- fileSelect(fl, exts)
 	if (!first) fl <- fl[-1]
@@ -55,7 +63,7 @@ sourceFiles <- function(fl=commandArgs(TRUE)
 
 ## What are the advantages of .GlobalEnv vs parent.frame()?
 ## Read environments from a file list to a single environment
-commandEnvironments <- function(fl = commandArgs(TRUE)
+commandEnvironments <- function(fl = makeArgs()
 	, exts = c("RData", "rda", "rdata"), parent=.GlobalEnv
 )
 {
@@ -64,7 +72,7 @@ commandEnvironments <- function(fl = commandArgs(TRUE)
 	invisible(envl)
 }
 
-getEnvironment <- function(pat="", fl = commandArgs(TRUE)
+getEnvironment <- function(pat="", fl = makeArgs()
 	, exts = c("RData", "rda", "rdata")
 )
 {
@@ -76,7 +84,7 @@ getEnvironment <- function(pat="", fl = commandArgs(TRUE)
 }
 
 ## Developing 2020 Aug 03 (Mon)
-loadRdsList <- function(fl = commandArgs(TRUE)
+loadRdsList <- function(fl = makeArgs()
 	, exts = "rds", names=NULL
 	, trim = "\\.[^.]*$"
 ){
@@ -92,7 +100,7 @@ loadRdsList <- function(fl = commandArgs(TRUE)
 	return(rl)
 }
 
-loadEnvironmentList <- function(fl = commandArgs(TRUE)
+loadEnvironmentList <- function(fl = makeArgs()
 	, exts = c("RData", "rda", "rdata"), names=NULL
 	, trim = "\\.[^.]*$"
 )
@@ -113,7 +121,7 @@ loadEnvironmentList <- function(fl = commandArgs(TRUE)
 
 ## having readr:: means that readr must be in Imports: in the DESCRIPTION file
 ##' @importFrom readr read_csv  ## this is redundant with 'readr::'
-csvRead <- function(pat="csv$", fl = commandArgs(TRUE), ...){
+csvRead <- function(pat="csv$", fl = makeArgs(), ...){
 	return(readr::read_csv(matchFile(pat, fl), ...))
 }
 
@@ -122,14 +130,14 @@ tsvRead <- function(pat="tsv$", fl = commandArgs(TRUE), ...){
 }
 
 ## This should take extensions and be less slick (make the list as a separate step)
-csvReadList <- function(pat, fl = commandArgs(TRUE), ...){
+csvReadList <- function(pat, fl = makeArgs(), ...){
 	return(lapply(grep(pat, fl, value=TRUE)
 		, function(fn){readr::read_csv(fn, ...)}
 	))
 }
 
 ## Read rds lists from a file list to a single environment
-commandLists <- function(fl = commandArgs(TRUE)
+commandLists <- function(fl = makeArgs()
 	, exts = c("Rds", "rds"), parent=.GlobalEnv
 )
 {
@@ -140,7 +148,7 @@ commandLists <- function(fl = commandArgs(TRUE)
 
 ## Wrapper for legacy makefiles
 ## By default takes Rout dependencies and assumes rda environments
-legacyEnvironments <- function(fl = commandArgs(TRUE)
+legacyEnvironments <- function(fl = makeArgs()
 	, dep = "Rout", ext="rda")
 {
 	envl <- fileSelect(fl, dep)
@@ -178,7 +186,7 @@ loadVarLists <- function(varl, parent=parent.frame())
 #### Graphics
 
 makeGraphics <- function(...
-	, target = commandArgs(TRUE)[[1]]
+	, target = makeArgs()[[1]]
 	, otype = NULL, ext = otype
 )
 {
