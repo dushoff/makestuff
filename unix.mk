@@ -145,7 +145,7 @@ Ignore += *.ld.tex
 %.makelog: %.log ;
 
 vimclean:
-	perl -wf makestuff/vimclean.pl > tmp.out
+	perl -wf makestuff/vimclean.pl
 
 ## Jekyll stuff
 Ignore += jekyll.log
