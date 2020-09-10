@@ -131,16 +131,33 @@ loadEnvironmentList <- function(pat = NULL
 }
 
 ## having readr:: means that readr must be in Imports: in the DESCRIPTION file
-csvRead <- function(pat=NULL, exts=c("csv", "tsv")
+csvRead <- function(pat=NULL, exts=c("csv", "CSV")
 	, fl = makeArgs(), ...
 ){
 	return(readr::read_csv(matchFile(pat, fl, exts), ...))
 }
-## This should take extensions and be less slick (make the list as a separate step)
-csvReadList <- function(pat, fl = makeArgs(), ...){
-	return(lapply(grep(pat, fl, value=TRUE)
+
+tsvRead <- function(pat=NULL, exts=c("tsv", "TSV")
+	, fl = makeArgs(), ...
+){
+	return(readr::read_tsv(matchFile(pat, fl, exts), ...))
+}
+
+## Not tested! Is it important?
+csvReadList <- function(pat=NULL, exts=c("csv", "CSV")
+	, fl = makeArgs(), ...
+	, names=NULL, trim = "\\.[^.]*$"
+){
+	fl <- fileSelect(fl, exts, pat)
+	if(is.null(names)){
+		names = sub(trim, "", fl)
+	}
+	stopifnot(length(names)==length(fl))
+	csvl <- lapply(fl
 		, function(fn){readr::read_csv(fn, ...)}
-	))
+	)
+	names(csvl) <- names
+	return(csvl)
 }
 
 ## Wrapper for legacy makefiles
