@@ -96,10 +96,8 @@ images
 objects
 * rds
 
-Problem
+Deep stuff
 =======
-
-2020 Jul 20 (Mon)
 
 Rout is the standard target and that's who we want to tell about the dependencies. But this means that things won't chain through .rda. So there are two choices:
 
