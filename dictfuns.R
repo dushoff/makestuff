@@ -1,7 +1,21 @@
+cleanDict <- function(keys, values){
+	r <- (tibble(x=keys, n=values))
+	o <- filter(r, !is.na(x) & !is.na(n))
+	d <- distinct(o)
+	c <- d %>% select(x) %>% distinct()
+	if (nrow(o) < nrow(r))
+		warning("Omitting NAs in cleanDict")
+	if (nrow(d) < nrow(o))
+		warning("Omitting repeated entries in cleanDict")
+	if (nrow(c) < nrow(d))
+		stop("Ambiguous entries found in cleanDict")
+	return(d)
+}
+
 mergeDict <- function(dat, keys, values){
 	return(dplyr::left_join(
 		tibble(x=dat)
-		, tibble(x=keys, n=values)
+		, cleanDict(keys, values)
 	))
 }
 
