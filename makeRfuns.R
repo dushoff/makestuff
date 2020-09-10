@@ -12,20 +12,25 @@ targetname <- function(ext="", suffix="\\.Rout", fn = makeArgs()[[1]]){
 }
 
 ## Just selects extensions, not clear that it's good (used for legacy)
-fileSelect <- function(fl = makeArgs(), exts)
+fileSelect <- function(fl = makeArgs(), exts=NULL, pat=NULL)
 {
-	outl <- character(0)
-	for (ext in exts){
-		if(grepl("\\.", ext))
-			warning("Extension", ext, "starts with . in fileSelect")
-		ss <- paste0("\\.", ext, "$")
-		outl <- c(outl, grep(ss, fl, value=TRUE))
+	if(!is.null(exts)){
+		outl <- character(0)
+		for (ext in exts){
+			if(grepl("\\.", ext))
+				warning("Extension", ext, "starts with . in fileSelect")
+			ss <- paste0("\\.", ext, "$")
+			outl <- c(outl, grep(ss, fl, value=TRUE))
+		}
+		fl <- outl
 	}
-	return(outl)
+	if (!is.null(pat))
+		fl <- grep(pat, fl, value=TRUE)
+	return(fl)
 }
 
-matchFile <-  function(pat, fl = makeArgs()){
-	f <- grep(pat, fl, value=TRUE)
+matchFile <-  function(pat, fl = makeArgs(), exts=NULL){
+	f <- fileSelect(fl, exts, pat)
 	if (length(f) == 0) stop("No match for ", pat, " in ", fl)
 	if (length(f) > 1) stop("More than one match for ", pat, " in ", fl)
 	return(f)
