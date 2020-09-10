@@ -136,16 +136,6 @@ csvReadList <- function(pat, fl = makeArgs(), ...){
 	))
 }
 
-## Read rds lists from a file list to a single environment
-commandLists <- function(fl = makeArgs()
-	, exts = c("Rds", "rds"), parent=.GlobalEnv
-)
-{
-	varl <- fileSelect(fl, exts)
-	loadVarLists(varl, parent)
-	invisible(varl)
-}
-
 ## Wrapper for legacy makefiles
 ## By default takes Rout dependencies and assumes rda environments
 legacyEnvironments <- function(fl = makeArgs()
@@ -160,26 +150,11 @@ legacyEnvironments <- function(fl = makeArgs()
 	invisible(envl)
 }
 
-## Read environments from a file list to separate places
-## NOT implemented
-
-## Load every environment found into GlobalEnv
-## This is the simple-minded default
+## Load a list of environments
 loadEnvironments <- function(envl, parent=.GlobalEnv)
 {
 	for (env in envl){
 		load(env, parent)
-	}
-}
-
-## Load every list found into GlobalEnv
-## This is the efficient rds analogue of the simple-minded default
-## But it's not more efficient and should probably be deprecated
-loadVarLists <- function(varl, parent=parent.frame())
-{
-	for (v in varl){
-		l <- readRDS(v)
-    	list2env(l, envir=parent)
 	}
 }
 
