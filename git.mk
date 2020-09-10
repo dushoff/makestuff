@@ -13,12 +13,6 @@ endif
 
 ######################################################################
 
-## Hacking around a glitch
-## Could move real GVEDIT here, but a) it doesn't work for other, and b) this weird recursive error may not be found by others.
-ifndef GVEDIT
-GVEDIT = ($(VEDIT) $@ || gvim $@)
-endif
-
 ## More makestuff/makestuff weirdness
 -include makestuff/exclude.mk
 -include exclude.mk
@@ -44,7 +38,7 @@ commit.time: $(Sources)
 	-git add -f $? $(trackedTargets)
 	(cat ~/.commitnow > $@ && echo " ~/.commitnow" >> $@) || echo Autocommit > $@
 	echo "## $(CURDIR)" >> $@
-	!(git commit --dry-run >> $@) || (perl -pi -e 's/^/#/ unless $$.==1' $@ && $(GVEDIT))
+	!(git commit --dry-run >> $@) || (perl -pi -e 's/^/#/ unless $$.==1' $@ && $(MSEDIT))
 	$(git_check) || (perl -ne 'print unless /#/' $@ | git commit -F -)
 	date >> $@
 
@@ -257,12 +251,7 @@ pages/%: %
 
 %.gitpush:
 	$(MAKE) $*
-	cd $* && (git add *.* && ($(git_check))) || ((git commit -m "Commited by $(CURDIR)") && git pull && git push)
-
-%.filesync:
-	$(MAKE) $*
-	cd $* && git add *.* && ($(git_check) || (git commit -m "Commited by $(CURDIR)"))
-	cd $* && git pull && git push
+	cd $* && (git add *.* && ($(git_check))) || ((git commit -m "Commited by $(CURDIR)") && git pull && git push && git status)
 
 ## Make an empty pages directory when necessary; or else attaching existing one
 Ignore += pages
@@ -331,12 +320,31 @@ $(Outside):
 ######################################################################
 
 ## Burn it down!
+## 2020 Aug 05 (Wed) This went terribly. Easier to go to github and destroy
+## the repo there.
+
+%.warn:
+	@echo ctrl-c if you "don't" want to DESTROY $* repo!
+	read input
+	@echo BOOM
 
 %.destroy:
+	@echo ctrl-c if you "don't" want to DESTROY $* repo!
+	read input
 	- $(RMR) $*.new
 	$(MKDIR) $*.new
 	cd $*.new && git init
-	$(CPF) $*/.git/config $*.new/git
+	$(CPF) $*/.git/config $*.new/.git/
+	cd $*.new && touch .fake && git add .fake && git commit -m "nuking repo"
+	cd $*.new && git push --force --set-upstream origin master
+	$(MAKE) $*.reset
+
+%.reset:
+	- $(RMR) $*.olddir
+	mv $* $*.olddir
+
+%.what:
+	rm -fr $*.new
 
 ######################################################################
 
@@ -365,8 +373,11 @@ dotdir: $(Sources)
 	-/bin/rm -rf $@
 	git clone . $@
 
-## Note cpdir really means directory (usually) dotdir means the whole repo
-cpdir: $(Sources)
+## Note cpdir really means directory (usually); dotdir means the whole repo
+## DON'T use for repos with Sources in subdirectories
+## DON'T use for service (i.e., makeR scripts)
+## Maybe don't use at all?
+cpdir: $(filter-out %.script, $(Sources))
 	-/bin/rm -rf $@
 	$(mkdir)
 	cp $^ $@
@@ -405,11 +416,24 @@ sourcedir: $(Sources)
 	-$(CP) local.mk $*
 
 %.mslink: %
-	cd $* && $(LN) ../makestuff
+	cd $* && (ls makestuff/Makefile || $(LN) ../makestuff)
 
-%.dirtest: %
-	$(CP) dottarget.mk $@/target.mk || $(CP) target.mk $@
-	cd $< && $(MAKE) Makefile && $(MAKE) makestuff && $(MAKE)
+testsetup:
+
+%.dirtest: % 
+	$(MAKE) $*.testsetup
+	$(MAKE) $*.testtarget
+	cd $* && $(MAKE)
+
+## testsetup is before makestuff so we can use it to link makestuff sometimes
+%.testsetup: %
+	cd $* && $(MAKE) Makefile && $(MAKE) testsetup && $(MAKE) makestuff 
+
+%.makestuff: %
+	cd $* && $(MAKE) Makefile && $(MAKE) makestuff
+
+%.testtarget: %
+	$(CP) testtarget.mk $*/target.mk || $(CP) target.mk $@
 
 ## To open the dirtest final target when appropriate (and properly set up) 
 %.vdtest: %.dirtest
@@ -426,6 +450,7 @@ testclean:
 %.newbranch:
 	git checkout -b $*
 	$(MAKE) commit.time
+	git push --set-upstream origin $(BRANCH)
 	git push -u origin $(BRANCH)
 
 %.branch: commit.time

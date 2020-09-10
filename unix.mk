@@ -19,7 +19,7 @@ DIFF = diff
 
 ## VEDIT is set in bashrc (and inherited)
 ## Not sure what I should do if it doesn't work?
-GVEDIT = ($(VEDIT) $@ || gedit $@ || (echo ERROR: No editor found makestuff/unix.mk && echo set shell VEDIT variable && exit 1))
+MSEDIT = $(MSEDITOR) $@ || $(EDITOR) $@ || $(VISUAL) $@ || gvim -f $@ || vim $@ || ((echo ERROR: No editor found makestuff/unix.mk && echo set shell MSEDITOR variable && false))
 RMR = /bin/rm -rf
 LS = /bin/ls
 LN = /bin/ln -s
@@ -129,7 +129,7 @@ Ignore += *.ld.tex
 	latexdiff $*.tex.*.oldfile $< > $@
 
 %.pd: %
-	$(CP) $< $(pushdir)
+	$(CP) $< $(pushdir) || $(CP) $< ~/Downloads
 
 %.pdown: %
 	$(CP) $< ~/Downloads/
@@ -143,6 +143,9 @@ Ignore += *.ld.tex
 	$(MAKE) $* > $*.makelog
 
 %.makelog: %.log ;
+
+vimclean:
+	perl -wf makestuff/vimclean.pl
 
 ## Jekyll stuff
 Ignore += jekyll.log

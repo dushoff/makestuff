@@ -1,7 +1,14 @@
 pdfcheck = perl -wf makestuff/wrapR/pdfcheck.pl
 
+define makeArgs
+	echo "## callArgs Only works interactively and is target-dependent" > $@.args
+	echo callArgs "<-" \"$@ $^\"  >> $@.args
+	echo >> $@.args
+endef
+
 define makeR 
 	-$(RM) $@ $@.*
+	$(makeArgs)
 	((R --vanilla --args $@ $^ < $(word 1, $(filter %.R, $^)) > $(@:%.Rout=%.rtmp)) 2> $(@:%.Rout=%.Rlog) && cat $(@:%.Rout=%.Rlog)) || (cat $(@:%.Rout=%.Rlog) && false)
 	$(MVF) $(@:%.Rout=%.rtmp) $@
 endef
@@ -44,7 +51,7 @@ endif
 %.rds %.Rds: %.Rout
 	$(lscheck)
 
-## This is a pure intermediate; require .pdf, not .pdf.tmp
+## .pdf.tmp is a pure intermediate; you should require .pdf, not .pdf.tmp
 %.Rout.pdf.tmp %.Rout.png %.Rout.jpeg: %.Rout
 	$(lscheck)
 
@@ -96,6 +103,7 @@ $(foreach stem,$(expmakeR),$(eval $(call expdep,$(stem))))
 
 ## Scripts
 ## Disentangle how things work, and empower people who don't use make
+## Won't work in directories that need non-automatic setup
 
 %.makeR.script:
 	$(MAKE) cpdir.mslink

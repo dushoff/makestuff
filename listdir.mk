@@ -30,7 +30,7 @@ screens.arc: screens.list makestuff/listarc.pl
 ## Make sure to make arc from list before making list from arc!
 screens.update: screens.arc
 	- $(call hide, screens.list)
-	 perl -wf makestuff/arclist.pl screens.arc > screens.list
+	 $(listscreens)
 
 screens_resource:
 	perl -i -wf makestuff/screensource.pl screens.list

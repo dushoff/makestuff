@@ -46,6 +46,7 @@ target.mk:
 ## do the above and open a vim_session
 %.vscreen: %.dir
 	cd $(dir $*) && $(MAKE) "$(notdir $*)" 
+	- cd $* && $(MAKE) vimclean
 	cd $* && screen -t "$*" bash -cl "vvs"
 
 ## Old-style vscreen (short names)
