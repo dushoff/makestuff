@@ -67,10 +67,9 @@ sourceFiles <- function(fl=makeArgs()
 	}
 }
 
-## What are the advantages of .GlobalEnv vs parent.frame()?
 ## Read environments from a file list to a single environment
 commandEnvironments <- function(fl = makeArgs()
-	, exts = c("RData", "rda", "rdata"), parent=.GlobalEnv
+	, exts = c("RData", "rda", "rdata"), parent=parent.frame()
 )
 {
 	envl <- fileSelect(fl, exts)
@@ -132,15 +131,11 @@ loadEnvironmentList <- function(pat = NULL
 }
 
 ## having readr:: means that readr must be in Imports: in the DESCRIPTION file
-##' @importFrom readr read_csv  ## this is redundant with 'readr::'
-csvRead <- function(pat="csv$", fl = makeArgs(), ...){
-	return(readr::read_csv(matchFile(pat, fl), ...))
+csvRead <- function(pat=NULL, exts=c("csv", "tsv")
+	, fl = makeArgs(), ...
+){
+	return(readr::read_csv(matchFile(pat, fl, exts), ...))
 }
-
-tsvRead <- function(pat="tsv$", fl = commandArgs(TRUE), ...){
-	return(readr::read_tsv(matchFile(pat, fl), ...))
-}
-
 ## This should take extensions and be less slick (make the list as a separate step)
 csvReadList <- function(pat, fl = makeArgs(), ...){
 	return(lapply(grep(pat, fl, value=TRUE)
@@ -163,7 +158,7 @@ legacyEnvironments <- function(fl = makeArgs()
 }
 
 ## Load a list of environments
-loadEnvironments <- function(envl, parent=.GlobalEnv)
+loadEnvironments <- function(envl, parent=parent.frame())
 {
 	for (env in envl){
 		load(env, parent)
