@@ -198,22 +198,6 @@ rdsSave <- function(vname, target = targetname(), ext="rds"){
 	saveRDS(vname, file=paste(target, ext, sep="."))
 }
 
-saveList <-  function(..., target = targetname(), ext="rds"){
-	l <- list(...)
-	if(length(l)==0){
-		names <- objects(parent.frame())
-	} else {
-		names <- as.character(substitute(list(...)))[-1]
-	}
-
-	outl <- list()
-	for (n in names){
-		outl[[n]] <- get(n)
-	}
-	saveRDS(outl, file=paste(target, ext, sep="."))
-	return(invisible(names(outl)))
-}
-
 ### Output
 
 csvSave <- function(..., target = targetname(), ext="Rout.csv"){
