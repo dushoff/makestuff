@@ -104,6 +104,7 @@ $(foreach stem,$(expmakeR),$(eval $(call expdep,$(stem))))
 ## Scripts
 ## Disentangle how things work, and empower people who don't use make
 
+## Is this used?? 2020 Sep 09 (Wed)
 %.makeRproj.script:
 	- $(RMR) dotdir
 	$(MAKE) dotdir.mslink
