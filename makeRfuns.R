@@ -11,7 +11,8 @@ targetname <- function(ext="", suffix="\\.Rout", fn = makeArgs()[[1]]){
 	return(sub(suffix, ext, fn))
 }
 
-## Just selects extensions, not clear that it's good (used for legacy)
+## Improved 2020 Sep 10 (Thu)
+## Argument order is still kind of legacy
 fileSelect <- function(fl = makeArgs(), exts=NULL, pat=NULL)
 {
 	if(!is.null(exts)){
@@ -105,17 +106,23 @@ loadRdsList <- function(fl = makeArgs()
 	return(rl)
 }
 
-loadEnvironmentList <- function(fl = makeArgs()
-	, exts = c("RData", "rda", "rdata"), names=NULL
-	, trim = "\\.[^.]*$"
+loadEnvironmentList <- function(pat = NULL
+	, fl = makeArgs()
+	, exts = c("RData", "rda", "rdata")
+	, names=NULL, trim = "\\.[^.]*$"
 )
 {
-	envl <- fileSelect(fl, exts)
+	envl <- fileSelect(fl, exts, pat)
 	if(is.null(names)){
 		names = sub(trim, "", envl)
 	}
 	stopifnot(length(names)==length(envl))
 	el <- list()
+	if(length(envl)==0)
+	{
+		warning("No environments matched in loadEnvironmentList")
+		return(NULL)
+	}
 	for (i in 1:length(envl)){
 		el[[i]] <- new.env()
 		load(envl[[i]], el[[i]])
