@@ -129,7 +129,7 @@ Ignore += *.ld.tex
 	latexdiff $*.tex.*.oldfile $< > $@
 
 %.pd: %
-	$(CP) $< $(pushdir)
+	$(CP) $< $(pushdir) || $(CP) $< ~/Downloads
 
 %.pdown: %
 	$(CP) $< ~/Downloads/
@@ -143,6 +143,9 @@ Ignore += *.ld.tex
 	$(MAKE) $* > $*.makelog
 
 %.makelog: %.log ;
+
+vimclean:
+	perl -wf makestuff/vimclean.pl
 
 ## Jekyll stuff
 Ignore += jekyll.log

@@ -40,6 +40,7 @@ endif
 .PRECIOUS: %.Rout.csv
 %.Rout.csv: %.Rout ;
 
+## Delete this 2020 Jun 30 (Tue)
 %.Rout.pdf.excessive: %.Rout
 	$(RM) $@
 	touch $(call hiddenfile, $@)
