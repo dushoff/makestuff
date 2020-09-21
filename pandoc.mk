@@ -2,7 +2,7 @@
 ## 2019 Feb 12 (Tue)
 ## Quite a mess here; maybe legacy it and come up with a different name or structure 2020 Feb 15 (Sat)
 
-## -S for “smart” quotes (those quotes were a failed message to myself)
+## -S for “smart” quotes
 %.html: %.md
 	pandoc -s -o $@ $<
 
