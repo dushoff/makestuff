@@ -12,5 +12,5 @@ mkfiles/:
 	cd $* && $(LN) ../mkfiles/$*.make Makefile
 
 %.project:
-	- git rm mkfiles/$*.make
+	- git rm mkfiles/$*.make && $(RM) $*/Makefile
 	$(CPF) makestuff/project.Makefile $*/Makefile

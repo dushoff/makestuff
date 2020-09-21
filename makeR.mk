@@ -13,6 +13,18 @@ define makeR
 	$(MVF) $(@:%.Rout=%.rtmp) $@
 endef
 
+define knitpdf
+	-$(RM) $@ $@.*
+	$(makeArgs)
+	Rscript -e 'library("rmarkdown"); render("$(word 1, $(filter %.rmd %.Rmd, $^))", output_format="pdf_document", output_file="$@")' $^
+endef
+
+define knithtml
+	-$(RM) $@ $@.*
+	$(makeArgs)
+	Rscript -e 'library("rmarkdown"); render("$(word 1, $(filter %.rmd %.Rmd, $^))", output_format="html_document", output_file="$@")' $^
+endef
+
 define run-R 
 	-$(RM) $@ $@.*
 	((R --vanilla --args $@ $^ < makestuff/wrapmake.R > $(@:%.Rout=%.rtmp)) 2> $(@:%.Rout=%.Rlog) && cat $(@:%.Rout=%.Rlog)) || (cat $(@:%.Rout=%.Rlog) && false)
@@ -98,6 +110,10 @@ $(1).rdata: $(1).Rout ; $(lscheck)
 endef
 
 $(foreach stem,$(expmakeR),$(eval $(call expdep,$(stem))))
+
+######################################################################
+
+## Does rmd listen to commandArgs?
 
 ######################################################################
 
