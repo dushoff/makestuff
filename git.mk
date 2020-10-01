@@ -423,7 +423,7 @@ testsetup:
 %.dirtest: % 
 	$(MAKE) $*.testsetup
 	$(MAKE) $*.testtarget
-	cd $* && $(MAKE)
+	cd $* && $(MAKE) target
 
 ## testsetup is before makestuff so we can use it to link makestuff sometimes
 %.testsetup: %
@@ -433,7 +433,7 @@ testsetup:
 	cd $* && $(MAKE) Makefile && $(MAKE) makestuff
 
 %.testtarget: %
-	$(CP) testtarget.mk $*/target.mk || $(CP) target.mk $@
+	$(CP) testtarget.mk $*/target.mk || $(CP) target.mk $*
 
 ## To open the dirtest final target when appropriate (and properly set up) 
 %.vdtest: %.dirtest
