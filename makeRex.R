@@ -8,6 +8,3 @@ sourceFiles()
 ## To save as .rda
 ## saveVars(y) ## OR
 ## saveEnviroment()
-
-## To save as .rds
-## rdsSave(x)
