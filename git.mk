@@ -374,9 +374,10 @@ dotdir: $(Sources)
 	git clone . $@
 
 ## Note cpdir really means directory (usually); dotdir means the whole repo
-## DON'T use for repos with Sources in subdirectories
+## DON'T use cpdir for repos with Sources in subdirectories
+## Do use for light applications focused on a particular directory
 ## DON'T use for service (i.e., makeR scripts)
-## Maybe don't use at all?
+## Do we have a solution for makeR scripts in subdirectories?
 cpdir: $(filter-out %.script, $(Sources))
 	-/bin/rm -rf $@
 	$(mkdir)
@@ -423,7 +424,7 @@ testsetup:
 %.dirtest: % 
 	$(MAKE) $*.testsetup
 	$(MAKE) $*.testtarget
-	cd $* && $(MAKE)
+	cd $* && $(MAKE) target
 
 ## testsetup is before makestuff so we can use it to link makestuff sometimes
 %.testsetup: %
@@ -433,7 +434,7 @@ testsetup:
 	cd $* && $(MAKE) Makefile && $(MAKE) makestuff
 
 %.testtarget: %
-	$(CP) testtarget.mk $*/target.mk || $(CP) target.mk $@
+	$(CP) testtarget.mk $*/target.mk || $(CP) target.mk $*
 
 ## To open the dirtest final target when appropriate (and properly set up) 
 %.vdtest: %.dirtest
