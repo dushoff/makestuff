@@ -7,14 +7,16 @@ $(1)/%: $(1) $(1)/Makefile
 	$(maketouch)
 endef
 
-## This is circular; what would happen if we used a wildcard scope before the percent rule?
 define coldmake
 $(1)/%.mk: ;
+$(1)/Makefile: ;
 $(1)/%: $(1)/Makefile 
 	$(maketouch)
 endef
 
-## Not clear whether this is better, worse, or doesn't chain as well 2019 Dec 16 (Mon)
+## Only expected to work for things that already exist!
+## Because that's what wildcard does
+## Could be deleted? 2020 Oct 15 (Thu)
 define oldmake
 $(1)/%.mk: ;
 $(filter-out $(1)/Makefile, $(wildcard $(1)/*)): $(1)/%: $(1)/Makefile 
