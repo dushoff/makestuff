@@ -3,8 +3,10 @@
 ## Quite a mess here; maybe legacy it and come up with a different name or structure 2020 Feb 15 (Sat)
 
 ## -S for “smart” quotes
+pandocs = pandoc -s -o $@ $<
+
 %.html: %.md
-	pandoc -s -o $@ $<
+	$(pandocs)
 
 ghh_r = pandoc -s -f gfm -o $@ $<
 %.gh.html: %.md
