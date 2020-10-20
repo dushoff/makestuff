@@ -71,6 +71,7 @@ forcelink = $(LNF) $< $@
 rcopy = $(CPR) $< $@
 rdcopy = $(CPR) $(dir) $@
 copy = $(CP) $< $@
+move = $(MV) $< $@
 hardcopy = $(CPF) $< $@
 allcopy =  $(CP) $^ $@
 ccrib = $(CP) $(crib)/$@ .
