@@ -44,11 +44,12 @@ Ignore += *.jax.html
 %.html: %.csv
 	csv2html -o $@ $<
 
+rmdh = Rscript -e "library(\"rmarkdown\"); render(\"$<\")"
 %.html: %.Rmd
-	Rscript -e "library(\"rmarkdown\"); render(\"$<\")"
+	$(rmdh)
 
 %.html: %.rmd
-	Rscript -e "library(\"rmarkdown\"); render(\"$<\")"
+	$(rmdh)
 
 .PRECIOUS: %.tex
 %.tex: %.Rnw
