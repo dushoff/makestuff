@@ -27,6 +27,7 @@ makestuff/Makefile:
 clonestuff:
 	git clone $(msrepo)/makestuff
 localstuff: 
+	cd .. && $(MAKE) makestuff
 	ln -s ../makestuff .
 bothstuff:
 	ls makestuff/Makefile
