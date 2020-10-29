@@ -34,7 +34,7 @@ bothstuff:
 
 -include makestuff/os.mk
 
-## -include makestuff/wrapR.mk
+## -include makestuff/makeR.mk
 
 -include makestuff/git.mk
 -include makestuff/visual.mk

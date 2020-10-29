@@ -49,7 +49,8 @@ difftouch = diff $1 $(dir $1).$(notdir $1) > /dev/null || touch $1
 touch = touch $@
 
 justmakethere = cd $(dir $@) && $(MAKE) $(notdir $@)
-makethere = cd $(dir $@) && $(MAKE) makestuff && $(MAKE) $(notdir $@)
+makedir = $(MAKE) $(dir $@)
+makethere = $(makedir) && cd $(dir $@) && $(MAKE) makestuff && $(MAKE) $(notdir $@)
 makestuffthere = cd $(dir $@) && $(MAKE) makestuff && $(MAKE) $(notdir $@)
 
 diff = $(DIFF) $^ > $@
@@ -70,6 +71,7 @@ forcelink = $(LNF) $< $@
 rcopy = $(CPR) $< $@
 rdcopy = $(CPR) $(dir) $@
 copy = $(CP) $< $@
+move = $(MV) $< $@
 hardcopy = $(CPF) $< $@
 allcopy =  $(CP) $^ $@
 ccrib = $(CP) $(crib)/$@ .
