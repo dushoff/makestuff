@@ -83,7 +83,7 @@ alldirs += makestuff
 malldirs = $(filter $(alldirs), $(wildcard *))
 all.time: exclude up.time $(malldirs:%=%.all)
 	touch $@
-	git status
+	git status .
 
 Ignore += *.all
 makestuff.all: %.all: %
@@ -93,12 +93,12 @@ makestuff.all: %.all: %
 %.all: 
 	$(MAKE) $* $*/Makefile && cd $* && $(MAKE) makestuff && $(MAKE) all.time
 
-do_amsync = (git commit -am "amsync"; git pull; git push; git status)
+do_amsync = (git commit -am "amsync"; git pull; git push; git status .)
 
 autocommit:
 	$(MAKE) exclude
 	$(git_check) || git commit -am "autocommit from git.mk"
-	git status
+	git status .
 
 amsync:
 	$(MAKE) exclude
