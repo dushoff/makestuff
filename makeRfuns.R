@@ -47,8 +47,8 @@ makeArgs <- function(){
 }
 ### Loading and reading
 
-## This is now deprecated; refer to these steps, but do them manually.
-## wrapmake encodes the current defaults for $(run-R) scripts
+## This is deprecated; you can do these steps manually
+## alternatively, use $(run-R) (which uses wrapmake.R)
 commandFiles <- function(fl = makeArgs(), gr=TRUE){
 	commandEnvironments(fl)
 	commandLists(fl)
@@ -183,6 +183,15 @@ loadEnvironments <- function(envl, parent=parent.frame())
 }
 
 #### Graphics
+
+startGraphics <- function(...
+	, target = makeArgs()[[1]]
+	, otype = pdf, ext = otype
+	, always = FALSE
+)
+if(always || !interactive()) {
+	makeGraphics(..., target, otype, ext)
+}
 
 makeGraphics <- function(...
 	, target = makeArgs()[[1]]
