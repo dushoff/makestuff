@@ -16,7 +16,7 @@ acrtarget:
 	$(MAKE) $<.acr
 
 gptarget:
-	$(MAKE) $<.gp
+	$(MAKE) $<.pdf.gp || $(MAKE) $<.gp
 
 pushtarget:
 	$(MAKE) $<.pd
