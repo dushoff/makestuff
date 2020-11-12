@@ -210,9 +210,20 @@ git_check = git diff-index --quiet HEAD --
 git_push:
 	$(mkdir)
 
+## Update everything that's already in the directory
 gpobjects = $(wildcard git_push/*)
 gptargets = $(gpobjects:git_push/%=%.gp)
 gptargets: $(gptargets)
+
+## 2020 Nov 11 (Wed) an alternative name for git_push
+## Not copying the all-update rule, since I don't use it
+%.op: % outputs
+	cp $* outputs
+	git add -f outputs/$*
+	touch Makefile
+
+outputs:
+	$(mkdir)
 
 ######################################################################
 
