@@ -1,6 +1,6 @@
 ## Retrofits and hacks
 
-## Bailed on getting the regex syntax write for the $. Watch out?
+## Bailed on getting the regex syntax right for the $. Watch out?
 ## Try [$$] if you're bored.
 ## This is a pain for scripts; see filemerge instead
 noms:
@@ -103,12 +103,19 @@ ddcopy = ($(LSN) && $(touch)) ||  $(rdcopy)
 	ls $* > $@
 %.lsd: %
 	ls -d $*/* > $@
- 
-## Track a directory from the parent directory, using <dir>.md
-%.filemerge: %.lsd %.md makestuff/filemerge.pl
+index.lsd: .
+	ls -d * > $@
+
+define merge_files
 	$(PUSH)
 	- $(DIFF) $*.md $@
 	$(MV) $@ $*.md
+endef
+ 
+## Track a directory from the parent directory, using <dir>.md
+## index.md for current file
+%.filemerge: %.lsd %.md makestuff/filemerge.pl
+	$(merge_files)
 
 %.voice: voice.pl %
 	$(PUSH)
