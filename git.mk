@@ -216,9 +216,9 @@ gptargets = $(gpobjects:git_push/%=%.gp)
 gptargets: $(gptargets)
 
 ## 2020 Nov 11 (Wed) an alternative name for git_push
-## Not copying the all-update rule, since I don't use it
+## Not copying the all-update rule here; outputs can have other purposes
 %.op: % outputs
-	cp $* outputs
+	- cp $* outputs
 	git add -f outputs/$*
 	touch Makefile
 
