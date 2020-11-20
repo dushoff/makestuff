@@ -129,6 +129,10 @@ endef
 %.filemerge: %.lsd %.md makestuff/filemerge.pl
 	$(merge_files)
 
+## WATCH OUT for the -
+%.filenames:
+	rename "s/[ ,?!-]+/_/g" $*/*.*
+
 %.voice: voice.pl %
 	$(PUSH)
 	$(MV) $@ $*

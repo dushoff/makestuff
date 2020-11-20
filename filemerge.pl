@@ -20,6 +20,7 @@ while(<>)
 {
 	last if /$separator/;
 	chomp;
+	s/^MISSING: //;
 	if(my ($fn) = m|^[\s*>#"]*([\w/]+\.\w+)|){
 		s/^/MISSING: / unless defined $ls{$fn};
 		$ls{$fn} = 1;
