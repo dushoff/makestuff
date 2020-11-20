@@ -130,7 +130,15 @@ loadEnvironmentList <- function(pat = NULL
 	return(el)
 }
 
+## FIXME Case-insensitive extensions
+## FIXME csvRead etc. as wrappers
 ## having readr:: means that readr must be in Imports: in the DESCRIPTION file
+tableRead <- function(pat=NULL, delim=" ", exts=c("csv", "CSV", "ssv", "scsv", "tsv")
+	, fl = makeArgs(), ...
+){
+	return(readr::read_delim(matchFile(pat, fl, exts), delim, ...))
+}
+
 csvRead <- function(pat=NULL, exts=c("csv", "CSV")
 	, fl = makeArgs(), ...
 ){
