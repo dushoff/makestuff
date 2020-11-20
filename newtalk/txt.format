@@ -16,7 +16,8 @@
 
 # Input stuff (should never require specific rules)
 
-FIXFIG %!
+FIX %!
+SPEAKER %!
 
 !SLIDESEP ----------------+
 !TAB \t
