@@ -392,7 +392,7 @@ dotdir: $(Sources)
 cpdir: $(filter-out %.script, $(Sources))
 	-/bin/rm -rf $@
 	$(mkdir)
-	cp $^ $@
+	cp -r $^ $@
 
 ## Still working on rev-parse line
 %.branchdir: $(Sources)
