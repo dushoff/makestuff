@@ -10,6 +10,7 @@ my %ls;
 while(<LS>)
 {
 	chomp;
+	next unless /[.]/;
 	$ls{$_} = 0;
 }
 
