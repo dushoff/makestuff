@@ -17,6 +17,7 @@ while(<LS>)
 ## Look for filenames in md file; note them as present or missing
 ## filename should be the first "word" thing on the line, and should have a .
 ## Directories are confusing me now
+## Use a single quote to "escape" for files not in target directory
 while(<>)
 {
 	last if /$separator/;
