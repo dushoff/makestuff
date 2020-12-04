@@ -21,9 +21,9 @@ while(<>)
 {
 	last if /$separator/;
 	chomp;
-	s/^MISSING: //;
-	if(my ($fn) = m|^[\s*>#"]*([\w/]+\.\w+)|){
-		s/^/MISSING: / unless defined $ls{$fn};
+	s/^MISSING[^:]*: //;
+	if(my ($fn) = m|^[\s*>#"*]*([\w/.]+\.\w+)|){
+		s/^/MISSING $fn: / unless defined $ls{$fn};
 		$ls{$fn} = 1;
 	}
 	say;
