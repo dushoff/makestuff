@@ -44,6 +44,10 @@ Ignore += *.final.*
 %.final.tex: %.txt beamer.tmp final.txt.fmt $(talkdir)/lect.pl
 	$(PUSH)
 
+Ignore += *.talk.*
+%.talk.pdf: %.final.pdf %.draft.pdf
+	$(pdfcat)
+
 Ignore += *.draft.*
 .PRECIOUS: %.draft.tex
 %.draft.tex: %.txt beamer.tmp draft.txt.fmt $(talkdir)/lect.pl
