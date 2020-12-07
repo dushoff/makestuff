@@ -2,6 +2,10 @@ ifndef PUSHSTAR
 include makestuff/perl.def
 endif
 
+ifndef talkdir
+include makestuff/newtalk.def
+endif
+
 Ignore += talkdir
 
 Ignore += *.txt.fmt txt.format
