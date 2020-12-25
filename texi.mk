@@ -57,3 +57,4 @@ Ignore += *.biblog *.log *.aux .*.aux *.blg *.bbl *.bcf
 Ignore += *.nav *.snm *.toc
 Ignore += *.run.xml
 Ignore += *.tex.* *.subdeps *.makedeps
+Ignore += *.deps.pdf
