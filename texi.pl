@@ -7,6 +7,7 @@ my $basename = $ARGV[0];
 
 $basename =~ s/\.tex$//;
 my $target =  "$basename.tex.deps";
+my $mtarget =  "$basename.subdeps";
 
 ### Read and parse
 my $f = <>;
@@ -50,7 +51,7 @@ while ($f =~ s/\\(?:bibliography|addbibresource)\s*{(.*?)}//){
 ######################################################################
 ### Write rules
 
-say "$target: ; touch \$@";
+say "$target $mtarget: ; touch \$@";
 say"";
 
 ## Directories
@@ -74,12 +75,15 @@ if (%graphics){
 ## Inputs
 if (%inputs){
 	say "$target: ", join " ", keys %inputs;
-	my @deps = map {s|.tex$|.makedeps|; $_} keys %inputs;
 
 	# Don't try to recursively deal with tex dependencies across directories
 	# Yet
+	my @deps = keys %inputs;
 	@deps = grep(!/\//, @deps); 
-	say "$target: ", join " ", @deps if @deps;
+	if (@deps){
+		say "$mtarget: " . join " ", map {s|.tex$|.makedeps|; $_} @deps;
+		say "$target: " . join " ", map {s|.makedeps$|.tex.deps|; $_} @deps;
+	}
 	say"";
 }
 

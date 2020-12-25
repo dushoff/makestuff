@@ -32,6 +32,7 @@ endif
 
 # A phony target (this is how .tex.deps is "really" made)
 %.makedeps: %.tex.mk %.tex
+	$(MAKE) -f $< -f Makefile $*.subdeps
 	$(MAKE) -f $< -f Makefile $*.tex.deps
 
 ## Must not exist!
@@ -41,7 +42,17 @@ makedeps: ;
 %.tex.mk: %.tex 
 	perl -wf makestuff/texi.pl $< > $@
 
+## Include logic is still a bit tangled (sad face)
+
 ## Current recompiling logic depends on this, and may lead to some extra work
 ## The simple fix didn't work (texi wasn't smart enough??)
 %.bbl: %.tex $(wildcard *.bib)
 	($(bibtex)) || ($(RM) $@ && false)
+
+texfiles = $(wildcard *.tex)
+Ignore += $(texfiles:tex=pdf) $(texfiles:tex=out)
+
+## These direct exclusions can be replaced by fancier rules above if necessary
+Ignore += *.biblog *.log *.aux .*.aux *.blg *.bbl *.bcf 
+Ignore += *.nav *.snm *.toc
+Ignore += *.run.xml
