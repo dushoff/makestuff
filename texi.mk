@@ -49,7 +49,7 @@ makedeps: ;
 	($(bibtex)) || ($(RM) $@ && false)
 
 %.aux: %.tex
-	$(latexonly)
+	$(latex) $<
 
 texfiles = $(wildcard *.tex)
 Ignore += $(texfiles:tex=pdf)
