@@ -89,8 +89,8 @@ if (%inputs){
 
 ## Bib stuff
 if (%bibs){
-	## say "$target: $basename.bbl";
-	## say "$basename.bbl: " . join " ", keys %bibs, "\n";
-	say "$target: " . join " ", keys %bibs, "\n";
+	say "$target: $basename.bbl";
+	say "$basename.bbl: " . join " ", keys %bibs, "\n";
+	## say "$target: " . join " ", keys %bibs, "\n";
 	say"";
 }
