@@ -64,5 +64,6 @@ ifndef PUSH
 -include makestuff/perl.def
 endif
 
+.PRECIOUS: %_olddiff.tex
 %_olddiff.tex: %.tex.*.oldfile %.tex makestuff/latexdiff.pl
 	$(PUSH)
