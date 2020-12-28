@@ -45,11 +45,8 @@ makedeps: ;
 ## Include logic is still a bit tangled (sad face)
 
 ## We need ugly logic here because texi doesn't respond to changes in .bib
-%.bbl: %.tex %.aux $(wildcard *.bib)
+%.bbl: %.tex %.tex.pdf $(wildcard *.bib)
 	($(bibtex)) || ($(RM) $@ && false)
-
-%.aux: %.tex
-	$(latex) $<
 
 texfiles = $(wildcard *.tex)
 Ignore += $(texfiles:tex=pdf)
