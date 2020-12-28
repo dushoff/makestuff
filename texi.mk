@@ -57,3 +57,12 @@ Ignore += *.nav *.snm *.toc
 Ignore += *.run.xml
 Ignore += *.tex.* *.subdeps *.makedeps
 Ignore += *.deps.pdf
+
+### Doesn't quite fit here (or anywhere)
+
+ifndef PUSH
+-include makestuff/perl.def
+endif
+
+%_olddiff.tex: %.tex.*.oldfile %.tex makestuff/latexdiff.pl
+	$(PUSH)
