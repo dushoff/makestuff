@@ -4,6 +4,9 @@ R = R --vanilla
 PACKAGE = rRlinks
 VERSION := $(PACKAGE)_$(shell sed -n '/^Version: /s///p' ./DESCRIPTION)
 TARBALL := $(VERSION).tar.gz
+
+Ignore += $(TARBALL)
+
 ## VERSION.var:
 
 Ignore += *.built
