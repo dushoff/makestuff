@@ -17,6 +17,7 @@ docs.built: R/*.R
 	echo "suppressWarnings(roxygen2::roxygenize(\".\",roclets = c(\"collate\", \"rd\")))" | $(R)
 	touch $@
 
+NAMESPACE: names.built ;
 names.built: R/*.R
 	echo "(roxygen2::roxygenize('.',roclets = 'namespace'))" | $(R)
 	touch $@
