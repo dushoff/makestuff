@@ -6,8 +6,8 @@ pngtarget:
 	$(MAKE) $<.png.go
 
 pdftarget:
-	$(MAKE) $<.pdf
-	$(MAKE) $<.pdf.go
+	$(MAKE) $<
+	($(MAKE) $<.pdf && $(MAKE) $<.pdf.go) || $(MAKE)  $<.go
 
 vtarget:
 	$(MAKE) $<.go
@@ -16,7 +16,7 @@ acrtarget:
 	$(MAKE) $<.acr
 
 gptarget:
-	$(MAKE) $<.gp
+	$(MAKE) $<.pdf.op || $(MAKE) $<.op
 
 pushtarget:
 	$(MAKE) $<.pd

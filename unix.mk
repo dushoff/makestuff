@@ -1,6 +1,6 @@
 ## Retrofits and hacks
 
-## Bailed on getting the regex syntax write for the $. Watch out?
+## Bailed on getting the regex syntax right for the $. Watch out?
 ## Try [$$] if you're bored.
 ## This is a pain for scripts; see filemerge instead
 noms:
@@ -84,6 +84,18 @@ rm = $(RM) $@
 pandoc = pandoc -o $@ $<
 pandocs = pandoc -s -o $@ $<
 
+######################################################################
+
+## Link to a resource directory (very specific)
+## It would be better to have global Drop logic (and to move this rule out of this file)
+ifndef Drop
+Drop = ~/Dropbox
+endif
+
+Droplink = (ls $(Drop)/resources/$(dirname) && $(LNF) $(Drop)/resources/$(dirname) $@) || (ls $(Drop)/$(dirname) && $(LNF) $(Drop)/$(dirname) $@)
+
+######################################################################
+
 ## To copy a directory, be recursive, but don't accidentally copy _into_ an existing directory
 ## Maybe think about using dir $@ in future when thinking more clearly
 ## Including for rcopy
@@ -103,12 +115,23 @@ ddcopy = ($(LSN) && $(touch)) ||  $(rdcopy)
 	ls $* > $@
 %.lsd: %
 	ls -d $*/* > $@
- 
-## Track a directory from the parent directory, using <dir>.md
-%.filemerge: %.lsd %.md makestuff/filemerge.pl
+index.lsd: .
+	ls -d * > $@
+
+define merge_files
 	$(PUSH)
 	- $(DIFF) $*.md $@
 	$(MV) $@ $*.md
+endef
+ 
+## Track a directory from the parent directory, using <dir>.md
+## index.md for current file
+%.filemerge: %.lsd %.md makestuff/filemerge.pl
+	$(merge_files)
+
+## WATCH OUT for the -
+%.filenames:
+	rename "s/[ ,?!-]+/_/g" $*/*.*
 
 %.voice: voice.pl %
 	$(PUSH)

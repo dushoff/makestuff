@@ -47,8 +47,8 @@ makeArgs <- function(){
 }
 ### Loading and reading
 
-## This is now deprecated; refer to these steps, but do them manually.
-## wrapmake encodes the current defaults for $(run-R) scripts
+## This is deprecated; you can do these steps manually
+## alternatively, use $(run-R) (which uses wrapmake.R)
 commandFiles <- function(fl = makeArgs(), gr=TRUE){
 	commandEnvironments(fl)
 	commandLists(fl)
@@ -130,7 +130,15 @@ loadEnvironmentList <- function(pat = NULL
 	return(el)
 }
 
+## FIXME Case-insensitive extensions
+## FIXME csvRead etc. as wrappers
 ## having readr:: means that readr must be in Imports: in the DESCRIPTION file
+tableRead <- function(pat=NULL, delim=" ", exts=c("csv", "CSV", "ssv", "scsv", "tsv")
+	, fl = makeArgs(), ...
+){
+	return(readr::read_delim(matchFile(pat, fl, exts), delim, ...))
+}
+
 csvRead <- function(pat=NULL, exts=c("csv", "CSV")
 	, fl = makeArgs(), ...
 ){
@@ -183,6 +191,15 @@ loadEnvironments <- function(envl, parent=parent.frame())
 }
 
 #### Graphics
+
+startGraphics <- function(...
+	, target = makeArgs()[[1]]
+	, otype = pdf, ext = otype
+	, always = FALSE
+)
+if(always || !interactive()) {
+	makeGraphics(..., target, otype, ext)
+}
 
 makeGraphics <- function(...
 	, target = makeArgs()[[1]]
