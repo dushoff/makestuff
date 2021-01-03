@@ -13,12 +13,18 @@ Ignore += *.built
 
 pkgall: clean docs.built names.built pkgcheck.built
 
-docs.built: R/*.R
+docs.built: $(wildcard R/*.R)
 	echo "suppressWarnings(roxygen2::roxygenize(\".\",roclets = c(\"collate\", \"rd\")))" | $(R)
 	touch $@
 
+.Rbuildignore: 
+	cp ../.Rbuildignore $@ || touch $@
+
+DESCRIPTION: 
+	cp ../rpkgDescription $@ || touch $@
+
 NAMESPACE: names.built ;
-names.built: R/*.R
+names.built: $(wildcard R/*.R)
 	echo "(roxygen2::roxygenize('.',roclets = 'namespace'))" | $(R)
 	touch $@
 
