@@ -29,7 +29,10 @@ clonestuff:
 localstuff: 
 	cd .. && $(MAKE) makestuff
 	ln -s ../makestuff .
-bothstuff:
+flexstuff:
+	(cd .. && $(MAKE) makestuff && ln -s ../makestuff .) \
+	|| git clone $(msrepo)/makestuff
+checkstuff:
 	ls makestuff/Makefile
 
 -include makestuff/os.mk

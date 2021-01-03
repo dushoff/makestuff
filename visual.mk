@@ -6,8 +6,8 @@ pngtarget:
 	$(MAKE) $<.png.go
 
 pdftarget:
-	$(MAKE) $<.pdf
-	$(MAKE) $<.pdf.go
+	$(MAKE) $<
+	($(MAKE) $<.pdf && $(MAKE) $<.pdf.go) || $(MAKE)  $<.go
 
 vtarget:
 	$(MAKE) $<.go
