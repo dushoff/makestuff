@@ -1,4 +1,5 @@
 ## Much of this is cribbed from McMasterPandemic and glmmTMB
+## See makestuff/rpkg.md for explanations
 
 ######################################################################
 
@@ -19,6 +20,7 @@ Ignore += $(TARBALL)
 
 pkgall: clean rpkgbuild/docs rpkgbuild/names rpkgbuild/pkgcheck
 dinst: rpkgbuild/quick
+pkgtest: rpkgbuild/pkgtest
 
 ######################################################################
 
