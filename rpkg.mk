@@ -32,6 +32,12 @@ DESCRIPTION:
 
 ######################################################################
 
+Sources += DESCRIPTION .Rbuildignore NAMESPACE
+Sources += $(wildcard R/*.R)
+Sources += $(wildcard man/*.Rd)
+
+######################################################################
+
 ## Tracking directory
 
 Ignore += rpkgbuild/
