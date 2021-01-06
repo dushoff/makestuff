@@ -19,7 +19,7 @@ Ignore += $(TARBALL)
 ## Shortcuts
 
 pkgall: rpkgbuild/docs rpkgbuild/names rpkgbuild/pkgcheck
-dinst: rpkgbuild/quick
+quickinstall: rpkgbuild/quick
 pkgtest: rpkgbuild/pkgtest
 
 ######################################################################
