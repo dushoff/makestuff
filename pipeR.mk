@@ -6,7 +6,7 @@ define makeArgs
 	echo >> $@.args
 endef
 
-define makeRout
+define pipeR
 	-$(RM) $@ $@.*
 	$(makeArgs)
 	((R --vanilla --args $@ $^ < $(word 1, $(filter %.R, $^)) > $(@:%.Rout=%.rtmp)) 2> $(@:%.Rout=%.Rlog) && cat $(@:%.Rout=%.Rlog)) || (cat $(@:%.Rout=%.Rlog) && false)
@@ -14,7 +14,7 @@ define makeRout
 endef
 
 ## Back-compatility
-makeR=$(makeRout)
+makeR=$(pipeR)
 
 define knitpdf
 	-$(RM) $@ $@.*
