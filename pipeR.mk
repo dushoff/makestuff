@@ -43,7 +43,7 @@ endif
 ifdef autopipeR
 .PRECIOUS: %.Rout
 %.Rout: %.R
-	$(pipeR)
+	$(makeRout)
 endif
 
 ## If no recipe, then this doesn't work
