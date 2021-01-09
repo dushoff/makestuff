@@ -28,22 +28,24 @@ define knithtml
 	Rscript -e 'library("rmarkdown"); render("$(word 1, $(filter %.rmd %.Rmd, $^))", output_format="html_document", output_file="$@")' $^
 endef
 
-define run-R 
+define wrapR
 	-$(RM) $@ $@.*
-	((R --vanilla --args $@ $^ < makestuff/wrapmake.R > $(@:%.Rout=%.rtmp)) 2> $(@:%.Rout=%.Rlog) && cat $(@:%.Rout=%.Rlog)) || (cat $(@:%.Rout=%.Rlog) && false)
+	((R --vanilla --args $@ $^ < makestuff/wrappipeR.R > $(@:%.Rout=%.rtmp)) 2> $(@:%.Rout=%.Rlog) && cat $(@:%.Rout=%.Rlog)) || (cat $(@:%.Rout=%.Rlog) && false)
 	$(MVF) $(@:%.Rout=%.rtmp) $@
 endef
+
+run-R = wrapR
 
 ifdef autowrapR
 .PRECIOUS: %.Rout
 %.Rout: %.R
-	$(run-R)
+	$(wrapR)
 endif
 
 ifdef autopipeR
 .PRECIOUS: %.Rout
 %.Rout: %.R
-	$(makeRout)
+	$(pipeR)
 endif
 
 ## If no recipe, then this doesn't work
