@@ -80,17 +80,28 @@ Ignore += *.Rds *.rds
 
 ######################################################################
 
-## Horrible eval rules
+## Eval rules for implicit dependencies
 ## These are necessary so that we can chain through .rda and other products
 ## but specify dependencies centrally through .Rout
 
-define impdep
+define impdep_r
 %.$(1).rda: %.$(1).Rout ; $(lscheck)
 %.$(1).rdata: %.$(1).Rout ; $(lscheck)
 .PRECIOUS: %.$(1).rdata %.$(1).rda %.$(1).Rout
 endef
 
-$(foreach stem,$(impmakeR),$(eval $(call impdep,$(stem))))
+impmakeR += $(pipeRimplicit)
+$(foreach stem,$(impmakeR),$(eval $(call impdep_r,$(stem))))
+
+## Eval rules for "described" pdf files
+define pipedesc_r
+$(1).%.pdf: $(1).Rout ; $(lscheck)
+Ignore += $(1).*.pdf
+endef
+
+$(foreach stem,$(pipeRdesc),$(eval $(call pipedesc_r,$(stem))))
+
+######################################################################
 
 ## Deleting some rules that may be needed for make3?
 ## See makeR.mk
