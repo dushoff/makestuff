@@ -16,8 +16,10 @@ Ignore
 
 .gitignore is overrated
 
-makestuff no longer messes with .ignore or .gitignore
+makestuff no uses .ignore or .gitignore natively
 
 Things to ignore for a particular project (or a particular makestuff makefile) go into the `Ignore` variable, and then are put into an exclude file (see exclude rule)
 
 Things to ignore everywhere (or for someone's workflow) go into a personal ignore file (see ignore.config rule)
+
+To get along with Muggles, there is a rule 

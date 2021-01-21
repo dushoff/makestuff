@@ -131,9 +131,6 @@ makestuff.pullstuff: makestuff.pull ;
 
 ######################################################################
 
-
-## Bridge rules maybe? Eventually this should be part of all.time
-## and all.time does not need to be part of rup
 all.exclude: makestuff.exclude $(malldirs:%=%.allexclude) exclude ;
 makestuff.allexclude: ;
 %.allexclude:
@@ -392,7 +389,7 @@ dotdir: $(Sources)
 cpdir: $(filter-out %.script, $(Sources))
 	-/bin/rm -rf $@
 	$(mkdir)
-	cp $^ $@
+	cp -r $^ $@
 
 ## Still working on rev-parse line
 %.branchdir: $(Sources)
