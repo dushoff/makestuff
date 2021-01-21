@@ -1,7 +1,7 @@
 use strict;
 use 5.10.0;
 
-my $separator = "### Untracked files ###";
+my $separator = "\n### Untracked files ###\n";
 
 open(LS,  "<", shift @ARGV);
 
