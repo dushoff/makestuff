@@ -36,7 +36,7 @@ Ignore += commit.time commit.default
 commit.time: $(Sources)
 	$(MAKE) exclude
 	-git add -f $? $(trackedTargets)
-	(cat ~/.commitnow > $@ && echo " ~/.commitnow" >> $@) || echo Autocommit > $@
+	(head -1 ~/.commitnow > $@ && echo " ~/.commitnow" >> $@) || echo Autocommit > $@
 	echo "## $(CURDIR)" >> $@
 	!(git commit --dry-run >> $@) || (perl -pi -e 's/^/#/ unless $$.==1' $@ && $(MSEDIT))
 	$(git_check) || (perl -ne 'print unless /#/' $@ | git commit -F -)
@@ -131,9 +131,6 @@ makestuff.pullstuff: makestuff.pull ;
 
 ######################################################################
 
-
-## Bridge rules maybe? Eventually this should be part of all.time
-## and all.time does not need to be part of rup
 all.exclude: makestuff.exclude $(malldirs:%=%.allexclude) exclude ;
 makestuff.allexclude: ;
 %.allexclude:
@@ -210,9 +207,20 @@ git_check = git diff-index --quiet HEAD --
 git_push:
 	$(mkdir)
 
+## Update everything that's already in the directory
 gpobjects = $(wildcard git_push/*)
 gptargets = $(gpobjects:git_push/%=%.gp)
 gptargets: $(gptargets)
+
+## 2020 Nov 11 (Wed) an alternative name for git_push
+## Not copying the all-update rule here; outputs can have other purposes
+%.op: % outputs
+	- cp $* outputs
+	git add -f outputs/$*
+	touch Makefile
+
+outputs:
+	$(mkdir)
 
 ######################################################################
 
@@ -381,7 +389,7 @@ dotdir: $(Sources)
 cpdir: $(filter-out %.script, $(Sources))
 	-/bin/rm -rf $@
 	$(mkdir)
-	cp $^ $@
+	cp -r $^ $@
 
 ## Still working on rev-parse line
 %.branchdir: $(Sources)

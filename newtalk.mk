@@ -2,6 +2,10 @@ ifndef PUSHSTAR
 include makestuff/perl.def
 endif
 
+ifndef talkdir
+include makestuff/newtalk.def
+endif
+
 Ignore += talkdir
 
 Ignore += *.txt.fmt txt.format
@@ -43,6 +47,10 @@ Ignore += *.final.*
 .PRECIOUS: %.final.tex
 %.final.tex: %.txt beamer.tmp final.txt.fmt $(talkdir)/lect.pl
 	$(PUSH)
+
+Ignore += *.talk.*
+%.talk.pdf: %.final.pdf %.draft.pdf
+	$(pdfcat)
 
 Ignore += *.draft.*
 .PRECIOUS: %.draft.tex
