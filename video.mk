@@ -1,5 +1,8 @@
-## Rules for making and using concat
+## Rules for making and using concat in ffmpeg
 ## Work on comb.txt depedencies combine * and %?
+
+Ignore += *.mp4 *.comb.txt
+
 .SECONDEXPANSION:
 %.comb.txt: $$(wildcard $$*.?.mp4)
 	ls $*.?.mp4 | perl -npe "s/.*/file '$$&'/" >  $@
