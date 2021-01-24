@@ -186,5 +186,8 @@ killserve:
 %.tod: %
 	$(CP) $< ~/Downloads
 
+%.downlink:
+	cd ~/Downloads && ln -s $(CURDIR)/$* .
+
 %.var:
 	@echo $($*)
