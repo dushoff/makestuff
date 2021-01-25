@@ -22,7 +22,7 @@ pushtarget:
 	$(MAKE) $<.pd
 
 dtarget:
-	$(MAKE) $(target:%=%.downlink)
+	$(MAKE) $(target:%=%.ldown)
 
 olddtarget:
 	$(MAKE) pushdir=~/Downloads/ pushtarget

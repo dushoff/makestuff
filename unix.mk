@@ -159,6 +159,9 @@ Ignore += *.ld.tex
 %.pdown: %
 	$(CP) $< ~/Downloads/
 
+%.ldown:
+	cd ~/Downloads && ln -s $(CURDIR)/$* . || touch $*
+
 %.pushpush: %
 	$(CP) $< $(pushdir)
 	cd $(pushdir) && make remotesync
@@ -185,9 +188,6 @@ killserve:
 ## Convenience
 %.tod: %
 	$(CP) $< ~/Downloads
-
-%.downlink:
-	cd ~/Downloads && ln -s $(CURDIR)/$* .
 
 %.var:
 	@echo $($*)
