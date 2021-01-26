@@ -1,7 +1,7 @@
 use strict;
 use 5.10.0;
 
-my $separator = "### Untracked files ###";
+my $untrack_string = "\n### Untracked files ###\n";
 
 open(LS,  "<", shift @ARGV);
 
@@ -20,11 +20,11 @@ while(<LS>)
 ## Use a single quote to "escape" for files not in target directory
 while(<>)
 {
-	last if /$separator/;
+	last if /$untrack_string/;
 	chomp;
-	s/^MISSING[^:]*: //;
+	s/MISSING[^:]*: //;
 	if(my ($fn) = m|^[\s*>#"*]*([\w/.]+\.\w+)|){
-		s/^/MISSING $fn: / unless defined $ls{$fn};
+		s/[^\s#*]/MISSING: $&/ unless defined $ls{$fn};
 		$ls{$fn} = 1;
 	}
 	say;
@@ -34,9 +34,9 @@ while(<>)
 my $sep=0;
 foreach my $fn (keys %ls){
 	if ($ls{$fn} == 0){
-		say $separator unless $sep++;
-		say $fn;
-		$fn =~ s|.*(^[\w/]+\.\w+).*|$1|;
+		say $untrack_string unless $sep++;
+		say "* $fn";
+		## $fn =~ s|.*(^[\w/]+\.\w+).*|$1|;
 		## say "$fn\n";
 	}
 }
