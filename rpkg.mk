@@ -18,8 +18,8 @@ Ignore += $(TARBALL)
 
 ## Shortcuts
 
-pkgall: clean rpkgbuild/docs rpkgbuild/names rpkgbuild/pkgcheck
-dinst: rpkgbuild/quick
+pkgall: rpkgbuild/docs rpkgbuild/names rpkgbuild/pkgcheck
+quickinstall: rpkgbuild/quick
 pkgtest: rpkgbuild/pkgtest
 
 ######################################################################
@@ -52,6 +52,7 @@ rpkgbuild/docs: $(wildcard R/*.R)
 	echo "suppressWarnings(roxygen2::roxygenize(\".\",roclets = c(\"collate\", \"rd\")))" | $(R)
 	touch $@
 
+tarball: $(TARBALL)
 $(TARBALL): NAMESPACE $(wildcard R/*.*)
 	$(R) CMD build .
 
@@ -70,7 +71,9 @@ rpkgbuild/pkgcheck: rpkgbuild/install
 	touch $@
 
 rpkgbuild/install: $(TARBALL)
+	$(MAKE) histclean
 	export NOT_CRAN=true; $(R) CMD INSTALL --preclean $<
+	@touch $(TARBALL)
 	@touch $@
 	@touch rpkgbuild/quick
 
@@ -78,5 +81,5 @@ rpkgbuild/quick: NAMESPACE $(wildcard R/*.*)
 	R CMD INSTALL .
 	@touch $@
 
-clean:
+histclean:
 	find . \( -name "\.#*" -o -name "*~" -o -name ".Rhistory" \) -exec rm {} \;

@@ -22,9 +22,12 @@ pushtarget:
 	$(MAKE) $<.pd
 
 dtarget:
+	$(MAKE) $(target:%=%.ldown)
+
+olddtarget:
 	$(MAKE) pushdir=~/Downloads/ pushtarget
 
-## Not tested; could also try adding deptarget: $(target) and using $<
+## This was made for texdeps; how does it work for texi? or is it needed?
 deptarget:
 	$(MAKE) $(target:.pdf=.deps)
 

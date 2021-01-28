@@ -36,7 +36,7 @@ Ignore += commit.time commit.default
 commit.time: $(Sources)
 	$(MAKE) exclude
 	-git add -f $? $(trackedTargets)
-	(cat ~/.commitnow > $@ && echo " ~/.commitnow" >> $@) || echo Autocommit > $@
+	(head -1 ~/.commitnow > $@ && echo " ~/.commitnow" >> $@) || echo Autocommit > $@
 	echo "## $(CURDIR)" >> $@
 	!(git commit --dry-run >> $@) || (perl -pi -e 's/^/#/ unless $$.==1' $@ && $(MSEDIT))
 	$(git_check) || (perl -ne 'print unless /#/' $@ | git commit -F -)
@@ -131,9 +131,6 @@ makestuff.pullstuff: makestuff.pull ;
 
 ######################################################################
 
-
-## Bridge rules maybe? Eventually this should be part of all.time
-## and all.time does not need to be part of rup
 all.exclude: makestuff.exclude $(malldirs:%=%.allexclude) exclude ;
 makestuff.allexclude: ;
 %.allexclude:
