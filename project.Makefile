@@ -1,3 +1,4 @@
+## project.Makefile
 ## This is …
 
 current: target
@@ -37,7 +38,7 @@ checkstuff:
 
 -include makestuff/os.mk
 
-## -include makestuff/makeR.mk
+## -include makestuff/pipeR.mk
 
 -include makestuff/git.mk
 -include makestuff/visual.mk
