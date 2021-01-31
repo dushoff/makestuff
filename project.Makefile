@@ -1,3 +1,4 @@
+## project.Makefile
 ## This is …
 
 current: target
@@ -29,15 +30,18 @@ clonestuff:
 localstuff: 
 	cd .. && $(MAKE) makestuff
 	ln -s ../makestuff .
-flexstuff:
-	(cd .. && $(MAKE) makestuff && ln -s ../makestuff .) \
-	|| git clone $(msrepo)/makestuff
 checkstuff:
 	ls makestuff/Makefile
 
+
+## not tested
+flexstuff:
+	((cd .. && $(MAKE) makestuff) && ln -s ../makestuff .) \
+	|| git clone $(msrepo)/makestuff
+
 -include makestuff/os.mk
 
-## -include makestuff/makeR.mk
+## -include makestuff/pipeR.mk
 
 -include makestuff/git.mk
 -include makestuff/visual.mk
