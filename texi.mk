@@ -50,6 +50,7 @@ makedeps: ;
 
 texfiles = $(wildcard *.tex)
 Ignore += $(texfiles:tex=pdf)
+Ignore += $(texfiles:tex=out)
 
 ## These direct exclusions can be replaced by fancier rules above if necessary
 Ignore += *.biblog *.log *.aux .*.aux *.blg *.bbl *.bcf 
