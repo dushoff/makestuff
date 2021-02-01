@@ -36,12 +36,14 @@ endef
 
 run-R = wrapR
 
+## Legacy
 ifdef autowrapR
 .PRECIOUS: %.Rout
 %.Rout: %.R
 	$(wrapR)
 endif
 
+## A reasonable default
 ifdef autopipeR
 .PRECIOUS: %.Rout
 %.Rout: %.R

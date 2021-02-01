@@ -62,7 +62,8 @@ Makefile: allsteps.mk
 allsteps.mk: $(stepmks)
 	$(cat)
 
-webpix/%: allsteps.mk webpix
+webpix/%: allsteps.mk
+	$(MAKE) webpix
 	$(MAKE) -f $< $@
 
 my_images/%: my_images
