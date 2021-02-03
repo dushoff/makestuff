@@ -2,9 +2,11 @@
 ## 2019 Feb 12 (Tue)
 ## Quite a mess here; maybe legacy it and come up with a different name or structure 2020 Feb 15 (Sat)
 
-## -S for “smart” quotes (those quotes were a failed message to myself)
+## -S for “smart” quotes
+pandocs = pandoc -s -o $@ $<
+
 %.html: %.md
-	pandoc -s -o $@ $<
+	$(pandocs)
 
 ghh_r = pandoc -s -f gfm -o $@ $<
 %.gh.html: %.md
@@ -42,11 +44,12 @@ Ignore += *.jax.html
 %.html: %.csv
 	csv2html -o $@ $<
 
+rmdh = Rscript -e "library(\"rmarkdown\"); render(\"$<\")"
 %.html: %.Rmd
-	Rscript -e "library(\"rmarkdown\"); render(\"$<\")"
+	$(rmdh)
 
 %.html: %.rmd
-	Rscript -e "library(\"rmarkdown\"); render(\"$<\")"
+	$(rmdh)
 
 .PRECIOUS: %.tex
 %.tex: %.Rnw

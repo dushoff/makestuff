@@ -11,21 +11,27 @@ targetname <- function(ext="", suffix="\\.Rout", fn = makeArgs()[[1]]){
 	return(sub(suffix, ext, fn))
 }
 
-## Just selects extensions, not clear that it's good (used for legacy)
-fileSelect <- function(fl = makeArgs(), exts)
+## Improved 2020 Sep 10 (Thu)
+## Argument order is still kind of legacy
+fileSelect <- function(fl = makeArgs(), exts=NULL, pat=NULL)
 {
-	outl <- character(0)
-	for (ext in exts){
-		if(grepl("\\.", ext))
-			warning("Extension", ext, "starts with . in fileSelect")
-		ss <- paste0("\\.", ext, "$")
-		outl <- c(outl, grep(ss, fl, value=TRUE))
+	if(!is.null(exts)){
+		outl <- character(0)
+		for (ext in exts){
+			if(grepl("\\.", ext))
+				warning("Extension", ext, "starts with . in fileSelect")
+			ss <- paste0("\\.", ext, "$")
+			outl <- c(outl, grep(ss, fl, value=TRUE))
+		}
+		fl <- outl
 	}
-	return(outl)
+	if (!is.null(pat))
+		fl <- grep(pat, fl, value=TRUE)
+	return(fl)
 }
 
-matchFile <-  function(pat, fl = makeArgs()){
-	f <- grep(pat, fl, value=TRUE)
+matchFile <-  function(pat, fl = makeArgs(), exts=NULL){
+	f <- fileSelect(fl, exts, pat)
 	if (length(f) == 0) stop("No match for ", pat, " in ", fl)
 	if (length(f) > 1) stop("More than one match for ", pat, " in ", fl)
 	return(f)
@@ -41,8 +47,8 @@ makeArgs <- function(){
 }
 ### Loading and reading
 
-## This is now deprecated; refer to these steps, but do them manually.
-## wrapmake encodes the current defaults for $(run-R) scripts
+## This is deprecated; you can do these steps manually
+## alternatively, use $(run-R) (which uses wrapmake.R)
 commandFiles <- function(fl = makeArgs(), gr=TRUE){
 	commandEnvironments(fl)
 	commandLists(fl)
@@ -61,10 +67,9 @@ sourceFiles <- function(fl=makeArgs()
 	}
 }
 
-## What are the advantages of .GlobalEnv vs parent.frame()?
 ## Read environments from a file list to a single environment
 commandEnvironments <- function(fl = makeArgs()
-	, exts = c("RData", "rda", "rdata"), parent=.GlobalEnv
+	, exts = c("RData", "rda", "rdata"), parent=parent.frame()
 )
 {
 	envl <- fileSelect(fl, exts)
@@ -100,17 +105,23 @@ loadRdsList <- function(fl = makeArgs()
 	return(rl)
 }
 
-loadEnvironmentList <- function(fl = makeArgs()
-	, exts = c("RData", "rda", "rdata"), names=NULL
-	, trim = "\\.[^.]*$"
+loadEnvironmentList <- function(pat = NULL
+	, fl = makeArgs()
+	, exts = c("RData", "rda", "rdata")
+	, names=NULL, trim = "\\.[^.]*$"
 )
 {
-	envl <- fileSelect(fl, exts)
+	envl <- fileSelect(fl, exts, pat)
 	if(is.null(names)){
 		names = sub(trim, "", envl)
 	}
 	stopifnot(length(names)==length(envl))
 	el <- list()
+	if(length(envl)==0)
+	{
+		warning("No environments matched in loadEnvironmentList")
+		return(NULL)
+	}
 	for (i in 1:length(envl)){
 		el[[i]] <- new.env()
 		load(envl[[i]], el[[i]])
@@ -119,31 +130,42 @@ loadEnvironmentList <- function(fl = makeArgs()
 	return(el)
 }
 
+## FIXME Case-insensitive extensions
+## FIXME csvRead etc. as wrappers
 ## having readr:: means that readr must be in Imports: in the DESCRIPTION file
-##' @importFrom readr read_csv  ## this is redundant with 'readr::'
-csvRead <- function(pat="csv$", fl = makeArgs(), ...){
-	return(readr::read_csv(matchFile(pat, fl), ...))
+tableRead <- function(pat=NULL, delim=" ", exts=c("csv", "CSV", "ssv", "scsv", "tsv")
+	, fl = makeArgs(), ...
+){
+	return(readr::read_delim(matchFile(pat, fl, exts), delim, ...))
 }
 
-tsvRead <- function(pat="tsv$", fl = commandArgs(TRUE), ...){
-	return(readr::read_tsv(matchFile(pat, fl), ...))
+csvRead <- function(pat=NULL, exts=c("csv", "CSV")
+	, fl = makeArgs(), ...
+){
+	return(readr::read_csv(matchFile(pat, fl, exts), ...))
 }
 
-## This should take extensions and be less slick (make the list as a separate step)
-csvReadList <- function(pat, fl = makeArgs(), ...){
-	return(lapply(grep(pat, fl, value=TRUE)
+tsvRead <- function(pat=NULL, exts=c("tsv", "TSV")
+	, fl = makeArgs(), ...
+){
+	return(readr::read_tsv(matchFile(pat, fl, exts), ...))
+}
+
+## Not tested! Is it important?
+csvReadList <- function(pat=NULL, exts=c("csv", "CSV")
+	, fl = makeArgs(), ...
+	, names=NULL, trim = "\\.[^.]*$"
+){
+	fl <- fileSelect(fl, exts, pat)
+	if(is.null(names)){
+		names = sub(trim, "", fl)
+	}
+	stopifnot(length(names)==length(fl))
+	csvl <- lapply(fl
 		, function(fn){readr::read_csv(fn, ...)}
-	))
-}
-
-## Read rds lists from a file list to a single environment
-commandLists <- function(fl = makeArgs()
-	, exts = c("Rds", "rds"), parent=.GlobalEnv
-)
-{
-	varl <- fileSelect(fl, exts)
-	loadVarLists(varl, parent)
-	invisible(varl)
+	)
+	names(csvl) <- names
+	return(csvl)
 }
 
 ## Wrapper for legacy makefiles
@@ -160,30 +182,24 @@ legacyEnvironments <- function(fl = makeArgs()
 	invisible(envl)
 }
 
-## Read environments from a file list to separate places
-## NOT implemented
-
-## Load every environment found into GlobalEnv
-## This is the simple-minded default
-loadEnvironments <- function(envl, parent=.GlobalEnv)
+## Load a list of environments
+loadEnvironments <- function(envl, parent=parent.frame())
 {
 	for (env in envl){
 		load(env, parent)
 	}
 }
 
-## Load every list found into GlobalEnv
-## This is the efficient rds analogue of the simple-minded default
-## But it's not more efficient and should probably be deprecated
-loadVarLists <- function(varl, parent=parent.frame())
-{
-	for (v in varl){
-		l <- readRDS(v)
-    	list2env(l, envir=parent)
-	}
-}
-
 #### Graphics
+
+startGraphics <- function(...
+	, target = makeArgs()[[1]]
+	, otype = pdf, ext = otype
+	, always = FALSE
+)
+if(always || !interactive()) {
+	makeGraphics(..., target, otype, ext)
+}
 
 makeGraphics <- function(...
 	, target = makeArgs()[[1]]
@@ -209,22 +225,6 @@ saveVars <- function(..., target = targetname(), ext="rda"){
 
 rdsSave <- function(vname, target = targetname(), ext="rds"){
 	saveRDS(vname, file=paste(target, ext, sep="."))
-}
-
-saveList <-  function(..., target = targetname(), ext="rds"){
-	l <- list(...)
-	if(length(l)==0){
-		names <- objects(parent.frame())
-	} else {
-		names <- as.character(substitute(list(...)))[-1]
-	}
-
-	outl <- list()
-	for (n in names){
-		outl[[n]] <- get(n)
-	}
-	saveRDS(outl, file=paste(target, ext, sep="."))
-	return(invisible(names(outl)))
 }
 
 ### Output

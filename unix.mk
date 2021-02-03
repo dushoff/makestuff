@@ -1,6 +1,6 @@
 ## Retrofits and hacks
 
-## Bailed on getting the regex syntax write for the $. Watch out?
+## Bailed on getting the regex syntax right for the $. Watch out?
 ## Try [$$] if you're bored.
 ## This is a pain for scripts; see filemerge instead
 noms:
@@ -49,7 +49,8 @@ difftouch = diff $1 $(dir $1).$(notdir $1) > /dev/null || touch $1
 touch = touch $@
 
 justmakethere = cd $(dir $@) && $(MAKE) $(notdir $@)
-makethere = cd $(dir $@) && $(MAKE) makestuff && $(MAKE) $(notdir $@)
+makedir = $(MAKE) $(dir $@)
+makethere = $(makedir) && cd $(dir $@) && $(MAKE) makestuff && $(MAKE) $(notdir $@)
 makestuffthere = cd $(dir $@) && $(MAKE) makestuff && $(MAKE) $(notdir $@)
 
 diff = $(DIFF) $^ > $@
@@ -70,6 +71,7 @@ forcelink = $(LNF) $< $@
 rcopy = $(CPR) $< $@
 rdcopy = $(CPR) $(dir) $@
 copy = $(CP) $< $@
+move = $(MV) $< $@
 hardcopy = $(CPF) $< $@
 allcopy =  $(CP) $^ $@
 ccrib = $(CP) $(crib)/$@ .
@@ -81,6 +83,18 @@ lnf = $(LNF) $< $@
 rm = $(RM) $@
 pandoc = pandoc -o $@ $<
 pandocs = pandoc -s -o $@ $<
+
+######################################################################
+
+## Link to a resource directory (very specific)
+## It would be better to have global Drop logic (and to move this rule out of this file)
+ifndef Drop
+Drop = ~/Dropbox
+endif
+
+Droplink = (ls $(Drop)/resources/$(dirname) && $(LNF) $(Drop)/resources/$(dirname) $@) || (ls $(Drop)/$(dirname) && $(LNF) $(Drop)/$(dirname) $@)
+
+######################################################################
 
 ## To copy a directory, be recursive, but don't accidentally copy _into_ an existing directory
 ## Maybe think about using dir $@ in future when thinking more clearly
@@ -101,12 +115,23 @@ ddcopy = ($(LSN) && $(touch)) ||  $(rdcopy)
 	ls $* > $@
 %.lsd: %
 	ls -d $*/* > $@
- 
-## Track a directory from the parent directory, using <dir>.md
-%.filemerge: %.lsd %.md makestuff/filemerge.pl
+index.lsd: .
+	ls -d * > $@
+
+define merge_files
 	$(PUSH)
 	- $(DIFF) $*.md $@
 	$(MV) $@ $*.md
+endef
+ 
+## Track a directory from the parent directory, using <dir>.md
+## index.md for current file
+%.filemerge: %.lsd %.md makestuff/filemerge.pl
+	$(merge_files)
+
+## WATCH OUT for the -
+%.filenames:
+	rename "s/[ ,?!-]+/_/g" $*/*.*
 
 %.voice: voice.pl %
 	$(PUSH)
@@ -134,6 +159,9 @@ Ignore += *.ld.tex
 %.pdown: %
 	$(CP) $< ~/Downloads/
 
+%.ldown:
+	cd ~/Downloads && ln -s $(CURDIR)/$* . || touch $*
+
 %.pushpush: %
 	$(CP) $< $(pushdir)
 	cd $(pushdir) && make remotesync
@@ -143,6 +171,9 @@ Ignore += *.ld.tex
 	$(MAKE) $* > $*.makelog
 
 %.makelog: %.log ;
+
+vimclean:
+	perl -wf makestuff/vimclean.pl
 
 ## Jekyll stuff
 Ignore += jekyll.log

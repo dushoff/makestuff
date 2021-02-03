@@ -42,6 +42,15 @@ Looking at `makestuff/makeRfuns.R` and `makestuff/wrapmake.R` (see below) is a g
 
 **fixme**: add a non-legacy example??
 
+Compatibility
+=============
+
+If you want to work interactively (or want to work with someone who works interactively) you can grab code from the `.Rout.args` file associated with any target that you've made and put it at the top of your script. It should make the script work interactively, and should not hurt anything when the script is properly called from the command line (by make or any other pipeline that passes the right arguments).
+
+The callArgs command from the args file is _target-dependent_, meaning that you may need to change it when you want the same script to make a different target.
+
+To allow others to run non-interactively but without `make`, you can try making `target.makeR.script` (instead of `target.Rout`); this will echo the R commands (only) that make would use to make your target from scratch.
+
 Startup functions
 ==============
 
@@ -87,10 +96,8 @@ images
 objects
 * rds
 
-Problem
+Deep stuff
 =======
-
-2020 Jul 20 (Mon)
 
 Rout is the standard target and that's who we want to tell about the dependencies. But this means that things won't chain through .rda. So there are two choices:
 

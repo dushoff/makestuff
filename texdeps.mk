@@ -30,7 +30,7 @@ endif
 %.bbl: %.tex %.ltx
 	($(bibtex)) || ($(RM) $@ && false)
 
-# 	$(MAKE) -q -f .texdeps/$*.mk -f Makefile .texdeps/$*.out || $(MAKE) -n
+
 #	-$(MAKE) -f .texdeps/$*.mk -f Makefile .texdeps/$*.out
 
 .PRECIOUS: .texdeps/%.mk

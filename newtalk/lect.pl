@@ -241,11 +241,14 @@ foreach(@tex){
 		push @slide, $spec{EIZ} if defined $spec{EIZ};
 		$currlevel--;
 	}
- 
+
 	next if (@slide==0); # Don't print blank slide (if you can help it)
 	my $slide = join ("", @slide);
  
- 	# Reserved word NULLSLIDE disables the slide?
+ 	# Reserved word ENDTALK
+	last if $slide =~ /^\s*ENDTALK\b/;
+ 
+ 	# Reserved word NULLSLIDE
 	next if $slide =~ /^\s*NULLSLIDE\b/;
 	$slide =~ s/\bENDOFSLIDE\b.*//s;
  

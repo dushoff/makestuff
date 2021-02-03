@@ -18,6 +18,9 @@ Ignore += $(steps:.step=.html)
 	$(MAKE) -f $< -f makestuff/webtrans.mk thumbs
 	$(PUSHSTAR)
 
+webpix/%.png: webpix/%.svg
+	convert $< $@
+
 ## Digest files
 htmls =  $(steps:.step=.html)
 
@@ -59,7 +62,8 @@ Makefile: allsteps.mk
 allsteps.mk: $(stepmks)
 	$(cat)
 
-webpix/%: allsteps.mk webpix
+webpix/%: allsteps.mk
+	$(MAKE) webpix
 	$(MAKE) -f $< $@
 
 my_images/%: my_images

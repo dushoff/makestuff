@@ -36,7 +36,7 @@ Ignore += commit.time commit.default
 commit.time: $(Sources)
 	$(MAKE) exclude
 	-git add -f $? $(trackedTargets)
-	(cat ~/.commitnow > $@ && echo " ~/.commitnow" >> $@) || echo Autocommit > $@
+	(head -1 ~/.commitnow > $@ && echo " ~/.commitnow" >> $@) || echo Autocommit > $@
 	echo "## $(CURDIR)" >> $@
 	!(git commit --dry-run >> $@) || (perl -pi -e 's/^/#/ unless $$.==1' $@ && $(MSEDIT))
 	$(git_check) || (perl -ne 'print unless /#/' $@ | git commit -F -)
@@ -83,7 +83,7 @@ alldirs += makestuff
 malldirs = $(filter $(alldirs), $(wildcard *))
 all.time: exclude up.time $(malldirs:%=%.all)
 	touch $@
-	git status
+	git status .
 
 Ignore += *.all
 makestuff.all: %.all: %
@@ -93,12 +93,12 @@ makestuff.all: %.all: %
 %.all: 
 	$(MAKE) $* $*/Makefile && cd $* && $(MAKE) makestuff && $(MAKE) all.time
 
-do_amsync = (git commit -am "amsync"; git pull; git push; git status)
+do_amsync = (git commit -am "amsync"; git pull; git push; git status .)
 
 autocommit:
 	$(MAKE) exclude
 	$(git_check) || git commit -am "autocommit from git.mk"
-	git status
+	git status .
 
 amsync:
 	$(MAKE) exclude
@@ -131,9 +131,6 @@ makestuff.pullstuff: makestuff.pull ;
 
 ######################################################################
 
-
-## Bridge rules maybe? Eventually this should be part of all.time
-## and all.time does not need to be part of rup
 all.exclude: makestuff.exclude $(malldirs:%=%.allexclude) exclude ;
 makestuff.allexclude: ;
 %.allexclude:
@@ -210,9 +207,29 @@ git_check = git diff-index --quiet HEAD --
 git_push:
 	$(mkdir)
 
+## Update everything that's already in the directory
 gpobjects = $(wildcard git_push/*)
 gptargets = $(gpobjects:git_push/%=%.gp)
 gptargets: $(gptargets)
+
+## 2020 Nov 11 (Wed) an alternative name for git_push
+## Not copying the all-update rule here; outputs can have other purposes
+%.op: % outputs
+	- cp $* outputs
+	git add -f outputs/$*
+	touch Makefile
+
+outputs:
+	$(mkdir)
+
+## Do docs/ just like outputs?
+%.docs: % docs
+	- cp $* docs
+	git add -f docs/$*
+	touch Makefile
+
+docs:
+	$(mkdir)
 
 ######################################################################
 
@@ -375,10 +392,14 @@ dotdir: $(Sources)
 	git clone . $@
 
 ## Note cpdir really means directory (usually); dotdir means the whole repo
+## DON'T use cpdir for repos with Sources in subdirectories
+## Do use for light applications focused on a particular directory
+## DON'T use for service (i.e., makeR scripts)
+## Do we have a solution for makeR scripts in subdirectories?
 cpdir: $(filter-out %.script, $(Sources))
 	-/bin/rm -rf $@
 	$(mkdir)
-	cp $^ $@
+	cp -r $^ $@
 
 ## Still working on rev-parse line
 %.branchdir: $(Sources)
@@ -421,8 +442,9 @@ testsetup:
 %.dirtest: % 
 	$(MAKE) $*.testsetup
 	$(MAKE) $*.testtarget
-	cd $* && $(MAKE)
+	cd $* && $(MAKE) target
 
+## testsetup is before makestuff so we can use it to link makestuff sometimes
 %.testsetup: %
 	cd $* && $(MAKE) Makefile && $(MAKE) testsetup && $(MAKE) makestuff 
 
@@ -430,7 +452,7 @@ testsetup:
 	cd $* && $(MAKE) Makefile && $(MAKE) makestuff
 
 %.testtarget: %
-	$(CP) testtarget.mk $*/target.mk || $(CP) target.mk $@
+	$(CP) testtarget.mk $*/target.mk || $(CP) target.mk $*
 
 ## To open the dirtest final target when appropriate (and properly set up) 
 %.vdtest: %.dirtest

@@ -6,8 +6,8 @@ pngtarget:
 	$(MAKE) $<.png.go
 
 pdftarget:
-	$(MAKE) $<.pdf
-	$(MAKE) $<.pdf.go
+	$(MAKE) $<
+	($(MAKE) $<.pdf && $(MAKE) $<.pdf.go) || $(MAKE)  $<.go
 
 vtarget:
 	$(MAKE) $<.go
@@ -16,15 +16,18 @@ acrtarget:
 	$(MAKE) $<.acr
 
 gptarget:
-	$(MAKE) $<.gp
+	$(MAKE) $<.pdf.op || $(MAKE) $<.op
 
 pushtarget:
 	$(MAKE) $<.pd
 
 dtarget:
+	$(MAKE) $(target:%=%.ldown)
+
+olddtarget:
 	$(MAKE) pushdir=~/Downloads/ pushtarget
 
-## Not tested; could also try adding deptarget: $(target) and using $<
+## This was made for texdeps; how does it work for texi? or is it needed?
 deptarget:
 	$(MAKE) $(target:.pdf=.deps)
 
@@ -46,6 +49,7 @@ target.mk:
 ## do the above and open a vim_session
 %.vscreen: %.dir
 	cd $(dir $*) && $(MAKE) "$(notdir $*)" 
+	- cd $* && $(MAKE) vimclean
 	cd $* && screen -t "$*" bash -cl "vvs"
 
 ## Old-style vscreen (short names)
