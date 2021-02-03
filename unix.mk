@@ -159,6 +159,9 @@ Ignore += *.ld.tex
 %.pdown: %
 	$(CP) $< ~/Downloads/
 
+%.ldown:
+	cd ~/Downloads && ln -s $(CURDIR)/$* . || touch $*
+
 %.pushpush: %
 	$(CP) $< $(pushdir)
 	cd $(pushdir) && make remotesync

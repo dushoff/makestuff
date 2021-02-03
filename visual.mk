@@ -21,12 +21,12 @@ pushtarget:
 	$(MAKE) $<.pd
 
 dtarget:
+	$(MAKE) $(target:%=%.ldown)
+
+olddtarget:
 	$(MAKE) pushdir=~/Downloads/ pushtarget
 
 ## The $< paradigm is stupid; let's try something else 2021 Feb 02 (Tue)
-deptarget:
-	$(MAKE) $(target:.pdf=.deps)
-
 doctarget:
 	$(MAKE) $(target:%=%.docs)
 
