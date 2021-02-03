@@ -1,4 +1,3 @@
-
 ## Make things appear; some of it feels pretty Dushoff-specific
 
 pngtarget: 
@@ -24,9 +23,12 @@ pushtarget:
 dtarget:
 	$(MAKE) pushdir=~/Downloads/ pushtarget
 
-## Not tested; could also try adding deptarget: $(target) and using $<
+## The $< paradigm is stupid; let's try something else 2021 Feb 02 (Tue)
 deptarget:
 	$(MAKE) $(target:.pdf=.deps)
+
+doctarget:
+	$(MAKE) $(target:%=%.docs)
 
 target.mk:
 	$(CP) makestuff/newtarget.mk $@
