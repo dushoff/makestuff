@@ -222,6 +222,15 @@ gptargets: $(gptargets)
 outputs:
 	$(mkdir)
 
+## Do docs/ just like outputs?
+%.docs: % docs
+	- cp $* docs
+	git add -f docs/$*
+	touch Makefile
+
+docs:
+	$(mkdir)
+
 ######################################################################
 
 ## Redo in a more systematic way (like .branchdir)
