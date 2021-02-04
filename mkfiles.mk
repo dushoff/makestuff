@@ -13,7 +13,7 @@ mkfiles/%.make:
 mkfiles/:
 	$(mkdir)
 
-%/mkfile: 
+%.mkfile %/mkfile: 
 	$(MAKE) mkfiles/$*.make
 	cd $* && $(LN) ../mkfiles/$*.make Makefile
 
