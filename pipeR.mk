@@ -79,6 +79,7 @@ Ignore += .Rhistory .RData
 Ignore += *.RData *.Rlog *.rdata *.rda *.rtmp
 Ignore += *.Rout*
 Ignore += *.Rds *.rds
+Ignore += *.ggp.*
 
 ######################################################################
 
