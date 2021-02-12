@@ -1,4 +1,3 @@
-
 ## Make things appear; some of it feels pretty Dushoff-specific
 
 pngtarget: 
@@ -27,9 +26,9 @@ dtarget:
 olddtarget:
 	$(MAKE) pushdir=~/Downloads/ pushtarget
 
-## This was made for texdeps; how does it work for texi? or is it needed?
-deptarget:
-	$(MAKE) $(target:.pdf=.deps)
+## The $< paradigm is stupid; let's try something else 2021 Feb 02 (Tue)
+doctarget:
+	$(MAKE) $(target:%=%.docs)
 
 target.mk:
 	$(CP) makestuff/newtarget.mk $@
