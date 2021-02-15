@@ -1,5 +1,6 @@
 
 ## Make things appear; some of it feels pretty Dushoff-specific
+## Need to transition to $(target)-based rules (no $<)
 
 pngtarget: 
 	$(MAKE) $<.png
@@ -17,6 +18,9 @@ acrtarget:
 
 gptarget:
 	$(MAKE) $<.pdf.op || $(MAKE) $<.op
+
+optarget:
+	$(MAKE) $(target:%=%.pdf.op) || $(MAKE) $(target:%=%.op)
 
 pushtarget:
 	$(MAKE) $<.pd
