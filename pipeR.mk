@@ -69,16 +69,17 @@ endif
 	$(lscheck)
 
 ## .pdf.tmp is a pure intermediate; you should require .pdf, not .pdf.tmp
-%.Rout.pdf.tmp %.Rout.png %.Rout.jpeg: %.Rout
+%.Rout.pdf.tmp %.Rout.png %.Rout.jpeg %.ggp.pdf: %.Rout
 	$(lscheck)
 .PRECIOUS: %.Rout.pdf
 %.Rout.pdf: %.Rout
-	$(lscheck) || ($(pdfcheck) $@.tmp && $(MVF) $@.tmp $@) || (ls Rplots.pdf && echo WARNING: Trying an orphaned Rplots file && mv Rplots.pdf $@)
+	$(lscheck) || ($(pdfcheck) $@.tmp && $(MVF) $@.tmp $@) || (ls Rplots.pdf && echo WARNING: Trying an orphaned Rplots file && mv Rplots.pdf $@) || (echo ERROR: Failed to find, make or rescue $@ && false)
 
 Ignore += .Rhistory .RData
 Ignore += *.RData *.Rlog *.rdata *.rda *.rtmp
 Ignore += *.Rout*
 Ignore += *.Rds *.rds
+Ignore += *.ggp.*
 
 ######################################################################
 
@@ -100,8 +101,16 @@ define pipedesc_r
 $(1).%.pdf: $(1).Rout ; $(lscheck)
 Ignore += $(1).*.pdf
 endef
-
 $(foreach stem,$(pipeRdesc),$(eval $(call pipedesc_r,$(stem))))
+
+## STILL haven't found a reliable description about competing make rules
+
+## Eval rules for "described" pdf files (Rout only)
+define pipedesc_rout_r
+$(1).%.Rout.pdf: $(1).Rout ; $(lscheck)
+Ignore += $(1).*.Rout.pdf
+endef
+$(foreach stem,$(pipeRoutdesc),$(eval $(call pipedesc_rout_r,$(stem))))
 
 ######################################################################
 

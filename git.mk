@@ -222,8 +222,18 @@ gptargets: $(gptargets)
 outputs:
 	$(mkdir)
 
+## Do docs/ just like outputs?
+%.docs: % docs
+	- cp $* docs
+	git add -f docs/$*
+	touch Makefile
+
+docs:
+	$(mkdir)
+
 ######################################################################
 
+## Deprecate this for docs/-based directories 2021 Ақп 02 (Сс)
 ## Redo in a more systematic way (like .branchdir)
 
 ## Pages. Sort of like git_push, but for gh_pages (html, private repos)
