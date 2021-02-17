@@ -161,7 +161,7 @@ Ignore += *.ld.tex
 	$(CP) $< ~/Downloads/
 
 %.ldown:
-	cd ~/Downloads && ln -s $(CURDIR)/$* . || touch $*
+	cd ~/Downloads && ln -fs $(CURDIR)/$* . || touch $*
 
 %.pushpush: %
 	$(CP) $< $(pushdir)

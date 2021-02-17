@@ -14,12 +14,12 @@ mkfiles/:
 	$(mkdir)
 
 mklink = cd $* && $(LN) ../mkfiles/$*.make Makefile
-%/mkfile: 
+%.mkfile %/mkfile: 
 	$(MAKE) mkfiles/$*.make
 	$(mklink)
 
-%/Makefile: mkfiles/%.make
-	$(mklink)
+## When did I do this? Why? It seems aggressive
+## %/Makefile: mkfiles/%.make; $(mklink)
 
 ## Make Makefile a repository file
 ## Keep any changes made before that (remember to change Source and so one)
