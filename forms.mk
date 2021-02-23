@@ -119,5 +119,5 @@ sig.%.pdf: sig.%.jpg
 
 .PRECIOUS: %.page.pdf
 %.page.pdf: %.Rout.pdf
-	pdfnup --outfile $@ --nup '2x2' $<
+	pdfxup --outfile $@ --nup '2x2' $<
  

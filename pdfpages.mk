@@ -41,4 +41,4 @@
 
 .PRECIOUS: %.page.pdf
 %.page.pdf: %.Rout.pdf
-	pdfnup --outfile $@ --nup '2x2' $<
+	pdfjam --outfile $@ --nup '2x2' $<
