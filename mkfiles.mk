@@ -20,7 +20,7 @@ mklink = cd $* && $(LN) ../mkfiles/$*.make Makefile
 
 ## Is this good? it can help with autosync, particularly when we move to a new machine
 %/Makefile:
-	$(MAKE) mkfiles/%.make
+	$(MAKE) mkfiles/$*.make
 	$(mklink)
 
 ## Make Makefile a repository file
