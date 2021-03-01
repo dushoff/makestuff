@@ -78,6 +78,7 @@ ccrib = $(CP) $(crib)/$@ .
 mkdir = $(MD) $@
 makedir = cd $(dir $@) && $(MD) $(notdir $@)
 cat = $(CAT) /dev/null $^ > $@
+catro = $(rm); $(CAT) /dev/null $^ > $@; $(RO)
 ln = $(LN) $< $@
 lnf = $(LNF) $< $@
 rm = $(RM) $@
@@ -159,8 +160,8 @@ Ignore += *.ld.tex
 %.pdown: %
 	$(CP) $< ~/Downloads/
 
-%.ldown:
-	cd ~/Downloads && ln -s $(CURDIR)/$* . || touch $*
+%.ldown: %
+	cd ~/Downloads && ln -fs $(CURDIR)/$* . && touch $*
 
 %.pushpush: %
 	$(CP) $< $(pushdir)

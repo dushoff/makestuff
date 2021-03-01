@@ -1,4 +1,5 @@
 ## Make things appear; some of it feels pretty Dushoff-specific
+## Need to transition to $(target)-based rules (no $<)
 
 pngtarget: 
 	$(MAKE) $<.png
@@ -16,6 +17,9 @@ acrtarget:
 
 gptarget:
 	$(MAKE) $<.pdf.op || $(MAKE) $<.op
+
+optarget:
+	$(MAKE) $(target:%=%.pdf.op) || $(MAKE) $(target:%=%.op)
 
 pushtarget:
 	$(MAKE) $<.pd
@@ -46,12 +50,13 @@ target.mk:
 	cd $* && screen -t "$(notdir $*)"
 
 ## do the above and open a vim_session
+## Eliminated apparent .dir redundancy 2021 Feb 11 (Thu)
 %.vscreen: %.dir
-	cd $(dir $*) && $(MAKE) "$(notdir $*)" 
 	- cd $* && $(MAKE) vimclean
 	cd $* && screen -t "$*" bash -cl "vvs"
 
 ## Old-style vscreen (short names)
+## Do I use this? 2021 Feb 11 (Thu)
 %.svscreen: %.dir
 	cd $(dir $*) && $(MAKE) "$(notdir $*)" 
 	cd $* && screen -t "$(notdir $*)" bash -cl "vvs"
