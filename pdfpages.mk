@@ -1,4 +1,6 @@
 
+Ignore += *.page.pdf
+
 .PRECIOUS: %-0.pdf
 %-0.pdf: %.pdf
 	pdfjam --papersize '{7in,7in}' $< 1 --outfile $@
