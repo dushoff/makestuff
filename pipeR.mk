@@ -34,7 +34,7 @@ define wrapR
 	$(MVF) $(@:%.Rout=%.rtmp) $@
 endef
 
-run-R = wrapR
+run-R = $(wrapR)
 
 ## Legacy
 ifdef autowrapR
