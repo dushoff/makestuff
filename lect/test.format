@@ -55,6 +55,10 @@ QQ ^COMMENT %%
 
 QUIET %!
 
+WEB %!
+
+FIGHEAD %!
+
 PRE %%
 
 FQ \vspace{2.0ex}\noindent\stepcounter{question}\arabic{question}.~%%

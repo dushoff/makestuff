@@ -274,6 +274,7 @@ pages/%: %
 	$(MAKE) $*
 	cd $* && git pull
 
+## Deprecated: use output, pages, docs ….
 %.gitpush:
 	$(MAKE) $*
 	cd $* && (git add *.* && ($(git_check))) || ((git commit -m "Commited by $(CURDIR)") && git pull && git push && git status)
