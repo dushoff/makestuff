@@ -107,7 +107,7 @@ amsync:
 addall:
 	git add --all
 
-async: addall
+allsync: addall
 	$(MAKE) tsync
 
 ######################################################################
@@ -395,7 +395,7 @@ gitprune:
 
 Ignore += dotdir/ clonedir/ cpdir/
 dotdir: $(Sources)
-	$(MAKE) async
+	$(MAKE) allsync
 	-/bin/rm -rf $@
 	git clone . $@
 
