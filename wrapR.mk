@@ -1,3 +1,4 @@
+## Deprecated; see makestuff/pipeR.mk
 wrapRd = makestuff/wrapR
 RRd = makestuff/wrapR
 include $(RRd)/pdf.mk

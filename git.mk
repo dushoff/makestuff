@@ -104,6 +104,12 @@ amsync:
 	$(MAKE) exclude
 	$(git_check) || $(do_amsync)
 
+addall:
+	git add --all
+
+async: addall
+	$(MAKE) tsync
+
 ######################################################################
 
 ## 2020 Mar 09 (Mon) pull via alldirs 
@@ -155,8 +161,9 @@ git_check:
 
 ######################################################################
 
+
 tsync:
-	touch Makefile
+	touch $(word 1, $(Sources))
 	$(MAKE) sync
 
 ######################################################################
@@ -387,7 +394,7 @@ gitprune:
 
 Ignore += dotdir/ clonedir/ cpdir/
 dotdir: $(Sources)
-	$(MAKE) amsync
+	$(MAKE) async
 	-/bin/rm -rf $@
 	git clone . $@
 
