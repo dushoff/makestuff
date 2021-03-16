@@ -105,7 +105,7 @@ amsync:
 	$(git_check) || $(do_amsync)
 
 addall:
-	git add --all
+	git add -u
 
 allsync: addall
 	$(MAKE) tsync
@@ -161,10 +161,10 @@ git_check:
 
 ######################################################################
 
-
+## Messing around 2021 Mar 15 (Mon)
 tsync:
 	touch $(word 1, $(Sources))
-	$(MAKE) sync
+	$(MAKE) up.time
 
 ######################################################################
 
