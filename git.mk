@@ -104,6 +104,12 @@ amsync:
 	$(MAKE) exclude
 	$(git_check) || $(do_amsync)
 
+addall:
+	git add -u
+
+allsync: addall
+	$(MAKE) tsync
+
 ######################################################################
 
 ## 2020 Mar 09 (Mon) pull via alldirs 
@@ -155,9 +161,10 @@ git_check:
 
 ######################################################################
 
+## Messing around 2021 Mar 15 (Mon)
 tsync:
-	touch Makefile
-	$(MAKE) sync
+	touch $(word 1, $(Sources))
+	$(MAKE) up.time
 
 ######################################################################
 
@@ -267,6 +274,7 @@ pages/%: %
 	$(MAKE) $*
 	cd $* && git pull
 
+## Deprecated: use output, pages, docs ….
 %.gitpush:
 	$(MAKE) $*
 	cd $* && (git add *.* && ($(git_check))) || ((git commit -m "Commited by $(CURDIR)") && git pull && git push && git status)
@@ -387,7 +395,7 @@ gitprune:
 
 Ignore += dotdir/ clonedir/ cpdir/
 dotdir: $(Sources)
-	$(MAKE) amsync
+	$(MAKE) allsync
 	-/bin/rm -rf $@
 	git clone . $@
 
