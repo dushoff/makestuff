@@ -148,8 +148,9 @@ sync:
 	-$(RM) up.time
 	$(MAKE) up.time
 
-newpush: commit.time
-	git push -u origin master
+## Use for first push if not linked to a branch
+push.%: commit.time
+	git push -u origin $*
 
 ## Use pullup to add stuff to routine pulls
 ## without adding to all pulls; maybe not useful?
