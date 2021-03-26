@@ -192,3 +192,6 @@ killserve:
 
 %.var:
 	@echo $($*)
+
+%.wc: %
+	wc $< > $@

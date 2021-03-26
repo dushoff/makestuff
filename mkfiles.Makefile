@@ -1,6 +1,4 @@
-
 ## This is a _linked_ (mkfile) Makefile for …
-## 
 
 current: target
 -include target.mk

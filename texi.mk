@@ -1,9 +1,11 @@
-latex = pdflatex -interaction=nonstopmode
+latex = pdflatex
+latexnon = pdflatex -interaction=nonstopmode
 texi = texi2pdf
 job = -jobname=$(@:%.pdf=%)
 
 texir = $(texi) -o $@ $<
 latexonly = $(latex) $(job) $<
+latexnonly = $(latexnon) $(job) $<
 
 ifeq ($(bibtex),)
 bibtex = biber $* || bibtex $*
@@ -12,7 +14,7 @@ endif
 ## Draft version; just make it. Will sometimes report an error even when a pdf is made; this should be fixed maybe.
 ## Note that it will loop forever if no pdf is made, but stop making if it makes one. Thus making vtarget twice will work when it's supposed to.
 %.tex.pdf: %.tex
-	$(texir) || $(latexonly)
+	$(texir) || $(latexnonly) || $(latexonly)
 
 ## .pdf is never up to date (makedeps is fake)
 ## Why is extra makedeps needed? Implicit rule recursion is confusing
