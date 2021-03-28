@@ -120,7 +120,9 @@ pullall: $(alldirs:%=%.pullall)
 makestuff.pullall: makestuff.pull ;
 
 %.pullall: 
-	$(MAKE) $* && cd $* && $(MAKE) makestuff && ($(MAKE) pullall || $(MAKE) pull || $(MAKE) makestuff.pull || (cd makestuff && $(MAKE) pull))
+	$(MAKE) $* && $(MAKE) $*/Makefile 
+	cd $* && $(MAKE) makestuff && $(MAKE) makestuff 
+	cd $* && ($(MAKE) pullall || $(MAKE) pull || $(MAKE) makestuff.pull || (cd makestuff && $(MAKE) pull))
 
 ## 2020 May 23 (Sat) ## Different from above? Worse than below?
 ## Propagates better than pullmake
