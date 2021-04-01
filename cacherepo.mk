@@ -3,6 +3,6 @@
 
 Ignore += cachestuff
 
-all.time: cachestuff.gitpush
+up.time: cachestuff.gitpush
 
 pullup: cachestuff.gitpull
