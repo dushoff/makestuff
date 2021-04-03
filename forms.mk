@@ -56,12 +56,15 @@ name.%.png: name.png
 
 ######################################################################
 
+formDrop/earnsig.%.jpg: formDrop/earnsig.jpg
+
 formDrop/csig.%.jpg: formDrop/csig.jpg
 	convert -scale $*% $< $@
 
 %.pdf: %.jpg
 	convert $< $@
 
+## Initials
 formDrop/jd.%.jpg: formDrop/jd.jpg
 	convert -scale $*% $< $@
 
