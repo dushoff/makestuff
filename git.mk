@@ -445,8 +445,6 @@ sourcedir: $(Sources)
 %.mslink: %
 	cd $* && (ls makestuff/Makefile || $(LN) ../makestuff)
 
-testsetup:
-
 %.dirtest: % 
 	$(MAKE) $*.testsetup
 	$(MAKE) $*.testtarget
@@ -454,7 +452,7 @@ testsetup:
 
 ## testsetup is before makestuff so we can use it to link makestuff sometimes
 %.testsetup: %
-	cd $* && $(MAKE) Makefile && $(MAKE) testsetup && $(MAKE) makestuff 
+	cd $* && $(MAKE) Makefile && ($(MAKE) testsetup || true) && $(MAKE) makestuff 
 
 %.makestuff: %
 	cd $* && $(MAKE) Makefile && $(MAKE) makestuff
