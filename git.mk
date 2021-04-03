@@ -120,7 +120,9 @@ pullall: $(alldirs:%=%.pullall)
 makestuff.pullall: makestuff.pull ;
 
 %.pullall: 
-	$(MAKE) $* && cd $* && $(MAKE) makestuff && ($(MAKE) pullall || $(MAKE) pull || $(MAKE) makestuff.pull || (cd makestuff && $(MAKE) pull))
+	$(MAKE) $* && $(MAKE) $*/Makefile 
+	cd $* && $(MAKE) makestuff && $(MAKE) makestuff 
+	cd $* && ($(MAKE) pullall || $(MAKE) pull || $(MAKE) makestuff.pull || (cd makestuff && $(MAKE) pull))
 
 ## 2020 May 23 (Sat) ## Different from above? Worse than below?
 ## Propagates better than pullmake
@@ -148,8 +150,9 @@ sync:
 	-$(RM) up.time
 	$(MAKE) up.time
 
-newpush: commit.time
-	git push -u origin master
+## Use for first push if not linked to a branch
+push.%: commit.time
+	git push -u origin $*
 
 ## Use pullup to add stuff to routine pulls
 ## without adding to all pulls; maybe not useful?

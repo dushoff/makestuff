@@ -61,6 +61,8 @@ FIGHEAD %!
 
 PRE %%
 
+RESOURCE %%
+
 FQ \vspace{2.0ex}\noindent\stepcounter{question}\arabic{question}.~%%
 
 # What to do if there is no command
