@@ -9,6 +9,7 @@ endif
 Ignore += talkdir
 
 Ignore += *.txt.fmt txt.format
+.PRECIOUS: %.txt.fmt
 %.txt.fmt: txt.format $(talkdir)/fmt.pl
 	$(PUSHSTAR)
 

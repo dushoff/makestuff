@@ -13,10 +13,18 @@ mkfiles/%.make:
 mkfiles/:
 	$(mkdir)
 
-%/mkfile: 
+mklink = cd $* && $(LN) ../mkfiles/$*.make Makefile
+%.mkfile %/mkfile: 
 	$(MAKE) mkfiles/$*.make
-	cd $* && $(LN) ../mkfiles/$*.make Makefile
+	$(mklink)
 
+## Is this good? it can help with autosync, particularly when we move to a new machine
+%/Makefile:
+	$(MAKE) mkfiles/$*.make
+	$(mklink)
+
+## Make Makefile a repository file
+## Keep any changes made before that (remember to change Source and so one)
 %/repofile:
 	$(RM) $*/Makefile
 	$(CPF) mkfiles/$*.make $*/Makefile

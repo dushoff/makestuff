@@ -56,12 +56,19 @@ name.%.png: name.png
 
 ######################################################################
 
+formDrop/earnsig.%.png: formDrop/earnsig.png
+	convert -scale $*% $< $@
+
 formDrop/csig.%.jpg: formDrop/csig.jpg
 	convert -scale $*% $< $@
+
+%.pdf: %.png
+	convert $< $@
 
 %.pdf: %.jpg
 	convert $< $@
 
+## Initials
 formDrop/jd.%.jpg: formDrop/jd.jpg
 	convert -scale $*% $< $@
 
@@ -119,5 +126,5 @@ sig.%.pdf: sig.%.jpg
 
 .PRECIOUS: %.page.pdf
 %.page.pdf: %.Rout.pdf
-	pdfnup --outfile $@ --nup '2x2' $<
+	pdfxup --outfile $@ --nup '2x2' $<
  

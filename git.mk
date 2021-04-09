@@ -104,6 +104,12 @@ amsync:
 	$(MAKE) exclude
 	$(git_check) || $(do_amsync)
 
+addall:
+	git add -u
+
+allsync: addall
+	$(MAKE) tsync
+
 ######################################################################
 
 ## 2020 Mar 09 (Mon) pull via alldirs 
@@ -114,7 +120,9 @@ pullall: $(alldirs:%=%.pullall)
 makestuff.pullall: makestuff.pull ;
 
 %.pullall: 
-	$(MAKE) $* && cd $* && $(MAKE) makestuff && ($(MAKE) pullall || $(MAKE) pull || $(MAKE) makestuff.pull || (cd makestuff && $(MAKE) pull))
+	$(MAKE) $* && $(MAKE) $*/Makefile 
+	cd $* && $(MAKE) makestuff && $(MAKE) makestuff 
+	cd $* && ($(MAKE) pullall || $(MAKE) pull || $(MAKE) makestuff.pull || (cd makestuff && $(MAKE) pull))
 
 ## 2020 May 23 (Sat) ## Different from above? Worse than below?
 ## Propagates better than pullmake
@@ -142,8 +150,9 @@ sync:
 	-$(RM) up.time
 	$(MAKE) up.time
 
-newpush: commit.time
-	git push -u origin master
+## Use for first push if not linked to a branch
+push.%: commit.time
+	git push -u origin $*
 
 ## Use pullup to add stuff to routine pulls
 ## without adding to all pulls; maybe not useful?
@@ -158,9 +167,10 @@ git_check:
 
 ######################################################################
 
+## Messing around 2021 Mar 15 (Mon)
 tsync:
-	touch Makefile
-	$(MAKE) sync
+	touch $(word 1, $(Sources))
+	$(MAKE) up.time
 
 ######################################################################
 
@@ -225,8 +235,18 @@ gptargets: $(gptargets)
 outputs:
 	$(mkdir)
 
+## Do docs/ just like outputs?
+%.docs: % docs
+	- cp $* docs
+	git add -f docs/$*
+	touch Makefile
+
+docs:
+	$(mkdir)
+
 ######################################################################
 
+## Deprecate this for docs/-based directories 2021 Ақп 02 (Сс)
 ## Redo in a more systematic way (like .branchdir)
 
 ## Pages. Sort of like git_push, but for gh_pages (html, private repos)
@@ -260,6 +280,7 @@ pages/%: %
 	$(MAKE) $*
 	cd $* && git pull
 
+## Deprecated: use output, pages, docs ….
 %.gitpush:
 	$(MAKE) $*
 	cd $* && (git add *.* && ($(git_check))) || ((git commit -m "Commited by $(CURDIR)") && git pull && git push && git status)
@@ -380,7 +401,7 @@ gitprune:
 
 Ignore += dotdir/ clonedir/ cpdir/
 dotdir: $(Sources)
-	$(MAKE) amsync
+	$(MAKE) allsync
 	-/bin/rm -rf $@
 	git clone . $@
 
@@ -430,8 +451,6 @@ sourcedir: $(Sources)
 %.mslink: %
 	cd $* && (ls makestuff/Makefile || $(LN) ../makestuff)
 
-testsetup:
-
 %.dirtest: % 
 	$(MAKE) $*.testsetup
 	$(MAKE) $*.testtarget
@@ -439,7 +458,7 @@ testsetup:
 
 ## testsetup is before makestuff so we can use it to link makestuff sometimes
 %.testsetup: %
-	cd $* && $(MAKE) Makefile && $(MAKE) testsetup && $(MAKE) makestuff 
+	cd $* && $(MAKE) Makefile && ($(MAKE) testsetup || true) && $(MAKE) makestuff 
 
 %.makestuff: %
 	cd $* && $(MAKE) Makefile && $(MAKE) makestuff

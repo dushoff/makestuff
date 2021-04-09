@@ -19,7 +19,7 @@ ghh_r = pandoc -s -f gfm -o $@ $<
 %.emb.html: %.md
 	pandoc --self-contained -S -o $@ $<
 
-%.md: %.docx
+%.doc.md: %.docx
 	pandoc -o $@ $<
 
 Ignore += *.jax.html
@@ -68,7 +68,7 @@ rmdh = Rscript -e "library(\"rmarkdown\"); render(\"$<\")"
 %.th.tex: %.md
 	pandoc -s -S -t latex -V documentclass=tufte-handout $*.md -o $*.tex
 
-%.md: %.tex
+%.tex.md: %.tex
 	pandoc -o $@ $<
 
 ## This is becoming pretty random
