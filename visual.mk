@@ -34,6 +34,9 @@ olddtarget:
 doctarget:
 	$(MAKE) $(target:%=%.docs)
 
+docpdftarget:
+	$(MAKE) $(target:%=%.pdf.docs)
+
 target.mk:
 	$(CP) makestuff/newtarget.mk $@
 

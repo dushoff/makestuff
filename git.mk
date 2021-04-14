@@ -69,7 +69,7 @@ $(pardirs):
 Ignore += up.time all.time
 up.time: commit.time
 	$(MAKE) pullup
-	git push -u origin $(BRANCH)
+	$(MAKE) pushup
 	touch $@
 
 alldirs += makestuff
@@ -158,6 +158,9 @@ push.%: commit.time
 ## without adding to all pulls; maybe not useful?
 ## or maybe had some submodule something?
 pullup: pull
+
+pushup:
+	git push -u origin $(BRANCH)
 
 git_check:
 	$(git_check)
