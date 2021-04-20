@@ -228,7 +228,13 @@ gptargets: $(gptargets)
 ## 2020 Nov 11 (Wed) an alternative name for git_push
 ## Not copying the all-update rule here; outputs can have other purposes
 %.op: % outputs
-	- cp $* outputs
+	- $(CPF) $* outputs
+	git add -f outputs/$*
+	touch Makefile
+
+%.opdir: % outputs
+	- $(RMR) outputs/$*
+	- $(CPR) $* outputs
 	git add -f outputs/$*
 	touch Makefile
 
