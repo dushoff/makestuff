@@ -40,6 +40,10 @@ SECOND NULLSLIDE
 bank: HEAD SECOND %!
 midterm2: %!
 
+EXAM20 NULLSLIDE
+bank: HEAD EXAM %!
+final: %!
+
 EXAM NULLSLIDE
 bank: HEAD EXAM %!
 final: %!
