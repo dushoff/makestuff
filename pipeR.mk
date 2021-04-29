@@ -50,6 +50,13 @@ ifdef autopipeR
 	$(pipeR)
 endif
 
+ifdef autoknit
+%.html: %.Rmd
+	$(knithtml)
+%.pdf: %.Rmd
+	$(knitpdf)
+endif
+
 ## If no recipe, then this doesn't work
 ## If there is a recipe, it never resolves
 ## Use sparingly (or only for development)
@@ -78,6 +85,8 @@ endif
 Ignore += .Rhistory .RData
 Ignore += *.RData *.Rlog *.rdata *.rda *.rtmp
 Ignore += *.Rout*
+Ignore += *.html.args
+Ignore += *.pdf.args
 Ignore += *.Rds *.rds
 Ignore += Rplots.pdf
 Ignore += *.ggp.*
