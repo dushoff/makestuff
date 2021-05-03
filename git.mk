@@ -241,8 +241,7 @@ outputs:
 	git add -f docs/$*
 	touch Makefile
 
-docs:
-	$(mkdir)
+## docs: ; $(mkdir)
 
 ######################################################################
 
