@@ -125,7 +125,7 @@ $(foreach stem,$(pipeRoutdesc),$(eval $(call pipedesc_rout_r,$(stem))))
 ######################################################################
 
 ## Deleting some rules that may be needed for make3?
-## See makeR.mk
+## See makeR.mk (deleted now)
 ## 2021 Jan 05 (Tue)
 
 ######################################################################
@@ -137,7 +137,7 @@ $(foreach stem,$(pipeRoutdesc),$(eval $(call pipedesc_rout_r,$(stem))))
 %.pipeR.script:
 	$(MAKE) cpdir.mslink
 	cd cpdir && $(MAKE) -n $*.Rout > make.log
-	perl -wf makestuff/makeRscript.pl cpdir/make.log > $@
+	perl -wf makestuff/pipeRscript.pl cpdir/make.log > $@
 
 Sources += $(wildcard *.pipeR.script)
 
