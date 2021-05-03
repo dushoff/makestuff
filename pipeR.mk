@@ -126,6 +126,7 @@ $(foreach stem,$(pipeRoutdesc),$(eval $(call pipedesc_rout_r,$(stem))))
 
 ## Deleting some rules that may be needed for make3?
 ## See makeR.mk (deleted now)
+## Also deleting possibly relevant chain/Makefile
 ## 2021 Jan 05 (Tue)
 
 ######################################################################
