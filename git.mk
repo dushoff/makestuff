@@ -19,13 +19,6 @@ endif
 
 ######################################################################
 
-## Hybrid subdirectory types
-
-Ignore += $(clonedirs)
-Sources += $(mdirs)
-
-##################################################################
-
 ### Push and pull
 
 branch:
@@ -196,12 +189,6 @@ remotesync: commit.default
 %.pull: %
 	cd $< && ($(MAKE) pull || git pull)
 
-## Not tested (hasn't propagated)
-rmpull: $(mdirs:%=%.rmpull) makestuff.pull pull
-	git checkout master
-	$(MAKE) pull
-	git status
-
 %.push: %
 	cd $< && $(MAKE) up.time
 
@@ -247,8 +234,7 @@ outputs:
 	git add -f docs/$*
 	touch Makefile
 
-docs:
-	$(mkdir)
+## docs: ; $(mkdir)
 
 ######################################################################
 
