@@ -16,7 +16,7 @@ acrtarget:
 	$(MAKE) $<.acr
 
 gptarget:
-	$(MAKE) $<.pdf.op || $(MAKE) $<.op
+	$(MAKE) $<.op
 
 optarget:
 	$(MAKE) $(target:%=%.pdf.op) || $(MAKE) $(target:%=%.op)
