@@ -1,0 +1,1 @@
+sudo echo [automount] options = "metadata" > /etc/wsl.conf

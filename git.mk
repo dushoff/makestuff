@@ -19,13 +19,6 @@ endif
 
 ######################################################################
 
-## Hybrid subdirectory types
-
-Ignore += $(clonedirs)
-Sources += $(mdirs)
-
-##################################################################
-
 ### Push and pull
 
 branch:
@@ -39,7 +32,7 @@ commit.time: $(Sources)
 	(head -1 ~/.commitnow > $@ && echo " ~/.commitnow" >> $@) || echo Autocommit > $@
 	echo "## $(CURDIR)" >> $@
 	!(git commit --dry-run >> $@) || (perl -pi -e 's/^/#/ unless $$.==1' $@ && $(MSEDIT))
-	$(git_check) || (perl -ne 'print unless /#/' $@ | git commit -F -)
+	$(git_check) || (perl -ne 'print unless /^\s*#/' $@ | git commit -F -)
 	date >> $@
 
 commit.default: $(Sources)
@@ -196,12 +189,6 @@ remotesync: commit.default
 %.pull: %
 	cd $< && ($(MAKE) pull || git pull)
 
-## Not tested (hasn't propagated)
-rmpull: $(mdirs:%=%.rmpull) makestuff.pull pull
-	git checkout master
-	$(MAKE) pull
-	git status
-
 %.push: %
 	cd $< && $(MAKE) up.time
 
@@ -228,7 +215,13 @@ gptargets: $(gptargets)
 ## 2020 Nov 11 (Wed) an alternative name for git_push
 ## Not copying the all-update rule here; outputs can have other purposes
 %.op: % outputs
-	- cp $* outputs
+	- $(CPF) $* outputs
+	git add -f outputs/$*
+	touch Makefile
+
+%.opdir: % outputs
+	- $(RMR) outputs/$*
+	- $(CPR) $* outputs
 	git add -f outputs/$*
 	touch Makefile
 
@@ -241,8 +234,7 @@ outputs:
 	git add -f docs/$*
 	touch Makefile
 
-docs:
-	$(mkdir)
+## docs: ; $(mkdir)
 
 ######################################################################
 
