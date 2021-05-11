@@ -93,7 +93,7 @@ ifndef Drop
 Drop = ~/Dropbox
 endif
 
-Droplink = (ls $(Drop)/resources/$(dirname) && $(LNF) $(Drop)/resources/$(dirname) $@) || (ls $(Drop)/$(dirname) && $(LNF) $(Drop)/$(dirname) $@)
+Droplink = (ls $(Drop)/resources/$(notdir $(CURDIR)) && $(LNF) $(Drop)/resources/$(notdir $(CURDIR)) $@) || (ls $(Drop)/$(notdir $(CURDIR)) && $(LNF) $(Drop)/$(notdir $(CURDIR)) $@)
 
 ######################################################################
 
