@@ -55,9 +55,6 @@ pull: commit.time
 pardirpull: $(pardirs:%=%.pull) makestuff.pull
 parpull: pull pardirpull
 
-newSource:
-	git add $(Sources)
-
 ######################################################################
 
 ## parallel directories
@@ -93,22 +90,32 @@ makestuff.all: %.all: %
 %.all: 
 	$(MAKE) $* $*/Makefile && cd $* && $(MAKE) makestuff && $(MAKE) all.time
 
-do_amsync = (git commit -am "amsync"; git pull; git push; git status .)
-
 autocommit:
 	$(MAKE) exclude
 	$(git_check) || git commit -am "autocommit from git.mk"
 	git status .
 
+addall:
+	git add -u
+	git add $(Sources)
+
+tsync:
+	touch $(word 1, $(Sources))
+	$(MAKE) up.time
+
+## Flattened 2021 May 11 (Tue)
+
+allsync: addall tsync
+
+######################################################################
+
+## Deprecate
+
+do_amsync = (git commit -am "amsync"; git pull; git push; git status .)
+
 amsync:
 	$(MAKE) exclude
 	$(git_check) || $(do_amsync)
-
-addall:
-	git add -u
-
-allsync: addall
-	$(MAKE) tsync
 
 ######################################################################
 
@@ -167,12 +174,6 @@ git_check:
 
 ######################################################################
 
-## Messing around 2021 Mar 15 (Mon)
-tsync:
-	touch $(word 1, $(Sources))
-	$(MAKE) up.time
-
-######################################################################
 
 ## autosync stuff not consolidated, needs work. 
 remotesync: commit.default
