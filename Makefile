@@ -45,10 +45,10 @@ Sources += $(wildcard *.mk *.pl *.Makefile *.def)
 ## simple.Makefile direct.Makefile
 
 ## Script to make exclude file
-# Sources += ignore.pl
+Sources += ignore.pl
 
 ## Inputs for .config ignore file (see git.mk)
-# Sources += ignore.auth ignore.vim
+Sources += ignore.auth ignore.vim
 
 # Sources += os.mk unix.mk linux.mk windows.mk up.mk
 

@@ -1,15 +1,15 @@
 ## Ignoring
 
 ## Find the git directory and make an exclude file here
-## When we have subdirectories they may compete (overwrite each others' exclude files)
-## Not clear why that would be a problem
+## Subdirectories compete (overwrite each others' exclude files)
+## I'm not planning to solve this 2021 May 14 (Fri); use git status .
 
 git_dir = $(shell git rev-parse --git-dir)
 
 exclude: $(git_dir)/info/exclude ;
 
 ignore: exclude
-	git status
+	git status .
 
 ## Usually .git/info/exclude
 ## dirdir ../.git/info/exclude
