@@ -71,6 +71,10 @@ endif
 %.rds %.Rds: %.Rout
 	$(lscheck)
 
+.PRECIOUS: %.Rout.tsv
+%.Rout.tsv: %.Rout
+	$(lscheck)
+
 .PRECIOUS: %.Rout.csv
 %.Rout.csv: %.Rout
 	$(lscheck)
