@@ -257,7 +257,10 @@ pages/%: %
 Ignore += pages
 pages:
 	git clone `git remote get-url origin` $@
-	cd $@ && (git checkout gh-pages || $(createpages)
+	cd $@ && (git checkout gh-pages || $(createpages))
+
+%.branchdir:
+	git clone `git remote get-url origin` $*
 
 define createpages
 	(git checkout --orphan gh-pages && git rm -rf * && touch ../README.md && cp ../README.md . && git add README.md && git commit -m "Orphan pages branch" && git push --set-upstream origin gh-pages ))
