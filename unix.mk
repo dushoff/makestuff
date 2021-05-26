@@ -1,6 +1,6 @@
 ## Retrofits and hacks
 
-## Bailed on getting the regex syntax write for the $. Watch out?
+## Bailed on getting the regex syntax right for the $. Watch out?
 ## Try [$$] if you're bored.
 ## This is a pain for scripts; see filemerge instead
 noms:
@@ -49,7 +49,8 @@ difftouch = diff $1 $(dir $1).$(notdir $1) > /dev/null || touch $1
 touch = touch $@
 
 justmakethere = cd $(dir $@) && $(MAKE) $(notdir $@)
-makethere = cd $(dir $@) && $(MAKE) makestuff && $(MAKE) $(notdir $@)
+makedir = $(MAKE) $(dir $@)
+makethere = $(makedir) && cd $(dir $@) && $(MAKE) makestuff && $(MAKE) $(notdir $@)
 makestuffthere = cd $(dir $@) && $(MAKE) makestuff && $(MAKE) $(notdir $@)
 
 diff = $(DIFF) $^ > $@
@@ -70,17 +71,31 @@ forcelink = $(LNF) $< $@
 rcopy = $(CPR) $< $@
 rdcopy = $(CPR) $(dir) $@
 copy = $(CP) $< $@
+move = $(MV) $< $@
 hardcopy = $(CPF) $< $@
 allcopy =  $(CP) $^ $@
 ccrib = $(CP) $(crib)/$@ .
 mkdir = $(MD) $@
 makedir = cd $(dir $@) && $(MD) $(notdir $@)
 cat = $(CAT) /dev/null $^ > $@
+catro = $(rm); $(CAT) /dev/null $^ > $@; $(RO)
 ln = $(LN) $< $@
 lnf = $(LNF) $< $@
 rm = $(RM) $@
 pandoc = pandoc -o $@ $<
 pandocs = pandoc -s -o $@ $<
+
+######################################################################
+
+## It would be better to have global Drop logic (and to move this rule out of this file)
+ifndef Drop
+Drop = ~/Dropbox
+endif
+
+## Link to a resource directory (very specific) does not work
+Droplink = (ls $(Drop)/resources/$(notdir $(CURDIR)) && $(LNF) $(Drop)/resources/$(notdir $(CURDIR)) $@) || (ls $(Drop)/$(notdir $(CURDIR)) && $(LNF) $(Drop)/$(notdir $(CURDIR)) $@)
+
+######################################################################
 
 ## To copy a directory, be recursive, but don't accidentally copy _into_ an existing directory
 ## Maybe think about using dir $@ in future when thinking more clearly
@@ -101,12 +116,23 @@ ddcopy = ($(LSN) && $(touch)) ||  $(rdcopy)
 	ls $* > $@
 %.lsd: %
 	ls -d $*/* > $@
- 
-## Track a directory from the parent directory, using <dir>.md
-%.filemerge: %.lsd %.md makestuff/filemerge.pl
+index.lsd: .
+	ls -d * > $@
+
+define merge_files
 	$(PUSH)
 	- $(DIFF) $*.md $@
 	$(MV) $@ $*.md
+endef
+ 
+## Track a directory from the parent directory, using <dir>.md
+## index.md for current file
+%.filemerge: %.lsd %.md makestuff/filemerge.pl
+	$(merge_files)
+
+## WATCH OUT for the -
+%.filenames:
+	rename "s/[ ,?!-]+/_/g" $*/*.*
 
 %.voice: voice.pl %
 	$(PUSH)
@@ -133,6 +159,9 @@ Ignore += *.ld.tex
 
 %.pdown: %
 	$(CP) $< ~/Downloads/
+
+%.ldown: %
+	cd ~/Downloads && ln -fs $(CURDIR)/$* . && touch $*
 
 %.pushpush: %
 	$(CP) $< $(pushdir)
@@ -163,3 +192,6 @@ killserve:
 
 %.var:
 	@echo $($*)
+
+%.wc: %
+	wc $< > $@

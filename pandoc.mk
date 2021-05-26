@@ -3,8 +3,10 @@
 ## Quite a mess here; maybe legacy it and come up with a different name or structure 2020 Feb 15 (Sat)
 
 ## -S for “smart” quotes
+pandocs = pandoc -s -o $@ $<
+
 %.html: %.md
-	pandoc -s -o $@ $<
+	$(pandocs)
 
 ghh_r = pandoc -s -f gfm -o $@ $<
 %.gh.html: %.md
@@ -17,7 +19,7 @@ ghh_r = pandoc -s -f gfm -o $@ $<
 %.emb.html: %.md
 	pandoc --self-contained -S -o $@ $<
 
-%.md: %.docx
+%.doc.md: %.docx
 	pandoc -o $@ $<
 
 Ignore += *.jax.html
@@ -42,11 +44,12 @@ Ignore += *.jax.html
 %.html: %.csv
 	csv2html -o $@ $<
 
+rmdh = Rscript -e "library(\"rmarkdown\"); render(\"$<\")"
 %.html: %.Rmd
-	Rscript -e "library(\"rmarkdown\"); render(\"$<\")"
+	$(rmdh)
 
 %.html: %.rmd
-	Rscript -e "library(\"rmarkdown\"); render(\"$<\")"
+	$(rmdh)
 
 .PRECIOUS: %.tex
 %.tex: %.Rnw
@@ -65,7 +68,7 @@ Ignore += *.jax.html
 %.th.tex: %.md
 	pandoc -s -S -t latex -V documentclass=tufte-handout $*.md -o $*.tex
 
-%.md: %.tex
+%.tex.md: %.tex
 	pandoc -o $@ $<
 
 ## This is becoming pretty random

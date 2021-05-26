@@ -1,6 +1,4 @@
-
-## This is a _linked_ Makefile for …
-## 
+## This is a _linked_ (mkfile) Makefile for …
 
 current: target
 -include target.mk
@@ -27,7 +25,7 @@ makestuff/Makefile:
 
 -include makestuff/os.mk
 
-## -include makestuff/wrapR.mk
+## -include makestuff/pipeR.mk
 
 -include makestuff/git.mk
 -include makestuff/visual.mk

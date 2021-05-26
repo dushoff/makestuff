@@ -7,6 +7,7 @@ cachenotice =  NOTICE from cacheflow.mk:
 nocachestuff =  $(cachenotice) You need to make a cachestuff/ directory
 makecache = $(MAKE) cachestuff || (echo $(nocachestuff) && false)
 
+## Written for wrapR; let's try to lose it
 %.Rout.cache:
 	$(makecache)
 	$(MAKE) $*.Rout
@@ -25,7 +26,7 @@ cachestuff/%:
 
 ## Fanciness
 ## Not even vaguely implemented 2020 Jul 04 (Sat)
-## This is just here because I'll want the syntake if I ever do it.
+## This is just here because I'll want the syntax if I ever do it.
 
 %.rebuildcache:
 	$(MAKE) rebuildcache=TRUE $*

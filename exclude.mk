@@ -1,15 +1,15 @@
 ## Ignoring
 
 ## Find the git directory and make an exclude file here
-## When we have subdirectories they may compete (overwrite each others' exclude files)
-## Not clear why that would be a problem
+## Subdirectories compete (overwrite each others' exclude files)
+## I'm not planning to solve this 2021 May 14 (Fri); use git status .
 
 git_dir = $(shell git rev-parse --git-dir)
 
 exclude: $(git_dir)/info/exclude ;
 
 ignore: exclude
-	git status
+	git status .
 
 ## Usually .git/info/exclude
 ## dirdir ../.git/info/exclude
@@ -18,14 +18,10 @@ $(git_dir)/info/exclude: $(Sources) Makefile
 
 export Ignore += local.mk target.mk make.log go.log
 
-## I guess this is done manually from time to time?
+## Make global ignore file on a new machine
 ignore.config: ~/.config/git
 	cat makestuff/ignore.vim makestuff/ignore.auth > $</ignore
 
+## Make a .gitignore file with what usually goes into exclude
 ignorehere: $(git_dir)/info/exclude
 	$(CP) $< .gitignore
-
-## Would this work, or does it just get made again?
-
-noexclude: 
-	- $(RM) $(git_dir)/info/exclude

@@ -19,13 +19,6 @@ endif
 
 ######################################################################
 
-## Hybrid subdirectory types
-
-Ignore += $(clonedirs)
-Sources += $(mdirs)
-
-##################################################################
-
 ### Push and pull
 
 branch:
@@ -36,10 +29,10 @@ Ignore += commit.time commit.default
 commit.time: $(Sources)
 	$(MAKE) exclude
 	-git add -f $? $(trackedTargets)
-	(cat ~/.commitnow > $@ && echo " ~/.commitnow" >> $@) || echo Autocommit > $@
+	(head -1 ~/.commitnow > $@ && echo " ~/.commitnow" >> $@) || echo Autocommit > $@
 	echo "## $(CURDIR)" >> $@
 	!(git commit --dry-run >> $@) || (perl -pi -e 's/^/#/ unless $$.==1' $@ && $(MSEDIT))
-	$(git_check) || (perl -ne 'print unless /#/' $@ | git commit -F -)
+	$(git_check) || (perl -ne 'print unless /^\s*#/' $@ | git commit -F -)
 	date >> $@
 
 commit.default: $(Sources)
@@ -55,9 +48,6 @@ pull: commit.time
 pardirpull: $(pardirs:%=%.pull) makestuff.pull
 parpull: pull pardirpull
 
-newSource:
-	git add $(Sources)
-
 ######################################################################
 
 ## parallel directories
@@ -69,7 +59,7 @@ $(pardirs):
 Ignore += up.time all.time
 up.time: commit.time
 	$(MAKE) pullup
-	git push -u origin $(BRANCH)
+	$(MAKE) pushup
 	touch $@
 
 alldirs += makestuff
@@ -83,7 +73,7 @@ alldirs += makestuff
 malldirs = $(filter $(alldirs), $(wildcard *))
 all.time: exclude up.time $(malldirs:%=%.all)
 	touch $@
-	git status
+	git status .
 
 Ignore += *.all
 makestuff.all: %.all: %
@@ -93,12 +83,28 @@ makestuff.all: %.all: %
 %.all: 
 	$(MAKE) $* $*/Makefile && cd $* && $(MAKE) makestuff && $(MAKE) all.time
 
-do_amsync = (git commit -am "amsync"; git pull; git push; git status)
-
 autocommit:
 	$(MAKE) exclude
 	$(git_check) || git commit -am "autocommit from git.mk"
-	git status
+	git status .
+
+addall:
+	git add -u
+	git add $(Sources)
+
+tsync:
+	touch $(word 1, $(Sources))
+	$(MAKE) up.time
+
+## Flattened 2021 May 11 (Tue)
+
+allsync: addall tsync
+
+######################################################################
+
+## Deprecate
+
+do_amsync = (git commit -am "amsync"; git pull; git push; git status .)
 
 amsync:
 	$(MAKE) exclude
@@ -114,7 +120,9 @@ pullall: $(alldirs:%=%.pullall)
 makestuff.pullall: makestuff.pull ;
 
 %.pullall: 
-	$(MAKE) $* && cd $* && $(MAKE) makestuff && ($(MAKE) pullall || $(MAKE) pull || $(MAKE) makestuff.pull || (cd makestuff && $(MAKE) pull))
+	$(MAKE) $* && $(MAKE) $*/Makefile 
+	cd $* && $(MAKE) makestuff && $(MAKE) makestuff 
+	cd $* && ($(MAKE) pullall || $(MAKE) pull || $(MAKE) makestuff.pull || (cd makestuff && $(MAKE) pull))
 
 ## 2020 May 23 (Sat) ## Different from above? Worse than below?
 ## Propagates better than pullmake
@@ -131,9 +139,6 @@ makestuff.pullstuff: makestuff.pull ;
 
 ######################################################################
 
-
-## Bridge rules maybe? Eventually this should be part of all.time
-## and all.time does not need to be part of rup
 all.exclude: makestuff.exclude $(malldirs:%=%.allexclude) exclude ;
 makestuff.allexclude: ;
 %.allexclude:
@@ -145,24 +150,23 @@ sync:
 	-$(RM) up.time
 	$(MAKE) up.time
 
-newpush: commit.time
-	git push -u origin master
+## Use for first push if not linked to a branch
+push.%: commit.time
+	git push -u origin $*
 
 ## Use pullup to add stuff to routine pulls
 ## without adding to all pulls; maybe not useful?
 ## or maybe had some submodule something?
 pullup: pull
 
+pushup:
+	git push -u origin $(BRANCH)
+
 git_check:
 	$(git_check)
 
 ######################################################################
 
-tsync:
-	touch Makefile
-	$(MAKE) sync
-
-######################################################################
 
 ## autosync stuff not consolidated, needs work. 
 remotesync: commit.default
@@ -186,12 +190,6 @@ remotesync: commit.default
 %.pull: %
 	cd $< && ($(MAKE) pull || git pull)
 
-## Not tested (hasn't propagated)
-rmpull: $(mdirs:%=%.rmpull) makestuff.pull pull
-	git checkout master
-	$(MAKE) pull
-	git status
-
 %.push: %
 	cd $< && $(MAKE) up.time
 
@@ -210,12 +208,38 @@ git_check = git diff-index --quiet HEAD --
 git_push:
 	$(mkdir)
 
+## Update everything that's already in the directory
 gpobjects = $(wildcard git_push/*)
 gptargets = $(gpobjects:git_push/%=%.gp)
 gptargets: $(gptargets)
 
+## 2020 Nov 11 (Wed) an alternative name for git_push
+## Not copying the all-update rule here; outputs can have other purposes
+%.op: % outputs
+	- $(CPF) $* outputs
+	git add -f outputs/$*
+	touch Makefile
+
+%.opdir: % outputs
+	- $(RMR) outputs/$*
+	- $(CPR) $* outputs
+	git add -f outputs/$*
+	touch Makefile
+
+outputs:
+	$(mkdir)
+
+## Do docs/ just like outputs?
+%.docs: % docs
+	- cp $* docs
+	git add -f docs/$*
+	touch Makefile
+
+## docs: ; $(mkdir)
+
 ######################################################################
 
+## Deprecate this for docs/-based directories 2021 Ақп 02 (Сс)
 ## Redo in a more systematic way (like .branchdir)
 
 ## Pages. Sort of like git_push, but for gh_pages (html, private repos)
@@ -249,6 +273,7 @@ pages/%: %
 	$(MAKE) $*
 	cd $* && git pull
 
+## Deprecated: use output, pages, docs ….
 %.gitpush:
 	$(MAKE) $*
 	cd $* && (git add *.* && ($(git_check))) || ((git commit -m "Commited by $(CURDIR)") && git pull && git push && git status)
@@ -372,18 +397,19 @@ gitprune:
 
 Ignore += dotdir/ clonedir/ cpdir/
 dotdir: $(Sources)
-	$(MAKE) amsync
+	$(MAKE) allsync
 	-/bin/rm -rf $@
 	git clone . $@
 
 ## Note cpdir really means directory (usually); dotdir means the whole repo
-## DON'T use for repos with Sources in subdirectories
+## DON'T use cpdir for repos with Sources in subdirectories
+## Do use for light applications focused on a particular directory
 ## DON'T use for service (i.e., makeR scripts)
-## Maybe don't use at all?
+## Do we have a solution for makeR scripts in subdirectories?
 cpdir: $(filter-out %.script, $(Sources))
 	-/bin/rm -rf $@
 	$(mkdir)
-	cp $^ $@
+	cp -r $^ $@
 
 ## Still working on rev-parse line
 %.branchdir: $(Sources)
@@ -421,8 +447,6 @@ sourcedir: $(Sources)
 %.mslink: %
 	cd $* && (ls makestuff/Makefile || $(LN) ../makestuff)
 
-testsetup:
-
 %.dirtest: % 
 	$(MAKE) $*.testsetup
 	$(MAKE) $*.testtarget
@@ -430,7 +454,7 @@ testsetup:
 
 ## testsetup is before makestuff so we can use it to link makestuff sometimes
 %.testsetup: %
-	cd $* && $(MAKE) Makefile && $(MAKE) testsetup && $(MAKE) makestuff 
+	cd $* && $(MAKE) Makefile && ($(MAKE) testsetup || true) && $(MAKE) makestuff 
 
 %.makestuff: %
 	cd $* && $(MAKE) Makefile && $(MAKE) makestuff

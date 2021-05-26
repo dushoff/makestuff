@@ -1,13 +1,8 @@
-## Deprecated 2021 Jan 08 (Fri)
-## 
-source("makestuff/makeRfuns.R")
+library(shellpipes)
 
 commandEnvironments()
-legacyEnvironments()
-## commandEnvirLists()
-## commandVarLists(fl)
 
-makeGraphics()
+startGraphics()
 
 input_files <- fileSelect(commandArgs(TRUE), 
 	c("csv", "tsv", "ssv", "txt", "xlsx", "xls")
@@ -21,3 +16,4 @@ rdaname <- paste0(rtargetname, ".rda")
 sourceFiles(first=TRUE, verbose=TRUE)
 
 saveEnvironment()
+

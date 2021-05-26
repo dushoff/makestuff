@@ -19,7 +19,10 @@ text.pdf: text.txt
 	pdfroff $< | cpdf -crop "0.9in 10.8in 0.9in 0.2in" -stdin -o $@ 
 
 name.pdf: name.txt
-	pdfroff $< | cpdf -crop "0.9in 10.8in 0.9in 0.2in" -stdin -o $@ 
+	pdfroff $< | cpdf -crop "0.9in 10.8in 1.40in 0.25in" -stdin -o $@ 
+
+email.pdf: email.txt
+	pdfroff $< | cpdf -crop "0.9in 10.8in 1.40in 0.25in" -stdin -o $@ 
 
 date.pdf: date.txt
 	pdfroff $< | cpdf -crop "0.9in 10.8in 0.9in 0.2in" -stdin -o $@ 
@@ -53,11 +56,15 @@ name.%.png: name.png
 
 ######################################################################
 
+formDrop/earnsig.%.png: formDrop/earnsig.png
+	convert -scale $*% $< $@
+
 formDrop/csig.%.jpg: formDrop/csig.jpg
 	convert -scale $*% $< $@
 
-%.pdf: %.jpg
-	convert $< $@
+## Initials
+formDrop/jd.%.jpg: formDrop/jd.jpg
+	convert -scale $*% $< $@
 
 formDrop/jsig.%.jpg: formDrop/jsig.jpg
 	convert -scale $*% $< $@
@@ -71,4 +78,4 @@ sig.%.pdf: sig.%.jpg
 %.ppmed.png: %.pdf
 	convert -density 400x400 $< $@
 
--include makestuff/wrapR/pdf.mk
+## pdfpages stuff deleted 2021 Apr 14 (Wed)

@@ -16,7 +16,8 @@
 
 # Input stuff (should never require specific rules)
 
-FIXFIG %!
+FIX %!
+SPEAKER %!
 
 !SLIDESEP ----------------+
 !TAB \t
@@ -141,6 +142,8 @@ outline: %!
 ######################################## Content switching
 
 ### Slide level
+
+END ENDTALK
 
 EXTRA NULLSLIDE
 

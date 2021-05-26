@@ -1,13 +1,13 @@
-
 ## Make things appear; some of it feels pretty Dushoff-specific
+## Need to transition to $(target)-based rules (no $<)
 
 pngtarget: 
 	$(MAKE) $<.png
 	$(MAKE) $<.png.go
 
 pdftarget:
-	$(MAKE) $<.pdf
-	$(MAKE) $<.pdf.go
+	$(MAKE) $<
+	($(MAKE) $<.pdf && $(MAKE) $<.pdf.go) || $(MAKE)  $<.go
 
 vtarget:
 	$(MAKE) $<.go
@@ -16,17 +16,30 @@ acrtarget:
 	$(MAKE) $<.acr
 
 gptarget:
-	$(MAKE) $<.gp
+	$(MAKE) $<.op
+
+optarget:
+	$(MAKE) $(target:%=%.pdf.op) || $(MAKE) $(target:%=%.op)
 
 pushtarget:
 	$(MAKE) $<.pd
 
 dtarget:
+	$(MAKE) $(target:%=%.ldown)
+
+olddtarget:
 	$(MAKE) pushdir=~/Downloads/ pushtarget
 
-## Not tested; could also try adding deptarget: $(target) and using $<
-deptarget:
-	$(MAKE) $(target:.pdf=.deps)
+## The $< paradigm is stupid; let's try something else 2021 Feb 02 (Tue)
+doctarget:
+	$(MAKE) docpdftarget || $(MAKE) docsimptarget
+
+docpdftarget:
+	$(MAKE) $(target:%=%.pdf.docs)
+
+docsimptarget:
+	$(MAKE) $(target:%=%.docs)
+	$(MAKE) $(target:%=%.pdf.docs)
 
 target.mk:
 	$(CP) makestuff/newtarget.mk $@
@@ -44,12 +57,13 @@ target.mk:
 	cd $* && screen -t "$(notdir $*)"
 
 ## do the above and open a vim_session
+## Eliminated apparent .dir redundancy 2021 Feb 11 (Thu)
 %.vscreen: %.dir
-	cd $(dir $*) && $(MAKE) "$(notdir $*)" 
 	- cd $* && $(MAKE) vimclean
 	cd $* && screen -t "$*" bash -cl "vvs"
 
 ## Old-style vscreen (short names)
+## Do I use this? 2021 Feb 11 (Thu)
 %.svscreen: %.dir
 	cd $(dir $*) && $(MAKE) "$(notdir $*)" 
 	cd $* && screen -t "$(notdir $*)" bash -cl "vvs"
