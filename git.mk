@@ -520,9 +520,10 @@ hub:
 
 gitremote = git remote get-url origin
 gitremoteopen = echo go `$(gitremote) | perl -pe "s/[.]git$$//"` | bash --login
+gitremotestraight = echo go `$(gitremote) | perl -pe "s/[.]git$$//"` | bash
 
 hupstream:
-	$(gitremoteopen)
+	$(gitremotestraight)
 
 hup:
 	$(gitremote)
