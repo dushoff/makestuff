@@ -16,7 +16,7 @@ ignore: exclude
 $(git_dir)/info/exclude: $(Sources) Makefile
 	perl -wf makestuff/ignore.pl > $@ || perl -wf ignore.pl > $@
 
-export Ignore += local.mk target.mk make.log go.log
+export Ignore += local.mk target.mk make.log go.log tmp.scr
 
 ## Make global ignore file on a new machine
 ignore.config: ~/.config/git
