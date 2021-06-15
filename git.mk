@@ -245,6 +245,7 @@ outputs:
 ## Pages. Sort of like git_push, but for gh_pages (html, private repos)
 ## May want to refactor as for git_push above (break link from pages/* to * for robustness)
 
+## 2021 Мам 27 (Бс) Probably deprecated, but could update to follow docs style
 ## 2019 Sep 22 (Sun) Keeping checkout, but skipping early pull
 ## That can make the remote copy look artificially new
 ## 2019 Oct 10 (Thu)
@@ -266,8 +267,8 @@ pages/Makefile:
 	cp Makefile $@
 
 ## Don't call this directly and then we don't need the pages dependency
-pages/%: % 
-	$(copy)
+## In development (or deprecation) 2021 Мам 27 (Бс)
+## pages/%: %; $(copy)
 
 ## If you're going to pushpages automatically, you might want to say
 ## pull: pages.gitpull
@@ -522,9 +523,10 @@ hub:
 
 gitremote = git remote get-url origin
 gitremoteopen = echo go `$(gitremote) | perl -pe "s/[.]git$$//"` | bash --login
+gitremotestraight = echo go `$(gitremote) | perl -pe "s/[.]git$$//"` | bash
 
 hupstream:
-	$(gitremoteopen)
+	$(gitremotestraight)
 
 hup:
 	$(gitremote)
