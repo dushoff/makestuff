@@ -262,6 +262,9 @@ outputs:
 %.pagepush: %.pages
 	cd pages && git pull && git push
 
+pages/Makefile:
+	cp Makefile $@
+
 ## Don't call this directly and then we don't need the pages dependency
 pages/%: % 
 	$(copy)
