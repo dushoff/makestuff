@@ -48,9 +48,6 @@ pull: commit.time
 pardirpull: $(pardirs:%=%.pull) makestuff.pull
 parpull: pull pardirpull
 
-newSource:
-	git add $(Sources)
-
 ######################################################################
 
 ## parallel directories
@@ -86,22 +83,32 @@ makestuff.all: %.all: %
 %.all: 
 	$(MAKE) $* $*/Makefile && cd $* && $(MAKE) makestuff && $(MAKE) all.time
 
-do_amsync = (git commit -am "amsync"; git pull; git push; git status .)
-
 autocommit:
 	$(MAKE) exclude
 	$(git_check) || git commit -am "autocommit from git.mk"
 	git status .
 
+addall:
+	git add -u
+	git add $(Sources)
+
+tsync:
+	touch $(word 1, $(Sources))
+	$(MAKE) up.time
+
+## Flattened 2021 May 11 (Tue)
+
+allsync: addall tsync
+
+######################################################################
+
+## Deprecate
+
+do_amsync = (git commit -am "amsync"; git pull; git push; git status .)
+
 amsync:
 	$(MAKE) exclude
 	$(git_check) || $(do_amsync)
-
-addall:
-	git add -u
-
-allsync: addall
-	$(MAKE) tsync
 
 ######################################################################
 
@@ -160,12 +167,6 @@ git_check:
 
 ######################################################################
 
-## Messing around 2021 Mar 15 (Mon)
-tsync:
-	touch $(word 1, $(Sources))
-	$(MAKE) up.time
-
-######################################################################
 
 ## autosync stuff not consolidated, needs work. 
 remotesync: commit.default
@@ -244,6 +245,7 @@ outputs:
 ## Pages. Sort of like git_push, but for gh_pages (html, private repos)
 ## May want to refactor as for git_push above (break link from pages/* to * for robustness)
 
+## 2021 Мам 27 (Бс) Probably deprecated, but could update to follow docs style
 ## 2019 Sep 22 (Sun) Keeping checkout, but skipping early pull
 ## That can make the remote copy look artificially new
 ## 2019 Oct 10 (Thu)
@@ -261,9 +263,12 @@ outputs:
 %.pagepush: %.pages
 	cd pages && git pull && git push
 
+pages/Makefile:
+	cp Makefile $@
+
 ## Don't call this directly and then we don't need the pages dependency
-pages/%: % 
-	$(copy)
+## In development (or deprecation) 2021 Мам 27 (Бс)
+## pages/%: %; $(copy)
 
 ## If you're going to pushpages automatically, you might want to say
 ## pull: pages.gitpull
@@ -281,7 +286,10 @@ pages/%: %
 Ignore += pages
 pages:
 	git clone `git remote get-url origin` $@
-	cd $@ && (git checkout gh-pages || $(createpages)
+	cd $@ && (git checkout gh-pages || $(createpages))
+
+%.branchdir:
+	git clone `git remote get-url origin` $*
 
 define createpages
 	(git checkout --orphan gh-pages && git rm -rf * && touch ../README.md && cp ../README.md . && git add README.md && git commit -m "Orphan pages branch" && git push --set-upstream origin gh-pages ))
@@ -515,9 +523,10 @@ hub:
 
 gitremote = git remote get-url origin
 gitremoteopen = echo go `$(gitremote) | perl -pe "s/[.]git$$//"` | bash --login
+gitremotestraight = echo go `$(gitremote) | perl -pe "s/[.]git$$//"` | bash
 
 hupstream:
-	$(gitremoteopen)
+	$(gitremotestraight)
 
 hup:
 	$(gitremote)

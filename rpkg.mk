@@ -1,5 +1,8 @@
 ## Much of this is cribbed from McMasterPandemic and glmmTMB
 ## See makestuff/rpkg.md for explanations
+## Need a work-around for being able to sync when we can't build
+## built objects are sunk by default because that's how packages and devtools work
+## Rebuild to separate dev stuff from shared stuff somehow!
 
 ######################################################################
 
@@ -42,7 +45,7 @@ Sources += $(wildcard man/*.Rd)
 
 ## Tracking directory
 
-Ignore += rpkgbuild/
+Ignore += rpkgbuild
 rpkgbuild:
 	$(mkdir)
 
@@ -59,7 +62,8 @@ $(TARBALL): NAMESPACE $(wildcard R/*.*)
 NAMESPACE: rpkgbuild/names ;
 rpkgbuild/names: $(wildcard R/*.R)
 	$(MAKE) rpkgbuild
-	echo "(roxygen2::roxygenize('.',roclets = 'namespace'))" | $(R)
+	echo "(roxygen2::roxygenize('.',roclets = 'namespace'))" | $(R) \
+	|| echo ERROR: FAILED to build NAMESPACE
 	touch $@
 
 rpkgbuild/pkgtest: $(TARBALL)

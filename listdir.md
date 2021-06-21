@@ -10,4 +10,4 @@ To set up a listdir:
 * add it to screens.list in the topdir
 * build a Makefile from makestuff/screendir.Makefile
 * make a screens.list in the directory
-* make screen_sesson. Should Just Work
+* make foo.subscreen
