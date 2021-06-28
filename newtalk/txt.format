@@ -58,7 +58,7 @@ handouts: {\centering \textsf{ \textbf{ {\Large\jdtitle} \\ {\large\jdsub} }} \\
 
 ICI3DTHEME NOFRAME
 draft final: NOFRAME \date{\jddate} \title{\jdtitle} \subtitle{\jdsub} \author{\jdauth} {\topBar\maketitle}
-handouts: \noindent\includegraphics[width=\textwidth]{LatexTemplates/bar.pdf} {\centering \textsf{ \textbf{ {\Large\jdtitle} \\ {\large\jdsub} }} \\ {\large \jddate} \\ \mbox{}} 
+handouts: \noindent\includegraphics[width=\textwidth]{LatexTemplates/bar.pdf} {\centering \textsf{ \textbf{ {\Large\jdtitle} \\ \centering \mbox{}\large\jdsub}} \\ \centering \jdauth} \vspace{3ex} 
 
 TOP NULLSLIDE
 draft final: NOFRAME
@@ -163,9 +163,11 @@ RSLIDE NULLSLIDE
 final: ^DEFHEAD {\sl %% (repeat)}
 draft: ^DEFHEAD {\sl %% (repeat OR preview?)}
 
+## Repeated info
 REPSLIDE NULLSLIDE
 draft final: ^DEFHEAD {\sl %% (repeat)}
 
+## Presentation only
 PRESLIDE NULLSLIDE
 draft final: ^DEFHEAD {\sl %% (preview)}
 
