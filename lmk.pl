@@ -15,7 +15,7 @@ my %ruledirs; ## Things we can make by cloning and moving
 while(<>){
 	## Space and comments
 	my $top = 1 .. /-------------------------/;
-	my $active =  (! /#.*NOSCREEN/) && $top;
+	## my $active =  (! /#.*NOSCREEN/) && $top; ## Delete this 2021 May 19 (Wed)
 	next if /^$/;
 	next if /^#/;
 	chomp;
@@ -30,10 +30,10 @@ while(<>){
 
 	my $rule = (my ($d, $l) = /^([\w]*)(: .*)/);
 
-	if ($active and $number){ say "screendirs += $name" }
+	if ($top and $number){ say "screendirs += $name" }
 	if ($rule or $number){
-		if(/#.*NOALL/ || ! $active)
-			{$resting{$name}=0} else{$listdirs{$name}=0};
+		if(/#.*NOALL/ || ! $top) {$resting{$name}=0} 
+			else{$listdirs{$name}=0};
 	}
 
 	my $branch;
