@@ -100,6 +100,9 @@ tsync:
 
 allsync: addall tsync
 
+%.allsync:
+	cd $* && $(MAKE) allsync
+
 ######################################################################
 
 ## Deprecate
