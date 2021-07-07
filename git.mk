@@ -100,6 +100,9 @@ tsync:
 
 allsync: addall tsync
 
+%.allsync:
+	cd $* && $(MAKE) allsync
+
 ######################################################################
 
 ## Deprecate
@@ -410,6 +413,7 @@ dotdir: $(Sources)
 ## Do use for light applications focused on a particular directory
 ## DON'T use for service (i.e., makeR scripts)
 ## Do we have a solution for makeR scripts in subdirectories?
+## Note that I am using it now for pipeR scripts, so that's probably fragile 2021 Jun 27 (Sun)
 cpdir: $(filter-out %.script, $(Sources))
 	-/bin/rm -rf $@
 	$(mkdir)

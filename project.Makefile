@@ -1,5 +1,5 @@
 ## project.Makefile
-## This is …
+## This is ICI3D stochInv
 
 current: target
 -include target.mk
@@ -8,6 +8,10 @@ current: target
 
 vim_session:
 	bash -cl "vmt"
+
+######################################################################
+
+Sources += $(wildcard *.md)
 
 ######################################################################
 
