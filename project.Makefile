@@ -1,8 +1,8 @@
-## project.Makefile
-## This is ICI3D stochInv
+## This is …
 
 current: target
 -include target.mk
+Ignore = target.mk
 
 # -include makestuff/perl.def
 
