@@ -181,9 +181,6 @@ remotesync: commit.default
 
 ######################################################################
 
-%.master: %
-	cd $< && git checkout master
-
 %.status: %
 	cd $< && git status
 
@@ -354,26 +351,6 @@ $(Outside):
 
 ######################################################################
 
-## Burn it down!
-## 2020 Aug 05 (Wed) This went terribly. Easier to go to github and destroy
-## the repo there.
-
-%.warn:
-	@echo ctrl-c if you "don't" want to DESTROY $* repo!
-	read input
-	@echo BOOM
-
-%.destroy:
-	@echo ctrl-c if you "don't" want to DESTROY $* repo!
-	read input
-	- $(RMR) $*.new
-	$(MKDIR) $*.new
-	cd $*.new && git init
-	$(CPF) $*/.git/config $*.new/.git/
-	cd $*.new && touch .fake && git add .fake && git commit -m "nuking repo"
-	cd $*.new && git push --force --set-upstream origin master
-	$(MAKE) $*.reset
-
 %.reset:
 	- $(RMR) $*.olddir
 	mv $* $*.olddir
@@ -433,14 +410,6 @@ clonedir: $(Sources)
 	git clone `git remote get-url origin` $@
 	-cp target.mk $@
 
-repodir: $(Sources)
-	-/bin/rm -rf $@
-	mkdir $@
-	tar czf $@.tgz `git ls-tree -r --name-only master`
-	cp $@.tgz $@
-	cd $@ && tar xzf $@.tgz && $(RM) $@.tgz
-	-cp target.mk $@
-
 sourcedir: $(Sources)
 	-/bin/rm -rf $@
 	mkdir $@
@@ -493,16 +462,6 @@ testclean:
 
 %.checkbranch:
 	cd $* && git branch
-
-%.master:
-	cd $* && git checkout master
-
-master: 
-	git checkout master
-
-## Try this stronger rule some time!
-# %.master: %
-#	cd $< && git checkout master
 
 ## Destroy a branch
 ## Usually call from upmerge (which hasn't been tested for a long time)
@@ -563,10 +522,6 @@ hup:
 	-git rm -f $*
 	rm -rf .git/modules/$*
 	git config --remove-section submodule.$*
-
-## Force push a commit
-%.forcepush:
-	git push -f origin  $*:master
 
 ######################################################################
 
