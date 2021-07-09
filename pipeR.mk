@@ -141,6 +141,7 @@ $(foreach stem,$(pipeRoutdesc),$(eval $(call pipedesc_rout_r,$(stem))))
 
 %.pipeR.script:
 	$(MAKE) cpdir.mslink
+	$(MAKE) cpdir.localdir
 	cd cpdir && $(MAKE) -n $*.Rout > make.log
 	perl -wf makestuff/pipeRscript.pl cpdir/make.log > $@
 
