@@ -78,6 +78,7 @@ endif
 Ignore += .Rhistory .RData
 Ignore += *.RData *.Rlog *.rdata *.rda *.rtmp
 Ignore += *.Rout*
+Ignore += *.html.args
 Ignore += *.Rds *.rds
 Ignore += Rplots.pdf
 Ignore += *.ggp.*
