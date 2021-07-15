@@ -39,7 +39,7 @@ ZIP = zip $@ $^
 
 null = /dev/null
 
-lscheck = @$(LS) $@ > $(null)
+lscheck = @$(LS) $@ > $(null) || (echo ERROR upstream rule failed to make $@ && false)
 
 hiddenfile = $(dir $1).$(notdir $1)
 hide = $(MVF) $1 $(dir $1).$(notdir $1)
@@ -87,13 +87,13 @@ pandocs = pandoc -s -o $@ $<
 
 ######################################################################
 
-## Link to a resource directory (very specific)
 ## It would be better to have global Drop logic (and to move this rule out of this file)
 ifndef Drop
 Drop = ~/Dropbox
 endif
 
-Droplink = (ls $(Drop)/resources/$(dirname) && $(LNF) $(Drop)/resources/$(dirname) $@) || (ls $(Drop)/$(dirname) && $(LNF) $(Drop)/$(dirname) $@)
+## Link to a resource directory (very specific) does not work
+Droplink = (ls $(Drop)/resources/$(notdir $(CURDIR)) && $(LNF) $(Drop)/resources/$(notdir $(CURDIR)) $@) || (ls $(Drop)/$(notdir $(CURDIR)) && $(LNF) $(Drop)/$(notdir $(CURDIR)) $@)
 
 ######################################################################
 
@@ -161,7 +161,7 @@ Ignore += *.ld.tex
 	$(CP) $< ~/Downloads/
 
 %.ldown: %
-	cd ~/Downloads && ln -fs $(CURDIR)/$* . && touch $*
+	cd ~/Downloads && ln -fs $(CURDIR)/$* . && touch $(notdir $*)
 
 %.pushpush: %
 	$(CP) $< $(pushdir)

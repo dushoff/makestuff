@@ -16,7 +16,7 @@ acrtarget:
 	$(MAKE) $<.acr
 
 gptarget:
-	$(MAKE) $<.pdf.op || $(MAKE) $<.op
+	$(MAKE) $<.op
 
 optarget:
 	$(MAKE) $(target:%=%.pdf.op) || $(MAKE) $(target:%=%.op)
@@ -32,9 +32,13 @@ olddtarget:
 
 ## The $< paradigm is stupid; let's try something else 2021 Feb 02 (Tue)
 doctarget:
-	$(MAKE) $(target:%=%.docs)
+	$(MAKE) docpdftarget || $(MAKE) docsimptarget
 
 docpdftarget:
+	$(MAKE) $(target:%=%.pdf.docs)
+
+docsimptarget:
+	$(MAKE) $(target:%=%.docs)
 	$(MAKE) $(target:%=%.pdf.docs)
 
 target.mk:
