@@ -115,7 +115,7 @@ ddcopy = ($(LSN) && $(touch)) ||  $(rdcopy)
 %.ls: %
 	ls $* > $@
 %.lsd: %
-	ls -d $*/* > $@
+	(ls -d $*/* || ls $*) > $@
 index.lsd: .
 	ls -d * > $@
 
