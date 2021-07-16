@@ -71,6 +71,10 @@ endif
 %.rds %.Rds: %.Rout
 	$(lscheck)
 
+.PRECIOUS: %.Rout.tsv
+%.Rout.tsv: %.Rout
+	$(lscheck)
+
 .PRECIOUS: %.Rout.csv
 %.Rout.csv: %.Rout
 	$(lscheck)
@@ -85,8 +89,7 @@ endif
 Ignore += .Rhistory .RData
 Ignore += *.RData *.Rlog *.rdata *.rda *.rtmp
 Ignore += *.Rout*
-Ignore += *.html.args
-Ignore += *.pdf.args
+Ignore += *.html.args *.pdf.args
 Ignore += *.Rds *.rds
 Ignore += Rplots.pdf
 Ignore += *.ggp.*
@@ -125,7 +128,8 @@ $(foreach stem,$(pipeRoutdesc),$(eval $(call pipedesc_rout_r,$(stem))))
 ######################################################################
 
 ## Deleting some rules that may be needed for make3?
-## See makeR.mk
+## See makeR.mk (deleted now)
+## Also deleting possibly relevant chain/Makefile
 ## 2021 Jan 05 (Tue)
 
 ######################################################################
@@ -136,8 +140,9 @@ $(foreach stem,$(pipeRoutdesc),$(eval $(call pipedesc_rout_r,$(stem))))
 
 %.pipeR.script:
 	$(MAKE) cpdir.mslink
+	$(MAKE) cpdir.localdir
 	cd cpdir && $(MAKE) -n $*.Rout > make.log
-	perl -wf makestuff/makeRscript.pl cpdir/make.log > $@
+	perl -wf makestuff/pipeRscript.pl cpdir/make.log > $@
 
 Sources += $(wildcard *.pipeR.script)
 

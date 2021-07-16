@@ -1,0 +1,1 @@
+fsutil.exe file setCaseSensitiveInfo "./" enable

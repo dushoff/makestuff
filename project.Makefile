@@ -1,13 +1,17 @@
-## project.Makefile
 ## This is …
 
 current: target
 -include target.mk
+Ignore = target.mk
 
 # -include makestuff/perl.def
 
 vim_session:
 	bash -cl "vmt"
+
+######################################################################
+
+Sources += $(wildcard *.md)
 
 ######################################################################
 
