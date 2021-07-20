@@ -582,10 +582,12 @@ Ignore += *.oldfile *.olddiff
 	ls $@
 
 ## Chaining trick to always remake
-## Not clear it works
+## Is this better or worse than writing dependencies and making directly?
 %.olddiff: %.old.diff ;
 %.old.diff: %
+	- $(RM) $*.olddiff
 	-$(DIFF) $*.*.oldfile $* > $*.olddiff
+	$(RO) $*.olddiff
 
 ######################################################################
 
