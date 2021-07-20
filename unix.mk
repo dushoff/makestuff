@@ -40,7 +40,7 @@ ZIP = zip $@ $^
 
 null = /dev/null
 
-lscheck = @$(LS) $@ > $(null)
+lscheck = @$(LS) $@ > $(null) || (echo ERROR upstream rule failed to make $@ && false)
 
 hiddenfile = $(dir $1).$(notdir $1)
 hide = $(MVF) $1 $(dir $1).$(notdir $1)
@@ -116,7 +116,7 @@ ddcopy = ($(LSN) && $(touch)) ||  $(rdcopy)
 %.ls: %
 	ls $* > $@
 %.lsd: %
-	ls -d $*/* > $@
+	(ls -d $*/* || ls $*) > $@
 index.lsd: .
 	ls -d * > $@
 
