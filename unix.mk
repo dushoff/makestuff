@@ -34,7 +34,8 @@ RW = chmod ug+w
 DNE = (! $(LS) $@ > $(null))
 LSN = ($(LS) $@ > $(null))
 
-## These two are weird (don't follow the convention)
+tgz = tar czf $@ $^
+zip = zip $@ $^
 TGZ = tar czf $@ $^
 ZIP = zip $@ $^
 
