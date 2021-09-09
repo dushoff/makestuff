@@ -11,6 +11,7 @@ current: target
 Sources += $(wildcard *.R)
 
 Ignore += chain
+Ignore += *.stamp
 
 ##################################################################
 
