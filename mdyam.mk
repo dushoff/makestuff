@@ -5,6 +5,14 @@ rwm_r = Rscript -e 'library("rmarkdown"); render("$<", output_format="md_documen
 
 Ignore += *.rmk
 %.rmk: %.rmd
+	$(rym_r)
+	$(rwm_r)
+	$(CAT) $*.rym $*.rwm > $@
+	$(RM) $*.rym $*.rwm
+
+## Works with dmdeps.mk; bad form to let dmd and rmd compete
+Ignore += *.rmk
+%.rmk: %.dmd
 	$(dmd)
 	$(rym_r)
 	$(rwm_r)

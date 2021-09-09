@@ -1,7 +1,5 @@
 define dmd
-	$(MAKE) $*.dmdmk
-	$(MAKE) -f $*.dmdmk -f Makefile $@
+	perl -wf makestuff/dmdmk.pl $< > $@.dmdmk
+	$(MAKE) -f $@.dmdmk -f Makefile dmdeps
+	$(RM) $@.dmdmk
 endef
-
-%.dmdmk:
-	perl -wf makestuff/dmdmk.pl $(filter-out %.pl, $^) > $@
