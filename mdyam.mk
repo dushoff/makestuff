@@ -5,6 +5,7 @@ rwm_r = Rscript -e 'library("rmarkdown"); render("$<", output_format="md_documen
 
 Ignore += *.rmk
 %.rmk: %.rmd
+	$(dmd)
 	$(rym_r)
 	$(rwm_r)
 	$(CAT) $*.rym $*.rwm > $@
