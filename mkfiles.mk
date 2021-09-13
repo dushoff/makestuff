@@ -10,7 +10,7 @@ mkfiles/%.make:
 	$(MAKE) mkfiles
 	cp makestuff/mkfiles.Makefile $@
 
-mkfiles/:
+mkfiles:
 	$(mkdir)
 
 mklink = cd $* && $(LN) ../mkfiles/$*.make Makefile
