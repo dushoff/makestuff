@@ -6,7 +6,7 @@ rwm_r = Rscript -e 'library("rmarkdown"); render("$<", output_format="md_documen
 ## Works with dmdeps.mk; bad form to let dmd and rmd compete
 Ignore += *.rmk
 %.rmk: %.dmd
-	$(dmd)
+	$(dmd_r)
 	$(rym_r)
 	$(rwm_r)
 	$(CAT) $*.rym $*.rwm > $@
@@ -14,5 +14,5 @@ Ignore += *.rmk
 
 ## Eventually want to make slides from rmk, but it's not working prettily now, so we need this parallel track
 %.rmd: %.dmd
-	$(dmd)
+	$(dmd_r)
 	$(copy)
