@@ -233,14 +233,14 @@ foreach(@tex){
 			if (defined $spec{ITEM})
 				{ s/^/$spec{ITEM} /; }
 			else{
-				my $itstring = "*" x $currlevel;
+				my $itstring = "\t" x ($currlevel-1) . "*";
 				s/^/$itstring /;
 			}
 		}
 
-		my $lead = "\n";
-		$lead = "\n\n" unless $currlevel>0;
- 		$_ = "$lead$_" unless
+		my $vert = "\n";
+		$vert = "\n\n" unless $currlevel>1;
+ 		$_ = "$vert$_" unless
 			s/\bNOPAR\b//;
 		push @slide, "$_" unless /^\s*$/;
 	}

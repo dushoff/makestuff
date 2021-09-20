@@ -10,12 +10,24 @@ define rmk_r
 	$(RM) $*.rym $*.rwm
 endef
 
+######################################################################
+## Use RMD for temporary rmd files? 2021 Sep 20 (Mon)
+
 Ignore += *.rmk
 %.rmk: %.rmd
 	$(rmk_r)
 
+Ignore += *.RMD
+%.rmk: %.RMD
+	$(rmk_r)
+
 ## Deprecate this; maybe change them to rmd and manually invoke dmd_r somehow
 ## rmd is now made from dmd; don't let both be sources 2021 Sep 15 (Wed) 
-%.rmd: %.dmd
+%.RMD: %.dmd
+	$(dmd_r)
+	$(copy)
+## rmd is now made from dmd; don't let both be sources 2021 Sep 15 (Wed) 
+
+%.RMD: %.lmd
 	$(dmd_r)
 	$(copy)
