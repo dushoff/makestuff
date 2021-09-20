@@ -229,9 +229,18 @@ foreach(@tex){
 			push @slide, $spec{EIZ} if defined $spec{EIZ};
 			$currlevel--;
 		}
-		s/^/$spec{ITEM} / unless $currlevel==0;
- 
- 		$_ = "\n\n$_" unless
+		if($currlevel > 0){
+			if (defined $spec{ITEM})
+				{ s/^/$spec{ITEM} /; }
+			else{
+				my $itstring = "*" x $currlevel;
+				s/^/$itstring /;
+			}
+		}
+
+		my $lead = "\n";
+		$lead = "\n\n" unless $currlevel>0;
+ 		$_ = "$lead$_" unless
 			s/\bNOPAR\b//;
 		push @slide, "$_" unless /^\s*$/;
 	}
