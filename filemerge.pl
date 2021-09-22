@@ -1,7 +1,7 @@
 use strict;
 use 5.10.0;
 
-my $untrack_string = "\n### Untracked files ###\n";
+my $untrack_string = "### Untracked files ###";
 
 open(LS,  "<", shift @ARGV);
 
@@ -36,9 +36,9 @@ while(<>)
 my $sep=0;
 foreach my $fn (keys %ls){
 	if ($ls{$fn} == 0){
-		say $untrack_string unless $sep++;
+		say "\n$untrack_string\n" unless $sep++;
 		say "* $fn";
-		## $fn =~ s|.*(^[\w/]+\.\w+).*|$1|;
+		## $fn =~ s|.*(^[\w/-]+\.[\w-]+).*|$1|;
 		## say "$fn\n";
 	}
 }
