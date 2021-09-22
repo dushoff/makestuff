@@ -147,6 +147,8 @@ foreach(@tex){
 			s/\\n\b/\n/gs;
 			s/\\t /\t/gs;
 			s/\\t\b/\t/gs;
+
+			s/@%/@#PERC/g;
  
 			while (/%/){
 				# Replace %% with whole remaining string
