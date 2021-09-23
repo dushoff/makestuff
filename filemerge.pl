@@ -14,6 +14,8 @@ while(<LS>)
 	$ls{$_} = 0;
 }
 
+## say "There: " . join "; ", keys %ls;
+
 ## Look for filenames in md file; note them as present or missing
 ## filename should be the first "word" thing on the line, and should have a .
 ## Directories are confusing me now
@@ -25,12 +27,14 @@ while(<>)
 	chomp;
 	s/MISSING[^:]*: //;
 	say;
-	s/\[[^[]*\]\(//;
-	if(my ($fn) = m|^[\s*>#"*]*([\w/.]+\.\w+)|){
+	s/\[[^[]*\]\(//; ## Trim an apparent markdown description
+	if(my ($fn) = m|^[\s>#"*]*([\w/.]+\.\w+)|){
 		s/[^\s#*]/MISSING: $&/ unless defined $ls{$fn};
 		$ls{$fn} = 1;
 	}
 }
+
+## say "Here: " . join "; ", keys %ls;
 
 ## Print out things not noted as present
 my $sep=0;
