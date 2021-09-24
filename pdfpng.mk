@@ -1,5 +1,9 @@
 ## See also makestuff/pngpages.mk
 
+ifndef convert
+	convert=convert
+endif
+
 .PRECIOUS: %-0.png
 %-0.png: %.Rout.pdf
 	convert $< $*.png
