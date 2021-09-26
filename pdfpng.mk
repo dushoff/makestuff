@@ -1,5 +1,6 @@
 ## See also makestuff/pngpages.mk
 
+## Not used yet!
 ifndef convert
 	convert=convert
 endif
