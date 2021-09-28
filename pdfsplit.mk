@@ -1,3 +1,4 @@
+## See also makestuff/pdfpages.mk
 
 .PRECIOUS: %-0.pdf
 %-0.pdf: %.pdf

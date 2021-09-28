@@ -381,7 +381,7 @@ gitprune:
 
 Ignore += dotdir/ clonedir/ cpdir/
 dotdir: $(Sources)
-	$(MAKE) allsync
+	$(MAKE) sync
 	-/bin/rm -rf $@
 	git clone . $@
 

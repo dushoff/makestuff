@@ -5,6 +5,7 @@ use 5.10.0;
 
 undef $/;
 my %files;
+my @files;
 
 ### Read and parse
 my $f = <>;
@@ -17,8 +18,11 @@ foreach my $w (@f){
 	next if $w =~ /https*:/;
 	next unless $w =~ /\w/;
 	foreach my $e (@ext){
-		$files{$w} = 0 if $w=~/\.$e$/i;
+		if ($w=~/\.$e$/i){
+			push @files, $w unless defined $files{$w};
+			$files{$w} = 0;
+		}
 	}
 }
 
-say "dmdeps: " . join " ", sort keys %files
+say "dmdeps: " . join " ", @files
