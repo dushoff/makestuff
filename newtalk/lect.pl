@@ -147,6 +147,8 @@ foreach(@tex){
 			s/\\n\b/\n/gs;
 			s/\\t /\t/gs;
 			s/\\t\b/\t/gs;
+
+			s/@%/@#PERC/g;
  
 			while (/%/){
 				# Replace %% with whole remaining string
@@ -229,9 +231,18 @@ foreach(@tex){
 			push @slide, $spec{EIZ} if defined $spec{EIZ};
 			$currlevel--;
 		}
-		s/^/$spec{ITEM} / unless $currlevel==0;
- 
- 		$_ = "\n\n$_" unless
+		if($currlevel > 0){
+			if (defined $spec{ITEM})
+				{ s/^/$spec{ITEM} /; }
+			else{
+				my $itstring = "\t" x ($currlevel-1) . "*";
+				s/^/$itstring /;
+			}
+		}
+
+		my $vert = "\n";
+		$vert = "\n\n" unless $currlevel>1;
+ 		$_ = "$vert$_" unless
 			s/\bNOPAR\b//;
 		push @slide, "$_" unless /^\s*$/;
 	}

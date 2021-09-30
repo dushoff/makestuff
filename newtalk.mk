@@ -15,8 +15,7 @@ Ignore += *.txt.fmt txt.format
 
 txt.format: $(talkdir)/txt.format local.txt.format
 	$(rm)
-	$(cat)
-	$(RO)
+	$(catro)
 
 local.txt.format:
 	touch $@
@@ -25,7 +24,7 @@ local.txt.format:
 %.tmp: 
 	$(MAKE) talkdir
 	$(CP) $(talkdir)/$@ .
-	$(RO)
+	$(readonly)
 
 ici3d:
 	/bin/ln -fs talkdir/ici3d.tmp beamer.tmp
@@ -34,7 +33,7 @@ ici3d:
 copy.tex:
 	$(MAKE) talkdir
 	$(CP) $(talkdir)/$@ .
-	$(RO)
+	$(readonly)
 
 .PRECIOUS: talkdir/%
 talkdir/%:

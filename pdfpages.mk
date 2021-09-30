@@ -1,4 +1,6 @@
 
+## See also makestuff/pdfsplit.mk
+
 Ignore += *.page.pdf
 
 .PRECIOUS: %-0.pdf

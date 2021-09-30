@@ -27,13 +27,15 @@ LNF = /bin/ln -fs
 MD = mkdir
 MKDIR = mkdir
 CAT = cat
+
 readonly = chmod a-w $@
-RO = chmod a-w $@
-RW = chmod ug+w $@
+RO = chmod a-w 
+RW = chmod ug+w
 DNE = (! $(LS) $@ > $(null))
 LSN = ($(LS) $@ > $(null))
 
-## These two are weird (don't follow the convention)
+tgz = tar czf $@ $^
+zip = zip $@ $^
 TGZ = tar czf $@ $^
 ZIP = zip $@ $^
 
@@ -72,13 +74,14 @@ rcopy = $(CPR) $< $@
 rdcopy = $(CPR) $(dir) $@
 copy = $(CP) $< $@
 move = $(MV) $< $@
+Move = $(MVF) $< $@
 hardcopy = $(CPF) $< $@
 allcopy =  $(CP) $^ $@
 ccrib = $(CP) $(crib)/$@ .
 mkdir = $(MD) $@
 makedir = cd $(dir $@) && $(MD) $(notdir $@)
 cat = $(CAT) /dev/null $^ > $@
-catro = $(rm); $(CAT) /dev/null $^ > $@; $(RO)
+catro = $(rm); $(CAT) /dev/null $^ > $@; $(readonly)
 ln = $(LN) $< $@
 lnf = $(LNF) $< $@
 rm = $(RM) $@
@@ -145,6 +148,9 @@ shell_execute = sh < $@
 
 %.png: %.pdf
 	$(convert)
+
+%.image.png: %.pdf
+	$(imageconvert)
 
 pdfcat = pdfjam --outfile $@ $(filter %.pdf, $^) 
 
