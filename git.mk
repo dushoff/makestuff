@@ -88,8 +88,9 @@ autocommit:
 	$(git_check) || git commit -am "autocommit from git.mk"
 	git status .
 
+## No idea what add -u is supposed to do. What if I added a dot?
 addall:
-	git add -A
+	git add -u
 	git add $(Sources)
 
 tsync:
