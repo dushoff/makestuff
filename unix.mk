@@ -74,6 +74,7 @@ rcopy = $(CPR) $< $@
 rdcopy = $(CPR) $(dir) $@
 copy = $(CP) $< $@
 move = $(MV) $< $@
+Move = $(MVF) $< $@
 hardcopy = $(CPF) $< $@
 allcopy =  $(CP) $^ $@
 ccrib = $(CP) $(crib)/$@ .
@@ -147,6 +148,9 @@ shell_execute = sh < $@
 
 %.png: %.pdf
 	$(convert)
+
+%.image.png: %.pdf
+	$(imageconvert)
 
 pdfcat = pdfjam --outfile $@ $(filter %.pdf, $^) 
 

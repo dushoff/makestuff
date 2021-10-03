@@ -32,7 +32,7 @@ commit.time: $(Sources)
 	(head -1 ~/.commitnow > $@ && echo " ~/.commitnow" >> $@) || echo Autocommit > $@
 	echo "## $(CURDIR)" >> $@
 	!(git commit --dry-run >> $@) || (perl -pi -e 's/^/#/ unless $$.==1' $@ && $(MSEDIT))
-	$(git_check) || (perl -ne 'print unless /^\s*#/' $@ | git commit -F -)
+	$(git_check) || (perl -ne 'print unless /^#/' $@ | git commit -F -)
 	date >> $@
 
 commit.default: $(Sources)
@@ -381,7 +381,7 @@ gitprune:
 
 Ignore += dotdir/ clonedir/ cpdir/
 dotdir: $(Sources)
-	$(MAKE) allsync
+	$(MAKE) sync
 	-/bin/rm -rf $@
 	git clone . $@
 
