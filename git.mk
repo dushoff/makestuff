@@ -89,7 +89,7 @@ autocommit:
 	git status .
 
 addall:
-	git add -Au
+	git add -A
 	git add $(Sources)
 
 tsync:
