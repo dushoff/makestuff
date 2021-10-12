@@ -26,7 +26,6 @@ Ignore += *.RMD
 %.RMD: %.dmd
 	$(dmd_r)
 	$(copy)
-## rmd is now made from dmd; don't let both be sources 2021 Sep 15 (Wed) 
 
 %.RMD: %.lmd
 	$(dmd_r)
