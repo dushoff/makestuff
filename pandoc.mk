@@ -71,6 +71,10 @@ rmdh = Rscript -e "library(\"rmarkdown\"); render(\"$<\")"
 %.tex.md: %.tex
 	pandoc -o $@ $<
 
+## Move captions above ! includes
+%.upcap.md: %.docx.md makestuff/upcap.pl
+	$(PUSH)
+  
 ## This is becoming pretty random
 %.pan.pdf: %.mkd
 	pandoc -o $@ --variable fontsize=12pt $<
@@ -86,3 +90,5 @@ rmdpdf = Rscript -e 'library("rmarkdown"); render("$<", output_format="pdf_docum
 knitpdf = Rscript -e 'knitr::knit2pdf("$<")'
 
 rmdpdfBang = Rscript -e 'library("rmarkdown"); render("$<", output_format="pdf_document")'
+
+######################################################################
