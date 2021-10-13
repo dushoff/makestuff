@@ -72,7 +72,7 @@ rmdh = Rscript -e "library(\"rmarkdown\"); render(\"$<\")"
 	pandoc -o $@ $<
 
 ## Move captions above ! includes
-%.upcap.md: %.docx.md makestuff/upcap.pl
+%.upcap.MD: %.docx.MD makestuff/upcap.pl
 	$(PUSH)
   
 ## This is becoming pretty random
