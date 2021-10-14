@@ -71,6 +71,15 @@ rmdh = Rscript -e "library(\"rmarkdown\"); render(\"$<\")"
 %.tex.md: %.tex
 	pandoc -o $@ $<
 
+## Move !includes to the end of document BEFORE md is de-referenced
+%.endfloat.MD: %.md makestuff/endfloat.pl
+	$(PUSH)
+
+## Move captions above ! includes AFTER md is de-referenced
+%.upcap.MD: %.docx.MD makestuff/upcap.pl
+	$(PUSH)
+
+  
 ## This is becoming pretty random
 %.pan.pdf: %.mkd
 	pandoc -o $@ --variable fontsize=12pt $<
@@ -86,3 +95,5 @@ rmdpdf = Rscript -e 'library("rmarkdown"); render("$<", output_format="pdf_docum
 knitpdf = Rscript -e 'knitr::knit2pdf("$<")'
 
 rmdpdfBang = Rscript -e 'library("rmarkdown"); render("$<", output_format="pdf_document")'
+
+######################################################################

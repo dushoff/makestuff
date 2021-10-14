@@ -13,6 +13,12 @@ define pipeR
 	$(MVF) $(@:%.Rout=%.rtmp) $@
 endef
 
+## Make the rpcall first so that we don't outdate things
+define pipeRcall
+	perl -wf makestuff/pipeRcall.pl $@ $^
+	$(pipeR)
+endef
+
 ## Back-compatility
 makeR=$(pipeR)
 
@@ -49,6 +55,25 @@ ifdef autopipeR
 %.Rout: %.R
 	$(pipeR)
 endif
+
+ifdef alwayspipeR
+.PRECIOUS: %.Rout
+%.Rout: 
+	$(pipeR)
+endif
+
+ifdef autopipeRcall
+.PRECIOUS: %.Rout
+%.Rout: %.R
+	$(pipeRcall)
+endif
+
+ifdef alwayspipeRcall
+.PRECIOUS: %.Rout
+%.Rout:
+	$(pipeRcall)
+endif
+
 
 ifdef autoknit
 %.html: %.Rmd
