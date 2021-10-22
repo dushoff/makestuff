@@ -74,6 +74,7 @@ rcopy = $(CPR) $< $@
 rdcopy = $(CPR) $(dir) $@
 copy = $(CP) $< $@
 move = $(MV) $< $@
+Move = $(MVF) $< $@
 hardcopy = $(CPF) $< $@
 allcopy =  $(CP) $^ $@
 ccrib = $(CP) $(crib)/$@ .
@@ -94,8 +95,14 @@ ifndef Drop
 Drop = ~/Dropbox
 endif
 
-## Link to a resource directory (very specific) does not work
-Droplink = (ls $(Drop)/resources/$(notdir $(CURDIR)) && $(LNF) $(Drop)/resources/$(notdir $(CURDIR)) $@) || (ls $(Drop)/$(notdir $(CURDIR)) && $(LNF) $(Drop)/$(notdir $(CURDIR)) $@)
+ifndef DropResource
+DropResource = $(Drop)/resources
+endif
+
+resDropDir = $(DropResource)/$(notdir $(CURDIR))
+$(resDropDir):
+	$(mkdir)
+resDrop = $(MAKE) $(resDropDir) && $(LNF) $(resDropDir) $@
 
 ######################################################################
 
@@ -147,6 +154,9 @@ shell_execute = sh < $@
 
 %.png: %.pdf
 	$(convert)
+
+%.image.png: %.pdf
+	$(imageconvert)
 
 pdfcat = pdfjam --outfile $@ $(filter %.pdf, $^) 
 
