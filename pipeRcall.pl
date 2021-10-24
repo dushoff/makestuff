@@ -9,10 +9,17 @@ my $call = 'rpcall("' . $args . '")';
 open(OLD, "< $script");
 open(NEW, "> $script.new");
 
+my $shellpipes;
+
 while(<OLD>) {
 	print NEW $_;
-	last if /shellpipes/;
+	if (/shellpipes/){
+		$shellpipes=0;
+		last;
+	}
 }
+
+die "No shellpipes call found" unless defined $shellpipes;
 
 while(<OLD>) {
 	last unless /rpcall/;
