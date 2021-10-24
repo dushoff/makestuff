@@ -1,16 +1,18 @@
 use strict;
 use 5.10.0;
 
-## If I have a number, I'm a screendir
-## If I have a rule, I'm a ruledir
-## If I have a rule _or_ a number, I'm a dir (to be split as listdir or resting)
-## listdir and resting should be changed to activedir and restingdir
-## both the perl names AND the .mk variables (which is why I don't just do it)
+## 2021 Oct 23 (Sat) We only need two kinds of directories
+## active screendir and resting dir
+## Assume they all have rules and let make sort it out
+## ((no more moving))
+## Let resting dir start with 0?
+## What if there are things that I want, but don't want to all?
+## Use NOALL for things that we never want to all.
 
-## screendirs are printed out immediately, based on numbers
-my %listdirs; ## These are ignored and added to alldirs
-my %resting; ## These are just ignored 
-my %ruledirs; ## Things we can make by cloning and moving
+my %screendirs;
+my %alldirs; 
+my %ignoredirs;
+my %ruledirs;
 
 while(<>){
 	## Space and comments
@@ -22,18 +24,22 @@ while(<>){
 	die ("Non-blank line at $.") if /^\s*$/;
 
 	## Numbered things are screens
-	## They don't necessarily need auto-rules (so don't need colons)
 	my $number  = (s/^[0-9]+\.\s*//);
+
+	## Name is the first thing after the optional number
 	my $name = $_;
 	$name =~ s/[\s:].*//;
 	$name =~ s|/$||;
+	if ($number){
+		$screendirs{$name} = 0;
+		$alldirs{$name}=0 unless /#.*NOALL/;
+	}
 
+	## Things that parse like rules are rules
 	my $rule = (my ($d, $l) = /^([\w]*)(: .*)/);
 
-	if ($top and $number){ say "screendirs += $name" }
 	if ($rule or $number){
-		if(/#.*NOALL/ || ! $top) {$resting{$name}=0} 
-			else{$listdirs{$name}=0};
+		$ignoredirs{$name} = 0;
 	}
 
 	my $branch;
@@ -57,6 +63,7 @@ while(<>){
 	}
 }
 
+say "alldirs += " . (join " ", keys %alldirs);
+say "Ignore += " . (join " ", keys %ignoredirs);
 say "ruledirs = " . (join " ", keys %ruledirs);
-say "listdirs = " . (join " ", keys %listdirs);
-say "resting = " . (join " ", keys %resting);
+say "screendirs += " . (join " ", keys %screendirs);
