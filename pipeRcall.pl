@@ -19,19 +19,21 @@ while(<OLD>) {
 	}
 }
 
-die "No shellpipes call found" unless defined $shellpipes;
 
 while(<OLD>) {
 	last unless /rpcall/;
 	print NEW $_ unless /$target/;
 }
 
-say NEW $call;
+if (defined $shellpipes){
+	say NEW $call;
+} else {
+	say "WARNING: No shellpipes call found in pipeRcall";
+}
 print NEW $_;
 
 while(<OLD>) {
 	print NEW $_;
-	last if /shellpipes/;
 }
 
 rename($script, "$script.oldfile");
