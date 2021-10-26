@@ -106,16 +106,6 @@ allsync: addall tsync
 
 ######################################################################
 
-## Deprecate
-
-do_amsync = (git commit -am "amsync"; git pull; git push; git status .)
-
-amsync:
-	$(MAKE) exclude
-	$(git_check) || $(do_amsync)
-
-######################################################################
-
 ## 2020 Mar 09 (Mon) pull via alldirs 
 ## 2020 May 23 (Sat) not clear why this would work
 ## maybe designed to work with pullall recipes?
