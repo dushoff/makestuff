@@ -9,22 +9,31 @@ my $call = 'rpcall("' . $args . '")';
 open(OLD, "< $script");
 open(NEW, "> $script.new");
 
+my $shellpipes;
+
 while(<OLD>) {
 	print NEW $_;
-	last if /shellpipes/;
+	if (/shellpipes/){
+		$shellpipes=0;
+		last;
+	}
 }
+
 
 while(<OLD>) {
 	last unless /rpcall/;
 	print NEW $_ unless /$target/;
 }
 
-say NEW $call;
+if (defined $shellpipes){
+	say NEW $call;
+} else {
+	say "WARNING: No shellpipes call found in pipeRcall";
+}
 print NEW $_;
 
 while(<OLD>) {
 	print NEW $_;
-	last if /shellpipes/;
 }
 
 rename($script, "$script.oldfile");
