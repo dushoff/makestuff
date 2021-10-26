@@ -129,9 +129,6 @@ makestuff.pullall: makestuff.pull ;
 	cd $* && ($(MAKE) pullall || $(MAKE) pull || $(MAKE) makestuff.pull || (cd makestuff && $(MAKE) pull))
 
 ## 2020 May 23 (Sat) ## Different from above? Worse than below?
-## Propagates better than pullmake
-## Still not clear who pulls (or syncs) what
-## What is up doing in pull rules?
 ## Maybe what is wanted is commit (to check for merge?)
 ## Or nothing (since pull merges)
 pullstuff: $(malldirs:%=%.pullstuff)
