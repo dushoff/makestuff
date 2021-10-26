@@ -9,7 +9,7 @@ use 5.10.0;
 ## What if there are things that I want, but don't want to all?
 ## Use NOALL for things that we never want to all.
 
-my %screendirs;
+my @screendirs;
 my %alldirs; 
 my %ignoredirs;
 my %ruledirs;
@@ -31,7 +31,7 @@ while(<>){
 	$name =~ s/[\s:].*//;
 	$name =~ s|/$||;
 	if ($number){
-		$screendirs{$name} = 0;
+		push @screendirs, $name;
 		$alldirs{$name}=0 unless /#.*NOALL/;
 	}
 
@@ -66,4 +66,4 @@ while(<>){
 say "alldirs += " . (join " ", keys %alldirs);
 say "Ignore += " . (join " ", keys %ignoredirs);
 say "ruledirs = " . (join " ", keys %ruledirs);
-say "screendirs += " . (join " ", keys %screendirs);
+say "screendirs += " . (join " ", @screendirs);
