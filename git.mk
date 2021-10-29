@@ -236,7 +236,8 @@ outputs:
 	git add -f docs/$*
 	touch Makefile
 
-## docs: ; $(mkdir)
+## Commented this in 2021 Oct 28 (Thu); why was it commented out??
+docs: ; $(mkdir)
 
 ######################################################################
 
