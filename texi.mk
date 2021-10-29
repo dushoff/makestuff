@@ -21,9 +21,11 @@ endif
 %.pdf: %.tex %.tex.deps %.makedeps makedeps
 	$(MAKE) $*.deps.pdf
 
+## Working on work flow choices 2021 Oct 20 (Wed)
+## Using latexonly to jump to tex error; touch to keep make chain going
 ## But .deps.pdf can be up to date (if .tex.deps didn't need anything)
 %.deps.pdf: %.tex %.tex.deps
-	$(texir)
+	$(texir) || ($(latexonly) && touch $<)
 	$(CP) $@ $*.pdf 
 
 ## This rule meant to be over-ridden by rules in the corresponding .mk

@@ -106,16 +106,6 @@ allsync: addall tsync
 
 ######################################################################
 
-## Deprecate
-
-do_amsync = (git commit -am "amsync"; git pull; git push; git status .)
-
-amsync:
-	$(MAKE) exclude
-	$(git_check) || $(do_amsync)
-
-######################################################################
-
 ## 2020 Mar 09 (Mon) pull via alldirs 
 ## 2020 May 23 (Sat) not clear why this would work
 ## maybe designed to work with pullall recipes?
@@ -129,9 +119,6 @@ makestuff.pullall: makestuff.pull ;
 	cd $* && ($(MAKE) pullall || $(MAKE) pull || $(MAKE) makestuff.pull || (cd makestuff && $(MAKE) pull))
 
 ## 2020 May 23 (Sat) ## Different from above? Worse than below?
-## Propagates better than pullmake
-## Still not clear who pulls (or syncs) what
-## What is up doing in pull rules?
 ## Maybe what is wanted is commit (to check for merge?)
 ## Or nothing (since pull merges)
 pullstuff: $(malldirs:%=%.pullstuff)
@@ -254,8 +241,7 @@ docs: ; $(mkdir)
 ## But if we don't early pull we get spurious merges
 ## Best is to pull pages when you pull
 %.pages:
-	$(MAKE) pages
-	cd pages && git checkout gh-pages
+	$(MAKE) pages/pagebranch
 	$(MAKE) pages/$*
 	cd pages && git add -f $*
 	-cd pages && git commit -m "Pushed directly from parent"
@@ -284,18 +270,22 @@ pages/Makefile:
 	$(MAKE) $*
 	cd $* && (git add *.* && ($(git_check))) || ((git commit -m "Commited by $(CURDIR)") && git pull && git push && git status)
 
+## This is sort of deprecated, too
 ## Make an empty pages directory when necessary; or else attaching existing one
 Ignore += pages
 pages:
 	git clone `git remote get-url origin` $@
-	cd $@ && (git checkout gh-pages || $(createpages))
+
+pages/pagebranch:
+	cd $(dir $@) && (git checkout gh-pages || $(createpages))
+	touch $@
+
+define createpages
+	(git checkout --orphan gh-pages && git rm -rf * && touch ../README.md && cp ../README.md . && git add README.md && git commit -m "Orphan pages branch" && git push --set-upstream origin gh-pages )
+endef
 
 %.branchdir:
 	git clone `git remote get-url origin` $*
-
-define createpages
-	(git checkout --orphan gh-pages && git rm -rf * && touch ../README.md && cp ../README.md . && git add README.md && git commit -m "Orphan pages branch" && git push --set-upstream origin gh-pages ))
-endef
 
 ##################################################################
 
