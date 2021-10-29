@@ -72,6 +72,12 @@ formDrop/jsig.%.jpg: formDrop/jsig.jpg
 formDrop/csig.%.jpg: formDrop/csig.png
 	convert -scale $*% $< $@
 
+csig.%.pdf: csig.%.jpg
+	convert $< $@
+
+jsig.%.pdf: jsig.%.jpg
+	convert $< $@
+
 sig.%.pdf: sig.%.jpg
 	convert $< $@
 
@@ -79,3 +85,7 @@ sig.%.pdf: sig.%.jpg
 	convert -density 400x400 $< $@
 
 ## pdfpages stuff deleted 2021 Apr 14 (Wed)
+## WHY?? Some sort of conflict, probably between pcard and Downloads
+## Reinstating for now
+
+include makestuff/pdfsplit.mk
