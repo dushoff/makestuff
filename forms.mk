@@ -78,6 +78,9 @@ sig.%.pdf: sig.%.jpg
 %.ppmed.png: %.pdf
 	convert -density 400x400 $< $@
 
+%.jpg: %.right.jpg
+	convert -rotate 270 $< $@
+
 ## pdfpages stuff deleted 2021 Apr 14 (Wed)
 ## WHY?? Some sort of conflict, probably between pcard and Downloads
 ## Reinstating for now
