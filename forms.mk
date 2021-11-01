@@ -72,6 +72,12 @@ formDrop/jsig.%.jpg: formDrop/jsig.jpg
 formDrop/csig.%.jpg: formDrop/csig.png
 	convert -scale $*% $< $@
 
+csig.%.pdf: csig.%.jpg
+	convert $< $@
+
+jsig.%.pdf: jsig.%.jpg
+	convert $< $@
+
 sig.%.pdf: sig.%.jpg
 	convert $< $@
 
