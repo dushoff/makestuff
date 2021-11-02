@@ -224,7 +224,8 @@ outputs:
 	touch Makefile
 
 ## Commented this in 2021 Oct 28 (Thu); why was it commented out??
-docs: ; $(mkdir)
+## Commented out because of stupid dataviz conflict 2021 Nov 02 (Tue)
+## docs: ; $(mkdir)
 
 ######################################################################
 
