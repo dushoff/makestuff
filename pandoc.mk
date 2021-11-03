@@ -96,4 +96,6 @@ knitpdf = Rscript -e 'knitr::knit2pdf("$<")'
 
 rmdpdfBang = Rscript -e 'library("rmarkdown"); render("$<", output_format="pdf_document")'
 
+rmdhtml = Rscript -e 'library("rmarkdown"); render("$<", output_format="html_document", output_file="$@")'
+
 ######################################################################
