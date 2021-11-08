@@ -115,8 +115,8 @@ makestuff.pullall: makestuff.pull ;
 
 %.pullall: 
 	$(MAKE) $* && $(MAKE) $*/Makefile 
-	cd $* && $(MAKE) makestuff && $(MAKE) makestuff 
-	cd $* && ($(MAKE) pullall || $(MAKE) pull || $(MAKE) makestuff.pull || (cd makestuff && $(MAKE) pull))
+	cd $* && $(MAKE) makestuff && $(MAKE) makestuff && $(MAKE) makestuff.pull
+	cd $* && ($(MAKE) pullall || $(MAKE) pull || git pull)
 
 ## 2020 May 23 (Sat) ## Different from above? Worse than below?
 ## Maybe what is wanted is commit (to check for merge?)
