@@ -106,10 +106,8 @@ allsync: addall tsync
 
 ######################################################################
 
-## 2020 Mar 09 (Mon) pull via alldirs 
-## 2020 May 23 (Sat) not clear why this would work
-## maybe designed to work with pullall recipes?
 pullall: $(alldirs:%=%.pullall)
+	$(MAKE) pull
 
 makestuff.pullall: makestuff.pull ;
 
