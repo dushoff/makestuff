@@ -516,6 +516,24 @@ hup:
 
 ######################################################################
 
+## Merging
+
+Ignore += *.ours *.theirs *.common
+
+%.common: %
+	git show :2:$* > $@
+
+%.ours: %
+	git show :2:$* > $@
+
+%.theirs: %
+	git show :3:$* > $@
+
+%.rfile: %
+	$(CP) $* $(basename $*)
+
+######################################################################
+
 ## Old files
 
 Ignore += *.oldfile *.olddiff
