@@ -25,7 +25,7 @@ pushtarget:
 	$(MAKE) $<.pd
 
 dtarget:
-	$(MAKE) $(target:%=%.ldown)
+	$(MAKE) $(target:%=%.pdf.ldown) || $(MAKE) $(target:%=%.ldown)
 
 olddtarget:
 	$(MAKE) pushdir=~/Downloads/ pushtarget

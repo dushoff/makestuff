@@ -52,6 +52,7 @@ rpkgbuild:
 ######################################################################
 
 rpkgbuild/docs: $(wildcard R/*.R)
+	$(MAKE) rpkgbuild
 	echo "suppressWarnings(roxygen2::roxygenize(\".\",roclets = c(\"collate\", \"rd\")))" | $(R)
 	touch $@
 
@@ -67,6 +68,7 @@ rpkgbuild/names: $(wildcard R/*.R)
 	touch $@
 
 rpkgbuild/pkgtest: $(TARBALL)
+	$(MAKE) rpkgbuild
 	echo "devtools::test('.')" | $(R)
 	touch $@
 
@@ -75,7 +77,7 @@ rpkgbuild/pkgcheck: rpkgbuild/install
 	touch $@
 
 rpkgbuild/install: $(TARBALL)
-	$(MAKE) histclean
+	$(MAKE) histclean rpkgbuild
 	export NOT_CRAN=true; $(R) CMD INSTALL --preclean $<
 	@touch $(TARBALL)
 	@touch $@

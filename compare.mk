@@ -7,6 +7,7 @@ Ignore += *.compare *.goal
 %.compare: % %.goal
 	diff $* $*.goal > $@
 
+.PRECIOUS: %.goal
 %.goal: 
 	/bin/cp $* $@
 

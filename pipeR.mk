@@ -9,8 +9,14 @@ endef
 define pipeR
 	-$(RM) $@ $@.*
 	$(makeArgs)
-	((R --vanilla --args $@ $^ < $(word 1, $(filter %.R, $^)) > $(@:%.Rout=%.rtmp)) 2> $(@:%.Rout=%.Rlog) && cat $(@:%.Rout=%.Rlog)) || (cat $(@:%.Rout=%.Rlog) && false)
+	((R --vanilla --args $@ shellpipes $^ < $(word 1, $(filter %.R, $^)) > $(@:%.Rout=%.rtmp)) 2> $(@:%.Rout=%.Rlog) && cat $(@:%.Rout=%.Rlog)) || (cat $(@:%.Rout=%.Rlog) && false)
 	$(MVF) $(@:%.Rout=%.rtmp) $@
+endef
+
+## Make the rpcall first so that we don't outdate things
+define pipeRcall
+	perl -wf makestuff/pipeRcall.pl $@ $^
+	$(pipeR)
 endef
 
 ## Back-compatility
@@ -19,18 +25,18 @@ makeR=$(pipeR)
 define knitpdf
 	-$(RM) $@ $@.*
 	$(makeArgs)
-	Rscript -e 'library("rmarkdown"); render("$(word 1, $(filter %.rmd %.Rmd, $^))", output_format="pdf_document", output_file="$@")' $^
+	Rscript -e 'library("rmarkdown"); render("$(word 1, $(filter %.rmd %.Rmd, $^))", output_format="pdf_document", output_file="$@")' shellpipes $^
 endef
 
 define knithtml
 	-$(RM) $@ $@.*
 	$(makeArgs)
-	Rscript -e 'library("rmarkdown"); render("$(word 1, $(filter %.rmd %.Rmd, $^))", output_format="html_document", output_file="$@")' $^
+	Rscript -e 'library("rmarkdown"); render("$(word 1, $(filter %.rmd %.Rmd, $^))", output_format="html_document", output_file="$@")' shellpipes $^
 endef
 
 define wrapR
 	-$(RM) $@ $@.*
-	((R --vanilla --args $@ $^ < makestuff/wrappipeR.R > $(@:%.Rout=%.rtmp)) 2> $(@:%.Rout=%.Rlog) && cat $(@:%.Rout=%.Rlog)) || (cat $(@:%.Rout=%.Rlog) && false)
+	((R --vanilla --args $@ $^ shellpipes < makestuff/wrappipeR.R > $(@:%.Rout=%.rtmp)) 2> $(@:%.Rout=%.Rlog) && cat $(@:%.Rout=%.Rlog)) || (cat $(@:%.Rout=%.Rlog) && false)
 	$(MVF) $(@:%.Rout=%.rtmp) $@
 endef
 
@@ -49,6 +55,25 @@ ifdef autopipeR
 %.Rout: %.R
 	$(pipeR)
 endif
+
+ifdef alwayspipeR
+.PRECIOUS: %.Rout
+%.Rout: 
+	$(pipeR)
+endif
+
+ifdef autopipeRcall
+.PRECIOUS: %.Rout
+%.Rout: %.R
+	$(pipeRcall)
+endif
+
+ifdef alwayspipeRcall
+.PRECIOUS: %.Rout
+%.Rout:
+	$(pipeRcall)
+endif
+
 
 ifdef autoknit
 %.html: %.Rmd
@@ -89,8 +114,7 @@ endif
 Ignore += .Rhistory .RData
 Ignore += *.RData *.Rlog *.rdata *.rda *.rtmp
 Ignore += *.Rout*
-Ignore += *.html.args
-Ignore += *.pdf.args
+Ignore += *.html.args *.pdf.args
 Ignore += *.Rds *.rds
 Ignore += Rplots.pdf
 Ignore += *.ggp.*
@@ -103,6 +127,7 @@ Ignore += *.ggp.*
 
 define impdep_r
 %.$(1).rda: %.$(1).Rout ; $(lscheck)
+%.$(1).rds: %.$(1).Rout ; $(lscheck)
 %.$(1).rdata: %.$(1).Rout ; $(lscheck)
 .PRECIOUS: %.$(1).rdata %.$(1).rda %.$(1).Rout
 endef
@@ -125,6 +150,12 @@ $(1).%.Rout.pdf: $(1).Rout ; $(lscheck)
 Ignore += $(1).*.Rout.pdf
 endef
 $(foreach stem,$(pipeRoutdesc),$(eval $(call pipedesc_rout_r,$(stem))))
+
+define pngDesc_r
+$(1).%.png: $(1).Rout ; $(lscheck)
+Ignore += $(1).*.png
+endef
+$(foreach stem,$(pngDesc),$(eval $(call pngDesc_r,$(stem))))
 
 ######################################################################
 

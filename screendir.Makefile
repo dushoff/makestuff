@@ -1,4 +1,5 @@
 ## This is the screendir …
+## See makestuff/listdir.md
 
 current: target
 -include target.mk
