@@ -89,6 +89,7 @@ autocommit:
 	git status .
 
 ## No idea what add -u is supposed to do. What if I added a dot?
+## Also it doesn't work, where commit -am seems to.
 addall:
 	git add -u
 	git add $(Sources)
