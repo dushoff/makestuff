@@ -129,7 +129,7 @@ define impdep_r
 %.$(1).rda: %.$(1).Rout ; $(lscheck)
 %.$(1).rds: %.$(1).Rout ; $(lscheck)
 %.$(1).rdata: %.$(1).Rout ; $(lscheck)
-.PRECIOUS: %.$(1).rdata %.$(1).rda %.$(1).Rout
+.PRECIOUS: %.$(1).rdata %.$(1).rda %.$(1).rds %.$(1).Rout 
 endef
 
 impmakeR += $(pipeRimplicit)
