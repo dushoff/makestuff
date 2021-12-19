@@ -521,8 +521,9 @@ hup:
 
 Ignore += *.ours *.theirs *.common
 
+## What is this?
 %.common: %
-	git show :2:$* > $@
+	git show :1:$* > $@
 
 %.ours: %
 	git show :2:$* > $@
