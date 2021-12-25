@@ -55,6 +55,8 @@ QQ ^COMMENT %%
 
 QUIET %!
 
+MC ^Q %%
+
 WEB %!
 
 FIGHEAD %!

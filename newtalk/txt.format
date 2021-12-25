@@ -58,7 +58,7 @@ handouts: {\centering \textsf{ \textbf{ {\Large\jdtitle} \\ {\large\jdsub} }} \\
 
 ICI3DTHEME NOFRAME
 draft final: NOFRAME \date{\jddate} \title{\jdtitle} \subtitle{\jdsub} \author{\jdauth} {\topBar\maketitle}
-handouts: \noindent\includegraphics[width=\textwidth]{LatexTemplates/bar.pdf} {\centering \textsf{ \textbf{ {\Large\jdtitle} \\ {\large\jdsub} }} \\ {\large \jddate} \\ \mbox{}} 
+handouts: \noindent\includegraphics[width=\textwidth]{LatexTemplates/bar.pdf} {\centering \textsf{ \textbf{ {\Large\jdtitle} \\ \centering \mbox{}\large\jdsub}} \\ \centering \jdauth} \vspace{3ex} 
 
 TOP NULLSLIDE
 draft final: NOFRAME
@@ -163,9 +163,11 @@ RSLIDE NULLSLIDE
 final: ^DEFHEAD {\sl %% (repeat)}
 draft: ^DEFHEAD {\sl %% (repeat OR preview?)}
 
+## Repeated info
 REPSLIDE NULLSLIDE
 draft final: ^DEFHEAD {\sl %% (repeat)}
 
+## Presentation only
 PRESLIDE NULLSLIDE
 draft final: ^DEFHEAD {\sl %% (preview)}
 
@@ -248,8 +250,11 @@ FRAMEFIG ^HFIG 0.9 %%
 HIGHPIC ^PIC HIGHFIG %%
 WIDEPIC ^PIC WIDEFIG %%
 
+## What's going on here with 0.8? 2021 Jun 16 (Wed)
+## Did I do this to shrink Daniel pix that I should have been handling manually?
+## CHANGED to 0.9 2021 Sep 06 (Mon)
 FIG ^HFIG 0.4 %%
-draft final: ^HFIG 0.8 %%
+draft final: ^HFIG 0.9 %%
 
 ## Landscape version
 LFIG \hfill\includegraphics[height=%\textheight,angle=270]{%}\hfill\mbox{}

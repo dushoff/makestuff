@@ -4,7 +4,8 @@ maketouch = cd $(1) && $$(MAKE) $$* && touch $$*
 ## This could loop forever (if you have two targets in the same directory)
 ## Maybe improved? 2020 Oct 20 (Tue)
 define hotmake
-$(1)/Makefile: $(1);
+$(1)/Makefile: 
+	$(MAKE) $1
 $(1)/%: $(1) $(1)/Makefile 
 	$(maketouch)
 endef

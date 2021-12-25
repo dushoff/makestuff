@@ -4,12 +4,12 @@
 PERLEX = perl -wf $(filter %.pl, $^)
 
 PUSH = perl -wf $(filter %.pl, $^) $(filter-out %.pl, $^) > $@
-PUSHRO = $(rm) $@; $(PUSH); $(RO)
+PUSHRO = $(rm) $@; $(PUSHRO)
 
 define PUSHRO
 	- $(RM) $@
 	$(PUSH)
-	$(RO)
+	$(readonly)
 endef
 
 # Pushout adds the name of the output file as the first argument (assuming you only have one .pl dependency)

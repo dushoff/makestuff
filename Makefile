@@ -11,6 +11,7 @@ current: target
 Sources += $(wildcard *.R)
 
 Ignore += chain
+Ignore += *.stamp
 
 ##################################################################
 
@@ -45,10 +46,10 @@ Sources += $(wildcard *.mk *.pl *.Makefile *.def)
 ## simple.Makefile direct.Makefile
 
 ## Script to make exclude file
-# Sources += ignore.pl
+Sources += ignore.pl
 
 ## Inputs for .config ignore file (see git.mk)
-# Sources += ignore.auth ignore.vim
+Sources += ignore.auth ignore.vim
 
 # Sources += os.mk unix.mk linux.mk windows.mk up.mk
 
@@ -134,6 +135,7 @@ Sources += mkfiles.Makefile
 ######################################################################
 
 # wrapR scripts
+## Deprecated 2021 May 03 (Mon)
 
 Sources += $(wildcard wrapR/*.R) $(wildcard wrapR/*.pl)
 
@@ -164,6 +166,13 @@ missing.pdf:
 
 personal.pdf:
 	echo "This personal image is not found" | groff | ps2pdf - > $@
+
+######################################################################
+
+## WLS
+
+Sources += WSL/*.sh
+Sources += WSL.md
 
 ######################################################################
 

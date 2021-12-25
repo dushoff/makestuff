@@ -1,4 +1,5 @@
 ## This is the screendir …
+## See makestuff/listdir.md
 
 current: target
 -include target.mk
@@ -9,7 +10,7 @@ current: target
 
 vim_session: 
 	bash -cl "vmt screens.list"
-	
+
 screen_session: screens.update
 	$(MAKE) $(vscreens)
 
