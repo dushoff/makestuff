@@ -104,8 +104,9 @@ endif
 %.Rout.csv: %.Rout
 	$(lscheck)
 
+## ggp.png is more necessary than it should be (pngDesc not working)
 ## .pdf.tmp is a pure intermediate; you should require .pdf, not .pdf.tmp
-%.Rout.pdf.tmp %.Rout.png %.Rout.jpeg %.ggp.pdf: %.Rout
+%.Rout.pdf.tmp %.Rout.png %.ggp.png %.Rout.jpeg %.ggp.pdf: %.Rout
 	$(lscheck)
 .PRECIOUS: %.Rout.pdf
 %.Rout.pdf: %.Rout
