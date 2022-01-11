@@ -186,7 +186,7 @@ handouts complete: ^DEFHEAD %%
 ### Paragraph level
 
 # Short version for class, should go with NOTES
-SHORT {\color{shortcolor}%%}
+SHORTCLASS {\color{shortcolor}%%}
 handouts complete: %!
 
 NOTES ^%%

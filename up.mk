@@ -1,2 +1,2 @@
 %.four.pdf: %.pdf
-	pdfnup --outfile $@ --nup '2x2' $<
+	pdfjam -o $@ --nup '2x2' $<
