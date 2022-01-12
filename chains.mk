@@ -1,6 +1,3 @@
-scoop = $(foreach pat,$(recipeChain),\
-	$($(pat)_r)\
-)
 
 $(foreach pat,$(recipeChain),\
 	$(foreach s, $($(pat)),\
@@ -15,4 +12,12 @@ $(foreach pat,$(scriptChain),\
 	)\
 )
 
-pipeRimplicit += $(recipeChain) $(scriptChain)
+parse_r = %.$(2).$(3).Rout: $(3).R $(1) ; $$(pipeR)
+parse_rr = %.$(2).$(3).Rout: $(3).R $(1) ; date
+$(foreach pat,$(parseChain),\
+	$(foreach s, $($(pat)),\
+		$(eval $(call parse_r,$($(pat)_dep),$(s),$(pat)))\
+	)\
+)
+
+pipeRimplicit += $(recipeChain) $(scriptChain) $(parseChain)
