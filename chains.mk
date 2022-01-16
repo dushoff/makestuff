@@ -61,16 +61,16 @@ pipeRimplicit += $(recipeChain) $(scriptChain) $(parseChain)
 ## scriptStep
 scriptStep_r = %.$(2).$(1).Rout: $(2).R $(3) ; $$(pipeR)
 scriptStep_longr = %.$(2).$(1).Rout: $(2).R $(3) ; $$(pipeR)
+$(foreach fam,$(scriptStep),\
+	$(foreach ex, $($(fam)),\
+		$(eval $(call scriptStep_r,$(fam),$(ex),$($(fam)_dep)))\
+		$(eval $(call scriptStep_longr,$(fam),$(ex),$($(fam)_dep)))\
+	)\
+)
 
 ## scriptLink
 scriptLink_r = %.$(2).Rout: $(2).R $(3) ; $$(pipeR)
 scriptLink_longr = %.$(2).Rout: $(2).R $(3) ; $$(pipeR)
-$(foreach pat,$(scriptLink),\
-	$(foreach s, $($(pat)),\
-		$(eval $(call scriptLink_r,$($(pat)_dep),$(s),$(pat)))\
-		$(eval $(call scriptLink_longr,$($(pat)_dep),$(s),$(pat)))\
-	)\
-)
 
 pipeRimplicit += $(scriptStep) $(scriptLink)
 
