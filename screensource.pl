@@ -7,7 +7,7 @@ undef $/;
 my @f = split /\n/, <>;
 
 foreach (@f){
-	next unless my ($w) = /^[0-9]+[.]\s*(\w*):/;
+	next unless my ($w) = /^[0-9.\s]*(\w*):/;
 	next if /https:/;
 	my $fn = "$w/.git/config";
 	next unless (-e $fn);

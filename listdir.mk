@@ -34,7 +34,7 @@ screens.update: screens.arc
 
 screens_resource:
 	perl -i -wf makestuff/screensource.pl screens.list
-	perl -i -wf makestuff/oldsource.pl screens.list
+	## perl -i -wf makestuff/oldsource.pl screens.list
 
 -include screens.mk
 
