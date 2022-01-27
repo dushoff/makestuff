@@ -5,7 +5,7 @@ else
 include makestuff/apple.mk
 endif
 
-## This doesn't _seem_ to belong here
+## Stuff that should work in any OS goes here, I guess; haven't been good about this
 %.var:
 	@echo $($*)
 
