@@ -1,5 +1,7 @@
 ## See also makestuff/pngpages.mk
 
+Ignore += *-[0-9].png
+
 ## Not used yet!
 ifndef convert
 	convert=convert
