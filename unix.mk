@@ -185,6 +185,9 @@ Ignore += *.ld.tex
 
 %.makelog: %.log ;
 
+%.continue:
+	$(MAKE) $* || echo CONTINUING past error in target $*
+
 vimclean:
 	perl -wf makestuff/vimclean.pl
 
