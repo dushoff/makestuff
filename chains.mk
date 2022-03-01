@@ -60,11 +60,9 @@ pipeRimplicit += $(recipeChain) $(scriptChain) $(parseChain)
 
 ## scriptStep
 scriptStep_r = %.$(2).$(1).Rout: $(2).R $(3) ; $$(pipeR)
-scriptStep_longr = %.$(2).$(1).Rout: $(2).R $(3) ; $$(pipeR)
 $(foreach fam,$(scriptStep),\
 	$(foreach ex, $($(fam)),\
 		$(eval $(call scriptStep_r,$(fam),$(ex),$($(fam)_dep)))\
-		$(eval $(call scriptStep_longr,$(fam),$(ex),$($(fam)_dep)))\
 	)\
 )
 

@@ -9,7 +9,7 @@ endef
 define pipeR
 	-$(RM) $@ $@.*
 	$(makeArgs)
-	((R --vanilla --args $@ shellpipes $^ < $(word 1, $(filter %.R, $^)) > $(@:%.Rout=%.rtmp)) 2> $(@:%.Rout=%.Rlog) && cat $(@:%.Rout=%.Rlog)) || (cat $(@:%.Rout=%.Rlog) && false)
+	((R --vanilla --args $@ shellpipes $*.pipestar $^ < $(word 1, $(filter %.R, $^)) > $(@:%.Rout=%.rtmp)) 2> $(@:%.Rout=%.Rlog) && cat $(@:%.Rout=%.Rlog)) || (cat $(@:%.Rout=%.Rlog) && false)
 	$(MVF) $(@:%.Rout=%.rtmp) $@
 endef
 
