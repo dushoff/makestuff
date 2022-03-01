@@ -13,6 +13,7 @@ my @f = split /[\s[\]({})]+/, $f;
 
 my @ext = qw(png html jpg jpeg gif pdf);
 
+## Need to do this by line and look for ## and rpcall ☹
 ## Look for words that look like files
 foreach my $w (@f){
 	next if $w =~ /https*:/;
