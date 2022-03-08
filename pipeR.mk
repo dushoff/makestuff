@@ -9,7 +9,7 @@ endef
 define pipeR
 	-$(RM) $@ $@.*
 	$(makeArgs)
-	((R --vanilla --args $@ shellpipes $^ < $(word 1, $(filter %.R, $^)) > $(@:%.Rout=%.rtmp)) 2> $(@:%.Rout=%.Rlog) && cat $(@:%.Rout=%.Rlog)) || (cat $(@:%.Rout=%.Rlog) && false)
+	((R --vanilla --args $@ shellpipes $*.pipestar $^ < $(word 1, $(filter %.R, $^)) > $(@:%.Rout=%.rtmp)) 2> $(@:%.Rout=%.Rlog) && cat $(@:%.Rout=%.Rlog)) || (cat $(@:%.Rout=%.Rlog) && false)
 	$(MVF) $(@:%.Rout=%.rtmp) $@
 endef
 
@@ -26,6 +26,12 @@ define knitpdf
 	-$(RM) $@ $@.*
 	$(makeArgs)
 	Rscript -e 'library("rmarkdown"); render("$(word 1, $(filter %.rmd %.Rmd, $^))", output_format="pdf_document", output_file="$@")' shellpipes $^
+endef
+
+define knitmd
+	-$(RM) $@ $@.*
+	$(makeArgs)
+	Rscript -e 'library("rmarkdown"); render("$(word 1, $(filter %.rmd %.Rmd, $^))", md_document(preserve_yaml=TRUE, variant="markdown"), output_file="$@")' shellpipes $^
 endef
 
 define knithtml
@@ -104,8 +110,9 @@ endif
 %.Rout.csv: %.Rout
 	$(lscheck)
 
+## ggp.png is more necessary than it should be (pngDesc not working)
 ## .pdf.tmp is a pure intermediate; you should require .pdf, not .pdf.tmp
-%.Rout.pdf.tmp %.Rout.png %.Rout.jpeg %.ggp.pdf: %.Rout
+%.Rout.pdf.tmp %.Rout.png %.ggp.png %.Rout.jpeg %.ggp.pdf: %.Rout
 	$(lscheck)
 .PRECIOUS: %.Rout.pdf
 %.Rout.pdf: %.Rout
@@ -128,6 +135,7 @@ Ignore += *.ggp.*
 define impdep_r
 %.$(1).rda: %.$(1).Rout ; $(lscheck)
 %.$(1).rds: %.$(1).Rout ; $(lscheck)
+%.$(1).rdata: %.$(1).Rout ; $(lscheck)
 %.$(1).rdata: %.$(1).Rout ; $(lscheck)
 .PRECIOUS: %.$(1).rdata %.$(1).rda %.$(1).rds %.$(1).Rout 
 endef
