@@ -213,7 +213,7 @@ gptargets: $(gptargets)
 	git add -f outputs/$*
 	touch Makefile
 
-outputs:
+outputs docs:
 	$(mkdir)
 
 ## Do docs/ just like outputs?
