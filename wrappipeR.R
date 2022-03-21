@@ -1,7 +1,7 @@
 library(shellpipes)
 
 commandEnvironments()
-sourceFiles()
+sourceFiles(first=TRUE)
 
 startGraphics()
 
