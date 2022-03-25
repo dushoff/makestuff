@@ -27,8 +27,8 @@ pushtarget:
 dtarget:
 	$(MAKE) $(target:%=%.pdf.ldown) || $(MAKE) $(target:%=%.ldown)
 
-olddtarget:
-	$(MAKE) pushdir=~/Downloads/ pushtarget
+hardtarget:
+	$(MAKE) $(target:%=%.pdf.pdown) || $(MAKE) $(target:%=%.pdown)
 
 ## The $< paradigm is stupid; let's try something else 2021 Feb 02 (Tue)
 doctarget:
