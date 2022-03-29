@@ -143,6 +143,9 @@ draft: {\color{red}\textbf{Remark: %%}}
 CORRECTION {\color{orange}\textbf{%%}}
 STRIKE {\sout{%%}}
 
+CURL {\small\url{%%}}
+outline: %!
+
 CREDIT {\small\emph{%%}}
 outline: %!
 
