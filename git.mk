@@ -213,7 +213,7 @@ gptargets: $(gptargets)
 	git add -f outputs/$*
 	touch Makefile
 
-outputs:
+outputs docs:
 	$(mkdir)
 
 ## Do docs/ just like outputs?
@@ -521,7 +521,7 @@ hup:
 
 Ignore += *.ours *.theirs *.common
 
-## What is this?
+## Look at merge versions
 %.common: %
 	git show :1:$* > $@
 
@@ -531,7 +531,8 @@ Ignore += *.ours *.theirs *.common
 %.theirs: %
 	git show :3:$* > $@
 
-%.rfile: %
+## Pick one
+%.pick: %
 	$(CP) $* $(basename $*)
 
 ######################################################################
