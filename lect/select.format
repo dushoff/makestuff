@@ -33,15 +33,21 @@ bank: HEAD %%
 ## These are weird; in future, only keep FIRST, SECOND etc. Rest can just be DEFHEADs
 
 FIRST NULLSLIDE
-bank: HEAD FIRST %!
+bank: HEAD FIRST %%
 midterm1: %!
 
 SECOND NULLSLIDE
-bank: HEAD SECOND %!
+bank: HEAD SECOND %%
 midterm2: %!
 
+DEF21 ^DEF
+
+DEF NULLSLIDE
+bank: HEAD DEF %%
+final: %!
+
 EXAM NULLSLIDE
-bank: HEAD EXAM %!
+bank: HEAD EXAM %%
 final: %!
 
 ## Deprecate
