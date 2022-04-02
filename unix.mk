@@ -27,19 +27,21 @@ LNF = /bin/ln -fs
 MD = mkdir
 MKDIR = mkdir
 CAT = cat
+
 readonly = chmod a-w $@
-RO = chmod a-w $@
-RW = chmod ug+w $@
+RO = chmod a-w 
+RW = chmod ug+w
 DNE = (! $(LS) $@ > $(null))
 LSN = ($(LS) $@ > $(null))
 
-## These two are weird (don't follow the convention)
+tgz = tar czf $@ $^
+zip = zip $@ $^
 TGZ = tar czf $@ $^
 ZIP = zip $@ $^
 
 null = /dev/null
 
-lscheck = @$(LS) $@ > $(null)
+lscheck = @$(LS) $@ > $(null) || (echo ERROR upstream rule failed to make $@ && false)
 
 hiddenfile = $(dir $1).$(notdir $1)
 hide = $(MVF) $1 $(dir $1).$(notdir $1)
@@ -72,13 +74,14 @@ rcopy = $(CPR) $< $@
 rdcopy = $(CPR) $(dir) $@
 copy = $(CP) $< $@
 move = $(MV) $< $@
+Move = $(MVF) $< $@
 hardcopy = $(CPF) $< $@
 allcopy =  $(CP) $^ $@
 ccrib = $(CP) $(crib)/$@ .
 mkdir = $(MD) $@
 makedir = cd $(dir $@) && $(MD) $(notdir $@)
 cat = $(CAT) /dev/null $^ > $@
-catro = $(rm); $(CAT) /dev/null $^ > $@; $(RO)
+catro = $(rm); $(CAT) /dev/null $^ > $@; $(readonly)
 ln = $(LN) $< $@
 lnf = $(LNF) $< $@
 rm = $(RM) $@
@@ -87,13 +90,19 @@ pandocs = pandoc -s -o $@ $<
 
 ######################################################################
 
-## Link to a resource directory (very specific)
 ## It would be better to have global Drop logic (and to move this rule out of this file)
 ifndef Drop
 Drop = ~/Dropbox
 endif
 
-Droplink = (ls $(Drop)/resources/$(dirname) && $(LNF) $(Drop)/resources/$(dirname) $@) || (ls $(Drop)/$(dirname) && $(LNF) $(Drop)/$(dirname) $@)
+ifndef DropResource
+DropResource = $(Drop)/resources
+endif
+
+resDropDir = $(DropResource)/$(notdir $(CURDIR))
+$(resDropDir):
+	$(mkdir)
+resDrop = $(MAKE) $(resDropDir) && $(LNF) $(resDropDir) $@
 
 ######################################################################
 
@@ -115,7 +124,7 @@ ddcopy = ($(LSN) && $(touch)) ||  $(rdcopy)
 %.ls: %
 	ls $* > $@
 %.lsd: %
-	ls -d $*/* > $@
+	(ls -d $*/* || ls $*) > $@
 index.lsd: .
 	ls -d * > $@
 
@@ -146,6 +155,9 @@ shell_execute = sh < $@
 %.png: %.pdf
 	$(convert)
 
+%.image.png: %.pdf
+	$(imageconvert)
+
 pdfcat = pdfjam --outfile $@ $(filter %.pdf, $^) 
 
 latexdiff = latexdiff $^ > $@
@@ -161,7 +173,7 @@ Ignore += *.ld.tex
 	$(CP) $< ~/Downloads/
 
 %.ldown: %
-	cd ~/Downloads && ln -fs $(CURDIR)/$* . && touch $*
+	cd ~/Downloads && ln -fs $(CURDIR)/$* . && touch $(notdir $*)
 
 %.pushpush: %
 	$(CP) $< $(pushdir)
@@ -172,6 +184,9 @@ Ignore += *.ld.tex
 	$(MAKE) $* > $*.makelog
 
 %.makelog: %.log ;
+
+%.continue:
+	$(MAKE) $* || echo CONTINUING past error in target $*
 
 vimclean:
 	perl -wf makestuff/vimclean.pl

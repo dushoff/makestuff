@@ -1,5 +1,8 @@
 ## Much of this is cribbed from McMasterPandemic and glmmTMB
 ## See makestuff/rpkg.md for explanations
+## Need a work-around for being able to sync when we can't build
+## built objects are sunk by default because that's how packages and devtools work
+## Rebuild to separate dev stuff from shared stuff somehow!
 
 ######################################################################
 
@@ -42,13 +45,14 @@ Sources += $(wildcard man/*.Rd)
 
 ## Tracking directory
 
-Ignore += rpkgbuild/
+Ignore += rpkgbuild
 rpkgbuild:
 	$(mkdir)
 
 ######################################################################
 
 rpkgbuild/docs: $(wildcard R/*.R)
+	$(MAKE) rpkgbuild
 	echo "suppressWarnings(roxygen2::roxygenize(\".\",roclets = c(\"collate\", \"rd\")))" | $(R)
 	touch $@
 
@@ -59,10 +63,12 @@ $(TARBALL): NAMESPACE $(wildcard R/*.*)
 NAMESPACE: rpkgbuild/names ;
 rpkgbuild/names: $(wildcard R/*.R)
 	$(MAKE) rpkgbuild
-	echo "(roxygen2::roxygenize('.',roclets = 'namespace'))" | $(R)
+	echo "(roxygen2::roxygenize('.',roclets = 'namespace'))" | $(R) \
+	|| echo ERROR: FAILED to build NAMESPACE
 	touch $@
 
 rpkgbuild/pkgtest: $(TARBALL)
+	$(MAKE) rpkgbuild
 	echo "devtools::test('.')" | $(R)
 	touch $@
 
@@ -71,7 +77,7 @@ rpkgbuild/pkgcheck: rpkgbuild/install
 	touch $@
 
 rpkgbuild/install: $(TARBALL)
-	$(MAKE) histclean
+	$(MAKE) histclean rpkgbuild
 	export NOT_CRAN=true; $(R) CMD INSTALL --preclean $<
 	@touch $(TARBALL)
 	@touch $@

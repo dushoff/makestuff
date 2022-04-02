@@ -1,17 +1,3 @@
-## This is [project.Makefile] …
-
-current: target
--include target.mk
-Ignore = target.mk
-
-# -include makestuff/perl.def
-
-vim_session:
-	bash -cl "vmt"
-
-######################################################################
-
-### Makestuff
 
 Sources += Makefile
 

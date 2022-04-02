@@ -15,14 +15,4 @@ dirnames.mk: screens.list
 
 -include dirnames.mk
 
-######################################################################
-
-clonemake = $(clonedirs:%=%/Makefile)
-
-now:
-	@echo $(clonemake)
-
-$(clonemake): %/Makefile:
-	$(CP) makestuff/screendir.Makefile $@
-	$(CP) makestuff/screens.list $*
-
+-include target.mk

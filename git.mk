@@ -19,13 +19,6 @@ endif
 
 ######################################################################
 
-## Hybrid subdirectory types
-
-Ignore += $(clonedirs)
-Sources += $(mdirs)
-
-##################################################################
-
 ### Push and pull
 
 branch:
@@ -39,7 +32,7 @@ commit.time: $(Sources)
 	(head -1 ~/.commitnow > $@ && echo " ~/.commitnow" >> $@) || echo Autocommit > $@
 	echo "## $(CURDIR)" >> $@
 	!(git commit --dry-run >> $@) || (perl -pi -e 's/^/#/ unless $$.==1' $@ && $(MSEDIT))
-	$(git_check) || (perl -ne 'print unless /^\s*#/' $@ | git commit -F -)
+	$(git_check) || (perl -ne 'print unless /^#/' $@ | git commit -F -)
 	date >> $@
 
 commit.default: $(Sources)
@@ -54,9 +47,6 @@ pull: commit.time
 
 pardirpull: $(pardirs:%=%.pull) makestuff.pull
 parpull: pull pardirpull
-
-newSource:
-	git add $(Sources)
 
 ######################################################################
 
@@ -93,41 +83,41 @@ makestuff.all: %.all: %
 %.all: 
 	$(MAKE) $* $*/Makefile && cd $* && $(MAKE) makestuff && $(MAKE) all.time
 
-do_amsync = (git commit -am "amsync"; git pull; git push; git status .)
-
 autocommit:
 	$(MAKE) exclude
 	$(git_check) || git commit -am "autocommit from git.mk"
 	git status .
 
-amsync:
-	$(MAKE) exclude
-	$(git_check) || $(do_amsync)
-
+## No idea what add -u is supposed to do. What if I added a dot?
+## Also it doesn't work, where commit -am seems to.
 addall:
 	git add -u
+	git add $(Sources)
 
-allsync: addall
-	$(MAKE) tsync
+tsync:
+	touch $(word 1, $(Sources))
+	$(MAKE) up.time
+
+## Flattened 2021 May 11 (Tue)
+
+allsync: addall tsync
+
+%.allsync:
+	cd $* && $(MAKE) allsync
 
 ######################################################################
 
-## 2020 Mar 09 (Mon) pull via alldirs 
-## 2020 May 23 (Sat) not clear why this would work
-## maybe designed to work with pullall recipes?
 pullall: $(alldirs:%=%.pullall)
+	$(MAKE) pull
 
 makestuff.pullall: makestuff.pull ;
 
 %.pullall: 
 	$(MAKE) $* && $(MAKE) $*/Makefile 
-	cd $* && $(MAKE) makestuff && $(MAKE) makestuff 
-	cd $* && ($(MAKE) pullall || $(MAKE) pull || $(MAKE) makestuff.pull || (cd makestuff && $(MAKE) pull))
+	cd $* && $(MAKE) makestuff && $(MAKE) makestuff && $(MAKE) makestuff.pull
+	cd $* && ($(MAKE) pullall || $(MAKE) pull || git pull)
 
 ## 2020 May 23 (Sat) ## Different from above? Worse than below?
-## Propagates better than pullmake
-## Still not clear who pulls (or syncs) what
-## What is up doing in pull rules?
 ## Maybe what is wanted is commit (to check for merge?)
 ## Or nothing (since pull merges)
 pullstuff: $(malldirs:%=%.pullstuff)
@@ -167,12 +157,6 @@ git_check:
 
 ######################################################################
 
-## Messing around 2021 Mar 15 (Mon)
-tsync:
-	touch $(word 1, $(Sources))
-	$(MAKE) up.time
-
-######################################################################
 
 ## autosync stuff not consolidated, needs work. 
 remotesync: commit.default
@@ -184,9 +168,6 @@ remotesync: commit.default
 
 ######################################################################
 
-%.master: %
-	cd $< && git checkout master
-
 %.status: %
 	cd $< && git status
 
@@ -195,12 +176,6 @@ remotesync: commit.default
 
 %.pull: %
 	cd $< && ($(MAKE) pull || git pull)
-
-## Not tested (hasn't propagated)
-rmpull: $(mdirs:%=%.rmpull) makestuff.pull pull
-	git checkout master
-	$(MAKE) pull
-	git status
 
 %.push: %
 	cd $< && $(MAKE) up.time
@@ -238,7 +213,7 @@ gptargets: $(gptargets)
 	git add -f outputs/$*
 	touch Makefile
 
-outputs:
+outputs docs:
 	$(mkdir)
 
 ## Do docs/ just like outputs?
@@ -247,8 +222,9 @@ outputs:
 	git add -f docs/$*
 	touch Makefile
 
-docs:
-	$(mkdir)
+## Commented this in 2021 Oct 28 (Thu); why was it commented out??
+## Commented out because of stupid dataviz conflict 2021 Nov 02 (Tue)
+## docs: ; $(mkdir)
 
 ######################################################################
 
@@ -258,14 +234,14 @@ docs:
 ## Pages. Sort of like git_push, but for gh_pages (html, private repos)
 ## May want to refactor as for git_push above (break link from pages/* to * for robustness)
 
+## 2021 Мам 27 (Бс) Probably deprecated, but could update to follow docs style
 ## 2019 Sep 22 (Sun) Keeping checkout, but skipping early pull
 ## That can make the remote copy look artificially new
 ## 2019 Oct 10 (Thu)
 ## But if we don't early pull we get spurious merges
 ## Best is to pull pages when you pull
 %.pages:
-	$(MAKE) pages
-	cd pages && git checkout gh-pages
+	$(MAKE) pages/pagebranch
 	$(MAKE) pages/$*
 	cd pages && git add -f $*
 	-cd pages && git commit -m "Pushed directly from parent"
@@ -275,9 +251,12 @@ docs:
 %.pagepush: %.pages
 	cd pages && git pull && git push
 
+pages/Makefile:
+	cp Makefile $@
+
 ## Don't call this directly and then we don't need the pages dependency
-pages/%: % 
-	$(copy)
+## In development (or deprecation) 2021 Мам 27 (Бс)
+## pages/%: %; $(copy)
 
 ## If you're going to pushpages automatically, you might want to say
 ## pull: pages.gitpull
@@ -291,15 +270,22 @@ pages/%: %
 	$(MAKE) $*
 	cd $* && (git add *.* && ($(git_check))) || ((git commit -m "Commited by $(CURDIR)") && git pull && git push && git status)
 
+## This is sort of deprecated, too
 ## Make an empty pages directory when necessary; or else attaching existing one
 Ignore += pages
 pages:
 	git clone `git remote get-url origin` $@
-	cd $@ && (git checkout gh-pages || $(createpages)
+
+pages/pagebranch:
+	cd $(dir $@) && (git checkout gh-pages || $(createpages))
+	touch $@
 
 define createpages
-	(git checkout --orphan gh-pages && git rm -rf * && touch ../README.md && cp ../README.md . && git add README.md && git commit -m "Orphan pages branch" && git push --set-upstream origin gh-pages ))
+	(git checkout --orphan gh-pages && git rm -rf * && touch ../README.md && cp ../README.md . && git add README.md && git commit -m "Orphan pages branch" && git push --set-upstream origin gh-pages )
 endef
+
+%.branchdir:
+	git clone `git remote get-url origin` $*
 
 ##################################################################
 
@@ -357,26 +343,6 @@ $(Outside):
 
 ######################################################################
 
-## Burn it down!
-## 2020 Aug 05 (Wed) This went terribly. Easier to go to github and destroy
-## the repo there.
-
-%.warn:
-	@echo ctrl-c if you "don't" want to DESTROY $* repo!
-	read input
-	@echo BOOM
-
-%.destroy:
-	@echo ctrl-c if you "don't" want to DESTROY $* repo!
-	read input
-	- $(RMR) $*.new
-	$(MKDIR) $*.new
-	cd $*.new && git init
-	$(CPF) $*/.git/config $*.new/.git/
-	cd $*.new && touch .fake && git add .fake && git commit -m "nuking repo"
-	cd $*.new && git push --force --set-upstream origin master
-	$(MAKE) $*.reset
-
 %.reset:
 	- $(RMR) $*.olddir
 	mv $* $*.olddir
@@ -407,15 +373,17 @@ gitprune:
 
 Ignore += dotdir/ clonedir/ cpdir/
 dotdir: $(Sources)
-	$(MAKE) allsync
+	$(MAKE) sync
 	-/bin/rm -rf $@
 	git clone . $@
+	cd $@ && $(LN) $(pardirs:%=../%) .
 
 ## Note cpdir really means directory (usually); dotdir means the whole repo
 ## DON'T use cpdir for repos with Sources in subdirectories
 ## Do use for light applications focused on a particular directory
 ## DON'T use for service (i.e., makeR scripts)
 ## Do we have a solution for makeR scripts in subdirectories?
+## Note that I am using it now for pipeR scripts, so that's probably fragile 2021 Jun 27 (Sun)
 cpdir: $(filter-out %.script, $(Sources))
 	-/bin/rm -rf $@
 	$(mkdir)
@@ -433,14 +401,6 @@ clonedir: $(Sources)
 	$(MAKE) up.time
 	-/bin/rm -rf $@
 	git clone `git remote get-url origin` $@
-	-cp target.mk $@
-
-repodir: $(Sources)
-	-/bin/rm -rf $@
-	mkdir $@
-	tar czf $@.tgz `git ls-tree -r --name-only master`
-	cp $@.tgz $@
-	cd $@ && tar xzf $@.tgz && $(RM) $@.tgz
 	-cp target.mk $@
 
 sourcedir: $(Sources)
@@ -496,16 +456,6 @@ testclean:
 %.checkbranch:
 	cd $* && git branch
 
-%.master:
-	cd $* && git checkout master
-
-master: 
-	git checkout master
-
-## Try this stronger rule some time!
-# %.master: %
-#	cd $< && git checkout master
-
 ## Destroy a branch
 ## Usually call from upmerge (which hasn't been tested for a long time)
 %.nuke:
@@ -529,9 +479,10 @@ hub:
 
 gitremote = git remote get-url origin
 gitremoteopen = echo go `$(gitremote) | perl -pe "s/[.]git$$//"` | bash --login
+gitremotestraight = echo go `$(gitremote) | perl -pe "s/[.]git$$//"` | bash
 
 hupstream:
-	$(gitremoteopen)
+	$(gitremotestraight)
 
 hup:
 	$(gitremote)
@@ -565,9 +516,26 @@ hup:
 	rm -rf .git/modules/$*
 	git config --remove-section submodule.$*
 
-## Force push a commit
-%.forcepush:
-	git push -f origin  $*:master
+######################################################################
+
+## Merging
+
+Ignore += *.ours *.theirs *.common
+
+## Look at merge versions
+%.common: %
+	git show :1:$* > $@
+
+%.ours: %
+	git show :2:$* > $@
+
+%.theirs: %
+	git show :3:$* > $@
+
+## Pick one
+%.pick: %
+	$(CP) $* $(basename $*)
+	git add $(basename $*)
 
 ######################################################################
 
@@ -583,10 +551,12 @@ Ignore += *.oldfile *.olddiff
 	ls $@
 
 ## Chaining trick to always remake
-## Not clear it works
+## Is this better or worse than writing dependencies and making directly?
 %.olddiff: %.old.diff ;
 %.old.diff: %
+	- $(RM) $*.olddiff
 	-$(DIFF) $*.*.oldfile $* > $*.olddiff
+	$(RO) $*.olddiff
 
 ######################################################################
 

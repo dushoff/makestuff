@@ -55,6 +55,8 @@ QQ ^COMMENT %%
 
 QUIET %!
 
+MC ^Q %%
+
 WEB %!
 
 FIGHEAD %!
@@ -62,6 +64,8 @@ FIGHEAD %!
 PRE %%
 
 RESOURCE %%
+
+CONT %%
 
 FQ \vspace{2.0ex}\noindent\stepcounter{question}\arabic{question}.~%%
 

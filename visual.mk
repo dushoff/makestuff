@@ -16,7 +16,7 @@ acrtarget:
 	$(MAKE) $<.acr
 
 gptarget:
-	$(MAKE) $<.pdf.op || $(MAKE) $<.op
+	$(MAKE) $<.op
 
 optarget:
 	$(MAKE) $(target:%=%.pdf.op) || $(MAKE) $(target:%=%.op)
@@ -25,17 +25,25 @@ pushtarget:
 	$(MAKE) $<.pd
 
 dtarget:
-	$(MAKE) $(target:%=%.ldown)
+	$(MAKE) $(target:%=%.pdf.ldown) || $(MAKE) $(target:%=%.ldown)
 
-olddtarget:
-	$(MAKE) pushdir=~/Downloads/ pushtarget
+hardtarget:
+	$(MAKE) $(target:%=%.pdf.pdown) || $(MAKE) $(target:%=%.pdown)
 
 ## The $< paradigm is stupid; let's try something else 2021 Feb 02 (Tue)
 doctarget:
-	$(MAKE) $(target:%=%.docs)
+	$(MAKE) docpdftarget || $(MAKE) docsimptarget
 
 docpdftarget:
 	$(MAKE) $(target:%=%.pdf.docs)
+
+docsimptarget:
+	$(MAKE) $(target:%=%.docs)
+	$(MAKE) $(target:%=%.pdf.docs)
+
+rmtarget:
+	$(call hide,  $(target))
+	$(MAKE) $(target)
 
 target.mk:
 	$(CP) makestuff/newtarget.mk $@
