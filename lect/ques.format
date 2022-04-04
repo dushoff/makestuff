@@ -37,6 +37,9 @@ SQ \vspace{0.8ex plus 0.8ex}\noindent\stepcounter{qpart}\alph{qpart}.~%%
 ANS %!
 key rub: \vspace{1.5ex}{\sf %%}
 
+## Text that I want to save for changing up the question
+OLDANS %! 
+
 # RUB is rubric-only information
 RUB %!
 rub: \vspace{1.5ex}{\noindent\textbf{\small %%}}
