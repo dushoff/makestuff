@@ -84,6 +84,7 @@ cat = $(CAT) /dev/null $^ > $@
 catro = $(rm); $(CAT) /dev/null $^ > $@; $(readonly)
 ln = $(LN) $< $@
 lnf = $(LNF) $< $@
+lnp = $(LNF) $| $@
 rm = $(RM) $@
 pandoc = pandoc -o $@ $<
 pandocs = pandoc -s -o $@ $<
@@ -103,6 +104,13 @@ resDropDir = $(DropResource)/$(notdir $(CURDIR))
 $(resDropDir):
 	$(mkdir)
 resDrop = $(MAKE) $(resDropDir) && $(LNF) $(resDropDir) $@
+
+######################################################################
+
+## A newer effort which I'm suddenly abandoning in favor of above; merge ideas?
+$(resourcedir):
+	$(mkdir)
+resources: | $(resourcedir)
 
 ######################################################################
 
