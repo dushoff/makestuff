@@ -184,6 +184,6 @@ Sources += $(wildcard *.pipeR.script)
 
 ## Legacy cleaning
 
-wrapclean:
-
+wrapClean:
+	rm -fr *.wrapR* .*.wrapR*
 
