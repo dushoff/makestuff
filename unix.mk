@@ -170,6 +170,7 @@ Ignore += *.ld.tex
 	$(CP) $< $(pushdir) || $(CP) $< ~/Downloads
 
 %.pdown: %
+	$(RM) ~/Downloads/$<
 	$(CP) $< ~/Downloads/
 
 %.ldown: %
