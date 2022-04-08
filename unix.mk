@@ -187,6 +187,10 @@ Ignore += *.ld.tex
 	$(CP) $< $(pushdir)
 	cd $(pushdir) && make remotesync
 
+%.rmk: 
+	$(RM) $*
+	$(MAKE) $*
+
 %.log: 
 	$(RM) $*
 	$(MAKE) $* > $*.makelog
