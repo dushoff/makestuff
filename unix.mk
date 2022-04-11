@@ -84,6 +84,7 @@ cat = $(CAT) /dev/null $^ > $@
 catro = $(rm); $(CAT) /dev/null $^ > $@; $(readonly)
 ln = $(LN) $< $@
 lnf = $(LNF) $< $@
+lnp = $(LNF) $| $@
 rm = $(RM) $@
 pandoc = pandoc -o $@ $<
 pandocs = pandoc -s -o $@ $<
@@ -103,6 +104,13 @@ resDropDir = $(DropResource)/$(notdir $(CURDIR))
 $(resDropDir):
 	$(mkdir)
 resDrop = $(MAKE) $(resDropDir) && $(LNF) $(resDropDir) $@
+
+######################################################################
+
+## A newer effort which I'm suddenly abandoning in favor of above; merge ideas?
+$(resourcedir):
+	$(mkdir)
+resources: | $(resourcedir)
 
 ######################################################################
 
@@ -170,6 +178,7 @@ Ignore += *.ld.tex
 	$(CP) $< $(pushdir) || $(CP) $< ~/Downloads
 
 %.pdown: %
+	$(RM) ~/Downloads/$<
 	$(CP) $< ~/Downloads/
 
 %.ldown: %
@@ -178,6 +187,10 @@ Ignore += *.ld.tex
 %.pushpush: %
 	$(CP) $< $(pushdir)
 	cd $(pushdir) && make remotesync
+
+%.rmk: 
+	$(RM) $*
+	$(MAKE) $*
 
 %.log: 
 	$(RM) $*
