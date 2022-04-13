@@ -1,22 +1,5 @@
 ## Retrofits and hacks
 
-## Bailed on getting the regex syntax right for the $. Watch out?
-## Try [$$] if you're bored.
-## This is a pain for scripts; see filemerge instead
-noms:
-	perl -pi -e 's|.\(ms\)/|makestuff/|' Makefile *.mk
-
-%.noms:
-	perl -pi -e 's|.\(ms\)/|makestuff/|' $*/Makefile $*/*.mk || perl -pi -e 's|.\(ms\)/|makestuff/|' $*/*.mk || perl -pi -e 's|.\(ms\)/|makestuff/|' $*/Makefile
-	
-# Unix basics (this is a hodge-podge of spelling conventions ☹)
-MVF = /bin/mv -f
-MV = /bin/mv
-CP = /bin/cp
-CPF = /bin/cp -f
-CPR = /bin/cp -rf
-DIFF = diff
-
 ## VEDIT is set in bashrc (and inherited)
 ## Not sure what I should do if it doesn't work?
 MSEDIT = $(MSEDITOR) $@ || $(EDITOR) $@ || $(VISUAL) $@ || gvim -f $@ || vim $@ || ((echo ERROR: No editor found makestuff/unix.mk && echo set shell MSEDITOR variable && false))
@@ -84,6 +67,7 @@ cat = $(CAT) /dev/null $^ > $@
 catro = $(rm); $(CAT) /dev/null $^ > $@; $(readonly)
 ln = $(LN) $< $@
 lnf = $(LNF) $< $@
+lnp = $(LNF) $| $@
 rm = $(RM) $@
 pandoc = pandoc -o $@ $<
 pandocs = pandoc -s -o $@ $<
@@ -91,18 +75,24 @@ pandocs = pandoc -s -o $@ $<
 ######################################################################
 
 ## It would be better to have global Drop logic (and to move this rule out of this file)
-ifndef Drop
-Drop = ~/Dropbox
-endif
+Drop ?= ~/Dropbox
 
-ifndef DropResource
-DropResource = $(Drop)/resources
-endif
+DropResource ?= $(Drop)/resources
 
-resDropDir = $(DropResource)/$(notdir $(CURDIR))
+resDropDir ?= $(DropResource)/$(notdir $(CURDIR))
 $(resDropDir):
 	$(mkdir)
-resDrop = $(MAKE) $(resDropDir) && $(LNF) $(resDropDir) $@
+
+Ignore += dropstuff
+dropstuff: | $(resDropDir)
+	$(LNF) $| $@
+
+######################################################################
+
+## A newer effort which I'm suddenly abandoning in favor of above; merge ideas?
+$(resourcedir):
+	$(mkdir)
+resources: | $(resourcedir)
 
 ######################################################################
 
@@ -170,6 +160,7 @@ Ignore += *.ld.tex
 	$(CP) $< $(pushdir) || $(CP) $< ~/Downloads
 
 %.pdown: %
+	$(RM) ~/Downloads/$<
 	$(CP) $< ~/Downloads/
 
 %.ldown: %
@@ -179,11 +170,18 @@ Ignore += *.ld.tex
 	$(CP) $< $(pushdir)
 	cd $(pushdir) && make remotesync
 
+%.rmk: 
+	$(RM) $*
+	$(MAKE) $*
+
 %.log: 
 	$(RM) $*
 	$(MAKE) $* > $*.makelog
 
 %.makelog: %.log ;
+
+%.continue:
+	$(MAKE) $* || echo CONTINUING past error in target $*
 
 vimclean:
 	perl -wf makestuff/vimclean.pl
