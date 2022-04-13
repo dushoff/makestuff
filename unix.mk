@@ -91,18 +91,16 @@ pandocs = pandoc -s -o $@ $<
 ######################################################################
 
 ## It would be better to have global Drop logic (and to move this rule out of this file)
-ifndef Drop
-Drop = ~/Dropbox
-endif
+Drop ?= ~/Dropbox
 
-ifndef DropResource
-DropResource = $(Drop)/resources
-endif
+DropResource ?= $(Drop)/resources
 
-resDropDir = $(DropResource)/$(notdir $(CURDIR))
+resDropDir ?= $(DropResource)/$(notdir $(CURDIR))
 $(resDropDir):
 	$(mkdir)
-resDrop = $(MAKE) $(resDropDir) && $(LNF) $(resDropDir) $@
+
+dropstuff: | $(resDropDir)
+	$(LNF) $| $@
 
 ######################################################################
 
