@@ -26,6 +26,9 @@ Ignore += *.jax.html
 %.jax.html: %.md
 	pandoc --mathjax -s -o $@ $<
 
+%.Rout.html: %.R
+	$(rmdhtml)
+
 %.html: %.mkd
 	pandoc -s -o $@ $<
 
