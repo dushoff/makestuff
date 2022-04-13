@@ -8,6 +8,9 @@ git_dir = $(shell git rev-parse --git-dir)
 
 exclude: $(git_dir)/info/exclude ;
 
+reignore:
+	touch Makefile
+	$(MAKE) ignore
 ignore:
 	$(MAKE) exclude
 	git status .

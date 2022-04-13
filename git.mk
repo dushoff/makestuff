@@ -213,7 +213,7 @@ gptargets: $(gptargets)
 	git add -f outputs/$*
 	touch Makefile
 
-outputs:
+outputs docs:
 	$(mkdir)
 
 ## Do docs/ just like outputs?
@@ -376,6 +376,7 @@ dotdir: $(Sources)
 	$(MAKE) sync
 	-/bin/rm -rf $@
 	git clone . $@
+	cd $@ && $(LN) $(pardirs:%=../%) .
 
 ## Note cpdir really means directory (usually); dotdir means the whole repo
 ## DON'T use cpdir for repos with Sources in subdirectories
@@ -521,7 +522,7 @@ hup:
 
 Ignore += *.ours *.theirs *.common
 
-## What is this?
+## Look at merge versions
 %.common: %
 	git show :1:$* > $@
 
@@ -531,8 +532,10 @@ Ignore += *.ours *.theirs *.common
 %.theirs: %
 	git show :3:$* > $@
 
-%.rfile: %
+## Pick one
+%.pick: %
 	$(CP) $* $(basename $*)
+	git add $(basename $*)
 
 ######################################################################
 
