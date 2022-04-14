@@ -1,14 +1,5 @@
 ## Retrofits and hacks
 
-## Bailed on getting the regex syntax right for the $. Watch out?
-## Try [$$] if you're bored.
-## This is a pain for scripts; see filemerge instead
-noms:
-	perl -pi -e 's|.\(ms\)/|makestuff/|' Makefile *.mk
-
-%.noms:
-	perl -pi -e 's|.\(ms\)/|makestuff/|' $*/Makefile $*/*.mk || perl -pi -e 's|.\(ms\)/|makestuff/|' $*/*.mk || perl -pi -e 's|.\(ms\)/|makestuff/|' $*/Makefile
-	
 # Unix basics (this is a hodge-podge of spelling conventions ☹)
 MVF = /bin/mv -f
 MV = /bin/mv
