@@ -50,6 +50,11 @@ hcopy = $(CPF) $1 $(dir $1).$(notdir $1)
 difftouch = diff $1 $(dir $1).$(notdir $1) > /dev/null || touch $1
 touch = touch $@
 
+.PRECIOUS: %.checkfile
+%.checkfile: ; touch $@ 
+checkfile = $(call hiddenfile,  $@.checkfile)
+setcheckfile = touch $(checkfile) && false
+
 justmakethere = cd $(dir $@) && $(MAKE) $(notdir $@)
 makedir = $(MAKE) $(dir $@)
 makethere = $(makedir) && cd $(dir $@) && $(MAKE) makestuff && $(MAKE) $(notdir $@)
