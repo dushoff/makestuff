@@ -213,6 +213,7 @@ gptargets: $(gptargets)
 	git add -f outputs/$*
 	touch Makefile
 
+## auto-docs causes conflict in dataviz
 outputs docs:
 	$(mkdir)
 
@@ -221,13 +222,6 @@ outputs docs:
 	- cp $* docs
 	git add -f docs/$*
 	touch Makefile
-
-docs:
-	$(mkdir)
-
-## Commented this in 2021 Oct 28 (Thu); why was it commented out??
-## Commented out because of stupid dataviz conflict 2021 Nov 02 (Tue)
-## docs: ; $(mkdir)
 
 ######################################################################
 
