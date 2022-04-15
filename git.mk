@@ -222,6 +222,9 @@ outputs docs:
 	git add -f docs/$*
 	touch Makefile
 
+docs:
+	$(mkdir)
+
 ## Commented this in 2021 Oct 28 (Thu); why was it commented out??
 ## Commented out because of stupid dataviz conflict 2021 Nov 02 (Tue)
 ## docs: ; $(mkdir)
@@ -240,6 +243,7 @@ outputs docs:
 ## 2019 Oct 10 (Thu)
 ## But if we don't early pull we get spurious merges
 ## Best is to pull pages when you pull
+Ignore += pagebranch
 %.pages:
 	$(MAKE) pages/pagebranch
 	$(MAKE) pages/$*
@@ -535,6 +539,7 @@ Ignore += *.ours *.theirs *.common
 ## Pick one
 %.pick: %
 	$(CP) $* $(basename $*)
+	git add $(basename $*)
 
 ######################################################################
 
