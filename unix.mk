@@ -41,6 +41,7 @@ hcopy = $(CPF) $1 $(dir $1).$(notdir $1)
 difftouch = diff $1 $(dir $1).$(notdir $1) > /dev/null || touch $1
 touch = touch $@
 
+Ignore += *.checkfile
 .PRECIOUS: %.checkfile
 %.checkfile: ; touch $@ 
 checkfile = $(call hiddenfile,  $@.checkfile)
