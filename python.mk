@@ -11,7 +11,7 @@ pycallout = $(PY) $(pyscript) $@ $(pydep)
 PITH = ($(pycall) > $@) || ($(setcheckfile))
 PITHOUT = ($(pycallout) > $@) || ($(setcheckfile))
 
-%.out: %.py $(call hiddenfile, %.out.checkfile)
+%.py.out: $(call hiddenfile, %.out.checkfile)
 	$(PITHOUT)
 
 ######################################################################
