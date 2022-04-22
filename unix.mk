@@ -47,10 +47,8 @@ Ignore += *.checkfile
 checkfile = $(call hiddenfile,  $@.checkfile)
 setcheckfile = touch $(checkfile) && false
 
+makethere = $(MAKE) $(dir $@) && cd $(dir $@) && $(MAKE) makestuff && $(MAKE) $(notdir $@)
 justmakethere = cd $(dir $@) && $(MAKE) $(notdir $@)
-makedir = $(MAKE) $(dir $@)
-makethere = $(makedir) && cd $(dir $@) && $(MAKE) makestuff && $(MAKE) $(notdir $@)
-makestuffthere = cd $(dir $@) && $(MAKE) makestuff && $(MAKE) $(notdir $@)
 
 diff = $(DIFF) $^ > $@
 
