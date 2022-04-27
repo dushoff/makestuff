@@ -92,3 +92,10 @@ sig.%.pdf: sig.%.jpg
 ## Reinstating for now
 
 include makestuff/pdfsplit.mk
+
+######################################################################
+
+## Requires cups-pdf.apt; is a race
+%.print.pdf: %.pdf
+	lpr -P PDF $<
+	ls -t ~/PDF/*.* | head -1 | xargs -i mv "{}" $@
