@@ -69,6 +69,7 @@ forcelink = $(LNF) $< $@
 rcopy = $(CPR) $< $@
 rdcopy = $(CPR) $(dir) $@
 copy = $(CP) $< $@
+pcopy = $(CP) $| $@
 move = $(MV) $< $@
 Move = $(MVF) $< $@
 hardcopy = $(CPF) $< $@
@@ -97,7 +98,7 @@ $(resDropDir):
 	$(mkdir)
 
 dropstuff: | $(resDropDir)
-	$(LNF) $| $@
+	$(lnp)
 
 ######################################################################
 
