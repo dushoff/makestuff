@@ -50,9 +50,10 @@ hcopy = $(CPF) $1 $(dir $1).$(notdir $1)
 difftouch = diff $1 $(dir $1).$(notdir $1) > /dev/null || touch $1
 touch = touch $@
 
-justmakethere = cd $(dir $@) && $(MAKE) $(notdir $@)
-makedir = $(MAKE) $(dir $@)
+## makethere is behaving weird 2022 Apr 29 (Fri)
 makethere = $(makedir) && cd $(dir $@) && $(MAKE) makestuff && $(MAKE) $(notdir $@)
+makedir = $(MAKE) $(dir $@)
+justmakethere = cd $(dir $@) && $(MAKE) $(notdir $@)
 makestuffthere = cd $(dir $@) && $(MAKE) makestuff && $(MAKE) $(notdir $@)
 
 diff = $(DIFF) $^ > $@
