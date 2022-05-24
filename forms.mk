@@ -27,13 +27,19 @@ email.pdf: email.txt
 date.pdf: date.txt
 	pdfroff $< | cpdf -crop "0.9in 10.8in 0.9in 0.2in" -stdin -o $@ 
 
+text_%.pdf: text.pdf
+	cpdf -scale-page "$* $*" -o $@ $<
+
 date_%.pdf: date.pdf
+	cpdf -scale-page "$* $*" -o $@ $<
+
+name_%.pdf: name.pdf
 	cpdf -scale-page "$* $*" -o $@ $<
 
 ######################################################################
 
-## Deprecate this stuff?
-date.png: date.pdf
+## Deprecate this stuff? Use pdf pipeline above? 2022 May 23 (Mon)
+date.png name.png: %.png: %.pdf
 	$(imageconvert)
 
 date.%.png: date.png
