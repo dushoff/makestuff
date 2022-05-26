@@ -226,6 +226,11 @@ outputs:
 ## Commented out because of stupid dataviz conflict 2021 Nov 02 (Tue)
 ## docs: ; $(mkdir)
 
+gitarchive/%: gitarchive
+gitarchive:
+	$(mkdir)
+trackedTargets += $(wildcard gitarchive/*)
+
 ######################################################################
 
 ## Deprecate this for docs/-based directories 2021 Ақп 02 (Сс)
