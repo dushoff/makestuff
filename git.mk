@@ -213,7 +213,8 @@ gptargets: $(gptargets)
 	git add -f outputs/$*
 	touch Makefile
 
-outputs:
+## auto-docs causes conflict in dataviz
+outputs docs:
 	$(mkdir)
 
 ## Do docs/ just like outputs?
@@ -222,7 +223,6 @@ outputs:
 	git add -f docs/$*
 	touch Makefile
 
-## Commented this in 2021 Oct 28 (Thu); why was it commented out??
 ## Commented out because of stupid dataviz conflict 2021 Nov 02 (Tue)
 ## docs: ; $(mkdir)
 
@@ -245,6 +245,7 @@ trackedTargets += $(wildcard gitarchive/*)
 ## 2019 Oct 10 (Thu)
 ## But if we don't early pull we get spurious merges
 ## Best is to pull pages when you pull
+Ignore += pagebranch
 %.pages:
 	$(MAKE) pages/pagebranch
 	$(MAKE) pages/$*
@@ -381,6 +382,7 @@ dotdir: $(Sources)
 	$(MAKE) sync
 	-/bin/rm -rf $@
 	git clone . $@
+	cd $@ && $(LN) $(pardirs:%=../%) .
 
 ## Note cpdir really means directory (usually); dotdir means the whole repo
 ## DON'T use cpdir for repos with Sources in subdirectories
@@ -526,7 +528,7 @@ hup:
 
 Ignore += *.ours *.theirs *.common
 
-## What is this?
+## Look at merge versions
 %.common: %
 	git show :1:$* > $@
 
@@ -536,8 +538,10 @@ Ignore += *.ours *.theirs *.common
 %.theirs: %
 	git show :3:$* > $@
 
-%.rfile: %
+## Pick one
+%.pick: %
 	$(CP) $* $(basename $*)
+	git add $(basename $*)
 
 ######################################################################
 

@@ -6,7 +6,7 @@ maketouch = cd $(1) && $$(MAKE) $$* && touch $$*
 define hotmake
 $(1)/Makefile: 
 	$(MAKE) $1
-$(1)/%: $(1) $(1)/Makefile 
+$(1)/%: | $(1) $(1)/Makefile 
 	$(maketouch)
 endef
 
@@ -14,16 +14,7 @@ endef
 define coldmake
 $(1)/%.mk: ;
 $(1)/Makefile: ;
-$(1)/%: $(1)/Makefile 
-	$(maketouch)
-endef
-
-## Only expected to work for things that already exist!
-## Because that's what wildcard does
-## Could be deleted? 2020 Oct 15 (Thu)
-define oldmake
-$(1)/%.mk: ;
-$(filter-out $(1)/Makefile, $(wildcard $(1)/*)): $(1)/%: $(1)/Makefile 
+$(1)/%: | $(1)/Makefile 
 	$(maketouch)
 endef
 

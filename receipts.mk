@@ -9,5 +9,5 @@
 %.1.receipt.pdf %.2.receipt.pdf %.3.receipt.pdf %.4.receipt.pdf %.5.receipt.pdf %.6.receipt.pdf %.7.receipt.pdf %.8.receipt.pdf: %.pdf
 	cpdf -add-text "$(page)" -topright 30 -font-size 24 $< -o $@
 
-%.pdf: %.png
+%.png.pdf: %.png
 	$(convert)
