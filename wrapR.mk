@@ -78,7 +78,7 @@ rclean:
 %.envir: %
 	touch $@
 
-Ignore += *.RData *.Rlog .Rhistory *.Rout *.wrapR.* *.Rds
+Ignore += *.RData *.Rlog .Rhistory *.Rout* *.wrapR.* *.Rds
 
 ## Added 2022 May 31 (Tue); why was this not a problem before?
 Ignore += *.rda *.rds
