@@ -41,14 +41,6 @@ endif
 .PRECIOUS: %.Rout.csv
 %.Rout.csv: %.Rout ;
 
-## Delete this 2020 Jun 30 (Tue)
-%.Rout.pdf.excessive: %.Rout
-	$(RM) $@
-	touch $(call hiddenfile, $@)
-	perl -wf $(pdfcheck) $(call hiddenfile, $@)
-	$(CP) $(call hiddenfile, $@) $@
-	touch $@
-
 .PRECIOUS: %.Rout.pdf
 %.Rout.pdf: %.Rout
 	$(RM) $@
@@ -86,4 +78,7 @@ rclean:
 %.envir: %
 	touch $@
 
-Ignore += *.RData *.Rlog .Rhistory *.Rout* *.wrapR.* *.Rds
+Ignore += *.RData *.Rlog .Rhistory *.Rout *.wrapR.* *.Rds
+
+## Added 2022 May 31 (Tue); why was this not a problem before?
+Ignore += *.rda *.rds
