@@ -382,7 +382,7 @@ dotdir: $(Sources)
 	$(MAKE) sync
 	-/bin/rm -rf $@
 	git clone . $@
-	cd $@ && $(LN) $(pardirs:%=../%) .
+	[ "$(pardirs)" = "" ] || ( cd $@ && $(LN) $(pardirs:%=../%) .)
 
 ## Note cpdir really means directory (usually); dotdir means the whole repo
 ## DON'T use cpdir for repos with Sources in subdirectories
