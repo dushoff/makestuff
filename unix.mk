@@ -41,14 +41,17 @@ hcopy = $(CPF) $1 $(dir $1).$(notdir $1)
 difftouch = diff $1 $(dir $1).$(notdir $1) > /dev/null || touch $1
 touch = touch $@
 
+## makethere is behaving weird 2022 Apr 29 (Fri)
+makethere = $(makedir) && cd $(dir $@) && $(MAKE) makestuff && $(MAKE) $(notdir $@)
+makedir = $(MAKE) $(dir $@)
+justmakethere = cd $(dir $@) && $(MAKE) $(notdir $@)
+makestuffthere = cd $(dir $@) && $(MAKE) makestuff && $(MAKE) $(notdir $@)
+
 Ignore += *.checkfile
 .PRECIOUS: %.checkfile
 %.checkfile: ; touch $@ 
 checkfile = $(call hiddenfile,  $@.checkfile)
 setcheckfile = touch $(checkfile) && false
-
-makethere = $(MAKE) $(dir $@) && cd $(dir $@) && $(MAKE) makestuff && $(MAKE) $(notdir $@)
-justmakethere = cd $(dir $@) && $(MAKE) $(notdir $@)
 
 diff = $(DIFF) $^ > $@
 
@@ -68,6 +71,7 @@ forcelink = $(LNF) $< $@
 rcopy = $(CPR) $< $@
 rdcopy = $(CPR) $(dir) $@
 copy = $(CP) $< $@
+pcopy = $(CP) $| $@
 move = $(MV) $< $@
 Move = $(MVF) $< $@
 hardcopy = $(CPF) $< $@
@@ -96,7 +100,7 @@ $(resDropDir):
 	$(mkdir)
 
 dropstuff: | $(resDropDir)
-	$(LNF) $| $@
+	$(lnp)
 
 ######################################################################
 

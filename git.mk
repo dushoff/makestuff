@@ -223,6 +223,14 @@ outputs docs:
 	git add -f docs/$*
 	touch Makefile
 
+## Commented out because of stupid dataviz conflict 2021 Nov 02 (Tue)
+## docs: ; $(mkdir)
+
+gitarchive/%: gitarchive
+gitarchive:
+	$(mkdir)
+trackedTargets += $(wildcard gitarchive/*)
+
 ######################################################################
 
 ## Deprecate this for docs/-based directories 2021 Ақп 02 (Сс)
@@ -374,7 +382,7 @@ dotdir: $(Sources)
 	$(MAKE) sync
 	-/bin/rm -rf $@
 	git clone . $@
-	cd $@ && $(LN) $(pardirs:%=../%) .
+	[ "$(pardirs)" = "" ] || ( cd $@ && $(LN) $(pardirs:%=../%) .)
 
 ## Note cpdir really means directory (usually); dotdir means the whole repo
 ## DON'T use cpdir for repos with Sources in subdirectories

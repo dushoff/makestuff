@@ -42,7 +42,7 @@ docsimptarget:
 	$(MAKE) $(target:%=%.pdf.docs)
 
 rmtarget:
-	$(call hide,  $(target))
+	- $(call hide,  $(target))
 	$(MAKE) $(target)
 
 target.mk:
