@@ -50,12 +50,6 @@ parpull: pull pardirpull
 
 ######################################################################
 
-## parallel directories
-## not part of all.time by default because usually updated in parallel
-$(pardirs):
-	cd .. && $(MAKE) $@
-	ls ../$@ > $(null) && $(LNF) ../$@ .
-
 Ignore += up.time all.time
 up.time: commit.time
 	$(MAKE) pullup
