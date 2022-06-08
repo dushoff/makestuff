@@ -100,10 +100,10 @@ tsync:
 
 ## Flattened 2021 May 11 (Tue)
 
-allsync: addall tsync
+forcesync: addall tsync
 
-%.allsync:
-	cd $* && $(MAKE) allsync
+%.forcesync:
+	cd $* && $(MAKE) forcesync
 
 ######################################################################
 
