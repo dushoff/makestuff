@@ -1,4 +1,4 @@
-
+## Refactor this 2022 Jun 09 (Thu)
 ## cmain is meant to point upstream; don't see any rules
 ## to manipulate it. Maybe there were once.
 ## Don't try merging with our rules until this is fixed!
@@ -50,12 +50,6 @@ parpull: pull pardirpull
 
 ######################################################################
 
-## parallel directories
-## not part of all.time by default because usually updated in parallel
-$(pardirs):
-	cd .. && $(MAKE) $@
-	ls ../$@ > $(null) && $(LNF) ../$@ .
-
 Ignore += up.time all.time
 up.time: commit.time
 	$(MAKE) pullup
@@ -100,10 +94,10 @@ tsync:
 
 ## Flattened 2021 May 11 (Tue)
 
-allsync: addall tsync
+forcesync: addall tsync
 
-%.allsync:
-	cd $* && $(MAKE) allsync
+%.forcesync:
+	cd $* && $(MAKE) forcesync
 
 ######################################################################
 
