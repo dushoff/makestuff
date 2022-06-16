@@ -99,6 +99,7 @@ resDropDir ?= $(DropResource)/$(notdir $(CURDIR))
 $(resDropDir):
 	$(mkdir)
 
+Ignore += dropstuff
 dropstuff: | $(resDropDir)
 	$(lnp)
 
