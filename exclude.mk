@@ -17,7 +17,7 @@ ignore:
 
 ## Usually .git/info/exclude
 ## dirdir ../.git/info/exclude
-$(git_dir)/info/exclude: Makefile
+$(git_dir)/info/exclude: Makefile $(Sources)
 	perl -wf makestuff/ignore.pl > $@ || perl -wf ignore.pl > $@
 
 export Ignore += local.mk target.mk make.log go.log tmp.scr
