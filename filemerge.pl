@@ -26,12 +26,12 @@ while(<>)
 	last if /$untrack_string/;
 	chomp;
 	s/MISSING[^:]*: //;
-	say;
 	s/\[[^[]*\]\(//; ## Trim an apparent markdown description
 	if(my ($fn) = m|^[\s>#"*]*([\w/.-]+\.\w+)|){
 		s/[^\s#*]/MISSING: $&/ unless defined $ls{$fn};
 		$ls{$fn} = 1;
 	}
+	say;
 }
 
 ## say "Here: " . join "; ", keys %ls;
