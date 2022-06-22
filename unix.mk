@@ -164,7 +164,9 @@ shell_execute = sh < $@
 %.image.png: %.pdf
 	$(imageconvert)
 
+## dog is heavier, but preserves links?
 pdfcat = pdfjam --outfile $@ $(filter %.pdf, $^) 
+pdfdog = pdftk $< cat $* output $@
 
 latexdiff = latexdiff $^ > $@
 
