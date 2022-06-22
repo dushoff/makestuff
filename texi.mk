@@ -1,6 +1,6 @@
-latex = pdflatex
-latexnon = pdflatex -interaction=nonstopmode
-texi = texi2pdf
+latex ?= pdflatex
+latexnon ?= pdflatex -interaction=nonstopmode
+texi ?= texi2pdf
 job = -jobname=$(@:%.pdf=%)
 
 texir = $(texi) -o $@ $<

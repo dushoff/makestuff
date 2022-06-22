@@ -26,6 +26,9 @@ Ignore += *.jax.html
 %.jax.html: %.md
 	pandoc --mathjax -s -o $@ $<
 
+%.Rout.html: %.R
+	$(rmdhtml)
+
 %.html: %.mkd
 	pandoc -s -o $@ $<
 
@@ -96,6 +99,7 @@ knitpdf = Rscript -e 'knitr::knit2pdf("$<")'
 
 rmdpdfBang = Rscript -e 'library("rmarkdown"); render("$<", output_format="pdf_document")'
 
+## Need to make this work with arguments
 rmdhtml = Rscript -e 'library("rmarkdown"); render("$<", output_format="html_document", output_file="$@")'
 
 ######################################################################

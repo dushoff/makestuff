@@ -9,7 +9,7 @@ endef
 define pipeR
 	-$(RM) $@ $@.*
 	$(makeArgs)
-	((R --vanilla --args $@ shellpipes $^ < $(word 1, $(filter %.R, $^)) > $(@:%.Rout=%.rtmp)) 2> $(@:%.Rout=%.Rlog) && cat $(@:%.Rout=%.Rlog)) || (cat $(@:%.Rout=%.Rlog) && false)
+	((R --vanilla --args $@ shellpipes $*.pipestar $^ < $(word 1, $(filter %.R, $^)) > $(@:%.Rout=%.rtmp)) 2> $(@:%.Rout=%.Rlog) && cat $(@:%.Rout=%.Rlog)) || (cat $(@:%.Rout=%.Rlog) && false)
 	$(MVF) $(@:%.Rout=%.rtmp) $@
 endef
 
@@ -26,6 +26,12 @@ define knitpdf
 	-$(RM) $@ $@.*
 	$(makeArgs)
 	Rscript -e 'library("rmarkdown"); render("$(word 1, $(filter %.rmd %.Rmd, $^))", output_format="pdf_document", output_file="$@")' shellpipes $^
+endef
+
+define knitmd
+	-$(RM) $@ $@.*
+	$(makeArgs)
+	Rscript -e 'library("rmarkdown"); render("$(word 1, $(filter %.rmd %.Rmd, $^))", md_document(preserve_yaml=TRUE, variant="markdown"), output_file="$@")' shellpipes $^
 endef
 
 define knithtml
@@ -56,6 +62,7 @@ ifdef autopipeR
 	$(pipeR)
 endif
 
+## More aggressive autopiping
 ifdef alwayspipeR
 .PRECIOUS: %.Rout
 %.Rout: 
@@ -73,6 +80,11 @@ ifdef alwayspipeRcall
 %.Rout:
 	$(pipeRcall)
 endif
+
+%.Routput: %.Rout
+	perl -f makestuff/wrapR/Rcalc.pl $< > $@ 
+
+######################################################################
 
 
 ifdef autoknit
@@ -161,13 +173,6 @@ $(foreach stem,$(pngDesc),$(eval $(call pngDesc_r,$(stem))))
 
 ######################################################################
 
-## Deleting some rules that may be needed for make3?
-## See makeR.mk (deleted now)
-## Also deleting possibly relevant chain/Makefile
-## 2021 Jan 05 (Tue)
-
-######################################################################
-
 ## Scripts
 ## Disentangle how things work, and empower people who don't use make
 ## Won't work in directories that need non-automatic setup
@@ -179,4 +184,11 @@ $(foreach stem,$(pngDesc),$(eval $(call pngDesc_r,$(stem))))
 	perl -wf makestuff/pipeRscript.pl cpdir/make.log > $@
 
 Sources += $(wildcard *.pipeR.script)
+
+######################################################################
+
+## Legacy cleaning
+
+wrapclean wrapClean:
+	rm -fr *.wrapR* .*.wrapR*
 
