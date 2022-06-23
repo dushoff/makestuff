@@ -129,7 +129,7 @@ ddcopy = ($(LSN) && $(touch)) ||  $(rdcopy)
 ## File listing and merging
 %.ls: %
 	ls $* > $@
-%.lsd: %
+%.lsd: | %
 	(ls -d $*/* || ls $*) > $@
 Ignore += index.lsd
 index.lsd: .
