@@ -271,7 +271,7 @@ pages/Makefile:
 ## Make an empty pages directory when necessary; or else attaching existing one
 Ignore += pages
 pages:
-	git clone `git remote get-url origin` $@
+	git clone --branch gh-pages `git remote get-url origin` $@
 
 pages/pagebranch:
 	cd $(dir $@) && (git checkout gh-pages || $(createpages))
