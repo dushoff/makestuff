@@ -6,10 +6,11 @@
 
 git_dir = $(shell git rev-parse --git-dir)
 
-exclude: $(git_dir)/info/exclude ;
+exclude = $(git_dir)/info/exclude
+exclude: $(exclude) ;
 
 reignore:
-	touch Makefile
+	$(RM) $(exclude)
 	$(MAKE) ignore
 ignore:
 	$(MAKE) exclude
