@@ -57,7 +57,6 @@ diff = $(DIFF) $^ > $@
 
 # Generic (vars that use the ones above)
 link = $(LN) $< $@
-alwayslinkdir = (ls $(dir)/$@ > $(null) || $(MD) $(dir)/$@) && $(LNF) $(dir)/$@ .
 linkdir = ls $(dir)/$@ > $(null) && $(LNF) $(dir)/$@ .
 linkdirname = ls $(dir) > $(null) && $(LNF) $(dir) $@ 
 linkexisting = ls $< > /dev/null && $(link)
