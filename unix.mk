@@ -166,7 +166,7 @@ shell_execute = sh < $@
 
 ## dog is heavier, but preserves links?
 pdfcat = pdfjam --outfile $@ $(filter %.pdf, $^) 
-pdfdog = pdftk $< cat $* output $@
+pdfdog = pdftk $(filter %.pdf, $^) cat output $@
 
 latexdiff = latexdiff $^ > $@
 
