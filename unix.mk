@@ -57,7 +57,6 @@ diff = $(DIFF) $^ > $@
 
 # Generic (vars that use the ones above)
 link = $(LN) $< $@
-alwayslinkdir = (ls $(dir)/$@ > $(null) || $(MD) $(dir)/$@) && $(LNF) $(dir)/$@ .
 linkdir = ls $(dir)/$@ > $(null) && $(LNF) $(dir)/$@ .
 linkdirname = ls $(dir) > $(null) && $(LNF) $(dir) $@ 
 linkexisting = ls $< > /dev/null && $(link)
@@ -99,6 +98,7 @@ resDropDir ?= $(DropResource)/$(notdir $(CURDIR))
 $(resDropDir):
 	$(mkdir)
 
+Ignore += dropstuff
 dropstuff: | $(resDropDir)
 	$(lnp)
 
@@ -128,8 +128,9 @@ ddcopy = ($(LSN) && $(touch)) ||  $(rdcopy)
 ## File listing and merging
 %.ls: %
 	ls $* > $@
-%.lsd: %
+%.lsd: | %
 	(ls -d $*/* || ls $*) > $@
+Ignore += index.lsd
 index.lsd: .
 	ls -d * > $@
 
@@ -163,7 +164,9 @@ shell_execute = sh < $@
 %.image.png: %.pdf
 	$(imageconvert)
 
+## dog is heavier, but preserves links?
 pdfcat = pdfjam --outfile $@ $(filter %.pdf, $^) 
+pdfdog = pdftk $(filter %.pdf, $^) cat output $@
 
 latexdiff = latexdiff $^ > $@
 

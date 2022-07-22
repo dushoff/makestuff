@@ -81,6 +81,11 @@ ifdef alwayspipeRcall
 	$(pipeRcall)
 endif
 
+%.Routput: %.Rout
+	perl -f makestuff/wrapR/Rcalc.pl $< > $@ 
+
+######################################################################
+
 
 ifdef autoknit
 %.html: %.Rmd
