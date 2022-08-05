@@ -146,8 +146,10 @@ push.%: commit.time
 
 ## Use pullup to add stuff to routine pulls
 ## without adding to all pulls; maybe not useful?
-## or maybe had some submodule something?
+## 2022 Aug 05 (Fri) added submodule incantation
+
 pullup: pull
+	git submodule update -i
 
 pushup:
 	git push -u origin $(BRANCH)
