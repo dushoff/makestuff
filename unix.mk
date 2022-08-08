@@ -57,10 +57,9 @@ setcheckfile = touch $(checkfile) && false
 diff = $(DIFF) $^ > $@
 
 # Generic (vars that use the ones above)
-link = $(LN) $< $@
 linkdir = ls $(dir)/$@ > $(null) && $(LNF) $(dir)/$@ .
 linkdirname = ls $(dir) > $(null) && $(LNF) $(dir) $@ 
-linkexisting = ls $< > /dev/null && $(link)
+linkexisting = ls $< > /dev/null && $(ln)
 
 ## This will make directory if it doesn't exist
 ## Possibly good for shared projects. Problematic if central user makes two 
