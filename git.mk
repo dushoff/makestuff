@@ -1,7 +1,4 @@
 ## Refactor this 2022 Jun 09 (Thu)
-## cmain is meant to point upstream; don't see any rules
-## to manipulate it. Maybe there were once.
-## Don't try merging with our rules until this is fixed!
 cmain = NULL
 
 ## Made a strange loop _once_ (doesn't seem to be used anyway).
@@ -49,6 +46,12 @@ pardirpull: $(pardirs:%=%.pull) makestuff.pull
 parpull: pull pardirpull
 
 ######################################################################
+
+## parallel directories
+## not part of all.time by default because usually updated in parallel
+$(pardirs):
+	cd .. && $(MAKE) $@
+	ls ../$@ > $(null) && $(LNF) ../$@ .
 
 Ignore += up.time all.time
 up.time: commit.time
@@ -140,8 +143,10 @@ push.%: commit.time
 
 ## Use pullup to add stuff to routine pulls
 ## without adding to all pulls; maybe not useful?
-## or maybe had some submodule something?
+## 2022 Aug 05 (Fri) added submodule incantation
+
 pullup: pull
+	git submodule update -i
 
 pushup:
 	git push -u origin $(BRANCH)
@@ -194,6 +199,11 @@ gpobjects = $(wildcard git_push/*)
 gptargets = $(gpobjects:git_push/%=%.gp)
 gptargets: $(gptargets)
 
+######################################################################
+
+## Unify some of these by recipe
+## use a better touch command
+
 ## 2020 Nov 11 (Wed) an alternative name for git_push
 ## Not copying the all-update rule here; outputs can have other purposes
 %.op: % outputs
@@ -215,6 +225,20 @@ outputs docs:
 %.docs: % docs
 	- cp $* docs
 	git add -f docs/$*
+	touch Makefile
+
+## Make an empty pages directory when necessary; or else attaching existing one
+Ignore += pages
+pages:
+	git clone --branch gh-pages `git remote get-url origin` $@
+
+pages/pagebranch:
+	cd $(dir $@) && (git checkout gh-pages || $(createpages))
+	touch $@
+
+%.pages: % pages
+	- $(CPF) $* pages
+	git add -f pages/$*
 	touch Makefile
 
 ## Commented out because of stupid dataviz conflict 2021 Nov 02 (Tue)
@@ -270,15 +294,6 @@ pages/Makefile:
 	$(MAKE) $*
 	cd $* && (git add *.* && ($(git_check))) || ((git commit -m "Commited by $(CURDIR)") && git pull && git push && git status)
 
-## This is sort of deprecated, too
-## Make an empty pages directory when necessary; or else attaching existing one
-Ignore += pages
-pages:
-	git clone `git remote get-url origin` $@
-
-pages/pagebranch:
-	cd $(dir $@) && (git checkout gh-pages || $(createpages))
-	touch $@
 
 define createpages
 	(git checkout --orphan gh-pages && git rm -rf * && touch ../README.md && cp ../README.md . && git add README.md && git commit -m "Orphan pages branch" && git push --set-upstream origin gh-pages )

@@ -61,7 +61,7 @@ $(TARBALL): NAMESPACE $(wildcard R/*.*)
 	$(R) CMD build .
 
 NAMESPACE: rpkgbuild/names ;
-rpkgbuild/names: $(wildcard R/*.R)
+rpkgbuild/names: $(wildcard R/*.R) DESCRIPTION
 	$(MAKE) rpkgbuild
 	echo "(roxygen2::roxygenize('.',roclets = 'namespace'))" | $(R) \
 	|| echo ERROR: FAILED to build NAMESPACE

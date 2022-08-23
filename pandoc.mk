@@ -12,6 +12,7 @@ ghh_r = pandoc -s -f gfm -o $@ $<
 %.gh.html: %.md
 	$(ghh_r)
 
+Ignore += *.gh.html
 %.gh.html: %.mkd
 	$(ghh_r)
 

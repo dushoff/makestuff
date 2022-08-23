@@ -42,6 +42,7 @@ difftouch = diff $1 $(dir $1).$(notdir $1) > /dev/null || touch $1
 touch = touch $@
 
 ## makethere is behaving weird 2022 Apr 29 (Fri)
+## makestuffthere, too 2022 Aug 04 (Thu)
 makethere = $(makedir) && cd $(dir $@) && $(MAKE) makestuff && $(MAKE) $(notdir $@)
 makedir = $(MAKE) $(dir $@)
 justmakethere = cd $(dir $@) && $(MAKE) $(notdir $@)
@@ -56,11 +57,9 @@ setcheckfile = touch $(checkfile) && false
 diff = $(DIFF) $^ > $@
 
 # Generic (vars that use the ones above)
-link = $(LN) $< $@
-alwayslinkdir = (ls $(dir)/$@ > $(null) || $(MD) $(dir)/$@) && $(LNF) $(dir)/$@ .
 linkdir = ls $(dir)/$@ > $(null) && $(LNF) $(dir)/$@ .
 linkdirname = ls $(dir) > $(null) && $(LNF) $(dir) $@ 
-linkexisting = ls $< > /dev/null && $(link)
+linkexisting = ls $< > /dev/null && $(ln)
 
 ## This will make directory if it doesn't exist
 ## Possibly good for shared projects. Problematic if central user makes two 
@@ -129,8 +128,9 @@ ddcopy = ($(LSN) && $(touch)) ||  $(rdcopy)
 ## File listing and merging
 %.ls: %
 	ls $* > $@
-%.lsd: %
+%.lsd: | %
 	(ls -d $*/* || ls $*) > $@
+Ignore += index.lsd
 index.lsd: .
 	ls -d * > $@
 
@@ -164,7 +164,9 @@ shell_execute = sh < $@
 %.image.png: %.pdf
 	$(imageconvert)
 
+## dog is heavier, but preserves links?
 pdfcat = pdfjam --outfile $@ $(filter %.pdf, $^) 
+pdfdog = pdftk $(filter %.pdf, $^) cat output $@
 
 latexdiff = latexdiff $^ > $@
 
