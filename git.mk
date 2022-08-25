@@ -552,7 +552,8 @@ Ignore += *.ours *.theirs *.common
 	$(CP) $* $(basename $*)
 	git add $(basename $*)
 
-%.vdiff: %.ours %.theirs
+Ignore += *.gitdiff
+%.gitdiff: %.ours %.theirs
 	- $(diff)
 
 ######################################################################
