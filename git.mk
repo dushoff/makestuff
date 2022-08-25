@@ -544,6 +544,9 @@ Ignore += *.ours *.theirs *.common
 	$(CP) $* $(basename $*)
 	git add $(basename $*)
 
+%.vdiff: %.ours %.theirs
+	- $(diff)
+
 ######################################################################
 
 ## Old files
