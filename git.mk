@@ -47,6 +47,12 @@ parpull: pull pardirpull
 
 ######################################################################
 
+## parallel directories
+## not part of all.time by default because usually updated in parallel
+$(pardirs):
+	cd .. && $(MAKE) $@
+	ls ../$@ > $(null) && $(LNF) ../$@ .
+
 Ignore += up.time all.time
 up.time: commit.time
 	$(MAKE) pullup
@@ -137,8 +143,10 @@ push.%: commit.time
 
 ## Use pullup to add stuff to routine pulls
 ## without adding to all pulls; maybe not useful?
-## or maybe had some submodule something?
+## 2022 Aug 05 (Fri) added submodule incantation
+
 pullup: pull
+	git submodule update -i
 
 pushup:
 	git push -u origin $(BRANCH)
