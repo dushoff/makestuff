@@ -83,16 +83,28 @@ rmdh = Rscript -e "library(\"rmarkdown\"); render(\"$<\")"
 %.upcap.MD: %.docx.MD makestuff/upcap.pl
 	$(PUSH)
 
-  
+######################################################################
+
+## Modular weirdness 2022 Sep 01 (Thu)
+
+lualatex_r = pandoc -o $@ --pdf-engine=lualatex $<
+xelex_r = pandoc -o $@ --pdf-engine=xelatex --variable fontsize=12pt $<
+ltx_r = pandoc -o $@ --variable fontsize=12pt $<
+
+mdhtml_f = $(subst .md,.*.html, $(wildcard *.md))
+mdpdf_f = $(subst .md,.*.pdf, $(wildcard *.md))
+
+######################################################################
+
 ## This is becoming pretty random
 %.pan.pdf: %.mkd
 	pandoc -o $@ --variable fontsize=12pt $<
 
 %.ltx.pdf: %.md
-	pandoc -o $@ --variable fontsize=12pt $<
+	$(ltx_r)
 
 %.pan.pdf: %.md
-	pandoc -o $@ --pdf-engine=lualatex --variable fontsize=12pt $<
+	$(lualatex_r)
 
 rmdpdf = Rscript -e 'library("rmarkdown"); render("$<", output_format="pdf_document")'
 
