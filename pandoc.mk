@@ -91,8 +91,8 @@ lualatex_r = pandoc -o $@ --pdf-engine=lualatex $<
 xelex_r = pandoc -o $@ --pdf-engine=xelatex --variable fontsize=12pt $<
 ltx_r = pandoc -o $@ --variable fontsize=12pt $<
 
-mdhtml_f = $(subst .md,.*.html, $(wildcard *.md))
-mdpdf_f = $(subst .md,.*.pdf, $(wildcard *.md))
+mdhtml_f = $(subst .md,*.html, $(wildcard *.md))
+mdpdf_f = $(subst .md,*.pdf, $(wildcard *.md))
 
 ######################################################################
 
