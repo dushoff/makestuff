@@ -148,6 +148,9 @@ push.%: commit.time
 pullup: pull
 	git submodule update -i
 
+## 2022 Sep 01 (Thu)
+## This doesn't work for new, blank repos and I don't know why
+## I also don't know if the whole origin branch stuff is helping anyone
 pushup:
 	git push -u origin $(BRANCH)
 
@@ -155,7 +158,6 @@ git_check:
 	$(git_check)
 
 ######################################################################
-
 
 ## autosync stuff not consolidated, needs work. 
 remotesync: commit.default
