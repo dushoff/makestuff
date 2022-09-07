@@ -1,14 +1,5 @@
 ## Retrofits and hacks
 
-## Bailed on getting the regex syntax right for the $. Watch out?
-## Try [$$] if you're bored.
-## This is a pain for scripts; see filemerge instead
-noms:
-	perl -pi -e 's|.\(ms\)/|makestuff/|' Makefile *.mk
-
-%.noms:
-	perl -pi -e 's|.\(ms\)/|makestuff/|' $*/Makefile $*/*.mk || perl -pi -e 's|.\(ms\)/|makestuff/|' $*/*.mk || perl -pi -e 's|.\(ms\)/|makestuff/|' $*/Makefile
-	
 # Unix basics (this is a hodge-podge of spelling conventions ☹)
 MVF = /bin/mv -f
 MV = /bin/mv
@@ -50,19 +41,25 @@ hcopy = $(CPF) $1 $(dir $1).$(notdir $1)
 difftouch = diff $1 $(dir $1).$(notdir $1) > /dev/null || touch $1
 touch = touch $@
 
-justmakethere = cd $(dir $@) && $(MAKE) $(notdir $@)
-makedir = $(MAKE) $(dir $@)
+## makethere is behaving weird 2022 Apr 29 (Fri)
+## makestuffthere, too 2022 Aug 04 (Thu)
 makethere = $(makedir) && cd $(dir $@) && $(MAKE) makestuff && $(MAKE) $(notdir $@)
+makedir = $(MAKE) $(dir $@)
+justmakethere = cd $(dir $@) && $(MAKE) $(notdir $@)
 makestuffthere = cd $(dir $@) && $(MAKE) makestuff && $(MAKE) $(notdir $@)
+
+Ignore += *.checkfile
+.PRECIOUS: %.checkfile
+%.checkfile: ; touch $@ 
+checkfile = $(call hiddenfile,  $@.checkfile)
+setcheckfile = touch $(checkfile) && false
 
 diff = $(DIFF) $^ > $@
 
 # Generic (vars that use the ones above)
-link = $(LN) $< $@
-alwayslinkdir = (ls $(dir)/$@ > $(null) || $(MD) $(dir)/$@) && $(LNF) $(dir)/$@ .
 linkdir = ls $(dir)/$@ > $(null) && $(LNF) $(dir)/$@ .
 linkdirname = ls $(dir) > $(null) && $(LNF) $(dir) $@ 
-linkexisting = ls $< > /dev/null && $(link)
+linkexisting = ls $< > /dev/null && $(ln)
 
 ## This will make directory if it doesn't exist
 ## Possibly good for shared projects. Problematic if central user makes two 
@@ -73,6 +70,7 @@ forcelink = $(LNF) $< $@
 rcopy = $(CPR) $< $@
 rdcopy = $(CPR) $(dir) $@
 copy = $(CP) $< $@
+pcopy = $(CP) $| $@
 move = $(MV) $< $@
 Move = $(MVF) $< $@
 hardcopy = $(CPF) $< $@
@@ -84,6 +82,7 @@ cat = $(CAT) /dev/null $^ > $@
 catro = $(rm); $(CAT) /dev/null $^ > $@; $(readonly)
 ln = $(LN) $< $@
 lnf = $(LNF) $< $@
+lnp = $(LNF) $| $@
 rm = $(RM) $@
 pandoc = pandoc -o $@ $<
 pandocs = pandoc -s -o $@ $<
@@ -91,18 +90,24 @@ pandocs = pandoc -s -o $@ $<
 ######################################################################
 
 ## It would be better to have global Drop logic (and to move this rule out of this file)
-ifndef Drop
-Drop = ~/Dropbox
-endif
+Drop ?= ~/Dropbox
 
-ifndef DropResource
-DropResource = $(Drop)/resources
-endif
+DropResource ?= $(Drop)/resources
 
-resDropDir = $(DropResource)/$(notdir $(CURDIR))
+resDropDir ?= $(DropResource)/$(notdir $(CURDIR))
 $(resDropDir):
 	$(mkdir)
-resDrop = $(MAKE) $(resDropDir) && $(LNF) $(resDropDir) $@
+
+Ignore += dropstuff
+dropstuff: | $(resDropDir)
+	$(lnp)
+
+######################################################################
+
+## A newer effort which I'm suddenly abandoning in favor of above; merge ideas?
+$(resourcedir):
+	$(mkdir)
+resources: | $(resourcedir)
 
 ######################################################################
 
@@ -123,8 +128,9 @@ ddcopy = ($(LSN) && $(touch)) ||  $(rdcopy)
 ## File listing and merging
 %.ls: %
 	ls $* > $@
-%.lsd: %
+%.lsd: | %
 	(ls -d $*/* || ls $*) > $@
+Ignore += index.lsd
 index.lsd: .
 	ls -d * > $@
 
@@ -158,7 +164,9 @@ shell_execute = sh < $@
 %.image.png: %.pdf
 	$(imageconvert)
 
+## dog is heavier, but preserves links?
 pdfcat = pdfjam --outfile $@ $(filter %.pdf, $^) 
+pdfdog = pdftk $(filter %.pdf, $^) cat output $@
 
 latexdiff = latexdiff $^ > $@
 
@@ -170,6 +178,7 @@ Ignore += *.ld.tex
 	$(CP) $< $(pushdir) || $(CP) $< ~/Downloads
 
 %.pdown: %
+	$(RM) ~/Downloads/$<
 	$(CP) $< ~/Downloads/
 
 %.ldown: %
@@ -178,6 +187,10 @@ Ignore += *.ld.tex
 %.pushpush: %
 	$(CP) $< $(pushdir)
 	cd $(pushdir) && make remotesync
+
+%.rmk: 
+	$(RM) $*
+	$(MAKE) $*
 
 %.log: 
 	$(RM) $*

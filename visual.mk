@@ -7,7 +7,7 @@ pngtarget:
 
 pdftarget:
 	$(MAKE) $<
-	($(MAKE) $<.pdf && $(MAKE) $<.pdf.go) || $(MAKE)  $<.go
+	($(MAKE) $<.pdf && ls $<.pdf && $(MAKE) $<.pdf.go) || $(MAKE) $<.go
 
 vtarget:
 	$(MAKE) $<.go
@@ -27,8 +27,8 @@ pushtarget:
 dtarget:
 	$(MAKE) $(target:%=%.pdf.ldown) || $(MAKE) $(target:%=%.ldown)
 
-olddtarget:
-	$(MAKE) pushdir=~/Downloads/ pushtarget
+hardtarget:
+	$(MAKE) $(target:%=%.pdf.pdown) || $(MAKE) $(target:%=%.pdown)
 
 ## The $< paradigm is stupid; let's try something else 2021 Feb 02 (Tue)
 doctarget:
@@ -40,6 +40,10 @@ docpdftarget:
 docsimptarget:
 	$(MAKE) $(target:%=%.docs)
 	$(MAKE) $(target:%=%.pdf.docs)
+
+rmtarget:
+	- $(call hide,  $(target))
+	$(MAKE) $(target)
 
 target.mk:
 	$(CP) makestuff/newtarget.mk $@

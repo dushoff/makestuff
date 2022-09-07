@@ -1,4 +1,3 @@
-
 # Adapted from perl.def
 # Runs the first script among its dependencies, using all the other dependencies as arguments
 PITH = python $(filter %.py, $^) $(filter-out %.py, $^) > $@

@@ -5,9 +5,10 @@
 ## auto-dependency stuff could go into a trickier place
 ## see also stepR and its rmd stuff.
 
+## Basically, it only seems to work to make render outputs in the file directory
 rmdmd_r = Rscript -e 'library("rmarkdown"); render("$<", output_format="md_document", output_file="$@")'
 
-rmdh_r = Rscript -e 'library("rmarkdown"); render("$<", output_format="html_document", output_file="$@")'
+rmdh_r = Rscript -e 'library("rmarkdown"); render("$<", output_format="html_document", output_file="$(notdir $@)")'
 
 tangle_r = Rscript -e 'library("knitr"); knit("$<", output="$@", tangle=TRUE)'
 
