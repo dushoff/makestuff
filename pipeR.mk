@@ -132,8 +132,6 @@ Ignore += *.Rds *.rds
 Ignore += Rplots.pdf
 Ignore += *.ggp.*
 
-Ignore += resources
-
 ######################################################################
 
 ## Eval rules for implicit dependencies
