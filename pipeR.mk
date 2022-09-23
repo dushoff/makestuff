@@ -22,6 +22,14 @@ endef
 ## Back-compatility
 makeR=$(pipeR)
 
+## This stuff should be refactored, and also reconciled with a _bunch_ of other stuff:
+## rmd, rmdweb, pandoc ...
+define render
+	-$(RM) $@ $@.*
+	$(makeArgs)
+	Rscript --vanilla -e 'library("rmarkdown"); render("$(word 1, $(filter %.rmd %.Rmd, $^))", output_file="$@")' shellpipes $^
+endef
+
 define knitpdf
 	-$(RM) $@ $@.*
 	$(makeArgs)
