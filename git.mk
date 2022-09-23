@@ -428,7 +428,7 @@ sourcedir: $(Sources)
 	cd $@ && tar xzf $@.tgz && $(RM) $@.tgz
 	-cp target.mk $@
 
-%.localdir: %
+%.localdir: % %.mslink
 	-$(CP) local.mk $*
 
 %.mslink: %
@@ -453,7 +453,7 @@ sourcedir: $(Sources)
 %.vdtest: %.dirtest
 	$(MAKE) vtarget
 
-%.localtest: % %.localdir %.dirtest ;
+%.localtest: % %.localdir %.vdtest ;
 
 testclean:
 	-/bin/rm -rf clonedir dotdir
