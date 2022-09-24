@@ -390,7 +390,7 @@ gitprune:
 
 Ignore += dotdir/ clonedir/ cpdir/
 dotdir: $(Sources)
-	$(MAKE) sync
+	$(MAKE) commit.time
 	-/bin/rm -rf $@
 	git clone . $@
 	[ "$(pardirs)" = "" ] || ( cd $@ && $(LN) $(pardirs:%=../%) .)
@@ -451,10 +451,18 @@ sourcedir: $(Sources)
 
 ## To open the dirtest final target when appropriate (and properly set up) 
 %.vdtest: %.dirtest
-	$(MAKE) vtarget
+	$(MAKE) pdftarget
 
 %.localtest: % %.localdir %.vdtest ;
 
+## To make and display files in the all variable
+%.alltest: %.dirtest
+	($(MAKE) $(all) && $(MAKE) $(all:%=%.go)) || $(MAKE) all
+
+## Get it? 
+%.localltest: % %.localdir %.alltest ;
+
+## This is def. incomplete, but I never use it 2022 Sep 24 (Sat)
 testclean:
 	-/bin/rm -rf clonedir dotdir
 
