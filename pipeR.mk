@@ -27,6 +27,12 @@ makeR=$(pipeR)
 define render
 	-$(RM) $@ $@.*
 	$(makeArgs)
+	Rscript --vanilla -e 'library("rmarkdown"); render("$<", output_file="$@")' shellpipes $^
+endef
+
+define render_rmd
+	-$(RM) $@ $@.*
+	$(makeArgs)
 	Rscript --vanilla -e 'library("rmarkdown"); render("$(word 1, $(filter %.rmd %.Rmd, $^))", output_file="$@")' shellpipes $^
 endef
 
