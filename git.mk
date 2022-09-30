@@ -456,8 +456,10 @@ sourcedir: $(Sources)
 %.localtest: % %.localdir %.vdtest ;
 
 ## To make and display files in the all variable
+alltest:
+	($(MAKE) $(all) && ($(MAKE) $(all:%=%.go) || echo "Warning: alltest made but could not display everything" )
 %.alltest: %.dirtest
-	($(MAKE) $(all) && $(MAKE) $(all:%=%.go)) || $(MAKE) all
+	$(MAKE) alltest
 
 ## Get it? 
 %.localltest: % %.localdir %.alltest ;
