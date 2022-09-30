@@ -457,7 +457,7 @@ sourcedir: $(Sources)
 
 ## To make and display files in the all variable
 alltest:
-	($(MAKE) $(all) && ($(MAKE) $(all:%=%.go) || echo "Warning: alltest made but could not display everything" )
+	$(MAKE) $(all) && ($(MAKE) $(all:%=%.go) || echo "Warning: alltest made but could not display everything" )
 %.alltest: %.dirtest
 	$(MAKE) alltest
 
