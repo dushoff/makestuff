@@ -143,9 +143,14 @@ push.%: commit.time
 
 ## Use pullup to add stuff to routine pulls
 ## without adding to all pulls; maybe not useful?
-## or maybe had some submodule something?
-pullup: pull
+## 2022 Aug 05 (Fri) added submodule incantation
 
+pullup: pull
+	git submodule update -i
+
+## 2022 Sep 01 (Thu)
+## This doesn't work for new, blank repos and I don't know why
+## I also don't know if the whole origin branch stuff is helping anyone
 pushup:
 	git push -u origin $(BRANCH)
 
@@ -153,7 +158,6 @@ git_check:
 	$(git_check)
 
 ######################################################################
-
 
 ## autosync stuff not consolidated, needs work. 
 remotesync: commit.default
@@ -386,7 +390,7 @@ gitprune:
 
 Ignore += dotdir/ clonedir/ cpdir/
 dotdir: $(Sources)
-	$(MAKE) sync
+	$(MAKE) commit.time
 	-/bin/rm -rf $@
 	git clone . $@
 	[ "$(pardirs)" = "" ] || ( cd $@ && $(LN) $(pardirs:%=../%) .)
@@ -424,7 +428,7 @@ sourcedir: $(Sources)
 	cd $@ && tar xzf $@.tgz && $(RM) $@.tgz
 	-cp target.mk $@
 
-%.localdir: %
+%.localdir: % %.mslink
 	-$(CP) local.mk $*
 
 %.mslink: %
@@ -447,10 +451,20 @@ sourcedir: $(Sources)
 
 ## To open the dirtest final target when appropriate (and properly set up) 
 %.vdtest: %.dirtest
-	$(MAKE) vtarget
+	$(MAKE) pdftarget
 
-%.localtest: % %.localdir %.dirtest ;
+%.localtest: % %.localdir %.vdtest ;
 
+## To make and display files in the all variable
+alltest:
+	$(MAKE) $(all) && ($(MAKE) $(all:%=%.go) || echo "Warning: alltest made but could not display everything" )
+%.alltest: %.dirtest
+	$(MAKE) alltest
+
+## Get it? 
+%.localltest: % %.localdir %.alltest ;
+
+## This is def. incomplete, but I never use it 2022 Sep 24 (Sat)
 testclean:
 	-/bin/rm -rf clonedir dotdir
 
@@ -549,6 +563,10 @@ Ignore += *.ours *.theirs *.common
 %.pick: %
 	$(CP) $* $(basename $*)
 	git add $(basename $*)
+
+Ignore += *.gitdiff
+%.gitdiff: %.ours %.theirs
+	- $(diff)
 
 ######################################################################
 
