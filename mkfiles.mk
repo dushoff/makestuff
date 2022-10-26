@@ -6,9 +6,13 @@
 ## Curate linked Makefiles in a mkfiles directory in the parent
 Sources += $(wildcard mkfiles/*.make)
 .PRECIOUS: mkfiles/%.make
-mkfiles/%.make: 
+mkfiles/%.make:
 	$(MAKE) mkfiles
 	cp makestuff/mkfiles.Makefile $@
+
+mkfiles/%.wrap:
+	$(MAKE) mkfiles
+	cp makestuff/mkfiles.wrap $@
 
 mkfiles:
 	$(mkdir)
@@ -20,8 +24,16 @@ mklink = cd $* && $(LN) ../mkfiles/$*.make Makefile
 
 ## Is this good? it can help with autosync, particularly when we move to a new machine
 %/Makefile:
+	$(MAKE) $*
 	$(MAKE) mkfiles/$*.make
 	$(mklink)
+
+## Wrapper only (for projects with Makefile, add a secret makefile)
+wraplink = cd $* && $(LN) ../mkfiles/$*.wrap makefile
+%/makefile:
+	$(MAKE) $*
+	$(MAKE) mkfiles/$*.wrap
+	$(wraplink)
 
 ## Make Makefile a repository file
 ## Keep any changes made before that (remember to change Source and so one)
