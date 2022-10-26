@@ -10,6 +10,8 @@ mkfiles/%.make:
 	$(MAKE) mkfiles
 	cp makestuff/mkfiles.Makefile $@
 
+Sources += $(wildcard mkfiles/*.wrap)
+.PRECIOUS: mkfiles/%.wrap
 mkfiles/%.wrap:
 	$(MAKE) mkfiles
 	cp makestuff/mkfiles.wrap $@
