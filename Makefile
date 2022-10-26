@@ -132,7 +132,7 @@ Sources += $(wildcard lect/*.*)
 
 ## mkfiles
 
-Sources += mkfiles.Makefile
+Sources += mkfiles.Makefile mkfiles.wrap
 
 ######################################################################
 
