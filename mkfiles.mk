@@ -20,14 +20,14 @@ mkfiles:
 	$(mkdir)
 
 mklink = cd $* && $(LN) ../mkfiles/$*.make Makefile
-%.mkfile %/mkfile: 
+%.mkfile: 
+	$(MAKE) $*
 	$(MAKE) mkfiles/$*.make
 	$(mklink)
 
-## Is this good? it can help with autosync, particularly when we move to a new machine
+## If somebody wants a make file and the linked one already exists, then use it
 %/Makefile:
 	$(MAKE) $*
-	$(MAKE) mkfiles/$*.make
 	$(mklink)
 
 ## Wrapper only (for projects with Makefile, add a secret makefile)
@@ -37,10 +37,15 @@ wraplink = cd $* && $(LN) ../mkfiles/$*.wrap makefile
 	$(MAKE) mkfiles/$*.wrap
 	$(wraplink)
 
-## Make Makefile a repository file
+## Make Linked Makefile into a repository file
 ## Keep any changes made before that (remember to change Source and so one)
 %/repofile:
 	$(RM) $*/Makefile
 	$(CPF) mkfiles/$*.make $*/Makefile
 	git rm mkfiles/$*.make
 	cd $* && git add Makefile
+
+## Make a default Makefile instead (don't use links at all)
+%.defmake: 
+	$(MAKE) $*
+	$(CP) makestuff/project.Makefile $*/Makefile
