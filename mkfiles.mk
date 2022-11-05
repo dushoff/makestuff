@@ -19,7 +19,7 @@ mkfiles/%.wrap:
 mkfiles:
 	$(mkdir)
 
-mklink = cd $* && $(LN) ../mkfiles/$*.make Makefile
+mklink = ls mkfiles/$*.make && cd $* && $(LN) ../mkfiles/$*.make Makefile
 %.mkfile: 
 	$(MAKE) $*
 	$(MAKE) mkfiles/$*.make
@@ -28,7 +28,7 @@ mklink = cd $* && $(LN) ../mkfiles/$*.make Makefile
 ## If somebody wants a make file and the linked one already exists, then use it
 %/Makefile:
 	$(MAKE) $*
-	$(mklink)
+	@ ($(mklink)) || echo ERROR No mkfile found, did you mean to make one?
 
 ## Wrapper only (for projects with Makefile, add a secret makefile)
 wraplink = cd $* && $(LN) ../mkfiles/$*.wrap makefile
