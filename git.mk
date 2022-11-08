@@ -589,6 +589,13 @@ Ignore += *.oldfile *.olddiff
 	-$(DIFF) $*.*.oldfile $* > $*.olddiff
 	$(RO) $*.olddiff
 
+Ignore += *.newfile *.newdiff
+%.newdiff: %.new.diff ;
+%.new.diff: %
+	- $(RM) $*.newdiff
+	-$(DIFF) $*.*.newfile $* > $*.newdiff
+	$(RO) $*.newdiff
+
 ######################################################################
 
 ## Blame
