@@ -40,7 +40,7 @@ while(<>)
 my $sep=0;
 foreach my $fn (keys %ls){
 	if ($ls{$fn} == 0){
-		say "\n$untrack_string\n" unless $sep++;
+		say "$untrack_string\n" unless $sep++;
 		say "* $fn";
 		## $fn =~ s|.*(^[\w/-]+\.[\w-]+).*|$1|;
 		## say "$fn\n";
