@@ -26,8 +26,9 @@ while(<>)
 	chomp;
 	s/MISSING[^:]*: //;
 	s/\[[^[]*\]\(//; ## Trim an apparent markdown description
-	# Ignore files in subdirectories [no / in basename]
-	if(my ($fn) = m|^[\s>#"*]*([\w.-]+\.\w+)|){
+	# Don't ignore files in subdirectories [/]
+	# Otherwise it will work only for index
+	if(my ($fn) = m|^[\s>#"*/]*([\w.-]+\.\w+)|){
 		s/[^\s#*]/MISSING: $&/ unless defined $ls{$fn};
 		$ls{$fn} = 1;
 	}
