@@ -578,6 +578,7 @@ Ignore += *.oldfile *.olddiff
 	-$(MVF) $(basename $*) tmp_$(basename $*)
 	-git checkout $(subst .,,$(suffix $*)) -- $(basename $*)
 	-cp $(basename $*) $@
+	-git checkout HEAD -- $(basename $*)
 	-$(MV) tmp_$(basename $*) $(basename $*)
 	ls $@
 
