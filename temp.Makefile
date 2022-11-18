@@ -22,7 +22,7 @@ Makefile: makestuff/00.stamp
 makestuff/%.stamp:
 	- $(RM) makestuff/*.stamp
 	(cd makestuff && $(MAKE) pull) \
-	|| (ln -s ../makestuff . & ls makestuff/Makefile)
+	|| (ln -s ../makestuff . & ls makestuff/Makefile) \
 	|| git clone $(msrepo)/makestuff
 	touch $@
 
