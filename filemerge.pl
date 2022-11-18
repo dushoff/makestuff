@@ -38,12 +38,16 @@ while(<>)
 ## say "Here: " . join "; ", keys %ls;
 
 ## Print out things not noted as present
-my $sep=0;
+my %untracked;
 foreach my $fn (keys %ls){
-	if ($ls{$fn} == 0){
-		say "$untrack_string\n" unless $sep++;
+	$untracked{$fn} = 0 if $ls{$fn} == 0;
+}
+
+my $nun = keys %untracked;
+
+if ($nun>0) {
+	say "$untrack_string ($nun)\n";
+	foreach my $fn (keys %untracked){
 		say "* $fn";
-		## $fn =~ s|.*(^[\w/-]+\.[\w-]+).*|$1|;
-		## say "$fn\n";
 	}
 }
