@@ -197,9 +197,6 @@ $(foreach stem,$(pngDesc),$(eval $(call pngDesc_r,$(stem))))
 	cd cpdir && $(MAKE) -n $*.Rout > make.log
 	perl -wf makestuff/pipeRscript.pl cpdir/make.log > $@
 
-	perl -wf makestuff/pipeRscript.pl cpdir/make.log > $@
-
-
 Sources += $(wildcard *.pipeR.script)
 
 ######################################################################
