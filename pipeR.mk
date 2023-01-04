@@ -132,7 +132,7 @@ endif
 
 ## ggp.png is more necessary than it should be (pngDesc not working)
 ## .pdf.tmp is a pure intermediate; you should require .pdf, not .pdf.tmp
-%.Rout.pdf.tmp %.Rout.png %.ggp.png %.Rout.jpeg %.ggp.pdf: %.Rout
+%.Rout.pdf.tmp %.Rout.png %.ggp.png %.Rout.jpeg %.ggp.pdf %.Rout.tikz: %.Rout
 	$(lscheck)
 .PRECIOUS: %.Rout.pdf
 %.Rout.pdf: %.Rout
