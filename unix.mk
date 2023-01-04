@@ -41,24 +41,25 @@ hcopy = $(CPF) $1 $(dir $1).$(notdir $1)
 difftouch = diff $1 $(dir $1).$(notdir $1) > /dev/null || touch $1
 touch = touch $@
 
+## makethere is behaving weird 2022 Apr 29 (Fri)
+## makestuffthere, too 2022 Aug 04 (Thu)
+makethere = $(makedir) && cd $(dir $@) && $(MAKE) makestuff && $(MAKE) $(notdir $@)
+makedir = $(MAKE) $(dir $@)
+justmakethere = cd $(dir $@) && $(MAKE) $(notdir $@)
+makestuffthere = cd $(dir $@) && $(MAKE) makestuff && $(MAKE) $(notdir $@)
+
+Ignore += *.checkfile
 .PRECIOUS: %.checkfile
 %.checkfile: ; touch $@ 
 checkfile = $(call hiddenfile,  $@.checkfile)
 setcheckfile = touch $(checkfile) && false
 
-justmakethere = cd $(dir $@) && $(MAKE) $(notdir $@)
-makedir = $(MAKE) $(dir $@)
-makethere = $(makedir) && cd $(dir $@) && $(MAKE) makestuff && $(MAKE) $(notdir $@)
-makestuffthere = cd $(dir $@) && $(MAKE) makestuff && $(MAKE) $(notdir $@)
-
 diff = $(DIFF) $^ > $@
 
 # Generic (vars that use the ones above)
-link = $(LN) $< $@
-alwayslinkdir = (ls $(dir)/$@ > $(null) || $(MD) $(dir)/$@) && $(LNF) $(dir)/$@ .
 linkdir = ls $(dir)/$@ > $(null) && $(LNF) $(dir)/$@ .
 linkdirname = ls $(dir) > $(null) && $(LNF) $(dir) $@ 
-linkexisting = ls $< > /dev/null && $(link)
+linkexisting = ls $< > /dev/null && $(ln)
 
 ## This will make directory if it doesn't exist
 ## Possibly good for shared projects. Problematic if central user makes two 
@@ -69,6 +70,7 @@ forcelink = $(LNF) $< $@
 rcopy = $(CPR) $< $@
 rdcopy = $(CPR) $(dir) $@
 copy = $(CP) $< $@
+pcopy = $(CP) $| $@
 move = $(MV) $< $@
 Move = $(MVF) $< $@
 hardcopy = $(CPF) $< $@
@@ -96,8 +98,9 @@ resDropDir ?= $(DropResource)/$(notdir $(CURDIR))
 $(resDropDir):
 	$(mkdir)
 
+Ignore += dropstuff
 dropstuff: | $(resDropDir)
-	$(LNF) $| $@
+	$(lnp)
 
 ######################################################################
 
@@ -125,8 +128,9 @@ ddcopy = ($(LSN) && $(touch)) ||  $(rdcopy)
 ## File listing and merging
 %.ls: %
 	ls $* > $@
-%.lsd: %
+%.lsd: | %
 	(ls -d $*/* || ls $*) > $@
+Ignore += index.lsd
 index.lsd: .
 	ls -d * > $@
 
@@ -143,7 +147,7 @@ endef
 
 ## WATCH OUT for the -
 %.filenames:
-	rename "s/[ ,?!-]+/_/g" $*/*.*
+	rename "s/[& ,?!-]+/_/g" $*/*.*
 
 %.voice: voice.pl %
 	$(PUSH)
@@ -160,7 +164,9 @@ shell_execute = sh < $@
 %.image.png: %.pdf
 	$(imageconvert)
 
+## dog is heavier, but preserves links?
 pdfcat = pdfjam --outfile $@ $(filter %.pdf, $^) 
+pdfdog = pdftk $(filter %.pdf, $^) cat output $@
 
 latexdiff = latexdiff $^ > $@
 

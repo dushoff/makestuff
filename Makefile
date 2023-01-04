@@ -19,6 +19,8 @@ md = $(wildcard *.md)
 Sources += $(md)
 Ignore += $(md:md=html)
 
+Sources += $(wildcard *.proj)
+
 ## Work on documentation!!!
 
 ## Make a list of .mk files that are here and go through them!
@@ -130,7 +132,7 @@ Sources += $(wildcard lect/*.*)
 
 ## mkfiles
 
-Sources += mkfiles.Makefile
+Sources += mkfiles.Makefile mkfiles.wrap
 
 ######################################################################
 

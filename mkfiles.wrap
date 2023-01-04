@@ -1,0 +1,31 @@
+## This is a _linked_ WRAPPER makefile for …
+
+current: target
+-include target.mk
+
+vim_session:
+	bash -cl "vmt"
+
+######################################################################
+
+include Makefile
+
+######################################################################
+
+### Makestuff
+
+## Sources += $(wildcard *.mk)
+## include $(wildcard *.mk)
+
+Ignore += makefile
+Ignore += makestuff
+msrepo = https://github.com/dushoff
+Makefile: makestuff/Makefile
+makestuff/Makefile:
+	ln -s ../makestuff .
+	ls makestuff/Makefile
+
+-include makestuff/os.mk
+
+-include makestuff/git.mk
+-include makestuff/visual.mk

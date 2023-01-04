@@ -7,7 +7,7 @@ pngtarget:
 
 pdftarget:
 	$(MAKE) $<
-	($(MAKE) $<.pdf && $(MAKE) $<.pdf.go) || $(MAKE)  $<.go
+	($(MAKE) $<.pdf && ls $<.pdf && $(MAKE) $<.pdf.go) || $(MAKE) $<.go
 
 vtarget:
 	$(MAKE) $<.go
@@ -42,7 +42,7 @@ docsimptarget:
 	$(MAKE) $(target:%=%.pdf.docs)
 
 rmtarget:
-	$(call hide,  $(target))
+	- $(call hide,  $(target))
 	$(MAKE) $(target)
 
 target.mk:
