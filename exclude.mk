@@ -3,6 +3,7 @@
 ## Find the git directory and make an exclude file here
 ## Subdirectories compete (overwrite each others' exclude files)
 ## I'm not planning to solve this 2021 May 14 (Fri); use git status .
+## It might help to let subdirectories inherit Ignore (don't use plain = at top)
 
 git_dir = $(shell git rev-parse --git-dir)
 
