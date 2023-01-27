@@ -4,7 +4,6 @@
 PERLEX = perl -wf $(filter %.pl, $^)
 
 PUSH = perl -wf $(filter %.pl, $^) $(filter-out %.pl, $^) > $@
-PUSHRO = $(rm) $@; $(PUSHRO)
 
 define PUSHRO
 	- $(RM) $@
