@@ -1,8 +1,9 @@
-# Push runs the first perl script among its dependencies, using all the other dependencies as arguments
+## Redo all of this using hidden files (like python.def)
 
 ## Just the command (refactor using this?)
 PERLEX = perl -wf $(filter %.pl, $^)
 
+# Push runs the first perl script among its dependencies, using all the other dependencies as arguments
 PUSH = perl -wf $(filter %.pl, $^) $(filter-out %.pl, $^) > $@
 
 define PUSHRO
