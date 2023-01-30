@@ -1,14 +1,3 @@
-## Refactor this 2022 Jun 09 (Thu)
-cmain = NULL
-
-## Made a strange loop _once_ (doesn't seem to be used anyway).
-# -include $(BRANCH).mk
-
-ifndef BRANCH
-BRANCH = $(shell cat .git/HEAD 2>/dev/null | perl -npE "s|.*/||;")
-endif
-
-######################################################################
 
 ## More makestuff/makestuff weirdness
 -include makestuff/exclude.mk
@@ -42,9 +31,6 @@ pull: commit.time
 	git pull
 	touch $<
 
-pardirpull: $(pardirs:%=%.pull) makestuff.pull
-parpull: pull pardirpull
-
 ######################################################################
 
 ## parallel directories
@@ -60,6 +46,9 @@ up.time: commit.time
 	touch $@
 
 alldirs += makestuff
+
+pardirpull: $(pardirs:%=%.pull) makestuff.pull
+parpull: pull pardirpull
 
 ######################################################################
 
@@ -94,8 +83,6 @@ addall:
 tsync:
 	touch $(word 1, $(Sources))
 	$(MAKE) up.time
-
-## Flattened 2021 May 11 (Tue)
 
 forcesync: addall tsync
 
@@ -144,9 +131,11 @@ push.%: commit.time
 ## Use pullup to add stuff to routine pulls
 ## without adding to all pulls; maybe not useful?
 ## 2022 Aug 05 (Fri) added submodule incantation
+## 2023 Jan 29 (Sun) subtracted submodule incantation; add it manually to submodule directories
 
 pullup: pull
-	git submodule update -i
+
+modupdate = git submodule update -i
 
 ## 2022 Sep 01 (Thu)
 ## This doesn't work for new, blank repos and I don't know why
@@ -181,7 +170,6 @@ remotesync: commit.default
 %.push: %
 	cd $< && $(MAKE) up.time
 
-## git_check is probably useful for some newer rules …
 git_check = git diff-index --quiet HEAD --
 
 ######################################################################
@@ -223,11 +211,15 @@ gptargets: $(gptargets)
 outputs docs:
 	$(mkdir)
 
-## Do docs/ just like outputs?
 %.docs: % docs
 	- cp $* docs
 	git add -f docs/$*
 	touch Makefile
+
+## Commented out because of stupid dataviz conflict 2021 Nov 02 (Tue)
+## docs: ; $(mkdir)
+
+######################################################################
 
 ## Make an empty pages directory when necessary; or else attaching existing one
 Ignore += pages
@@ -242,9 +234,6 @@ pages/pagebranch:
 	- $(CPF) $* pages
 	git add -f pages/$*
 	touch Makefile
-
-## Commented out because of stupid dataviz conflict 2021 Nov 02 (Tue)
-## docs: ; $(mkdir)
 
 gitarchive/%: gitarchive
 gitarchive:
@@ -303,18 +292,6 @@ endef
 
 %.branchdir:
 	git clone `git remote get-url origin` $*
-
-##################################################################
-
-### Rebase problems
-
-continue: $(Sources)
-	git add $(Sources)
-	git rebase --continue
-	git push
-
-abort:
-	git rebase --abort
 
 ##################################################################
 
@@ -468,35 +445,6 @@ alltest:
 testclean:
 	-/bin/rm -rf clonedir dotdir
 
-##################################################################
-
-# Branching
-%.newbranch:
-	git checkout -b $*
-	$(MAKE) commit.time
-	git push --set-upstream origin $(BRANCH)
-	git push -u origin $(BRANCH)
-
-%.branch: commit.time
-	git checkout $*
-
-%.checkbranch:
-	cd $* && git branch
-
-## Destroy a branch
-## Usually call from upmerge (which hasn't been tested for a long time)
-%.nuke:
-	git branch -D $*
-	git push origin --delete $*
-
-upmerge: 
-	git rebase $(cmain) 
-	git checkout $(cmain)
-	git pull
-	git merge $(BRANCH)
-	git push -u origin $(cmain)
-	$(MAKE) $(BRANCH).nuke
-
 ######################################################################
 
 ## Open the web page associated with the repo
@@ -522,16 +470,6 @@ hup:
 
 %.hup:
 	cd $* && echo 0. $*: && $(MAKE) hup
-
-######################################################################
-
-## Moved a bunch of confusing stuff to hybrid.mk
-## Cleaned out a bunch of stuff (much later) 2020 Mar 09 (Mon)
-
-######################################################################
-
-## Switch makestuff style in repo made by gitroot 
-## Killed 2020 Mar 09 (Mon)
 
 ######################################################################
 
