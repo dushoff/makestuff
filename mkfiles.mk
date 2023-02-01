@@ -1,8 +1,9 @@
 
 ## USAGE
-## Make a Makefile that's hidden from the repo with make <dir>.mkfile
-## Add it to repo with make <dir>.repofile
-## Don't forget to un-ignore! [Does add help below?]
+## Make a Makefile that's hidden from the repo: `make <dir>.mkfile`
+## Add it to repo: `make <dir>.repofile`
+#### Don't forget to un-ignore!
+## make an untracked wrapper makefile `make dir/makefile`
 
 ## Curate linked Makefiles in a mkfiles directory in the parent
 Sources += $(wildcard mkfiles/*.make)
