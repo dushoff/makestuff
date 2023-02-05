@@ -49,7 +49,7 @@ foreach my $fn (keys %ls){
 my $nun = keys %untracked;
 
 if ($nun>0) {
-	say "$untrack_string ($nun)\n";
+	say "$\nuntrack_string ($nun)\n";
 	foreach my $fn (keys %untracked){
 		say "* $fn";
 	}
