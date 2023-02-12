@@ -46,6 +46,7 @@ Sources += $(wildcard *.ref)
 
 ## Not clear whether we need to use this; from fancier time
 ## [[Integrated refs, html complete proposal]]
+## Resuscitating now to help with Hargrove tags; but maybe it would be better to use biber? Bleah!
 %.refs.mkd: %.md curr.ref $(paste)/refs.pl
 	$(PUSH)
 	-grep "((" $@ > $@.log
