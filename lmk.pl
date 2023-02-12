@@ -48,7 +48,8 @@ while(<>){
 	}
 
 	if ($rule){
-		die "repeated rule for $d on line $." if defined $ruledirs{$d};
+		die "repeated rule for $d on line $. of screen list"
+			if defined $ruledirs{$d};
 		$ruledirs{$d} = 0;
 
 		## URL specifications
