@@ -508,17 +508,24 @@ Ignore += *.gitdiff
 
 ######################################################################
 
-## Old files
+## Old files. <fn.ext>.<tag>.oldfile; use .arcfile to skip automatic deletion of other old files
 
-Ignore += *.oldfile *.olddiff
+Ignore += *.oldfile *.olddiff *.arcfile
 %.oldfile:
 	-$(RM) $(basename $*).*.oldfile
+	$(oldfile_r)
+
+%.arcfile: 
+	$(oldfile_r)
+
+define oldfile_r
 	-$(MVF) $(basename $*) tmp_$(basename $*)
 	-git checkout $(subst .,,$(suffix $*)) -- $(basename $*)
 	-cp $(basename $*) $@
 	-git checkout HEAD -- $(basename $*)
 	-$(MV) tmp_$(basename $*) $(basename $*)
 	ls $@
+endef
 
 ## Chaining trick to always remake
 ## Is this better or worse than writing dependencies and making directly?
