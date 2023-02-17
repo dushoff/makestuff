@@ -101,7 +101,13 @@ include makestuff/pdfsplit.mk
 
 ######################################################################
 
-## Requires cups-pdf.apt; is a race
-%.print.pdf: %.pdf
+## Requires cups-pdf.apt
+
+~/PDF:
+	cd ~ && $(mkdir)
+
+%.print.pdf: %.pdf | ~/PDF
+	-rm -fr ~/PDF/*.*
 	lpr -P PDF $<
-	ls -t ~/PDF/*.* | head -1 | xargs -i mv "{}" $@
+	sleep 2
+	$(MV) ~/PDF/*.* $@
