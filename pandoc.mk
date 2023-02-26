@@ -18,14 +18,14 @@ Ignore += *.gh.html
 
 ## Not tested; may cause trouble with mathjax? Just shut up and test it.
 %.emb.html: %.md
-	pandoc --self-contained -S -o $@ $<
+	pandoc --self-contained -f markdown -o $@ $<
 
 %.doc.md: %.docx
 	pandoc -o $@ $<
 
 Ignore += *.jax.html
 %.jax.html: %.md
-	pandoc --mathjax -s -o $@ $<
+	pandoc --mathjax --self-contained -o $@ $<
 
 %.Rout.html: %.R
 	$(rmdhtml)
