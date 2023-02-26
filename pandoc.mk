@@ -17,6 +17,7 @@ Ignore += *.gh.html
 	$(ghh_r)
 
 ## Not tested; may cause trouble with mathjax? Just shut up and test it.
+Ignore += *.emb.html
 %.emb.html: %.md
 	pandoc --self-contained -f markdown -o $@ $<
 
