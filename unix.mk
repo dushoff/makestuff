@@ -140,13 +140,17 @@ index.lsd: .
 
 define merge_files
 	$(PUSH)
-	- $(DIFF) $*.md $@
-	$(MV) $@ $*.md
+	- $(DIFF) $(word 2, $^) $@
+	$(MV) $@ $(word 2, $^)
 endef
  
 ## Track a directory from the parent directory, using <dir>.md
 ## index.md for current file
+## Testing; can filemerge use md or mkd alternatively? Which one is prioritized? 2023 Mar 10 (Fri)
 %.filemerge: %.lsd %.md makestuff/filemerge.pl
+	$(merge_files)
+
+%.filemerge: %.lsd %.mkd makestuff/filemerge.pl
 	$(merge_files)
 
 ## WATCH OUT for the -
