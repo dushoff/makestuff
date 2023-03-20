@@ -37,6 +37,8 @@ lscheck = @$(LS) $@ > $(null) || (echo ERROR upstream rule failed to make $@ && 
 hiddenfile = $(dir $1).$(notdir $1)
 hide = $(MVF) $1 $(dir $1).$(notdir $1)
 unhide = $(MVF) $(dir $1).$(notdir $1) $1
+hiddentarget = $(call hiddenfile, $@)
+unhidetarget = $(call unhide, $@)
 hcopy = $(CPF) $1 $(dir $1).$(notdir $1)
 difftouch = diff $1 $(dir $1).$(notdir $1) > /dev/null || touch $1
 touch = touch $@
@@ -60,6 +62,8 @@ diff = $(DIFF) $^ > $@
 linkdir = ls $(dir)/$@ > $(null) && $(LNF) $(dir)/$@ .
 linkdirname = ls $(dir) > $(null) && $(LNF) $(dir) $@ 
 linkexisting = ls $< > /dev/null && $(ln)
+
+linkelsewhere = cd $(dir $@) && $(LNF) $(CURDIR)/$< $(notdir $@) 
 
 ## This will make directory if it doesn't exist
 ## Possibly good for shared projects. Problematic if central user makes two 
@@ -136,13 +140,17 @@ index.lsd: .
 
 define merge_files
 	$(PUSH)
-	- $(DIFF) $*.md $@
-	$(MV) $@ $*.md
+	- $(DIFF) $(word 2, $^) $@
+	$(MV) $@ $(word 2, $^)
 endef
  
 ## Track a directory from the parent directory, using <dir>.md
 ## index.md for current file
+## Testing; can filemerge use md or mkd alternatively? Which one is prioritized? 2023 Mar 10 (Fri)
 %.filemerge: %.lsd %.md makestuff/filemerge.pl
+	$(merge_files)
+
+%.filemerge: %.lsd %.mkd makestuff/filemerge.pl
 	$(merge_files)
 
 ## WATCH OUT for the -
