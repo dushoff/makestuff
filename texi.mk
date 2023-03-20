@@ -1,5 +1,5 @@
 latex ?= pdflatex
-latexnon ?= pdflatex -interaction=nonstopmode
+latexnon ?= $(latex) -interaction=nonstopmode
 texi ?= texi2pdf
 job = -jobname=$(@:%.pdf=%)
 
