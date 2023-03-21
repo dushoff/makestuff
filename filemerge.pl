@@ -20,6 +20,7 @@ while(<LS>)
 ## filename should be the first "word" thing on the line, and should have a .
 ## Use a single quote to "escape" for files not in target directory
 ## Try to remove a the first markdown [] tag (not looking for ! yet) 2021 Sep 14 (Tue)
+my $ll;
 while(<>)
 {
 	last if /$untrack_string/;
@@ -33,9 +34,13 @@ while(<>)
 		$ls{$fn} = 1;
 	}
 	say;
+	$ll = $_;
 }
 
+## Not working for subdirectories right now? 2022 Nov 22 (Tue)
+
 ## say "Here: " . join "; ", keys %ls;
+## while (my ($k, $v) = each %ls){ say "$k: $v"; }
 
 ## Print out things not noted as present
 my %untracked;
@@ -46,6 +51,7 @@ foreach my $fn (keys %ls){
 my $nun = keys %untracked;
 
 if ($nun>0) {
+	say "" if $ll;
 	say "$untrack_string ($nun)\n";
 	foreach my $fn (keys %untracked){
 		say "* $fn";

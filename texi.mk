@@ -1,5 +1,5 @@
 latex ?= pdflatex
-latexnon ?= pdflatex -interaction=nonstopmode
+latexnon ?= $(latex) -interaction=nonstopmode
 texi ?= texi2pdf
 job = -jobname=$(@:%.pdf=%)
 
@@ -15,6 +15,9 @@ endif
 ## Note that it will loop forever if no pdf is made, but stop making if it makes one. Thus making vtarget twice will work when it's supposed to.
 %.tex.pdf: %.tex
 	$(texir) || $(latexnonly) || $(latexonly)
+
+%.tikz.pdf: %.tikz
+	$(latexonly) || $(latexnonly)
 
 ## .pdf is never up to date (makedeps is fake)
 ## Why is extra makedeps needed? Implicit rule recursion is confusing

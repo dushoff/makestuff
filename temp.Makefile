@@ -1,4 +1,6 @@
-## This is a very temp thing
+## This is a temporary version-controlled subdirectory
+## Still working on how to Source
+## See also nogit.Makefile
 
 current: target
 -include target.mk

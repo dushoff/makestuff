@@ -27,31 +27,31 @@ makeR=$(pipeR)
 define render
 	-$(RM) $@ $@.*
 	$(makeArgs)
-	Rscript --vanilla -e 'library("rmarkdown"); render("$<", output_file="$@")' shellpipes $^
+	Rscript --vanilla -e 'library("rmarkdown"); render("$<", output_file="$@")' shellpipes $*.pipestar $^
 endef
 
 define render_rmd
 	-$(RM) $@ $@.*
 	$(makeArgs)
-	Rscript --vanilla -e 'library("rmarkdown"); render("$(word 1, $(filter %.rmd %.Rmd, $^))", output_file="$@")' shellpipes $^
+	Rscript --vanilla -e 'library("rmarkdown"); render("$(word 1, $(filter %.rmd %.Rmd, $^))", output_file="$@")' shellpipes $*.pipestar $^
 endef
 
 define knitpdf
 	-$(RM) $@ $@.*
 	$(makeArgs)
-	Rscript --vanilla -e 'library("rmarkdown"); render("$(word 1, $(filter %.rmd %.Rmd, $^))", output_format="pdf_document", output_file="$@")' shellpipes $^
+	Rscript --vanilla -e 'library("rmarkdown"); render("$(word 1, $(filter %.rmd %.Rmd, $^))", output_format="pdf_document", output_file="$@")' shellpipes $*.pipestar $^
 endef
 
 define knitmd
 	-$(RM) $@ $@.*
 	$(makeArgs)
-	Rscript --vanilla -e 'library("rmarkdown"); render("$(word 1, $(filter %.rmd %.Rmd, $^))", md_document(preserve_yaml=TRUE, variant="markdown"), output_file="$@")' shellpipes $^
+	Rscript --vanilla -e 'library("rmarkdown"); render("$(word 1, $(filter %.rmd %.Rmd, $^))", md_document(preserve_yaml=TRUE, variant="markdown"), output_file="$@")' shellpipes $*.pipestar $^
 endef
 
 define knithtml
 	-$(RM) $@ $@.*
 	$(makeArgs)
-	Rscript --vanilla -e 'library("rmarkdown"); render("$(word 1, $(filter %.rmd %.Rmd, $^))", output_format="html_document", output_file="$@")' shellpipes $^
+	Rscript --vanilla -e 'library("rmarkdown"); render("$(word 1, $(filter %.rmd %.Rmd, $^))", output_format="html_document", output_file="$@")' shellpipes $*.pipestar $^
 endef
 
 define wrapR
@@ -132,7 +132,7 @@ endif
 
 ## ggp.png is more necessary than it should be (pngDesc not working)
 ## .pdf.tmp is a pure intermediate; you should require .pdf, not .pdf.tmp
-%.Rout.pdf.tmp %.Rout.png %.ggp.png %.Rout.jpeg %.ggp.pdf: %.Rout
+%.Rout.pdf.tmp %.Rout.png %.ggp.png %.Rout.jpeg %.ggp.pdf %.Rout.tikz: %.Rout
 	$(lscheck)
 .PRECIOUS: %.Rout.pdf
 %.Rout.pdf: %.Rout
