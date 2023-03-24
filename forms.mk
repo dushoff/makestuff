@@ -10,6 +10,9 @@ date.txt:
 up_date: 
 	date +"%d %b %Y" > date.txt
 
+%.trim.txt: %.txt
+	sed -e "s/#.*//" $< > $@
+
 %.txt.pdf: %.txt.ps
 	ps2pdf $< > $@
 
