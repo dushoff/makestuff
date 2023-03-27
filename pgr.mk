@@ -1,5 +1,5 @@
 
-Ignore += *.pgr.tsv *.PGR
+Ignore += *.new.tsv *.pgr *.TSV
 
 newtsv = perl -wf makestuff/newtsv.pl $< > $@
 
