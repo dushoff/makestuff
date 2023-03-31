@@ -1,4 +1,12 @@
 
+Desiderata:
+
+Choose to crash out or forge on with latex errors
+Choose to skip dependencies altogether
+Choose to crash out or forge on with dependency errors
+Choose to make until the end, do a minimal make, or do a standard make (document, bib, document when bib is there)
+Get dependencies from including files
+
 ## Flextex: Deprecated, maybe never worked well
 flextex.md
 flextex.mk
