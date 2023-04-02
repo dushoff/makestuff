@@ -1,27 +1,33 @@
 use strict;
 use 5.10.0;
 
+$/ = "";
+
 $_ = <>;
 chomp;
 my @head = split /\t/;
 say;
-say "";
 
-my (%tags, @tags);
-foreach(@head){
+my (%tags);
+for my $f (0..$#head){
+	$_ = $head[$f];
 	s/\W.*//;
 	die "repeated tag $_" if defined $tags{$_};
-	$tags{$_}=1;
-	push @tags, $_;
+	$tags{$_}=$f;
 }
 
 while(<>){
-	chomp;
-	my @line = split /\t/, $_;
-	die "Line too long" if @line > @head;
-	for my $f (0..$#line){
-		say "$tags[$f]: $line[$f]" if $line[$f]
+	my @fields;
+	my @newline;
+	my @recs = split /\n/, $_;
+	die "Too many records" if @recs > @head;
+	foreach my $rec (@recs){
+		my ($t, $f) = $rec =~ /(\w*):\s*(.*)/;
+		die "Unrecognized tag $t" unless defined $tags{$t};
+		$fields[$tags{$t}] = $f
 	}
-	say "";
+	do {no warnings 'uninitialized'; 
+		say join "\t", @fields;
+	};
 }
 

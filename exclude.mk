@@ -25,8 +25,9 @@ $(git_dir)/info/exclude: Makefile $(Sources)
 export Ignore += local.mk target.mk make.log go.log tmp.scr
 
 ## Make global ignore file on a new machine
+config_ignore = makestuff/ignore.vim makestuff/ignore.auth makestuff/ignore.lock
 ignore.config: ~/.config/git
-	cat makestuff/ignore.vim makestuff/ignore.auth > $</ignore
+	cat $(config_ignore) > $</ignore
 
 ## Make a .gitignore file with what usually goes into exclude
 ignorehere: $(git_dir)/info/exclude

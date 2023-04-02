@@ -11,5 +11,5 @@ Ignore += *.compare *.goal
 %.goal: 
 	/bin/cp $* $@
 
-%.setgoal: %
+%.setgoal: 
 	/bin/cp -f $* $*.goal
