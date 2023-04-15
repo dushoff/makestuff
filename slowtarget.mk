@@ -1,5 +1,8 @@
 Ignore += slowtarget/
 Sources += $(wildcard slow/*)
+
+.PRECIOUS: slow/%
+
 ifdef makeSlow
 slow/%: slowtarget/% | slowtarget slow
 	$(copy)
@@ -14,3 +17,6 @@ slowtarget slow:
 
 %.final:
 	$(MAKE) makeSlow=defined $*
+
+slowsync:
+	rsync -r slow/ slowtarget
