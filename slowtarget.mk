@@ -1,3 +1,4 @@
+Ignore += slow/
 ifdef makeSlow
 slow/%: slowtarget/% | slowtarget slow
 	$(copy)
