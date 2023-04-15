@@ -1,4 +1,5 @@
-Ignore += slow/
+Ignore += slowtarget/
+Sources += $(wildcard slow/*)
 ifdef makeSlow
 slow/%: slowtarget/% | slowtarget slow
 	$(copy)
