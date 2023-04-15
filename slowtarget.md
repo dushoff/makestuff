@@ -11,7 +11,9 @@ Once included, you can avoid remaking targets by:
 e.g:
 ```make
 slowtarget/foo.out: slow.script
+	$(slowrecipe)
 foo.pretty.png: slow.foo.out pretty.script
+	$(prettyrecipe)
 ```
 
 This should just work the first time (as if they were the same file). Subsequent times, the slow target should not be remade by default. To remake you can either `make slowtarget.foo.out` explicitly, or force remaking any appropriate slow files by saying ```make foo.pretty.png.final`.
