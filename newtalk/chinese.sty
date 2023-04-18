@@ -1,2 +1,6 @@
-\newcommand{\chinese}[1]{}
-\newcommand{\chineseOn}{\renewcommand{\chinese}[1]{{\setmainfont{Noto Serif CJK TC} #1}}
+\usepackage{fontspec}
+%% \setsansfont{Noto Sans CJK TC}
+\newcommand{\nochinese}[1]{}
+\newcommand{\yeschinese}[1]{\setmainfont{Noto Serif CJK TC}\setsansfont{Noto Sans CJK TC} #1}
+\newcommand{\chinese}{\nochinese}
+\newcommand{\useChinese}{\renewcommand{\chinese}{\yeschinese}}
