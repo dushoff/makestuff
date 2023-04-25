@@ -5,8 +5,9 @@ $/ = "";
 
 $_ = <>;
 chomp;
-my @head = split /\t/;
-say;
+s/:\s*$//;
+my @head = split /:\s*\n/;
+say join "\t", @head;
 
 my (%tags);
 for my $f (0..$#head){
