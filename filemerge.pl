@@ -31,7 +31,7 @@ while(<>)
 	# Don't ignore files in subdirectories [/]
 	# Otherwise it will work only for index
 	if(my ($fn) = m|^[\s>#"*]*([/\w.-]+\.\w+)|){
-		s/[^\s#*]/MISSING: $&/ unless defined $ls{$fn};
+		s/[^\s#*]/MISSING: $&/ unless (defined $ls{$fn} or (-e $fn));
 		$ls{$fn} = 1;
 		## say "Tracked: $fn";
 	}

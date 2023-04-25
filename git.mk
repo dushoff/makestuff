@@ -80,7 +80,7 @@ autocommit:
 ## Also it doesn't work, where commit -am seems to.
 addall:
 	git add -u
-	git add $(Sources)
+	git add -f $(Sources)
 
 tsync:
 	$(MAKE) up.time

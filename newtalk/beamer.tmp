@@ -1,25 +1,32 @@
 \documentclass{beamer}
 
-% \input{LatexTemplates/Template.tex}
-\input{talkdir/bulletspace.tex}
+%% Put this in talkdir/chinese? Use scoping instead of $#@!ing around to deal with punctuation issues
+%% \usepackage{fontspec}
+%% \setmainfont{Noto Serif CJK TC}
+%% \setsansfont{Noto Sans CJK TC}
 
+%% \input{LatexTemplates/ici3dTemplate.tex}
+%% \input{LatexTemplates/ici3dCurrent.tex}
+
+\usepackage{talkdir/chinese}
+\renewcommand{\chinese}{\chinese}
+\renewcommand{\chinese}{\yeschinese}
+
+\input{talkdir/bulletspace.tex}
+\input{talkdir/colors.tex}
 \usepackage{talkdir/slidecomm,talkdir/commands}
 \usepackage{graphicx,xspace}
-\usepackage[normalem]{ulem}
 \usepackage{grffile}
 \usepackage{hyperref}
 \usepackage{url}
 
 \input{talkdir/section.tex}
 \input{talkdir/lengths.tex}
-\input{talkdir/colors.tex}
-\InputIfFileExists{./localcomm.tex}{}{}
 
 \begin{document}
 
 ----------------------------------------------------------------------
 
-% \input{LatexTemplates/templateClose.tex}
+%% \input{LatexTemplates/ici3dClose.tex}
 
 \end{document}
-
