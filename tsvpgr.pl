@@ -4,7 +4,9 @@ use 5.10.0;
 $_ = <>;
 chomp;
 my @head = split /\t/;
-say;
+for my $head (@head){
+	say "$head:";
+}
 say "";
 
 my (%tags, @tags);
