@@ -21,7 +21,7 @@ while(<>){
 	my @fields;
 	my @newline;
 	my @recs = split /\n/, $_;
-	die "Too many records" if @recs > @head;
+	warn "Too many records" if @recs > @head;
 	foreach my $rec (@recs){
 		my ($t, $f) = $rec =~ /(\w*):\s*(.*)/;
 		die "Unrecognized tag $t" unless defined $tags{$t};

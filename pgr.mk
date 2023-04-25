@@ -1,13 +1,20 @@
 
 Ignore += *.new.tsv *.pgr *.TSV
 
-newtsv = perl -wf makestuff/newtsv.pl $< > $@
+newtsv = perl -wf makestuff/newtsv.pl $< >  $(hiddentarget) && $(unhidetarget)
 
 %.TSV: %.pgr
-	perl -wf makestuff/pgrtsv.pl $< > $@
+	perl -wf makestuff/pgrtsv.pl $< >  $(hiddentarget) && $(unhidetarget)
 
 %.pgr: %.tsv
-	perl -wf makestuff/tsvpgr.pl $< > $@
+	perl -wf makestuff/tsvpgr.pl $< >  $(hiddentarget) && $(unhidetarget)
+
+%.tsv.update: %.TSV
+	$(MVF) $< $*.tsv
+
+######################################################################
+
+## Is this good??
 
 .PRECIOUS: %.new.tsv
 %.new.tsv: %.pgr
@@ -15,7 +22,3 @@ newtsv = perl -wf makestuff/newtsv.pl $< > $@
 
 %.newtsv: %.new.tsv
 	$(MVF) $< $*.tsv
-
-%.tsv.update: %.TSV
-	$(MVF) $< $*.tsv
-
