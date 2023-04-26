@@ -25,10 +25,11 @@ while(<>){
 	foreach my $rec (@recs){
 		my ($t, $f) = $rec =~ /(\w*):\s*(.*)/;
 		die "Unrecognized tag $t" unless defined $tags{$t};
-		$fields[$tags{$t}] = $f
+		$fields[$tags{$t}] = $f if $f;
 	}
+	## say $#fields;
 	do {no warnings 'uninitialized'; 
-		say join "\t", @fields;
+		say join "\t", @fields if $#fields >= 0;
 	};
 }
 
