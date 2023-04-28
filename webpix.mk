@@ -32,15 +32,13 @@ all.html: $(htmls)
 ######################################################################
 
 ## Make a webpix directory (user should define or pay attention to imageDrop)
-## Drop is mapped for back-compatibility
+## I can't figure out where default imageDrop comes from!
 
-ifeq ($(imageDrop),)
-imageDrop = $(Drop)
-endif
-
-ifeq ($(imageDrop),)
-imageDrop = images
-endif
+## jd.local: jd.local.mk
+Sources += $(wildcard *.local.mk)
+%.local: | %.local.mk
+	$(LN) $| local.mk
+-include local.mk
 
 webpix my_images: dir = $(imageDrop)
 webpix my_images: 

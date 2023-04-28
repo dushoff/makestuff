@@ -1,9 +1,9 @@
 latex ?= pdflatex
-latexnon ?= pdflatex -interaction=nonstopmode
+latexnon ?= $(latex) -interaction=nonstopmode
 texi ?= texi2pdf
-job = -jobname=$(@:%.pdf=%)
+texir ?= $(texi) -o $@ $<
 
-texir = $(texi) -o $@ $<
+job = -jobname=$(@:%.pdf=%)
 latexonly = $(latex) $(job) $<
 latexnonly = $(latexnon) $(job) $<
 

@@ -13,8 +13,9 @@ while(<LS>)
 	next unless /[.]/;
 	$ls{$_} = 0;
 }
-
 ## say "There: " . join "; ", keys %ls;
+
+## exit(0);
 
 ## Look for filenames in md file; note them as present or missing
 ## filename should be the first "word" thing on the line, and should have a .
@@ -29,9 +30,10 @@ while(<>)
 	s/\[[^[]*\]\(//; ## Trim an apparent markdown description
 	# Don't ignore files in subdirectories [/]
 	# Otherwise it will work only for index
-	if(my ($fn) = m|^[\s>#"*/]*([\w.-]+\.\w+)|){
-		s/[^\s#*]/MISSING: $&/ unless defined $ls{$fn};
+	if(my ($fn) = m|^[\s>#"*]*([/\w.-]+\.\w+)|){
+		s/[^\s#*]/MISSING: $&/ unless (defined $ls{$fn} or (-e $fn));
 		$ls{$fn} = 1;
+		## say "Tracked: $fn";
 	}
 	say;
 	$ll = $_;
@@ -40,6 +42,7 @@ while(<>)
 ## Not working for subdirectories right now? 2022 Nov 22 (Tue)
 
 ## say "Here: " . join "; ", keys %ls;
+
 ## while (my ($k, $v) = each %ls){ say "$k: $v"; }
 
 ## Print out things not noted as present
