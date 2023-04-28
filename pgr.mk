@@ -9,6 +9,12 @@ newtsv = perl -wf makestuff/newtsv.pl $< >  $(hiddentarget) && $(unhidetarget)
 %.pgr: %.tsv
 	perl -wf makestuff/tsvpgr.pl $< >  $(hiddentarget) && $(unhidetarget)
 
+%.header.pgr: %.pgr makestuff/pgrHead.pl
+	$(PUSH)
+
+%.pgr.addhead: %.header.pgr
+	$(CP) $< $*.pgr
+
 %.tsv.update: %.TSV
 	$(MVF) $< $*.tsv
 
