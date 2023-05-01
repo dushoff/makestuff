@@ -1,12 +1,10 @@
-## Redo all of this using hidden files (like python.def)
-
 ## Just the command (refactor using this?)
 PERLEX = perl -wf $(filter %.pl, $^)
 
 # Push runs the first perl script among its dependencies, using all the other dependencies as arguments
 PUSH = perl -wf $(filter %.pl, $^) $(filter-out %.pl, $^) >  $(hiddentarget) && $(unhidetarget)
 
-NEWPUSH = (perl -wf $(filter %.pl, $^) $(filter-out %.pl, $^) >  $(hiddentarget) 2> $@.log || (cat $@.log && false)) && $(unhidetarget)
+LOGPUSH = (perl -wf $(filter %.pl, $^) $(filter-out %.pl, $^) >  $(hiddentarget) 2> $@.log || (cat $@.log && false)) && $(unhidetarget)
 
 define PUSHRO
 	- $(RM) $@
@@ -23,6 +21,7 @@ PUSHSTAR = perl -wf $(filter %.pl, $^) $* $(filter-out %.pl, $^) >  $(hiddentarg
 PUSHARGS = perl -wf $(filter %.pl, $^) $1 $(filter-out %.pl, $^) >  $(hiddentarget) && $(unhidetarget)
 
 # Pushon appends (pushes onto the file that's already there)
+## No hiding
 PUSHON = perl -wf $(filter %.pl, $^) $(filter-out %.pl, $^) >> $@
 
 ## Paragraph perl for short programs that operate on paragraphs
