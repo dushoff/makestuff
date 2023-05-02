@@ -4,6 +4,7 @@ use 5.10.0;
 undef $/;
 
 my $f = <>;
+$f =~ s/\s*//;
 my @recs = split /\n{2,}/, $f;
 
 my @tags;
