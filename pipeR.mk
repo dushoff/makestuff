@@ -192,10 +192,11 @@ $(foreach stem,$(pngDesc),$(eval $(call pngDesc_r,$(stem))))
 ## Won't work in directories that need non-automatic setup
 
 %.pipeR.script:
-	$(MAKE) cpdir.mslink
-	$(MAKE) cpdir.localdir
-	cd cpdir && $(MAKE) -n $*.Rout > make.log
-	perl -wf makestuff/pipeRscript.pl cpdir/make.log > $@
+	$(MAKE) dotdir.mslink
+	$(MAKE) dotdir.localdir
+	$(MAKE) dotdir.testsetup
+	cd dotdir && $(MAKE) -n $*.Rout > make.log
+	perl -wf makestuff/pipeRscript.pl dotdir/make.log > $@
 
 Ignore += $(wildcard *.pipeR.script)
 
