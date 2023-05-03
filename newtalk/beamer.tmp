@@ -9,7 +9,7 @@
 %% \input{LatexTemplates/ici3dCurrent.tex}
 
 \usepackage{talkdir/chinese}
-\renewcommand{\chinese}{\chinese}
+\renewcommand{\chinese}{\nochinese}
 \renewcommand{\chinese}{\yeschinese}
 
 \input{talkdir/bulletspace.tex}
