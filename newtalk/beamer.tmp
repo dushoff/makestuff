@@ -7,10 +7,13 @@
 
 %% \input{LatexTemplates/ici3dTemplate.tex}
 %% \input{LatexTemplates/ici3dCurrent.tex}
-\input{talkdir/bulletspace.tex}
 
-\input{talkdir/colors.tex}
 \usepackage{talkdir/chinese}
+\renewcommand{\chinese}{\nochinese}
+\renewcommand{\chinese}{\yeschinese}
+
+\input{talkdir/bulletspace.tex}
+\input{talkdir/colors.tex}
 \usepackage{talkdir/slidecomm,talkdir/commands}
 \usepackage{graphicx,xspace}
 \usepackage{grffile}
