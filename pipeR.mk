@@ -116,27 +116,27 @@ endif
 
 .PRECIOUS: %.rda %.rdata %.RData
 %.rda %.rdata %.RData: %.Rout
-	$(lscheck)
+	$(lstouch)
 
 .PRECIOUS: %.rds %.Rds
 %.rds %.Rds: %.Rout
-	$(lscheck)
+	$(lstouch)
 
 .PRECIOUS: %.Rout.tsv
 %.Rout.tsv: %.Rout
-	$(lscheck)
+	$(lstouch)
 
 .PRECIOUS: %.Rout.csv
 %.Rout.csv: %.Rout
-	$(lscheck)
+	$(lstouch)
 
 ## ggp.png is more necessary than it should be (pngDesc not working)
 ## .pdf.tmp is a pure intermediate; you should require .pdf, not .pdf.tmp
 %.Rout.pdf.tmp %.Rout.png %.ggp.png %.Rout.jpeg %.ggp.pdf %.Rout.tikz: %.Rout
-	$(lscheck)
+	$(lstouch)
 .PRECIOUS: %.Rout.pdf
 %.Rout.pdf: %.Rout
-	$(lscheck) || ($(pdfcheck) $@.tmp && $(MVF) $@.tmp $@) || (ls Rplots.pdf && echo WARNING: Trying an orphaned Rplots file && mv Rplots.pdf $@) || (echo ERROR: Failed to find, make or rescue $@ && false)
+	$(lstouch) || ($(pdfcheck) $@.tmp && $(MVF) $@.tmp $@) || (ls Rplots.pdf && echo WARNING: Trying an orphaned Rplots file && mv Rplots.pdf $@) || (echo ERROR: Failed to find, make or rescue $@ && false)
 
 Ignore += .Rhistory .RData
 Ignore += *.RData *.Rlog *.rdata *.rda *.rtmp
@@ -153,10 +153,10 @@ Ignore += *.ggp.*
 ## but specify dependencies centrally through .Rout
 
 define impdep_r
-%.$(1).rda: %.$(1).Rout ; $(lscheck)
-%.$(1).rds: %.$(1).Rout ; $(lscheck)
-%.$(1).rdata: %.$(1).Rout ; $(lscheck)
-%.$(1).Rdata: %.$(1).Rout ; $(lscheck)
+%.$(1).rda: %.$(1).Rout ; $(impcheck)
+%.$(1).rds: %.$(1).Rout ; $(impcheck)
+%.$(1).rdata: %.$(1).Rout ; $(impcheck)
+%.$(1).Rdata: %.$(1).Rout ; $(impcheck)
 .PRECIOUS: %.$(1).Rdata %.$(1).rdata %.$(1).rda %.$(1).rds %.$(1).Rout 
 endef
 
@@ -165,7 +165,7 @@ $(foreach stem,$(impmakeR),$(eval $(call impdep_r,$(stem))))
 
 ## Eval rules for "described" pdf files
 define pipedesc_r
-$(1).%.pdf: $(1).Rout ; $(lscheck)
+$(1).%.pdf: $(1).Rout ; $(lstouch)
 Ignore += $(1).*.pdf
 endef
 $(foreach stem,$(pipeRdesc),$(eval $(call pipedesc_r,$(stem))))
@@ -174,13 +174,13 @@ $(foreach stem,$(pipeRdesc),$(eval $(call pipedesc_r,$(stem))))
 
 ## Eval rules for "described" pdf files (Rout only)
 define pipedesc_rout_r
-$(1).%.Rout.pdf: $(1).Rout ; $(lscheck)
+$(1).%.Rout.pdf: $(1).Rout ; $(lstouch)
 Ignore += $(1).*.Rout.pdf
 endef
 $(foreach stem,$(pipeRoutdesc),$(eval $(call pipedesc_rout_r,$(stem))))
 
 define pngDesc_r
-$(1).%.png: $(1).Rout ; $(lscheck)
+$(1).%.png: $(1).Rout ; $(lstouch)
 Ignore += $(1).*.png
 endef
 $(foreach stem,$(pngDesc),$(eval $(call pngDesc_r,$(stem))))
