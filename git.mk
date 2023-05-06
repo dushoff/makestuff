@@ -83,8 +83,8 @@ addall:
 	git add -f $(Sources)
 
 tsync:
-	$(MAKE) up.time
 	$(sourceTouch)
+	$(MAKE) up.time
 
 forcesync: addall tsync
 
