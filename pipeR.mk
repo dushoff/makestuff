@@ -2,7 +2,7 @@ pdfcheck = perl -wf makestuff/wrapR/pdfcheck.pl
 
 define makeArgs
 	echo "## Use this call to make $@ independently" > $@.args
-	echo "rpcall(\"$@ $^\")"  >> $@.args
+	echo "rpcall(\"$@ $*.pipestar $^\")"  >> $@.args
 	echo >> $@.args
 endef
 
