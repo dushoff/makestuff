@@ -21,3 +21,8 @@ This should just work the first time (as if they were the same file). Subsequent
 When sharing with others, you will generally want to share the target files in slow (`make sync` should do this automatically), but not in slowtarget (so that `make <target>.final` will make the whole project on the new machine (except for parts already made on that machine). Probably.
 
 If you want to work on slow steps without remaking all of them, you can say `make slowsync` before you start to bring your slowtarget/ directory up-to-date with the version-controlled slow/ directory. This should mean that `make <target>.final` remakes things that are really new, but not up-to-date things that were made elsewhere.
+
+## Issues
+
+Automatic intermediaries (like .Rout) can be missed, and trigger unwanted making.
+
