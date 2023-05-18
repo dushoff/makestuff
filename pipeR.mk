@@ -168,6 +168,8 @@ define pipedesc_r
 $(1).%.pdf: $(1).Rout ; $(impcheck)
 Ignore += $(1).*.pdf
 endef
+
+pipeRdesc += $(pdfDesc)
 $(foreach stem,$(pipeRdesc),$(eval $(call pipedesc_r,$(stem))))
 
 ## STILL haven't found a reliable description about competing make rules

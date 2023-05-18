@@ -171,7 +171,6 @@ convert = convert $< $@
 imageconvert = convert -density 600 -trim $< -quality 100 -sharpen 0x1.0 $@
 shell_execute = sh < $@
 
-## Took out direct rule 2023 May 18 (Thu); need at some point to write down principles
 %.cnv.png: %.pdf
 	$(convert)
 
