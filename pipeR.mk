@@ -165,7 +165,7 @@ $(foreach stem,$(impmakeR),$(eval $(call impdep_r,$(stem))))
 
 ## Eval rules for "described" pdf files
 define pipedesc_r
-$(1).%.pdf: $(1).Rout ; $(lstouch)
+$(1).%.pdf: $(1).Rout ; $(impcheck)
 Ignore += $(1).*.pdf
 endef
 $(foreach stem,$(pipeRdesc),$(eval $(call pipedesc_r,$(stem))))
@@ -174,13 +174,13 @@ $(foreach stem,$(pipeRdesc),$(eval $(call pipedesc_r,$(stem))))
 
 ## Eval rules for "described" pdf files (Rout only)
 define pipedesc_rout_r
-$(1).%.Rout.pdf: $(1).Rout ; $(lstouch)
+$(1).%.Rout.pdf: $(1).Rout ; $(impcheck)
 Ignore += $(1).*.Rout.pdf
 endef
 $(foreach stem,$(pipeRoutdesc),$(eval $(call pipedesc_rout_r,$(stem))))
 
 define pngDesc_r
-$(1).%.png: $(1).Rout ; $(lstouch)
+$(1).%.png: $(1).Rout ; $(impcheck)
 Ignore += $(1).*.png
 endef
 $(foreach stem,$(pngDesc),$(eval $(call pngDesc_r,$(stem))))
