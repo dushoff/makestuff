@@ -30,16 +30,23 @@ zip = zip $@ $^
 TGZ = tar czf $@ $^
 ZIP = zip $@ $^
 
+touch = touch $@
+
 null = /dev/null
 
 lscheck = @$(LS) $@ > $(null) || (echo ERROR upstream rule failed to make $@ && false)
 
+lstouch = ($(LS) $@ > $(null) || (echo ERROR upstream rule failed to make $@ && false)) && touch $@
+
+impcheck = ($(LS) $$@ > $(null) || (echo ERROR upstream rule failed to make $$@ && false)) && touch $$@
+
 hiddenfile = $(dir $1).$(notdir $1)
 hide = $(MVF) $1 $(dir $1).$(notdir $1)
 unhide = $(MVF) $(dir $1).$(notdir $1) $1
+hiddentarget = $(call hiddenfile, $@)
+unhidetarget = $(call unhide, $@)
 hcopy = $(CPF) $1 $(dir $1).$(notdir $1)
 difftouch = diff $1 $(dir $1).$(notdir $1) > /dev/null || touch $1
-touch = touch $@
 
 ## makethere is behaving weird 2022 Apr 29 (Fri)
 ## makestuffthere, too 2022 Aug 04 (Thu)
@@ -61,6 +68,8 @@ linkdir = ls $(dir)/$@ > $(null) && $(LNF) $(dir)/$@ .
 linkdirname = ls $(dir) > $(null) && $(LNF) $(dir) $@ 
 linkexisting = ls $< > /dev/null && $(ln)
 
+linkelsewhere = cd $(dir $@) && $(LNF) $(CURDIR)/$< $(notdir $@) 
+
 ## This will make directory if it doesn't exist
 ## Possibly good for shared projects. Problematic if central user makes two 
 ## redundant dropboxes because of sync problems
@@ -70,7 +79,7 @@ forcelink = $(LNF) $< $@
 rcopy = $(CPR) $< $@
 rdcopy = $(CPR) $(dir) $@
 copy = $(CP) $< $@
-pcopy = $(CP) $| $@
+pcopy = $(CP) $(word 1, $|) $@
 move = $(MV) $< $@
 Move = $(MVF) $< $@
 hardcopy = $(CPF) $< $@
@@ -136,18 +145,22 @@ index.lsd: .
 
 define merge_files
 	$(PUSH)
-	- $(DIFF) $*.md $@
-	$(MV) $@ $*.md
+	- $(DIFF) $(word 2, $^) $@
+	$(MV) $@ $(word 2, $^)
 endef
  
 ## Track a directory from the parent directory, using <dir>.md
 ## index.md for current file
+## Testing; can filemerge use md or mkd alternatively? Which one is prioritized? 2023 Mar 10 (Fri)
 %.filemerge: %.lsd %.md makestuff/filemerge.pl
+	$(merge_files)
+
+%.filemerge: %.lsd %.mkd makestuff/filemerge.pl
 	$(merge_files)
 
 ## WATCH OUT for the -
 %.filenames:
-	rename "s/[ ,?!-]+/_/g" $*/*.*
+	rename "s/[& ,?!-]+/_/g" $*/*.*
 
 %.voice: voice.pl %
 	$(PUSH)
@@ -158,7 +171,7 @@ convert = convert $< $@
 imageconvert = convert -density 600 -trim $< -quality 100 -sharpen 0x1.0 $@
 shell_execute = sh < $@
 
-%.png: %.pdf
+%.cnv.png: %.pdf
 	$(convert)
 
 %.image.png: %.pdf

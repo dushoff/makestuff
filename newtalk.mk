@@ -8,7 +8,7 @@ endif
 
 Ignore += talkdir
 
-Ignore += *.txt.fmt txt.format
+Ignore += *.txt.fmt txt.format *.TXT
 .PRECIOUS: %.txt.fmt
 %.txt.fmt: txt.format $(talkdir)/fmt.pl
 	$(PUSHSTAR)
@@ -43,9 +43,12 @@ Makefile:
 talkdir:
 	/bin/ln -fs $(talkdir) $@
 
+%.TXT: %.txt
+	$(copy)
+
 Ignore += *.final.*
 .PRECIOUS: %.final.tex
-%.final.tex: %.txt beamer.tmp final.txt.fmt $(talkdir)/lect.pl
+%.final.tex: %.TXT beamer.tmp final.txt.fmt $(talkdir)/lect.pl
 	$(PUSH)
 
 Ignore += *.talk.*
@@ -54,7 +57,7 @@ Ignore += *.talk.*
 
 Ignore += *.draft.*
 .PRECIOUS: %.draft.tex
-%.draft.tex: %.txt beamer.tmp draft.txt.fmt $(talkdir)/lect.pl
+%.draft.tex: %.TXT beamer.tmp draft.txt.fmt $(talkdir)/lect.pl
 	$(PUSH)
 
 Ignore += *.slides.*
@@ -64,17 +67,17 @@ Ignore += *.slides.*
 
 Ignore += *.handouts.*
 .PRECIOUS: %.handouts.tex
-%.handouts.tex: %.txt notes.tmp handouts.txt.fmt $(talkdir)/lect.pl
+%.handouts.tex: %.TXT notes.tmp handouts.txt.fmt $(talkdir)/lect.pl
 	$(PUSH)
 
 Ignore += *.complete.*
 .PRECIOUS: %.complete.tex
-%.complete.tex: %.txt notes.tmp complete.txt.fmt $(talkdir)/lect.pl
+%.complete.tex: %.TXT notes.tmp complete.txt.fmt $(talkdir)/lect.pl
 	$(PUSH)
 
 Ignore += *.outline.*
 .PRECIOUS: %.outline.tex
-%.outline.tex: %.txt notes.tmp outline.txt.fmt $(talkdir)/lect.pl
+%.outline.tex: %.TXT notes.tmp outline.txt.fmt $(talkdir)/lect.pl
 	$(PUSH)
 
 %.note: %

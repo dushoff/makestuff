@@ -1,7 +1,9 @@
 
-## Make a Makefile that's hidden from the repo with make <dir>/mkfile
-## Add it to repo with make <dir>/repofile
-## Don't forget to un-ignore! [Does add help below?]
+## USAGE
+## Make a Makefile that's hidden from the repo: `make <dir>.mkfile`
+## Add it to repo: `make <dir>.repofile`
+#### Don't forget to un-ignore!
+## make an untracked wrapper makefile `make dir/makefile`
 
 ## Curate linked Makefiles in a mkfiles directory in the parent
 Sources += $(wildcard mkfiles/*.make)
@@ -19,7 +21,7 @@ mkfiles/%.wrap:
 mkfiles:
 	$(mkdir)
 
-mklink = cd $* && $(LN) ../mkfiles/$*.make Makefile
+mklink = ls mkfiles/$*.make && cd $* && $(LN) ../mkfiles/$*.make Makefile
 %.mkfile: 
 	$(MAKE) $*
 	$(MAKE) mkfiles/$*.make
@@ -28,7 +30,7 @@ mklink = cd $* && $(LN) ../mkfiles/$*.make Makefile
 ## If somebody wants a make file and the linked one already exists, then use it
 %/Makefile:
 	$(MAKE) $*
-	$(mklink)
+	@ ($(mklink)) || echo ERROR No mkfile found, did you mean to make one?
 
 ## Wrapper only (for projects with Makefile, add a secret makefile)
 wraplink = cd $* && $(LN) ../mkfiles/$*.wrap makefile
@@ -39,7 +41,7 @@ wraplink = cd $* && $(LN) ../mkfiles/$*.wrap makefile
 
 ## Make Linked Makefile into a repository file
 ## Keep any changes made before that (remember to change Source and so one)
-%/repofile:
+%.repofile:
 	$(RM) $*/Makefile
 	$(CPF) mkfiles/$*.make $*/Makefile
 	git rm mkfiles/$*.make
