@@ -11,7 +11,7 @@ vim_session:
 
 ######################################################################
 
-alldirs += sampling_JD//
+alldirs += sampling_JD
 
 ### Makestuff
 
