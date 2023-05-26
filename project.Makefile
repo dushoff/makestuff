@@ -1,4 +1,4 @@
-## This is [project.Makefile] …
+## This is ICI3D Rtutorial
 
 current: target
 -include target.mk
@@ -10,6 +10,8 @@ vim_session:
 	bash -cl "vmt"
 
 ######################################################################
+
+alldirs += sampling_JD//
 
 ### Makestuff
 
