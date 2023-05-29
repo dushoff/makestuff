@@ -5,6 +5,7 @@ $/ = "";
 
 $_ = <>;
 chomp;
+s/##.*\n//g;
 s/:\s*$//;
 my @head = split /:\s*\n/;
 say join "\t", @head;
@@ -22,6 +23,7 @@ while(<>){
 	my @lines = split /\n/, $_;
 	warn "Too many lines" if @lines > @head;
 	foreach my $ln (@lines){
+		next if /^#/;
 		my ($t, $f) = $ln =~ /(\w*):\s*(.*)/;
 		die "Unrecognized name $t" unless defined $names{$t};
 		$fields[$names{$t}] = $f if $f;
