@@ -83,8 +83,8 @@ addall:
 	git add -f $(Sources)
 
 tsync:
-	$(MAKE) up.time
 	$(sourceTouch)
+	$(MAKE) up.time
 
 forcesync: addall tsync
 
@@ -521,11 +521,11 @@ Ignore += *.oldfile *.olddiff *.arcfile
 	$(oldfile_r)
 
 define oldfile_r
-	$(call hide, $(basename $*))
+	- $(call hide, $(basename $*))
 	-git checkout $(subst .,,$(suffix $*)) -- $(basename $*)
 	-cp $(basename $*) $@
 	-git checkout HEAD -- $(basename $*)
-	$(call unhide, $(basename $*))
+	- $(call unhide, $(basename $*))
 	ls $@
 endef
 
