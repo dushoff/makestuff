@@ -432,7 +432,6 @@ sourcedir: $(Sources)
 %.vdtest: %.dirtest
 	$(MAKE) pdftarget
 
-%.localtest: % %.localdir %.vdtest ;
 
 ## To make and display files in the all variable
 alltest:
@@ -441,6 +440,7 @@ alltest:
 	$(MAKE) alltest
 
 ## Get it? 
+%.localtest: % %.localdir %.vdtest ;
 %.localltest: % %.localdir %.alltest ;
 
 ## This is def. incomplete, but I never use it 2022 Sep 24 (Sat)

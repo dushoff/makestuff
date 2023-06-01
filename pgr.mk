@@ -18,6 +18,15 @@ newtsv = perl -wf makestuff/newtsv.pl $< >  $(hiddentarget) && $(unhidetarget)
 %.tsv.update: %.TSV
 	$(MVF) $< $*.tsv
 
+## Auto update tsv if pgr exists!
+pgr_files = $(wildcard *.pgr)
+pgr_stems = $(pgr_files:%.pgr=%)
+tsv_files = $(wildcard *.tsv)
+tsv_stems = $(tsv_files:%.tsv=%)
+tsv_pgr = $(filter $(tsv_stems), $(pgr_stems))
+tsv_updates = $(tsv_pgr:%=%.tsv.update)
+tsv_updates: $(tsv_updates) ;
+
 ######################################################################
 
 ## Is this good??
