@@ -11,6 +11,8 @@ branch:
 	@echo $(BRANCH)
 	git branch
 
+sourceTouch = touch $(word 1, $(Sources))
+
 Ignore += commit.time commit.default
 commit.time: $(Sources)
 	$(MAKE) exclude
@@ -78,10 +80,10 @@ autocommit:
 ## Also it doesn't work, where commit -am seems to.
 addall:
 	git add -u
-	git add $(Sources)
+	git add -f $(Sources)
 
 tsync:
-	touch $(word 1, $(Sources))
+	$(sourceTouch)
 	$(MAKE) up.time
 
 forcesync: addall tsync
@@ -179,7 +181,7 @@ git_check = git diff-index --quiet HEAD --
 %.gp: % git_push
 	cp $* git_push
 	git add -f git_push/$*
-	touch Makefile
+	$(sourceTouch)
 
 git_push:
 	$(mkdir)
@@ -199,13 +201,13 @@ gptargets: $(gptargets)
 %.op: % outputs
 	- $(CPF) $* outputs
 	git add -f outputs/$*
-	touch Makefile
+	$(sourceTouch)
 
 %.opdir: % outputs
 	- $(RMR) outputs/$*
 	- $(CPR) $* outputs
 	git add -f outputs/$*
-	touch Makefile
+	$(sourceTouch)
 
 ## auto-docs causes conflict in dataviz
 outputs docs:
@@ -214,7 +216,7 @@ outputs docs:
 %.docs: % docs
 	- cp $* docs
 	git add -f docs/$*
-	touch Makefile
+	$(sourceTouch)
 
 ## Commented out because of stupid dataviz conflict 2021 Nov 02 (Tue)
 ## docs: ; $(mkdir)
@@ -233,7 +235,7 @@ pages/pagebranch:
 %.pages: % pages
 	- $(CPF) $* pages
 	git add -f pages/$*
-	touch Makefile
+	$(sourceTouch)
 
 gitarchive/%: gitarchive
 gitarchive:
@@ -430,7 +432,6 @@ sourcedir: $(Sources)
 %.vdtest: %.dirtest
 	$(MAKE) pdftarget
 
-%.localtest: % %.localdir %.vdtest ;
 
 ## To make and display files in the all variable
 alltest:
@@ -439,6 +440,7 @@ alltest:
 	$(MAKE) alltest
 
 ## Get it? 
+%.localtest: % %.localdir %.vdtest ;
 %.localltest: % %.localdir %.alltest ;
 
 ## This is def. incomplete, but I never use it 2022 Sep 24 (Sat)
@@ -508,17 +510,24 @@ Ignore += *.gitdiff
 
 ######################################################################
 
-## Old files
+## Old files. <fn.ext>.<tag>.oldfile; use .arcfile to skip automatic deletion of other old files
 
-Ignore += *.oldfile *.olddiff
+Ignore += *.oldfile *.olddiff *.arcfile
 %.oldfile:
 	-$(RM) $(basename $*).*.oldfile
-	-$(MVF) $(basename $*) tmp_$(basename $*)
+	$(oldfile_r)
+
+%.arcfile: 
+	$(oldfile_r)
+
+define oldfile_r
+	- $(call hide, $(basename $*))
 	-git checkout $(subst .,,$(suffix $*)) -- $(basename $*)
 	-cp $(basename $*) $@
 	-git checkout HEAD -- $(basename $*)
-	-$(MV) tmp_$(basename $*) $(basename $*)
+	- $(call unhide, $(basename $*))
 	ls $@
+endef
 
 ## Chaining trick to always remake
 ## Is this better or worse than writing dependencies and making directly?
