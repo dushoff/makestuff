@@ -5,29 +5,32 @@ $/ = "";
 
 $_ = <>;
 chomp;
-my @head = split /\t/;
-say;
+s/##.*\n//g;
+s/:\s*$//;
+my @head = split /:\s*\n/;
+say join "\t", @head;
 
-my (%tags);
+my (%names);
 for my $f (0..$#head){
 	$_ = $head[$f];
 	s/\W.*//;
-	die "repeated tag $_" if defined $tags{$_};
-	$tags{$_}=$f;
+	die "repeated name $_" if defined $names{$_};
+	$names{$_}=$f;
 }
 
 while(<>){
 	my @fields;
-	my @newline;
-	my @recs = split /\n/, $_;
-	die "Too many records" if @recs > @head;
-	foreach my $rec (@recs){
-		my ($t, $f) = $rec =~ /(\w*):\s*(.*)/;
-		die "Unrecognized tag $t" unless defined $tags{$t};
-		$fields[$tags{$t}] = $f
+	my @lines = split /\n/, $_;
+	warn "Too many lines" if @lines > @head;
+	foreach my $ln (@lines){
+		next if /^#/;
+		my ($t, $f) = $ln =~ /(\w*):\s*(.*)/;
+		die "Unrecognized name $t" unless defined $names{$t};
+		$fields[$names{$t}] = $f if $f;
 	}
+	## say $#fields;
 	do {no warnings 'uninitialized'; 
-		say join "\t", @fields;
+		say join "\t", @fields if $#fields >= 0;
 	};
 }
 

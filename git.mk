@@ -83,8 +83,8 @@ addall:
 	git add -f $(Sources)
 
 tsync:
-	$(MAKE) up.time
 	$(sourceTouch)
+	$(MAKE) up.time
 
 forcesync: addall tsync
 
@@ -432,7 +432,6 @@ sourcedir: $(Sources)
 %.vdtest: %.dirtest
 	$(MAKE) pdftarget
 
-%.localtest: % %.localdir %.vdtest ;
 
 ## To make and display files in the all variable
 alltest:
@@ -441,6 +440,7 @@ alltest:
 	$(MAKE) alltest
 
 ## Get it? 
+%.localtest: % %.localdir %.vdtest ;
 %.localltest: % %.localdir %.alltest ;
 
 ## This is def. incomplete, but I never use it 2022 Sep 24 (Sat)
@@ -521,11 +521,11 @@ Ignore += *.oldfile *.olddiff *.arcfile
 	$(oldfile_r)
 
 define oldfile_r
-	$(call hide, $(basename $*))
+	- $(call hide, $(basename $*))
 	-git checkout $(subst .,,$(suffix $*)) -- $(basename $*)
 	-cp $(basename $*) $@
 	-git checkout HEAD -- $(basename $*)
-	$(call unhide, $(basename $*))
+	- $(call unhide, $(basename $*))
 	ls $@
 endef
 
