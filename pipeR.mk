@@ -199,6 +199,8 @@ $(foreach stem,$(pngDesc),$(eval $(call pngDesc_r,$(stem))))
 
 Ignore += $(wildcard *.pipeR.script)
 
+%.Rscript: %.pipeR.script makestuff/allR.mk
+
 ######################################################################
 
 ## Legacy cleaning
