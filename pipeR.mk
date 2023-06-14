@@ -205,8 +205,9 @@ Ignore += $(wildcard *.pipeR.script)
 %.Rscript: %.pipeR.script makestuff/allR.pl
 	$(PUSH)
 
+Ignore += $(wildcard *.allR)
 %.allR: %.Rscript
-	R --vanilla  < $<
+	R --vanilla  < $< | tee $@
 
 ######################################################################
 
