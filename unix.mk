@@ -30,9 +30,15 @@ zip = zip $@ $^
 TGZ = tar czf $@ $^
 ZIP = zip $@ $^
 
+touch = touch $@
+
 null = /dev/null
 
 lscheck = @$(LS) $@ > $(null) || (echo ERROR upstream rule failed to make $@ && false)
+
+lstouch = ($(LS) $@ > $(null) || (echo ERROR upstream rule failed to make $@ && false)) && touch $@
+
+impcheck = ($(LS) $$@ > $(null) || (echo ERROR upstream rule failed to make $$@ && false)) && touch $$@
 
 hiddenfile = $(dir $1).$(notdir $1)
 hide = $(MVF) $1 $(dir $1).$(notdir $1)
@@ -41,7 +47,6 @@ hiddentarget = $(call hiddenfile, $@)
 unhidetarget = $(call unhide, $@)
 hcopy = $(CPF) $1 $(dir $1).$(notdir $1)
 difftouch = diff $1 $(dir $1).$(notdir $1) > /dev/null || touch $1
-touch = touch $@
 
 ## makethere is behaving weird 2022 Apr 29 (Fri)
 ## makestuffthere, too 2022 Aug 04 (Thu)
@@ -166,7 +171,7 @@ convert = convert $< $@
 imageconvert = convert -density 600 -trim $< -quality 100 -sharpen 0x1.0 $@
 shell_execute = sh < $@
 
-%.png: %.pdf
+%.cnv.png: %.pdf
 	$(convert)
 
 %.image.png: %.pdf

@@ -1,5 +1,6 @@
 ## Make things appear; some of it feels pretty Dushoff-specific
 ## Need to transition to $(target)-based rules (no $<)
+## See visual.md for ideas about updating startscreen/rscreen/vscreen paradigm
 
 pngtarget: 
 	$(MAKE) $<.png
