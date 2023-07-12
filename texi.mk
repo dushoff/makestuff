@@ -16,6 +16,9 @@ endif
 %.tex.pdf: %.tex
 	$(texir) || $(latexnonly) || $(latexonly)
 
+%.TEX.pdf: %.TEX
+	$(texir) || $(latexnonly) || $(latexonly)
+
 ## .pdf is never up to date (makedeps is fake)
 ## Why is extra makedeps needed? Implicit rule recursion is confusing
 %.pdf: %.tex %.tex.deps %.makedeps makedeps
