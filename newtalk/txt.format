@@ -261,11 +261,11 @@ FRAMEFIG ^HFIG 0.9 %%
 HIGHPIC ^PIC HIGHFIG %%
 WIDEPIC ^PIC WIDEFIG %%
 
-## What's going on here with 0.8? 2021 Jun 16 (Wed)
-## Did I do this to shrink Daniel pix that I should have been handling manually?
-## CHANGED to 0.9 2021 Sep 06 (Mon)
 FIG ^HFIG 0.4 %%
 draft final: ^HFIG 0.9 %%
+
+SMALLFIG ^HFIG 0.4 %%
+draft final: ^HFIG 0.8 %%
 
 ## Landscape version
 LFIG \hfill\includegraphics[height=%\textheight,angle=270]{%}\hfill\mbox{}

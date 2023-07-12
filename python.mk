@@ -1,3 +1,5 @@
+## Use .def instead I think!
+
 PY ?= python3
 PIP ?= pip3
 
@@ -11,6 +13,7 @@ pycallout = $(PY) $(pyscript) $@ $(pydep)
 PITH = ($(pycall) > $@) || ($(setcheckfile))
 PITHOUT = ($(pycallout) > $@) || ($(setcheckfile))
 
+## Is not invoked, and checkfile does nothing
 %.py.out: $(call hiddenfile, %.out.checkfile)
 	$(PITHOUT)
 

@@ -1,9 +1,9 @@
 latex ?= pdflatex
-latexnon ?= pdflatex -interaction=nonstopmode
+latexnon ?= $(latex) -interaction=nonstopmode
 texi ?= texi2pdf
-job = -jobname=$(@:%.pdf=%)
+texir ?= $(texi) -o $@ $<
 
-texir = $(texi) -o $@ $<
+job = -jobname=$(@:%.pdf=%)
 latexonly = $(latex) $(job) $<
 latexnonly = $(latexnon) $(job) $<
 
@@ -18,6 +18,9 @@ endif
 
 %.TEX.pdf: %.TEX
 	$(texir) || $(latexnonly) || $(latexonly)
+
+%.tikz.pdf: %.tikz
+	$(latexonly) || $(latexnonly)
 
 ## .pdf is never up to date (makedeps is fake)
 ## Why is extra makedeps needed? Implicit rule recursion is confusing
