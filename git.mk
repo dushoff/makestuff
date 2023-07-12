@@ -150,6 +150,14 @@ git_check:
 
 ######################################################################
 
+Ignore += *.setbranch
+%.setbranch:
+	$(RM) *.setbranch
+	git checkout $* 
+	$(touch)
+
+######################################################################
+
 ## autosync stuff not consolidated, needs work. 
 remotesync: commit.default
 	git pull
