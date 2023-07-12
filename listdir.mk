@@ -48,4 +48,4 @@ Ignore += $(listdirs) $(resting)
 
 ## making
 $(ruledirs):
-	$(MV) $(old) $@ || git clone $(url) $@ || $(linkdirname)
+	$(MV) $(old) $@ || git clone $(url) $@ || ($(linkdirname))
