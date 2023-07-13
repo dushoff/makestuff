@@ -1,7 +1,7 @@
 latex ?= pdflatex
 latexnon ?= $(latex) -interaction=nonstopmode
 texi ?= texi2pdf
-texir ?= $(texi) -o $@ $<
+texir ?= $(texi) -l latex -o $@ $<
 
 job = -jobname=$(@:%.pdf=%)
 latexonly = $(latex) $(job) $<
