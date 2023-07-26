@@ -26,6 +26,8 @@ endif
 ## Why is extra makedeps needed? Implicit rule recursion is confusing
 %.pdf: %.tex %.tex.deps %.makedeps makedeps
 	$(MAKE) $*.deps.pdf
+%.pdf: %.TEX %.tex.deps %.makedeps makedeps
+	$(MAKE) $*.deps.pdf
 
 ## Working on work flow choices 2021 Oct 20 (Wed)
 ## Using latexonly to jump to tex error; touch to keep make chain going
