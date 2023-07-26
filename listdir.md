@@ -7,6 +7,7 @@ screens.list (see makestuff/screenlist.md) does all of the work, and is also the
 screens.list shapes the screen_session using .mk files made by perl scripts. Presumably.
 
 screens_resource: tries to fill in resources for directories in screens.list. If the directory exists and is a repo, it will add the repo url in some appropriate way to the file. It's also meant to do something about copy locations, but it doesn't look like the relevant script is doing that.
+* This is intended for migration; I am currently not using, but it's possible others will someday want to migrate from another structure
 
 To set up listdir foo:
 * find or create a repo (any name)
@@ -17,3 +18,7 @@ To set up listdir foo:
 * make
 	* screen_session, OR
 	* foo.subscreen from the parent (if inactive)
+
+## Under the hood
+
+

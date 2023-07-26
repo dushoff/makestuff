@@ -52,4 +52,4 @@ $(oldruledirs):
 	$(MV) $(old) $@ || git clone $(url) $@
 
 $(ruledirs):
-	git clone $(url) $@
+	git clone $(url) $@ || ($(linkdirname))
