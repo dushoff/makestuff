@@ -64,7 +64,7 @@ target.mk:
 %.rscreen:
 	cd $* && $(MAKE) startscreen && screen -t "$(notdir $*)"
 
-%.vscreen:
+%.vscreen: | %
 	- cd $* && $(MAKE) vimclean
 	cd $* && screen -t "$*" bash -cl "vvs"
 
