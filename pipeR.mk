@@ -9,7 +9,7 @@ endef
 define pipeR
 	-$(RM) $@ $@.*
 	$(makeArgs)
-	((Rscript --vanilla --args $@ shellpipes $*.pipestar $^ < $(word 1, $(filter %.R, $^)) > $(@:%.Rout=%.rtmp)) 2> $(@:%.Rout=%.Rlog) && cat $(@:%.Rout=%.Rlog)) || (cat $(@:%.Rout=%.Rlog) && false)
+	((R --vanilla --args $@ shellpipes $*.pipestar $^ < $(word 1, $(filter %.R, $^)) > $(@:%.Rout=%.rtmp)) 2> $(@:%.Rout=%.Rlog) && cat $(@:%.Rout=%.Rlog)) || (cat $(@:%.Rout=%.Rlog) && false)
 	$(MVF) $(@:%.Rout=%.rtmp) $@
 endef
 
@@ -27,7 +27,7 @@ makeR=$(pipeR)
 define render
 	-$(RM) $@ $@.*
 	$(makeArgs)
-	Rscript --vanilla -e 'library("rmarkdown"); render("$<", output_file="$@")' shellpipes $*.pipestar $^
+	R --vanilla -e 'library("rmarkdown"); render("$<", output_file="$@")' shellpipes $*.pipestar $^
 endef
 
 define render_rmd
@@ -56,7 +56,7 @@ endef
 
 define wrapR
 	-$(RM) $@ $@.*
-	((Rscript --vanilla --args $@ $^ shellpipes < makestuff/wrappipeR.R > $(@:%.Rout=%.rtmp)) 2> $(@:%.Rout=%.Rlog) && cat $(@:%.Rout=%.Rlog)) || (cat $(@:%.Rout=%.Rlog) && false)
+	((R --vanilla --args $@ $^ shellpipes < makestuff/wrappipeR.R > $(@:%.Rout=%.rtmp)) 2> $(@:%.Rout=%.Rlog) && cat $(@:%.Rout=%.Rlog)) || (cat $(@:%.Rout=%.Rlog) && false)
 	$(MVF) $(@:%.Rout=%.rtmp) $@
 endef
 
@@ -207,7 +207,7 @@ Ignore += $(wildcard *.pipeR.script)
 
 Ignore += $(wildcard *.allR)
 %.allR: %.Rscript
-	Rscript --vanilla  < $< | tee $@
+	R --vanilla  < $< | tee $@
 
 ######################################################################
 
