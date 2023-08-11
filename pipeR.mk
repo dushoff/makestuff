@@ -27,7 +27,7 @@ makeR=$(pipeR)
 define render
 	-$(RM) $@ $@.*
 	$(makeArgs)
-	Rscript --vanilla -e 'library("rmarkdown"); render("$<", output_file="$@")' shellpipes $*.pipestar $^
+	R --vanilla -e 'library("rmarkdown"); render("$<", output_file="$@")' shellpipes $*.pipestar $^
 endef
 
 define render_rmd
