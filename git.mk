@@ -1,18 +1,4 @@
 
-## cmain is meant to point upstream; don't see any rules
-## to manipulate it. Maybe there were once.
-## Don't try merging with our rules until this is fixed!
-cmain = NULL
-
-## Made a strange loop _once_ (doesn't seem to be used anyway).
-# -include $(BRANCH).mk
-
-ifndef BRANCH
-BRANCH = $(shell cat .git/HEAD 2>/dev/null | perl -npE "s|.*/||;")
-endif
-
-######################################################################
-
 ## More makestuff/makestuff weirdness
 -include makestuff/exclude.mk
 -include exclude.mk
@@ -24,6 +10,8 @@ endif
 branch:
 	@echo $(BRANCH)
 	git branch
+
+sourceTouch = touch $(word 1, $(Sources))
 
 Ignore += commit.time commit.default
 commit.time: $(Sources)
@@ -45,15 +33,13 @@ pull: commit.time
 	git pull
 	touch $<
 
-pardirpull: $(pardirs:%=%.pull) makestuff.pull
-parpull: pull pardirpull
-
 ######################################################################
 
 ## parallel directories
 ## not part of all.time by default because usually updated in parallel
 $(pardirs):
 	cd .. && $(MAKE) $@
+	cd ../$@ &&  $(MAKE) Makefile
 	ls ../$@ > $(null) && $(LNF) ../$@ .
 
 Ignore += up.time all.time
@@ -63,6 +49,9 @@ up.time: commit.time
 	touch $@
 
 alldirs += makestuff
+
+pardirpull: $(pardirs:%=%.pull) makestuff.pull
+parpull: pull pardirpull
 
 ######################################################################
 
@@ -92,18 +81,16 @@ autocommit:
 ## Also it doesn't work, where commit -am seems to.
 addall:
 	git add -u
-	git add $(Sources)
+	git add -f $(Sources)
 
 tsync:
-	touch $(word 1, $(Sources))
+	$(sourceTouch)
 	$(MAKE) up.time
 
-## Flattened 2021 May 11 (Tue)
+forcesync: addall tsync
 
-allsync: addall tsync
-
-%.allsync:
-	cd $* && $(MAKE) allsync
+%.forcesync:
+	cd $* && $(MAKE) forcesync
 
 ######################################################################
 
@@ -146,9 +133,16 @@ push.%: commit.time
 
 ## Use pullup to add stuff to routine pulls
 ## without adding to all pulls; maybe not useful?
-## or maybe had some submodule something?
+## 2022 Aug 05 (Fri) added submodule incantation
+## 2023 Jan 29 (Sun) subtracted submodule incantation; add it manually to submodule directories
+
 pullup: pull
 
+modupdate = git submodule update -i
+
+## 2022 Sep 01 (Thu)
+## This doesn't work for new, blank repos and I don't know why
+## I also don't know if the whole origin branch stuff is helping anyone
 pushup:
 	git push -u origin $(BRANCH)
 
@@ -157,6 +151,13 @@ git_check:
 
 ######################################################################
 
+Ignore += *.setbranch
+%.setbranch:
+	$(RM) *.setbranch
+	git checkout $* 
+	$(touch)
+
+######################################################################
 
 ## autosync stuff not consolidated, needs work. 
 remotesync: commit.default
@@ -180,7 +181,6 @@ remotesync: commit.default
 %.push: %
 	cd $< && $(MAKE) up.time
 
-## git_check is probably useful for some newer rules …
 git_check = git diff-index --quiet HEAD --
 
 ######################################################################
@@ -190,7 +190,7 @@ git_check = git diff-index --quiet HEAD --
 %.gp: % git_push
 	cp $* git_push
 	git add -f git_push/$*
-	touch Makefile
+	$(sourceTouch)
 
 git_push:
 	$(mkdir)
@@ -200,28 +200,56 @@ gpobjects = $(wildcard git_push/*)
 gptargets = $(gpobjects:git_push/%=%.gp)
 gptargets: $(gptargets)
 
+######################################################################
+
+## Unify some of these by recipe
+## use a better touch command
+
 ## 2020 Nov 11 (Wed) an alternative name for git_push
 ## Not copying the all-update rule here; outputs can have other purposes
 %.op: % outputs
 	- $(CPF) $* outputs
 	git add -f outputs/$*
-	touch Makefile
+	$(sourceTouch)
 
 %.opdir: % outputs
 	- $(RMR) outputs/$*
 	- $(CPR) $* outputs
 	git add -f outputs/$*
-	touch Makefile
+	$(sourceTouch)
 
 ## auto-docs causes conflict in dataviz
 outputs docs:
 	$(mkdir)
 
-## Do docs/ just like outputs?
 %.docs: % docs
 	- cp $* docs
 	git add -f docs/$*
-	touch Makefile
+	$(sourceTouch)
+
+## Commented out because of stupid dataviz conflict 2021 Nov 02 (Tue)
+## docs: ; $(mkdir)
+
+######################################################################
+
+## Make an empty pages directory when necessary; or else attaching existing one
+Ignore += pages
+pages:
+	git clone --branch gh-pages `git remote get-url origin` $@
+
+pages/pagebranch:
+	cd $(dir $@) && (git checkout gh-pages || $(createpages))
+	touch $@
+
+%.pages: % pages
+	- $(CPF) $* pages
+	git add -f pages/$*
+	$(sourceTouch)
+
+gitarchive/%: gitarchive
+gitarchive:
+	$(mkdir)
+trackedTargets += $(wildcard gitarchive/*)
 
 ######################################################################
 
@@ -268,15 +296,6 @@ pages/Makefile:
 	$(MAKE) $*
 	cd $* && (git add *.* && ($(git_check))) || ((git commit -m "Commited by $(CURDIR)") && git pull && git push && git status)
 
-## This is sort of deprecated, too
-## Make an empty pages directory when necessary; or else attaching existing one
-Ignore += pages
-pages:
-	git clone `git remote get-url origin` $@
-
-pages/pagebranch:
-	cd $(dir $@) && (git checkout gh-pages || $(createpages))
-	touch $@
 
 define createpages
 	(git checkout --orphan gh-pages && git rm -rf * && touch ../README.md && cp ../README.md . && git add README.md && git commit -m "Orphan pages branch" && git push --set-upstream origin gh-pages )
@@ -284,18 +303,6 @@ endef
 
 %.branchdir:
 	git clone `git remote get-url origin` $*
-
-##################################################################
-
-### Rebase problems
-
-continue: $(Sources)
-	git add $(Sources)
-	git rebase --continue
-	git push
-
-abort:
-	git rebase --abort
 
 ##################################################################
 
@@ -371,10 +378,10 @@ gitprune:
 
 Ignore += dotdir/ clonedir/ cpdir/
 dotdir: $(Sources)
-	$(MAKE) sync
+	$(MAKE) commit.time
 	-/bin/rm -rf $@
 	git clone . $@
-	cd $@ && $(LN) $(pardirs:%=../%) .
+	[ "$(pardirs)" = "" ] || ( cd $@ && $(LN) $(pardirs:%=../%) .)
 
 ## Note cpdir really means directory (usually); dotdir means the whole repo
 ## DON'T use cpdir for repos with Sources in subdirectories
@@ -409,7 +416,7 @@ sourcedir: $(Sources)
 	cd $@ && tar xzf $@.tgz && $(RM) $@.tgz
 	-cp target.mk $@
 
-%.localdir: %
+%.localdir: % %.mslink
 	-$(CP) local.mk $*
 
 %.mslink: %
@@ -432,41 +439,22 @@ sourcedir: $(Sources)
 
 ## To open the dirtest final target when appropriate (and properly set up) 
 %.vdtest: %.dirtest
-	$(MAKE) vtarget
+	$(MAKE) pdftarget
 
-%.localtest: % %.localdir %.dirtest ;
 
+## To make and display files in the all variable
+alltest:
+	$(MAKE) $(all) && ($(MAKE) $(all:%=%.go) || echo "Warning: alltest made but could not display everything" )
+%.alltest: %.dirtest
+	$(MAKE) alltest
+
+## Get it? 
+%.localtest: % %.localdir %.vdtest ;
+%.localltest: % %.localdir %.alltest ;
+
+## This is def. incomplete, but I never use it 2022 Sep 24 (Sat)
 testclean:
 	-/bin/rm -rf clonedir dotdir
-
-##################################################################
-
-# Branching
-%.newbranch:
-	git checkout -b $*
-	$(MAKE) commit.time
-	git push --set-upstream origin $(BRANCH)
-	git push -u origin $(BRANCH)
-
-%.branch: commit.time
-	git checkout $*
-
-%.checkbranch:
-	cd $* && git branch
-
-## Destroy a branch
-## Usually call from upmerge (which hasn't been tested for a long time)
-%.nuke:
-	git branch -D $*
-	git push origin --delete $*
-
-upmerge: 
-	git rebase $(cmain) 
-	git checkout $(cmain)
-	git pull
-	git merge $(BRANCH)
-	git push -u origin $(cmain)
-	$(MAKE) $(BRANCH).nuke
 
 ######################################################################
 
@@ -493,16 +481,6 @@ hup:
 
 %.hup:
 	cd $* && echo 0. $*: && $(MAKE) hup
-
-######################################################################
-
-## Moved a bunch of confusing stuff to hybrid.mk
-## Cleaned out a bunch of stuff (much later) 2020 Mar 09 (Mon)
-
-######################################################################
-
-## Switch makestuff style in repo made by gitroot 
-## Killed 2020 Mar 09 (Mon)
 
 ######################################################################
 
@@ -535,18 +513,30 @@ Ignore += *.ours *.theirs *.common
 	$(CP) $* $(basename $*)
 	git add $(basename $*)
 
+Ignore += *.gitdiff
+%.gitdiff: %.ours %.theirs
+	- $(diff)
+
 ######################################################################
 
-## Old files
+## Old files. <fn.ext>.<tag>.oldfile; use .arcfile to skip automatic deletion of other old files
 
-Ignore += *.oldfile *.olddiff
+Ignore += *.oldfile *.olddiff *.arcfile
 %.oldfile:
 	-$(RM) $(basename $*).*.oldfile
-	-$(MVF) $(basename $*) tmp_$(basename $*)
+	$(oldfile_r)
+
+%.arcfile: 
+	$(oldfile_r)
+
+define oldfile_r
+	- $(call hide, $(basename $*))
 	-git checkout $(subst .,,$(suffix $*)) -- $(basename $*)
 	-cp $(basename $*) $@
-	-$(MV) tmp_$(basename $*) $(basename $*)
+	-git checkout HEAD -- $(basename $*)
+	- $(call unhide, $(basename $*))
 	ls $@
+endef
 
 ## Chaining trick to always remake
 ## Is this better or worse than writing dependencies and making directly?
@@ -555,6 +545,13 @@ Ignore += *.oldfile *.olddiff
 	- $(RM) $*.olddiff
 	-$(DIFF) $*.*.oldfile $* > $*.olddiff
 	$(RO) $*.olddiff
+
+Ignore += *.newfile *.newdiff
+%.newdiff: %.new.diff ;
+%.new.diff: %
+	- $(RM) $*.newdiff
+	-$(DIFF) $*.*.newfile $* > $*.newdiff
+	$(RO) $*.newdiff
 
 ######################################################################
 

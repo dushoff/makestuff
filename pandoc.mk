@@ -12,19 +12,36 @@ ghh_r = pandoc -s -f gfm -o $@ $<
 %.gh.html: %.md
 	$(ghh_r)
 
+Ignore += *.gh.html
 %.gh.html: %.mkd
 	$(ghh_r)
 
 ## Not tested; may cause trouble with mathjax? Just shut up and test it.
+Ignore += *.emb.html
 %.emb.html: %.md
-	pandoc --self-contained -S -o $@ $<
+	pandoc --self-contained -f markdown -o $@ $<
 
 %.doc.md: %.docx
 	pandoc -o $@ $<
 
+## Not working on laptop! It inserts a local broken URL instead of cloudflare
+## 2023 Feb 28 (Tue) Workaround
+JAX = mathjax=https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS_CHTML-full
+
 Ignore += *.jax.html
-%.jax.html: %.md
-	pandoc --mathjax -s -o $@ $<
+%.jax.html: %.md.tex
+	pandoc $< --$(JAX) -s -o $@
+
+Ignore += *.md.tex
+%.md.tex: %.md
+	$(pandocs)
+
+## JD LaTeX shorthand
+Ignore += *.comb.md
+%.comb.md: %.md
+	- $(RM) $@
+	perl -wf makestuff/texcomb.pl $< > $@
+	$(readonly)
 
 %.Rout.html: %.R
 	$(rmdhtml)
@@ -71,6 +88,7 @@ rmdh = Rscript -e "library(\"rmarkdown\"); render(\"$<\")"
 %.th.tex: %.md
 	pandoc -s -S -t latex -V documentclass=tufte-handout $*.md -o $*.tex
 
+Ignore += *.tex.md
 %.tex.md: %.tex
 	pandoc -o $@ $<
 
@@ -82,16 +100,28 @@ rmdh = Rscript -e "library(\"rmarkdown\"); render(\"$<\")"
 %.upcap.MD: %.docx.MD makestuff/upcap.pl
 	$(PUSH)
 
-  
+######################################################################
+
+## Modular weirdness 2022 Sep 01 (Thu)
+
+lualatex_r = pandoc -o $@ --pdf-engine=lualatex $<
+xelex_r = pandoc -o $@ --pdf-engine=xelatex --variable fontsize=12pt $<
+ltx_r = pandoc -o $@ --variable fontsize=12pt $<
+
+mdhtml_f = $(subst .md,*.html, $(wildcard *.md))
+mdpdf_f = $(subst .md,*.pdf, $(wildcard *.md))
+
+######################################################################
+
 ## This is becoming pretty random
 %.pan.pdf: %.mkd
 	pandoc -o $@ --variable fontsize=12pt $<
 
 %.ltx.pdf: %.md
-	pandoc -o $@ --variable fontsize=12pt $<
+	$(ltx_r)
 
 %.pan.pdf: %.md
-	pandoc -o $@ --pdf-engine=lualatex --variable fontsize=12pt $<
+	$(lualatex_r)
 
 rmdpdf = Rscript -e 'library("rmarkdown"); render("$<", output_format="pdf_document")'
 

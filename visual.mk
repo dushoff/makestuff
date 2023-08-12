@@ -1,5 +1,6 @@
 ## Make things appear; some of it feels pretty Dushoff-specific
 ## Need to transition to $(target)-based rules (no $<)
+## See visual.md for ideas about updating startscreen/rscreen/vscreen paradigm
 
 pngtarget: 
 	$(MAKE) $<.png
@@ -7,7 +8,7 @@ pngtarget:
 
 pdftarget:
 	$(MAKE) $<
-	($(MAKE) $<.pdf && $(MAKE) $<.pdf.go) || $(MAKE)  $<.go
+	($(MAKE) $<.pdf && ls $<.pdf && $(MAKE) $<.pdf.go) || $(MAKE) $<.go
 
 vtarget:
 	$(MAKE) $<.go
@@ -39,10 +40,9 @@ docpdftarget:
 
 docsimptarget:
 	$(MAKE) $(target:%=%.docs)
-	$(MAKE) $(target:%=%.pdf.docs)
 
 rmtarget:
-	$(call hide,  $(target))
+	- $(call hide,  $(target))
 	$(MAKE) $(target)
 
 target.mk:
@@ -52,25 +52,22 @@ target.mk:
 %.dscreen: %.dir
 	cd $* && screen -t "$(notdir $*)"
 
+######################################################################
+
+## screening stuff (seems like listdir stuff, but presumably predates it)
+
 ## open directory in a screen window (for running things)
 ## meant to be called from within screen (otherwise makes a new one)
-## startscreen part is clumsy
-%.rscreen: %.dir
-	cd $(dir $*) && $(MAKE) "$(notdir $*)" 
-	- cd $* && $(MAKE) startscreen
-	cd $* && screen -t "$(notdir $*)"
+%.newscreen: %.dir
+	cd $* && screen -t "$*"
 
-## do the above and open a vim_session
-## Eliminated apparent .dir redundancy 2021 Feb 11 (Thu)
-%.vscreen: %.dir
+%.rscreen:
+	-cd $* && $(MAKE) startscreen 
+	-cd $* && screen -t "$(notdir $*)"
+
+%.vscreen: | %
 	- cd $* && $(MAKE) vimclean
 	cd $* && screen -t "$*" bash -cl "vvs"
-
-## Old-style vscreen (short names)
-## Do I use this? 2021 Feb 11 (Thu)
-%.svscreen: %.dir
-	cd $(dir $*) && $(MAKE) "$(notdir $*)" 
-	cd $* && screen -t "$(notdir $*)" bash -cl "vvs"
 
 %.dir:
 	cd $(dir $*) && $(MAKE) $(notdir $*)

@@ -19,6 +19,8 @@ md = $(wildcard *.md)
 Sources += $(md)
 Ignore += $(md:md=html)
 
+Sources += $(wildcard *.proj)
+
 ## Work on documentation!!!
 
 ## Make a list of .mk files that are here and go through them!
@@ -49,7 +51,7 @@ Sources += $(wildcard *.mk *.pl *.Makefile *.def)
 Sources += ignore.pl
 
 ## Inputs for .config ignore file (see git.mk)
-Sources += ignore.auth ignore.vim
+Sources += ignore.auth ignore.vim ignore.lock
 
 # Sources += os.mk unix.mk linux.mk windows.mk up.mk
 
@@ -130,7 +132,7 @@ Sources += $(wildcard lect/*.*)
 
 ## mkfiles
 
-Sources += mkfiles.Makefile
+Sources += mkfiles.Makefile mkfiles.wrap
 
 ######################################################################
 

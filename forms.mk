@@ -10,6 +10,9 @@ date.txt:
 up_date: 
 	date +"%d %b %Y" > date.txt
 
+%.trim.txt: %.txt
+	sed -e "s/#.*//" $< > $@
+
 %.txt.pdf: %.txt.ps
 	ps2pdf $< > $@
 
@@ -27,13 +30,19 @@ email.pdf: email.txt
 date.pdf: date.txt
 	pdfroff $< | cpdf -crop "0.9in 10.8in 0.9in 0.2in" -stdin -o $@ 
 
+text_%.pdf: text.pdf
+	cpdf -scale-page "$* $*" -o $@ $<
+
 date_%.pdf: date.pdf
+	cpdf -scale-page "$* $*" -o $@ $<
+
+name_%.pdf: name.pdf
 	cpdf -scale-page "$* $*" -o $@ $<
 
 ######################################################################
 
-## Deprecate this stuff?
-date.png: date.pdf
+## Deprecate this stuff? Use pdf pipeline above? 2022 May 23 (Mon)
+date.png name.png: %.png: %.pdf
 	$(imageconvert)
 
 date.%.png: date.png
@@ -84,7 +93,7 @@ sig.%.pdf: sig.%.jpg
 %.ppmed.png: %.pdf
 	convert -density 400x400 $< $@
 
-%.jpg: %.right.jpg
+%.straight.jpg: %.right.jpg
 	convert -rotate 270 $< $@
 
 ## pdfpages stuff deleted 2021 Apr 14 (Wed)
@@ -92,3 +101,16 @@ sig.%.pdf: sig.%.jpg
 ## Reinstating for now
 
 include makestuff/pdfsplit.mk
+
+######################################################################
+
+## Requires cups-pdf.apt
+
+~/PDF:
+	cd ~ && $(mkdir)
+
+%.print.pdf: %.pdf | ~/PDF
+	-rm -fr ~/PDF/*.*
+	lpr -P PDF $<
+	sleep 2
+	$(MV) ~/PDF/*.* $@

@@ -1,20 +1,16 @@
 
-maketouch = cd $(1) && $$(MAKE) $$* && touch $$*
+maketouch = cd $(1) && $$(MAKE) Makefile && $$(MAKE) $$* && touch $$*
 
-## This could loop forever (if you have two targets in the same directory)
 ## Maybe improved? 2020 Oct 20 (Tue)
 define hotmake
-$(1)/Makefile: 
-	$(MAKE) $1
-$(1)/%: | $(1) $(1)/Makefile 
+$(1)/%: $(1)
 	$(maketouch)
 endef
 
-## Why does this loop? Shouldn't the more explicit rule cancel the % rule
+## Fiddling 2023 Mar 20 (Mon)
 define coldmake
 $(1)/%.mk: ;
-$(1)/Makefile: ;
-$(1)/%: | $(1)/Makefile 
+$(1)/%: | $(1)
 	$(maketouch)
 endef
 
