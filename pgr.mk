@@ -1,4 +1,5 @@
 
+## Are new.tsv and TSV competing?
 Ignore += *.new.tsv *.pgr *.TSV
 
 newtsv = perl -wf makestuff/newtsv.pl $< >  $(hiddentarget) && $(unhidetarget)
