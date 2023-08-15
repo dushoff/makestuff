@@ -39,6 +39,7 @@ pull: commit.time
 ## not part of all.time by default because usually updated in parallel
 $(pardirs):
 	cd .. && $(MAKE) $@
+	cd ../$@ &&  $(MAKE) Makefile
 	ls ../$@ > $(null) && $(LNF) ../$@ .
 
 Ignore += up.time all.time
@@ -147,6 +148,14 @@ pushup:
 
 git_check:
 	$(git_check)
+
+######################################################################
+
+Ignore += *.setbranch
+%.setbranch:
+	$(RM) *.setbranch
+	git checkout $* 
+	$(touch)
 
 ######################################################################
 

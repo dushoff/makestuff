@@ -181,7 +181,7 @@ shell_execute = sh < $@
 pdfcat = pdfjam --outfile $@ $(filter %.pdf, $^) 
 pdfdog = pdftk $(filter %.pdf, $^) cat output $@
 
-latexdiff = latexdiff $^ > $@
+latexdiff = latexdiff $^ $| > $@
 
 Ignore += *.ld.tex
 %.ld.tex: %.tex
