@@ -25,7 +25,8 @@ while(<>){
 	foreach my $ln (@lines){
 		next if /^#/;
 		my ($t, $f) = $ln =~ /(\w*):\s*(.*)/;
-		die "Unrecognized name $t" unless defined $names{$t};
+		die "Unparsed line: $ln" unless defined $t;
+		die "Unrecognized name: $t" unless defined $names{$t};
 		$fields[$names{$t}] = $f if $f;
 	}
 	## say $#fields;
