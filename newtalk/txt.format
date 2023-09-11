@@ -166,24 +166,30 @@ draft: ^DEFHEAD {\sl %% (present)}
 # Just one pic (no header)
 PICSLIDE NULLSLIDE
 draft final: ^%%
-
 ## Also, I don't actually have any idea how to do this!
 
 # Slides with purely repetitive information (for classroom exposition)
-RSLIDE NULLSLIDE
-final: ^DEFHEAD {\sl %% (repeat)}
-draft: ^DEFHEAD {\sl %% (repeat OR preview?)}
 
-## Repeated info
+## Repeating
 REPSLIDE NULLSLIDE
 draft final: ^DEFHEAD {\sl %% (repeat)}
 
-## Presentation only
+## Previewing
 PRESLIDE NULLSLIDE
 draft final: ^DEFHEAD {\sl %% (preview)}
 
+## Refer to something outside like the textbook (NEW 2023 Sep 02 (Sat))
+OUTSLIDE NULLSLIDE
+draft final: ^DEFHEAD {\sl %% (outside)}
+
+## Extra
 FUNSLIDE NULLSLIDE
 draft final: ^DEFHEAD {\sl %% (Extra)}
+
+## Deprecated
+RSLIDE NULLSLIDE
+final: ^DEFHEAD {\sl %% (repeat)}
+draft: ^DEFHEAD {\sl %% (repeat OR preview?)}
 
 ## Titlespace omit from notes
 

@@ -219,8 +219,11 @@ vimclean:
 
 ## Jekyll stuff
 Ignore += jekyll.log
-serve:
+serve: | Gemfile
 	bundle exec jekyll serve > jekyll.log 2>&1 &
+
+Gemfile:
+	@echo Gemfile not found && false
 
 killserve:
 	killall jekyll
