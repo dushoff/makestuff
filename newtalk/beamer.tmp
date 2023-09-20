@@ -8,7 +8,7 @@
 %% \input{LatexTemplates/ici3dTemplate.tex}
 %% \input{LatexTemplates/ici3dCurrent.tex}
 
-\usepackage{talkdir/chinese}
+%% \usepackage{talkdir/chinese}
 %% Seems baddish to control Chinese from talkdir?
 %% \renewcommand{\chinese}{\nochinese}
 %% \renewcommand{\chinese}{\yeschinese}
