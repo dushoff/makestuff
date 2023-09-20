@@ -22,6 +22,9 @@ gptarget:
 optarget:
 	$(MAKE) $(target:%=%.pdf.op) || $(MAKE) $(target:%=%.op)
 
+finaltarget: 
+	$(MAKE) $(target:%=%.final)
+
 pushtarget:
 	$(MAKE) $<.pd
 
