@@ -526,6 +526,10 @@ Ignore += *.oldfile *.olddiff *.arcfile
 	-$(RM) $(basename $*).*.oldfile
 	$(oldfile_r)
 
+Ignore += *.oldfile.pdf
+%.oldfile.pdf: | %.oldfile
+	$(CP) $| $@
+
 %.arcfile: 
 	$(oldfile_r)
 
