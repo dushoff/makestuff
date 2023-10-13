@@ -1,4 +1,3 @@
-
 ## More makestuff/makestuff weirdness
 -include makestuff/exclude.mk
 -include exclude.mk
@@ -219,7 +218,7 @@ gptargets: $(gptargets)
 	$(sourceTouch)
 
 ## auto-docs causes conflict in dataviz
-outputs docs:
+outputs:
 	$(mkdir)
 
 %.docs: % docs
