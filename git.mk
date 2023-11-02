@@ -218,7 +218,7 @@ gptargets: $(gptargets)
 	$(sourceTouch)
 
 ## auto-docs causes conflict in dataviz
-outputs docs:
+outputs:
 	$(mkdir)
 
 %.docs: % docs
@@ -524,6 +524,10 @@ Ignore += *.oldfile *.olddiff *.arcfile
 %.oldfile:
 	-$(RM) $(basename $*).*.oldfile
 	$(oldfile_r)
+
+Ignore += *.oldfile.pdf
+%.oldfile.pdf: | %.oldfile
+	$(CP) $| $@
 
 %.arcfile: 
 	$(oldfile_r)
