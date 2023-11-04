@@ -127,6 +127,7 @@ sync:
 	$(MAKE) up.time
 
 ## Use for first push if not linked to a branch
+## push.main is the right target for new repos
 push.%: commit.time
 	git push -u origin $*
 
