@@ -24,6 +24,7 @@ endif
 
 ## .pdf is never up to date (makedeps is fake)
 ## Why is extra makedeps needed? Implicit rule recursion is confusing
+.PRECIOUS: %.pdf
 %.pdf: %.tex %.tex.deps %.makedeps makedeps
 	$(MAKE) $*.deps.pdf
 %.pdf: %.TEX %.tex.deps %.makedeps makedeps

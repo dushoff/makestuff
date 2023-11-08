@@ -26,9 +26,10 @@ DNE = (! $(LS) $@ > $(null))
 LSN = ($(LS) $@ > $(null))
 
 tgz = tar czf $@ $^
-zip = zip $@ $^
+zipin = zip $@ $?
+zip = $(RM) $@ && zip $@ $^
 TGZ = tar czf $@ $^
-ZIP = zip $@ $^
+ZIP = $(zip)
 
 touch = touch $@
 

@@ -54,6 +54,7 @@ while ($f =~ s/\\(?:bibliography|addbibresource)\s*{(.*?)}//){
 say "$target $mtarget: ; touch \$@";
 say"";
 
+## Use order-only as of 2023 Nov 08 (Wed)
 ## Directories
 ## Needs to be above any dependencies that might look in the directories
 ## makehere and makethere would need to be in your own make file
@@ -64,7 +65,7 @@ foreach(keys %inputs, keys %packages, keys %graphics, keys %bibs)
 	s|/.*||;
 	$dirs{$_} = $_ if $_;
 }
-print "$target: ", join " ", keys %dirs, "\n\n" if %dirs;
+print "$target: | ", join " ", keys %dirs, "\n\n" if %dirs;
 
 ## Pictures
 if (%graphics){
@@ -81,7 +82,7 @@ if (%inputs){
 	my @deps = keys %inputs;
 	@deps = grep(!/\//, @deps); 
 	if (@deps){
-		say "$mtarget: " . join " ", map {s|.tex$|.makedeps|; $_} @deps;
+		say "$mtarget: " . join " ", map {s|.tex$|.tex.deps|; $_} @deps;
 		say "$target: " . join " ", map {s|.makedeps$|.tex.deps|; $_} @deps;
 	}
 	say"";
