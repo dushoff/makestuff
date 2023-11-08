@@ -16,8 +16,7 @@ To set up listdir foo:
 * build a Makefile from makestuff/screendir.Makefile
 * make a screens.list in the directory
 * make
-	* screen_session, OR
-	* foo.subscreen from the parent (if inactive)
+	* screen_session
 
 ## Under the hood
 
