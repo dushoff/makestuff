@@ -7,3 +7,8 @@ stepper.mk: $(steppers) stepper.pl
 
 %.Rout: %.R
 	(R --vanilla  < $(word 1, $(filter %.R, $^)) > $@) || (touch $< && false)
+
+Ignore += .Rhistory .RData
+Ignore += *.RData *.Rlog *.rdata *.rda *.rtmp
+Ignore += *.Rout*
+Ignore += Rplots.pdf
