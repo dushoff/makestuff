@@ -46,8 +46,6 @@ CODE ```{R include = FALSE}\n\n%%\n\n```
 
 NOTE %!
 
-J ^Q \emph{JD} %%
-
 Q \vspace{2.0ex plus 8.0ex}\pagebreak[3]\noindent\stepcounter{question}{\arabic{question}.}~%%\vspace{1.0ex}
 test: \vspace{2.0ex plus 8.0ex}\pagebreak[3]\noindent\stepcounter{question}{\bf\arabic{question}.}~%%\vspace{1.0ex}
 

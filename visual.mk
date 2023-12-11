@@ -22,6 +22,9 @@ gptarget:
 optarget:
 	$(MAKE) $(target:%=%.pdf.op) || $(MAKE) $(target:%=%.op)
 
+finaltarget: 
+	$(MAKE) $(target:%=%.final)
+
 pushtarget:
 	$(MAKE) $<.pd
 
@@ -62,10 +65,11 @@ target.mk:
 	cd $* && screen -t "$*"
 
 %.rscreen:
-	cd $* && $(MAKE) startscreen && screen -t "$(notdir $*)"
+	-cd $* && $(MAKE) startscreen 
+	-cd $* && screen -t "$(notdir $*)"
 
 %.vscreen: | %
-	- cd $* && $(MAKE) vimclean
+	- cd $* && ($(MAKE) vimclean || true)
 	cd $* && screen -t "$*" bash -cl "vvs"
 
 %.dir:

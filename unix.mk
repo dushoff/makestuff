@@ -26,9 +26,10 @@ DNE = (! $(LS) $@ > $(null))
 LSN = ($(LS) $@ > $(null))
 
 tgz = tar czf $@ $^
-zip = zip $@ $^
+zipin = zip $@ $?
+zip = $(RM) $@ && zip $@ $^
 TGZ = tar czf $@ $^
-ZIP = zip $@ $^
+ZIP = $(zip)
 
 touch = touch $@
 
@@ -74,6 +75,7 @@ linkelsewhere = cd $(dir $@) && $(LNF) $(CURDIR)/$< $(notdir $@)
 ## Possibly good for shared projects. Problematic if central user makes two 
 ## redundant dropboxes because of sync problems
 alwayslinkdir = (ls $(dir)/$@ > $(null) || $(MD) $(dir)/$@) && $(LNF) $(dir)/$@ .
+alwayslinkdirname = (ls $(dir)/$@ > $(null) || $(MD) $(dir)/$@) && $(LNF) $(dir)/ $@
 
 forcelink = $(LNF) $< $@
 rcopy = $(CPR) $< $@
@@ -219,8 +221,11 @@ vimclean:
 
 ## Jekyll stuff
 Ignore += jekyll.log
-serve:
+serve: | Gemfile
 	bundle exec jekyll serve > jekyll.log 2>&1 &
+
+Gemfile:
+	@echo Gemfile not found && false
 
 killserve:
 	killall jekyll
