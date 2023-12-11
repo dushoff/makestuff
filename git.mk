@@ -139,6 +139,8 @@ push.%: commit.time
 pullup: pull
 
 modupdate = git submodule update -i
+pullmods: pullup
+	$(modupdate)
 
 ## 2022 Sep 01 (Thu)
 ## This doesn't work for new, blank repos and I don't know why
