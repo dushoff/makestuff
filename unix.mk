@@ -75,7 +75,7 @@ linkelsewhere = cd $(dir $@) && $(LNF) $(CURDIR)/$< $(notdir $@)
 ## Possibly good for shared projects. Problematic if central user makes two 
 ## redundant dropboxes because of sync problems
 alwayslinkdir = (ls $(dir)/$@ > $(null) || $(MD) $(dir)/$@) && $(LNF) $(dir)/$@ .
-alwayslinkdirname = (ls $(dir)/$@ > $(null) || $(MD) $(dir)/$@) && $(LNF) $(dir)/ $@
+alwayslinkdirname = (ls $(dir) > $(null) || $(MD) $(dir)) && $(LNF) $(dir) $@
 
 forcelink = $(LNF) $< $@
 rcopy = $(CPR) $< $@
