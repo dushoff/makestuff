@@ -1,5 +1,8 @@
 Ignore += slowtarget/
-Sources += $(wildcard slow/*)
+
+## We always want to track stuff in slow, but not necessarily in the same repo
+## because of privacy concerns!
+## Sources += $(wildcard slow/*)
 
 .PRECIOUS: slow/%
 
