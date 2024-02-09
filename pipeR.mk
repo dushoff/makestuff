@@ -3,7 +3,7 @@ pdfcheck = perl -wf makestuff/wrapR/pdfcheck.pl
 rvan = R --vanilla
 noMakeFlags = env -u MAKELEVEL -u MAKEFLAGS
 stanVan = $(noMakeFlags) $(rvan)
-rrun = $(rvan)
+rrun ?= $(rvan)
 
 define makeArgs
 	echo "## Use this call to make $@ independently" > $@.args
@@ -66,6 +66,10 @@ define wrapR
 endef
 
 run-R = $(wrapR)
+
+define scriptR
+	cd $(dir $<) && $(rrun) < $(notdir $<) > $(notdir $@)
+endef
 
 ## Legacy
 ifdef autowrapR

@@ -1,4 +1,3 @@
-
 ## More makestuff/makestuff weirdness
 -include makestuff/exclude.mk
 -include exclude.mk
@@ -136,6 +135,7 @@ sync:
 	$(MAKE) up.time
 
 ## Use for first push if not linked to a branch
+## push.main is the right target for new repos
 push.%: commit.time
 	git push -u origin $*
 
@@ -147,6 +147,8 @@ push.%: commit.time
 pullup: pull
 
 modupdate = git submodule update -i
+pullmods: pullup
+	$(modupdate)
 
 ## 2022 Sep 01 (Thu)
 ## This doesn't work for new, blank repos and I don't know why
@@ -227,7 +229,7 @@ gptargets: $(gptargets)
 	$(sourceTouch)
 
 ## auto-docs causes conflict in dataviz
-outputs docs:
+outputs:
 	$(mkdir)
 
 %.docs: % docs
@@ -303,7 +305,6 @@ pages/Makefile:
 %.gitpush:
 	$(MAKE) $*
 	cd $* && (git add *.* && ($(git_check))) || ((git commit -m "Commited by $(CURDIR)") && git pull && git push && git status)
-
 
 define createpages
 	(git checkout --orphan gh-pages && git rm -rf * && touch ../README.md && cp ../README.md . && git add README.md && git commit -m "Orphan pages branch" && git push --set-upstream origin gh-pages )
@@ -533,6 +534,10 @@ Ignore += *.oldfile *.olddiff *.arcfile
 %.oldfile:
 	-$(RM) $(basename $*).*.oldfile
 	$(oldfile_r)
+
+Ignore += *.oldfile.pdf
+%.oldfile.pdf: | %.oldfile
+	$(CP) $| $@
 
 %.arcfile: 
 	$(oldfile_r)
