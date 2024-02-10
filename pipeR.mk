@@ -6,15 +6,15 @@ stanVan = $(noMakeFlags) $(rvan)
 rrun ?= $(rvan)
 
 define makeArgs
-	echo "## Use this call to make $@ independently" > $@.args
-	echo "rpcall(\"$@ $*.pipestar $^\")"  >> $@.args
-	echo >> $@.args
+	@echo "rpcall(\"$@ $*.pipestar $^\")"  >> $@.args
+	@echo >> $@.args
 endef
 
 define pipeR
-	-$(RM) $@ $@.*
-	$(makeArgs)
-	(($(rrun) --args $@ shellpipes $*.pipestar $^ < $(word 1, $(filter %.R, $^)) > $(@:%.Rout=%.rtmp)) 2> $(@:%.Rout=%.Rlog) && cat $(@:%.Rout=%.Rlog)) || (cat $(@:%.Rout=%.Rlog) && false)
+	@-$(RM) $@ $@.*
+	@$(makeArgs)
+	@echo pipeR: Making $@
+	@(($(rrun) --args $@ shellpipes $*.pipestar $^ < $(word 1, $(filter %.R, $^)) > $(@:%.Rout=%.rtmp)) 2> $(@:%.Rout=%.Rlog) && cat $(@:%.Rout=%.Rlog)) || (cat $(@:%.Rout=%.Rlog) && false)
 	$(MVF) $(@:%.Rout=%.rtmp) $@
 endef
 

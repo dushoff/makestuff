@@ -37,9 +37,9 @@ null = /dev/null
 
 lscheck = @$(LS) $@ > $(null) || (echo ERROR upstream rule failed to make $@ && false)
 
-lstouch = ($(LS) $@ > $(null) || (echo ERROR upstream rule failed to make $@ && false)) && touch $@
+lstouch = @($(LS) $@ > $(null) || (echo ERROR upstream rule failed to make $@ && false)) && touch $@
 
-impcheck = ($(LS) $$@ > $(null) || (echo ERROR upstream rule failed to make $$@ && false)) && touch $$@
+impcheck = @($(LS) $$@ > $(null) || (echo ERROR upstream rule failed to make $$@ && false)) && touch $$@
 
 hiddenfile = $(dir $1).$(notdir $1)
 hide = $(MVF) $1 $(dir $1).$(notdir $1)
