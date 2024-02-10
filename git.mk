@@ -32,6 +32,14 @@ pull: commit.time
 	git pull
 	touch $<
 
+%.autocommit: $(Sources)
+	git add -f $? 
+	-git commit -m $*
+	touch commit.time
+
+%.autosync: %.autocommit
+	$(MAKE) sync
+
 ######################################################################
 
 ## parallel directories

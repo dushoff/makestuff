@@ -67,6 +67,10 @@ endef
 
 run-R = $(wrapR)
 
+define scriptR
+	cd $(dir $<) && $(rrun) < $(notdir $<) > $(notdir $@)
+endef
+
 ## Legacy
 ifdef autowrapR
 .PRECIOUS: %.Rout
