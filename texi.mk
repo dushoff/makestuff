@@ -63,12 +63,14 @@ makedeps: ;
 	($(bibtex)) || ($(RM) $@ && false)
 
 texfiles = $(wildcard *.tex)
+Ignore += $(texfiles:tex=loc)
 Ignore += $(texfiles:tex=pdf)
 Ignore += $(texfiles:tex=out)
 Ignore += $(texfiles:tex=tex.pdf)
 Ignore += $(texfiles:tex=tex.out)
 
 TEXfiles = $(wildcard *.TEX)
+Ignore += $(TEXfiles:TEX=loc)
 Ignore += $(TEXfiles:TEX=pdf)
 Ignore += $(TEXfiles:TEX=out)
 Ignore += $(TEXfiles:TEX=TEX.pdf)
