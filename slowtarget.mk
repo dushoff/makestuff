@@ -24,3 +24,5 @@ slowtarget slow:
 
 slowsync:
 	rsync -r slow/ slowtarget
+
+testsetup: slowsync
