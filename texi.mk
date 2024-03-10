@@ -1,9 +1,10 @@
-latex ?= pdflatex
-latexnon ?= $(latex) -interaction=nonstopmode
-texi ?= texi2pdf
-texir ?= $(texi) -l latex -o $@ $<
 
+latex ?= pdflatex
+latexnon ?= pdflatex -interaction=nonstopmode
+texi ?= texi2pdf
 job = -jobname=$(@:%.pdf=%)
+
+texir = $(texi) -o $@ $<
 latexonly = $(latex) $(job) $<
 latexnonly = $(latexnon) $(job) $<
 
@@ -24,6 +25,7 @@ endif
 
 ## .pdf is never up to date (makedeps is fake)
 ## Why is extra makedeps needed? Implicit rule recursion is confusing
+.PRECIOUS: %.pdf
 %.pdf: %.tex %.tex.deps %.makedeps makedeps
 	$(MAKE) $*.deps.pdf
 %.pdf: %.TEX %.tex.deps %.makedeps makedeps
@@ -61,12 +63,14 @@ makedeps: ;
 	($(bibtex)) || ($(RM) $@ && false)
 
 texfiles = $(wildcard *.tex)
+Ignore += $(texfiles:tex=loc)
 Ignore += $(texfiles:tex=pdf)
 Ignore += $(texfiles:tex=out)
 Ignore += $(texfiles:tex=tex.pdf)
 Ignore += $(texfiles:tex=tex.out)
 
 TEXfiles = $(wildcard *.TEX)
+Ignore += $(TEXfiles:TEX=loc)
 Ignore += $(TEXfiles:TEX=pdf)
 Ignore += $(TEXfiles:TEX=out)
 Ignore += $(TEXfiles:TEX=TEX.pdf)

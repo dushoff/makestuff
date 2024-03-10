@@ -2,6 +2,7 @@
 maketouch = cd $(1) && $$(MAKE) Makefile && $$(MAKE) $$* && touch $$*
 
 ## Maybe improved? 2020 Oct 20 (Tue)
+## Still will loop forever if you're calling two things from the same place
 define hotmake
 $(1)/%: $(1)
 	$(maketouch)
