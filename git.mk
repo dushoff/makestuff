@@ -503,6 +503,16 @@ hup:
 
 ######################################################################
 
+## Stashing
+
+smerge:
+	git stash
+	git fetch
+	git merge
+	git stash apply
+
+######################################################################
+
 ## Merging
 
 Ignore += *.ours *.theirs *.common
