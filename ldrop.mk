@@ -16,7 +16,7 @@ drop ?= ~/Dropbox/resources/$(notdir $(CURDIR))
 
 Ignore += drop
 drop: dir=$(drop)
-drop:	local.mk
+drop:	| local.mk
 	$(alwayslinkdirname)
 
 local.mk:

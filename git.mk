@@ -46,7 +46,7 @@ pull: commit.time
 ## not part of all.time by default because usually updated in parallel
 $(pardirs):
 	cd .. && $(MAKE) $@
-	cd ../$@ &&  $(MAKE) Makefile
+	- cd ../$@ &&  $(MAKE) Makefile
 	ls ../$@ > $(null) && $(LNF) ../$@ .
 
 Ignore += up.time all.time
