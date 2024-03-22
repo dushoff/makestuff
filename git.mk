@@ -32,13 +32,21 @@ pull: commit.time
 	git pull
 	touch $<
 
+%.autocommit: $(Sources)
+	git add -f $? 
+	-git commit -m $*
+	touch commit.time
+
+%.autosync: %.autocommit
+	$(MAKE) sync
+
 ######################################################################
 
 ## parallel directories
 ## not part of all.time by default because usually updated in parallel
 $(pardirs):
 	cd .. && $(MAKE) $@
-	cd ../$@ &&  $(MAKE) Makefile
+	- cd ../$@ &&  $(MAKE) Makefile
 	ls ../$@ > $(null) && $(LNF) ../$@ .
 
 Ignore += up.time all.time
@@ -492,6 +500,16 @@ hup:
 	-git rm -f $*
 	rm -rf .git/modules/$*
 	git config --remove-section submodule.$*
+
+######################################################################
+
+## Stashing
+
+smerge:
+	git stash
+	git fetch
+	git merge
+	git stash apply
 
 ######################################################################
 

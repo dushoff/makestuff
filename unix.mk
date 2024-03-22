@@ -37,9 +37,9 @@ null = /dev/null
 
 lscheck = @$(LS) $@ > $(null) || (echo ERROR upstream rule failed to make $@ && false)
 
-lstouch = ($(LS) $@ > $(null) || (echo ERROR upstream rule failed to make $@ && false)) && touch $@
+lstouch = @($(LS) $@ > $(null) || (echo ERROR upstream rule failed to make $@ && false)) && touch $@
 
-impcheck = ($(LS) $$@ > $(null) || (echo ERROR upstream rule failed to make $$@ && false)) && touch $$@
+impcheck = @($(LS) $$@ > $(null) || (echo ERROR upstream rule failed to make $$@ && false)) && touch $$@
 
 hiddenfile = $(dir $1).$(notdir $1)
 hide = $(MVF) $1 $(dir $1).$(notdir $1)
@@ -75,7 +75,7 @@ linkelsewhere = cd $(dir $@) && $(LNF) $(CURDIR)/$< $(notdir $@)
 ## Possibly good for shared projects. Problematic if central user makes two 
 ## redundant dropboxes because of sync problems
 alwayslinkdir = (ls $(dir)/$@ > $(null) || $(MD) $(dir)/$@) && $(LNF) $(dir)/$@ .
-alwayslinkdirname = (ls $(dir)/$@ > $(null) || $(MD) $(dir)/$@) && $(LNF) $(dir)/ $@
+alwayslinkdirname = (ls $(dir) > $(null) || $(MD) $(dir)) && $(LNF) $(dir) $@
 
 forcelink = $(LNF) $< $@
 rcopy = $(CPR) $< $@
@@ -92,7 +92,9 @@ makedir = cd $(dir $@) && $(MD) $(notdir $@)
 cat = $(CAT) /dev/null $^ > $@
 catro = $(rm); $(CAT) /dev/null $^ > $@; $(readonly)
 ln = $(LN) $< $@
+link = $(ln)
 lnf = $(LNF) $< $@
+forcelink = $(lnf)
 lnp = $(LNF) $| $@
 rm = $(RM) $@
 pandoc = pandoc -o $@ $<

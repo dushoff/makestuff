@@ -49,6 +49,8 @@ MARK ^RUB Mark? %%
 
 SUPPRESS %!
 
+ADDITION ^%%
+
 # Note
 NOTE \vspace{1.5ex}{\noindent\sl %%}
 

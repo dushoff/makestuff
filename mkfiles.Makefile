@@ -10,6 +10,11 @@ vim_session:
 
 ######################################################################
 
+Sources += $(wildcard *.R *.md *.rmd)
+autopipeR = defined
+
+######################################################################
+
 ### Makestuff
 
 ## Sources += $(wildcard *.mk)
@@ -25,7 +30,7 @@ makestuff/Makefile:
 
 -include makestuff/os.mk
 
-## -include makestuff/pipeR.mk
+-include makestuff/pipeR.mk
 
 -include makestuff/git.mk
 -include makestuff/visual.mk
