@@ -13,7 +13,7 @@ endef
 define pipeR
 	@-$(RM) $@ $@.*
 	@$(makeArgs)
-	@echo pipeR: Making $@
+	@echo pipeR: Making $@ using $^
 	@(($(rrun) --args $@ shellpipes $*.pipestar $^ < $(word 1, $(filter %.R, $^)) > $(@:%.Rout=%.rtmp)) 2> $(@:%.Rout=%.Rlog) && cat $(@:%.Rout=%.Rlog)) || (cat $(@:%.Rout=%.Rlog) && false)
 	$(MVF) $(@:%.Rout=%.rtmp) $@
 endef
@@ -124,7 +124,7 @@ endif
 
 .PRECIOUS: %.rda %.rdata %.RData
 %.rda %.rdata %.RData: %.Rout
-	$(lstouch)
+	(lstouch)
 
 .PRECIOUS: %.rds %.Rds
 %.rds %.Rds: %.Rout
