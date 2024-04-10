@@ -5,22 +5,25 @@
 ## `make null.lmk` if the folder is under ~/Dropbox/resources/<thisdirname>
 ## Otherwise edit <yourname>.local and use `make <yourname.lmk>`
 
-Sources += $(wildcard *.local)
-null.lmk:
-	touch local.mk
-%.lmk:
-	ln -fs $*.local local.mk
 
 -include local.mk
 drop ?= ~/Dropbox/resources/$(notdir $(CURDIR))
 
 Ignore += drop
 drop: dir=$(drop)
-drop:	| local.mk
+drop:
+	@ ls local.mk || (echo "STOP: see makestuff/ldrop.mk" && false)
 	$(alwayslinkdirname)
 
-local.mk:
-	@ echo "STOP: Make local.mk manually (see makestuff/ldrop.mk)" && false
+Sources += $(wildcard *.local)
+null.lmk:
+	touch local.mk
+%.lmk:
+	ln -fs $*.local local.mk
 
 ######################################################################
 
+testsetup: updrop
+
+updrop:
+	$(LN) ../drop .
