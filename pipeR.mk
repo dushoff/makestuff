@@ -124,7 +124,7 @@ endif
 
 .PRECIOUS: %.rda %.rdata %.RData
 %.rda %.rdata %.RData: %.Rout
-	(lstouch)
+	$(lstouch)
 
 .PRECIOUS: %.rds %.Rds
 %.rds %.Rds: %.Rout
