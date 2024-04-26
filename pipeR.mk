@@ -10,6 +10,9 @@ define makeArgs
 	@echo >> $@.args
 endef
 
+## Potential infelicity if a script used to produce a file
+## but now runs successfully without producing it
+## file can still be used downstream
 define pipeR
 	@-$(RM) $@ $@.*
 	@$(makeArgs)
