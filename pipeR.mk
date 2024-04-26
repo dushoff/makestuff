@@ -13,6 +13,7 @@ endef
 ## Potential infelicity if a script used to produce a file
 ## but now runs successfully without producing it
 ## file can still be used downstream
+## awkwardly delete known target types; or make all known targets start with full target name?
 define pipeR
 	@-$(RM) $@ $@.*
 	@$(makeArgs)
