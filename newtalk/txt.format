@@ -166,24 +166,30 @@ draft: ^DEFHEAD {\sl %% (present)}
 # Just one pic (no header)
 PICSLIDE NULLSLIDE
 draft final: ^%%
-
 ## Also, I don't actually have any idea how to do this!
 
 # Slides with purely repetitive information (for classroom exposition)
-RSLIDE NULLSLIDE
-final: ^DEFHEAD {\sl %% (repeat)}
-draft: ^DEFHEAD {\sl %% (repeat OR preview?)}
 
-## Repeated info
+## Repeating
 REPSLIDE NULLSLIDE
 draft final: ^DEFHEAD {\sl %% (repeat)}
 
-## Presentation only
+## Previewing
 PRESLIDE NULLSLIDE
 draft final: ^DEFHEAD {\sl %% (preview)}
 
+## Refer to something outside like the textbook (NEW 2023 Sep 02 (Sat))
+OUTSLIDE NULLSLIDE
+draft final: ^DEFHEAD {\sl %% (outside)}
+
+## Extra
 FUNSLIDE NULLSLIDE
 draft final: ^DEFHEAD {\sl %% (Extra)}
+
+## Deprecated
+RSLIDE NULLSLIDE
+final: ^DEFHEAD {\sl %% (repeat)}
+draft: ^DEFHEAD {\sl %% (repeat OR preview?)}
 
 ## Titlespace omit from notes
 
@@ -261,11 +267,11 @@ FRAMEFIG ^HFIG 0.9 %%
 HIGHPIC ^PIC HIGHFIG %%
 WIDEPIC ^PIC WIDEFIG %%
 
-## What's going on here with 0.8? 2021 Jun 16 (Wed)
-## Did I do this to shrink Daniel pix that I should have been handling manually?
-## CHANGED to 0.9 2021 Sep 06 (Mon)
 FIG ^HFIG 0.4 %%
 draft final: ^HFIG 0.9 %%
+
+SMALLFIG ^HFIG 0.4 %%
+draft final: ^HFIG 0.8 %%
 
 ## Landscape version
 LFIG \hfill\includegraphics[height=%\textheight,angle=270]{%}\hfill\mbox{}

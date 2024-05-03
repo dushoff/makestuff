@@ -1,8 +1,12 @@
 Ignore += slowtarget/
-Sources += $(wildcard slow/*)
+
+## We always want to track stuff in slow, but not necessarily in the same repo
+## because of privacy concerns!
+## Sources += $(wildcard slow/*)
 
 .PRECIOUS: slow/%
 
+# slow target is always made if necessary, but only depends on its source when makeSlow is on (.final environment)
 ifdef makeSlow
 slow/%: slowtarget/% | slowtarget slow
 	$(copy)
@@ -20,3 +24,5 @@ slowtarget slow:
 
 slowsync:
 	rsync -r slow/ slowtarget
+
+testsetup: slowsync

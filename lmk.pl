@@ -32,7 +32,7 @@ while(<>){
 	$name =~ s|/$||;
 	if ($number){
 		push @screendirs, $name;
-		$alldirs{$name}=0 unless /#.*NOALL/;
+		$alldirs{$name}=0 unless (/#.*NOALL/ or m|Dropbox/|);
 	}
 
 	## Things that parse like rules are rules
@@ -60,6 +60,11 @@ while(<>){
 		## legacy specifications
 		if (my ($u) = /(\.\.[^\s]*)/){
 			say "$d: old=$u";
+		}
+
+		## Dropbox
+		if (my ($u) = m|(\S*Dropbox/\S*)|){
+			say "$d: dir=$u";
 		}
 	}
 }

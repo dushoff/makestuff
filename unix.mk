@@ -26,13 +26,20 @@ DNE = (! $(LS) $@ > $(null))
 LSN = ($(LS) $@ > $(null))
 
 tgz = tar czf $@ $^
-zip = zip $@ $^
+zipin = zip $@ $?
+zip = $(RM) $@ && zip $@ $^
 TGZ = tar czf $@ $^
-ZIP = zip $@ $^
+ZIP = $(zip)
+
+touch = touch $@
 
 null = /dev/null
 
 lscheck = @$(LS) $@ > $(null) || (echo ERROR upstream rule failed to make $@ && false)
+
+lstouch = @$(LS) $@ > $(null) || ((echo ERROR upstream rule failed to make $@ && false) && touch $@)
+
+impcheck = @($(LS) $$@ > $(null) || (echo ERROR upstream rule failed to make $$@ && false)) && touch $$@
 
 hiddenfile = $(dir $1).$(notdir $1)
 hide = $(MVF) $1 $(dir $1).$(notdir $1)
@@ -41,7 +48,6 @@ hiddentarget = $(call hiddenfile, $@)
 unhidetarget = $(call unhide, $@)
 hcopy = $(CPF) $1 $(dir $1).$(notdir $1)
 difftouch = diff $1 $(dir $1).$(notdir $1) > /dev/null || touch $1
-touch = touch $@
 
 ## makethere is behaving weird 2022 Apr 29 (Fri)
 ## makestuffthere, too 2022 Aug 04 (Thu)
@@ -69,6 +75,7 @@ linkelsewhere = cd $(dir $@) && $(LNF) $(CURDIR)/$< $(notdir $@)
 ## Possibly good for shared projects. Problematic if central user makes two 
 ## redundant dropboxes because of sync problems
 alwayslinkdir = (ls $(dir)/$@ > $(null) || $(MD) $(dir)/$@) && $(LNF) $(dir)/$@ .
+alwayslinkdirname = (ls $(dir) > $(null) || $(MD) $(dir)) && $(LNF) $(dir) $@
 
 forcelink = $(LNF) $< $@
 rcopy = $(CPR) $< $@
@@ -85,7 +92,9 @@ makedir = cd $(dir $@) && $(MD) $(notdir $@)
 cat = $(CAT) /dev/null $^ > $@
 catro = $(rm); $(CAT) /dev/null $^ > $@; $(readonly)
 ln = $(LN) $< $@
+link = $(ln)
 lnf = $(LNF) $< $@
+forcelink = $(lnf)
 lnp = $(LNF) $| $@
 rm = $(RM) $@
 pandoc = pandoc -o $@ $<
@@ -166,7 +175,7 @@ convert = convert $< $@
 imageconvert = convert -density 600 -trim $< -quality 100 -sharpen 0x1.0 $@
 shell_execute = sh < $@
 
-%.png: %.pdf
+%.cnv.png: %.pdf
 	$(convert)
 
 %.image.png: %.pdf
@@ -176,7 +185,7 @@ shell_execute = sh < $@
 pdfcat = pdfjam --outfile $@ $(filter %.pdf, $^) 
 pdfdog = pdftk $(filter %.pdf, $^) cat output $@
 
-latexdiff = latexdiff $^ > $@
+latexdiff = latexdiff $^ $| > $@
 
 Ignore += *.ld.tex
 %.ld.tex: %.tex
@@ -214,8 +223,11 @@ vimclean:
 
 ## Jekyll stuff
 Ignore += jekyll.log
-serve:
+serve: | Gemfile
 	bundle exec jekyll serve > jekyll.log 2>&1 &
+
+Gemfile:
+	@echo Gemfile not found && false
 
 killserve:
 	killall jekyll

@@ -1,4 +1,10 @@
 
+slowtarget.mk (see slowtarget.md) is now the recommended way to do things
+
+----------------------------------------------------------------------
+
+Older stuff below, maybe delete it!
+
 ## 2023 Apr 15 (Sat)
 
 Starting again from scratch!

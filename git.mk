@@ -1,4 +1,3 @@
-
 ## More makestuff/makestuff weirdness
 -include makestuff/exclude.mk
 -include exclude.mk
@@ -33,12 +32,21 @@ pull: commit.time
 	git pull
 	touch $<
 
+%.autocommit: $(Sources)
+	git add -f $? 
+	-git commit -m $*
+	touch commit.time
+
+%.autosync: %.autocommit
+	$(MAKE) sync
+
 ######################################################################
 
 ## parallel directories
 ## not part of all.time by default because usually updated in parallel
 $(pardirs):
 	cd .. && $(MAKE) $@
+	- cd ../$@ &&  $(MAKE) Makefile
 	ls ../$@ > $(null) && $(LNF) ../$@ .
 
 Ignore += up.time all.time
@@ -83,8 +91,8 @@ addall:
 	git add -f $(Sources)
 
 tsync:
-	$(MAKE) up.time
 	$(sourceTouch)
+	$(MAKE) up.time
 
 forcesync: addall tsync
 
@@ -127,6 +135,7 @@ sync:
 	$(MAKE) up.time
 
 ## Use for first push if not linked to a branch
+## push.main is the right target for new repos
 push.%: commit.time
 	git push -u origin $*
 
@@ -138,6 +147,8 @@ push.%: commit.time
 pullup: pull
 
 modupdate = git submodule update -i
+pullmods: pullup
+	$(modupdate)
 
 ## 2022 Sep 01 (Thu)
 ## This doesn't work for new, blank repos and I don't know why
@@ -147,6 +158,14 @@ pushup:
 
 git_check:
 	$(git_check)
+
+######################################################################
+
+Ignore += *.setbranch
+%.setbranch:
+	$(RM) *.setbranch
+	git checkout $* 
+	$(touch)
 
 ######################################################################
 
@@ -210,7 +229,7 @@ gptargets: $(gptargets)
 	$(sourceTouch)
 
 ## auto-docs causes conflict in dataviz
-outputs docs:
+outputs:
 	$(mkdir)
 
 %.docs: % docs
@@ -219,7 +238,8 @@ outputs docs:
 	$(sourceTouch)
 
 ## Commented out because of stupid dataviz conflict 2021 Nov 02 (Tue)
-## docs: ; $(mkdir)
+## Commented back in because I suspect I fixed dataviz? Or at least qmee
+docs: ; $(mkdir)
 
 ######################################################################
 
@@ -286,7 +306,6 @@ pages/Makefile:
 %.gitpush:
 	$(MAKE) $*
 	cd $* && (git add *.* && ($(git_check))) || ((git commit -m "Commited by $(CURDIR)") && git pull && git push && git status)
-
 
 define createpages
 	(git checkout --orphan gh-pages && git rm -rf * && touch ../README.md && cp ../README.md . && git add README.md && git commit -m "Orphan pages branch" && git push --set-upstream origin gh-pages )
@@ -368,17 +387,23 @@ gitprune:
 ### Testing
 
 Ignore += dotdir/ clonedir/ cpdir/
-dotdir: $(Sources)
+define dd_r
 	$(MAKE) commit.time
 	-/bin/rm -rf $@
 	git clone . $@
 	[ "$(pardirs)" = "" ] || ( cd $@ && $(LN) $(pardirs:%=../%) .)
+endef
+
+dotdir: $(Sources)
+	$(dd_r)
+
+Ignore += *.dd/
+%.dd: $(Sources)
+	$(dd_r)
 
 ## Note cpdir really means directory (usually); dotdir means the whole repo
 ## DON'T use cpdir for repos with Sources in subdirectories
 ## Do use for light applications focused on a particular directory
-## DON'T use for service (i.e., makeR scripts)
-## Do we have a solution for makeR scripts in subdirectories?
 ## Note that I am using it now for pipeR scripts, so that's probably fragile 2021 Jun 27 (Sun)
 cpdir: $(filter-out %.script, $(Sources))
 	-/bin/rm -rf $@
@@ -413,7 +438,7 @@ sourcedir: $(Sources)
 %.mslink: %
 	cd $* && (ls makestuff/Makefile || $(LN) ../makestuff)
 
-%.dirtest: % 
+%.dirtest: 
 	$(MAKE) $*.testsetup
 	$(MAKE) $*.testtarget
 	cd $* && $(MAKE) target
@@ -432,8 +457,6 @@ sourcedir: $(Sources)
 %.vdtest: %.dirtest
 	$(MAKE) pdftarget
 
-%.localtest: % %.localdir %.vdtest ;
-
 ## To make and display files in the all variable
 alltest:
 	$(MAKE) $(all) && ($(MAKE) $(all:%=%.go) || echo "Warning: alltest made but could not display everything" )
@@ -441,6 +464,7 @@ alltest:
 	$(MAKE) alltest
 
 ## Get it? 
+%.localtest: % %.localdir %.vdtest ;
 %.localltest: % %.localdir %.alltest ;
 
 ## This is def. incomplete, but I never use it 2022 Sep 24 (Sat)
@@ -485,6 +509,16 @@ hup:
 
 ######################################################################
 
+## Stashing
+
+smerge:
+	git stash
+	git fetch
+	git merge
+	git stash apply
+
+######################################################################
+
 ## Merging
 
 Ignore += *.ours *.theirs *.common
@@ -517,15 +551,19 @@ Ignore += *.oldfile *.olddiff *.arcfile
 	-$(RM) $(basename $*).*.oldfile
 	$(oldfile_r)
 
+Ignore += *.oldfile.pdf
+%.oldfile.pdf: | %.oldfile
+	$(CP) $| $@
+
 %.arcfile: 
 	$(oldfile_r)
 
 define oldfile_r
-	$(call hide, $(basename $*))
+	- $(call hide, $(basename $*))
 	-git checkout $(subst .,,$(suffix $*)) -- $(basename $*)
 	-cp $(basename $*) $@
 	-git checkout HEAD -- $(basename $*)
-	$(call unhide, $(basename $*))
+	- $(call unhide, $(basename $*))
 	ls $@
 endef
 
