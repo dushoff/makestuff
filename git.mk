@@ -358,8 +358,8 @@ $(Outside):
 ######################################################################
 
 %.reset:
-	- $(RMR) $*.olddir
-	mv $* $*.olddir
+	- $(RMR) $*.resetdir
+	mv $* $*.resetdir
 
 %.what:
 	rm -fr $*.new
