@@ -455,7 +455,7 @@ sourcedir: $(Sources)
 
 ## To open the dirtest final target when appropriate (and properly set up) 
 %.vdtest: %.dirtest
-	$(MAKE) pdftarget
+	cd $* && $(MAKE) pdftarget
 
 ## To make and display files in the all variable
 alltest:
