@@ -32,6 +32,7 @@ screens.update: screens.arc
 	- $(call hide, screens.list)
 	 $(listscreens)
 
+## Tool for helping make a non-listdir to a listdir
 screens_resource:
 	perl -i -wf makestuff/screensource.pl screens.list
 	## perl -i -wf makestuff/oldsource.pl screens.list

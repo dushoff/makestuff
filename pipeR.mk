@@ -1,15 +1,24 @@
 pdfcheck = perl -wf makestuff/wrapR/pdfcheck.pl
 
+rvan = R --vanilla
+noMakeFlags = env -u MAKELEVEL -u MAKEFLAGS
+stanVan = $(noMakeFlags) $(rvan)
+rrun ?= $(rvan)
+
 define makeArgs
-	echo "## Use this call to make $@ independently" > $@.args
-	echo "rpcall(\"$@ $*.pipestar $^\")"  >> $@.args
-	echo >> $@.args
+	@echo "rpcall(\"$@ $*.pipestar $^\")"  >> $@.args
+	@echo >> $@.args
 endef
 
+## Potential infelicity if a script used to produce a file
+## but now runs successfully without producing it
+## file can still be used downstream
+## awkwardly delete known target types; or make all known targets start with full target name?
 define pipeR
-	-$(RM) $@ $@.*
-	$(makeArgs)
-	((R --vanilla --args $@ shellpipes $*.pipestar $^ < $(word 1, $(filter %.R, $^)) > $(@:%.Rout=%.rtmp)) 2> $(@:%.Rout=%.Rlog) && cat $(@:%.Rout=%.Rlog)) || (cat $(@:%.Rout=%.Rlog) && false)
+	@-$(RM) $@ $@.*
+	@$(makeArgs)
+	@echo pipeR: Making $@ using $^
+	@(($(rrun) --args $@ shellpipes $*.pipestar $^ < $(word 1, $(filter %.R, $^)) > $(@:%.Rout=%.rtmp)) 2> $(@:%.Rout=%.Rlog) && cat $(@:%.Rout=%.Rlog)) || (cat $(@:%.Rout=%.Rlog) && false)
 	$(MVF) $(@:%.Rout=%.rtmp) $@
 endef
 
@@ -27,7 +36,7 @@ makeR=$(pipeR)
 define render
 	-$(RM) $@ $@.*
 	$(makeArgs)
-	Rscript --vanilla -e 'library("rmarkdown"); render("$<", output_file="$@")' shellpipes $*.pipestar $^
+	$(rrun) -e 'library("rmarkdown"); render("$<", output_file="$@")' shellpipes $*.pipestar $^
 endef
 
 define render_rmd
@@ -56,11 +65,15 @@ endef
 
 define wrapR
 	-$(RM) $@ $@.*
-	((R --vanilla --args $@ $^ shellpipes < makestuff/wrappipeR.R > $(@:%.Rout=%.rtmp)) 2> $(@:%.Rout=%.Rlog) && cat $(@:%.Rout=%.Rlog)) || (cat $(@:%.Rout=%.Rlog) && false)
+	(($(rrun) --args $@ $^ shellpipes < makestuff/wrappipeR.R > $(@:%.Rout=%.rtmp)) 2> $(@:%.Rout=%.Rlog) && cat $(@:%.Rout=%.Rlog)) || (cat $(@:%.Rout=%.Rlog) && false)
 	$(MVF) $(@:%.Rout=%.rtmp) $@
 endef
 
 run-R = $(wrapR)
+
+define scriptR
+	cd $(dir $<) && $(rrun) < $(notdir $<) > $(notdir $@)
+endef
 
 ## Legacy
 ifdef autowrapR
@@ -99,7 +112,6 @@ endif
 	perl -f makestuff/wrapR/Rcalc.pl $< > $@ 
 
 ######################################################################
-
 
 ifdef autoknit
 %.html: %.Rmd
@@ -207,7 +219,7 @@ Ignore += $(wildcard *.pipeR.script)
 
 Ignore += $(wildcard *.allR)
 %.allR: %.Rscript
-	R --vanilla  < $< | tee $@
+	$(rrun)  < $< | tee $@
 
 ######################################################################
 

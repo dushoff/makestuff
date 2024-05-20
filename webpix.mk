@@ -60,11 +60,11 @@ Makefile: allsteps.mk
 allsteps.mk: $(stepmks)
 	$(cat)
 
-webpix/%: allsteps.mk
+webpix/%: | allsteps.mk
 	$(MAKE) webpix
 	$(MAKE) -f $< $@
 
-my_images/%: my_images
+my_images/%: | my_images
 	(cd $< && $(MAKE) $*) || convert $(word 2, $^) $@
 
 ## Make things that programs need?

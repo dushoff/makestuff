@@ -22,6 +22,9 @@ gptarget:
 optarget:
 	$(MAKE) $(target:%=%.pdf.op) || $(MAKE) $(target:%=%.op)
 
+finaltarget: 
+	$(MAKE) $(target:%=%.final)
+
 pushtarget:
 	$(MAKE) $<.pd
 
@@ -52,25 +55,22 @@ target.mk:
 %.dscreen: %.dir
 	cd $* && screen -t "$(notdir $*)"
 
+######################################################################
+
+## screening stuff (seems like listdir stuff, but presumably predates it)
+
 ## open directory in a screen window (for running things)
 ## meant to be called from within screen (otherwise makes a new one)
-## startscreen part is clumsy
-%.rscreen: %.dir
-	cd $(dir $*) && $(MAKE) "$(notdir $*)" 
-	- cd $* && $(MAKE) startscreen
-	cd $* && screen -t "$(notdir $*)"
+%.newscreen: %.dir
+	cd $* && screen -t "$*"
 
-## do the above and open a vim_session
-## Eliminated apparent .dir redundancy 2021 Feb 11 (Thu)
-%.vscreen: %.dir
-	- cd $* && $(MAKE) vimclean
+%.rscreen:
+	-cd $* && $(MAKE) startscreen 
+	-cd $* && screen -t "$(notdir $*)"
+
+%.vscreen: | %
+	- cd $* && ($(MAKE) vimclean || true)
 	cd $* && screen -t "$*" bash -cl "vvs"
-
-## Old-style vscreen (short names)
-## Do I use this? 2021 Feb 11 (Thu)
-%.svscreen: %.dir
-	cd $(dir $*) && $(MAKE) "$(notdir $*)" 
-	cd $* && screen -t "$(notdir $*)" bash -cl "vvs"
 
 %.dir:
 	cd $(dir $*) && $(MAKE) $(notdir $*)

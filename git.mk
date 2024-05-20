@@ -1,4 +1,3 @@
-
 ## More makestuff/makestuff weirdness
 -include makestuff/exclude.mk
 -include exclude.mk
@@ -33,12 +32,21 @@ pull: commit.time
 	git pull
 	touch $<
 
+%.autocommit: $(Sources)
+	git add -f $? 
+	-git commit -m $*
+	touch commit.time
+
+%.autosync: %.autocommit
+	$(MAKE) sync
+
 ######################################################################
 
 ## parallel directories
 ## not part of all.time by default because usually updated in parallel
 $(pardirs):
 	cd .. && $(MAKE) $@
+	- cd ../$@ &&  $(MAKE) Makefile
 	ls ../$@ > $(null) && $(LNF) ../$@ .
 
 Ignore += up.time all.time
@@ -127,6 +135,7 @@ sync:
 	$(MAKE) up.time
 
 ## Use for first push if not linked to a branch
+## push.main is the right target for new repos
 push.%: commit.time
 	git push -u origin $*
 
@@ -138,6 +147,8 @@ push.%: commit.time
 pullup: pull
 
 modupdate = git submodule update -i
+pullmods: pullup
+	$(modupdate)
 
 ## 2022 Sep 01 (Thu)
 ## This doesn't work for new, blank repos and I don't know why
@@ -218,7 +229,7 @@ gptargets: $(gptargets)
 	$(sourceTouch)
 
 ## auto-docs causes conflict in dataviz
-outputs docs:
+outputs:
 	$(mkdir)
 
 %.docs: % docs
@@ -227,7 +238,8 @@ outputs docs:
 	$(sourceTouch)
 
 ## Commented out because of stupid dataviz conflict 2021 Nov 02 (Tue)
-## docs: ; $(mkdir)
+## Commented back in because I suspect I fixed dataviz? Or at least qmee
+docs: ; $(mkdir)
 
 ######################################################################
 
@@ -295,7 +307,6 @@ pages/Makefile:
 	$(MAKE) $*
 	cd $* && (git add *.* && ($(git_check))) || ((git commit -m "Commited by $(CURDIR)") && git pull && git push && git status)
 
-
 define createpages
 	(git checkout --orphan gh-pages && git rm -rf * && touch ../README.md && cp ../README.md . && git add README.md && git commit -m "Orphan pages branch" && git push --set-upstream origin gh-pages )
 endef
@@ -348,8 +359,8 @@ $(Outside):
 ######################################################################
 
 %.reset:
-	- $(RMR) $*.olddir
-	mv $* $*.olddir
+	- $(RMR) $*.resetdir
+	mv $* $*.resetdir
 
 %.what:
 	rm -fr $*.new
@@ -376,17 +387,23 @@ gitprune:
 ### Testing
 
 Ignore += dotdir/ clonedir/ cpdir/
-dotdir: $(Sources)
+define dd_r
 	$(MAKE) commit.time
 	-/bin/rm -rf $@
 	git clone . $@
 	[ "$(pardirs)" = "" ] || ( cd $@ && $(LN) $(pardirs:%=../%) .)
+endef
+
+dotdir: $(Sources)
+	$(dd_r)
+
+Ignore += *.dd/
+%.dd: $(Sources)
+	$(dd_r)
 
 ## Note cpdir really means directory (usually); dotdir means the whole repo
 ## DON'T use cpdir for repos with Sources in subdirectories
 ## Do use for light applications focused on a particular directory
-## DON'T use for service (i.e., makeR scripts)
-## Do we have a solution for makeR scripts in subdirectories?
 ## Note that I am using it now for pipeR scripts, so that's probably fragile 2021 Jun 27 (Sun)
 cpdir: $(filter-out %.script, $(Sources))
 	-/bin/rm -rf $@
@@ -421,7 +438,7 @@ sourcedir: $(Sources)
 %.mslink: %
 	cd $* && (ls makestuff/Makefile || $(LN) ../makestuff)
 
-%.dirtest: % 
+%.dirtest: 
 	$(MAKE) $*.testsetup
 	$(MAKE) $*.testtarget
 	cd $* && $(MAKE) target
@@ -438,8 +455,7 @@ sourcedir: $(Sources)
 
 ## To open the dirtest final target when appropriate (and properly set up) 
 %.vdtest: %.dirtest
-	$(MAKE) pdftarget
-
+	cd $* && $(MAKE) pdftarget
 
 ## To make and display files in the all variable
 alltest:
@@ -493,6 +509,16 @@ hup:
 
 ######################################################################
 
+## Stashing
+
+smerge:
+	git stash
+	git fetch
+	git merge
+	git stash apply
+
+######################################################################
+
 ## Merging
 
 Ignore += *.ours *.theirs *.common
@@ -524,6 +550,10 @@ Ignore += *.oldfile *.olddiff *.arcfile
 %.oldfile:
 	-$(RM) $(basename $*).*.oldfile
 	$(oldfile_r)
+
+Ignore += *.oldfile.pdf
+%.oldfile.pdf: | %.oldfile
+	$(CP) $| $@
 
 %.arcfile: 
 	$(oldfile_r)
