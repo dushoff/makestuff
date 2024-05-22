@@ -5,7 +5,6 @@
 ## `make null.lmk` if the folder is under ~/Dropbox/resources/<thisdirname>
 ## Otherwise edit <yourname>.local and use `make <yourname.lmk>`
 
-
 -include local.mk
 drop ?= ~/Dropbox/resources/$(notdir $(CURDIR))
 
