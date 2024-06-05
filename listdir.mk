@@ -48,8 +48,9 @@ alldirs += makestuff
 Ignore += $(listdirs) $(resting)
 
 ## making
-$(oldruledirs):
-	$(MV) $(old) $@ || git clone $(url) $@
-
 $(ruledirs):
-	git clone $(url) $@ || ($(linkdirname))
+	git clone $(url) $@
+
+## The first one is outdated (for changeover); the last one is for linking but doesn't fail when it should
+$(oldruledirs):
+	$(MV) $(old) $@ || git clone $(url) $@ || ($(linkdirname))

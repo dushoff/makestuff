@@ -41,6 +41,7 @@ wraplink = cd $* && $(LN) ../mkfiles/$*.wrap makefile
 
 ## Make Linked Makefile into a repository file
 ## Keep any changes made before that (remember to change Source and so one)
+## This is a dangerous rule!
 %.repofile:
 	$(RM) $*/Makefile
 	$(CPF) mkfiles/$*.make $*/Makefile

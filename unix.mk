@@ -37,7 +37,7 @@ null = /dev/null
 
 lscheck = @$(LS) $@ > $(null) || (echo ERROR upstream rule failed to make $@ && false)
 
-lstouch = @($(LS) $@ > $(null) || (echo ERROR upstream rule failed to make $@ && false)) && touch $@
+lstouch = @$(LS) $@ > $(null) || ((echo ERROR upstream rule failed to make $@ && false) && touch $@)
 
 impcheck = @($(LS) $$@ > $(null) || (echo ERROR upstream rule failed to make $$@ && false)) && touch $$@
 
