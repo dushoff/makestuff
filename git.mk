@@ -40,6 +40,9 @@ pull: commit.time
 %.autosync: %.autocommit
 	$(MAKE) sync
 
+noreport: 
+	$(MAKE) report.md.theirs.pick
+
 ######################################################################
 
 ## parallel directories
@@ -166,16 +169,6 @@ Ignore += *.setbranch
 	$(RM) *.setbranch
 	git checkout $* 
 	$(touch)
-
-######################################################################
-
-## autosync stuff not consolidated, needs work. 
-remotesync: commit.default
-	git pull
-	git push -u origin $(BRANCH)
-
-%.autosync: %
-	cd $< && $(MAKE) remotesync
 
 ######################################################################
 
