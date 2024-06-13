@@ -148,6 +148,7 @@ index.lsd: .
 	ls -d * > $@
 
 define merge_files
+	$(RM) *.oldfile
 	$(PUSH)
 	- $(DIFF) $(word 2, $^) $@
 	$(MV) $@ $(word 2, $^)
