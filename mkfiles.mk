@@ -1,4 +1,3 @@
-
 ## USAGE
 ## Make a Makefile that's hidden from the repo: `make <dir>.mkfile`
 ## Add it to repo: `make <dir>.repofile`
