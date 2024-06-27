@@ -166,24 +166,33 @@ draft: ^DEFHEAD {\sl %% (present)}
 # Just one pic (no header)
 PICSLIDE NULLSLIDE
 draft final: ^%%
-
 ## Also, I don't actually have any idea how to do this!
 
 # Slides with purely repetitive information (for classroom exposition)
+
+## Repeating (Need to refactor this for notes-based lectures, and non-notes based talks)
+REPSLIDE NULLSLIDE
+draft lecture: ^DEFHEAD {\sl %% (repeat)}
+final: ^DEFHEAD %%
+
+## Previewing
+PRESLIDE NULLSLIDE
+draft lecture: ^DEFHEAD {\sl %% (preview)}
+final: ^DEFHEAD %%
+
+## This should be elsewhere!
+## Refer to something outside like the textbook (NEW 2023 Sep 02 (Sat))
+OUTSLIDE NULLSLIDE
+draft final: ^DEFHEAD {\sl %% (outside)}
+
+## Extra
+FUNSLIDE NULLSLIDE
+draft final: ^DEFHEAD {\sl %% (Extra)}
+
+## Deprecated
 RSLIDE NULLSLIDE
 final: ^DEFHEAD {\sl %% (repeat)}
 draft: ^DEFHEAD {\sl %% (repeat OR preview?)}
-
-## Repeated info
-REPSLIDE NULLSLIDE
-draft final: ^DEFHEAD {\sl %% (repeat)}
-
-## Presentation only
-PRESLIDE NULLSLIDE
-draft final: ^DEFHEAD {\sl %% (preview)}
-
-FUNSLIDE NULLSLIDE
-draft final: ^DEFHEAD {\sl %% (Extra)}
 
 ## Titlespace omit from notes
 
@@ -285,7 +294,6 @@ DIAGRAM ^WIDEFIG % \vspace{-0.7in}
 
 # handouts: ^WIDEFIG % \vspace{-1.2in}
 
-
 SIDEFIG %!
 draft final: ^WIDEFIG %%
 
@@ -297,6 +305,9 @@ draft final: ^HFIG 0.45 %%
 CFIG ^FIG %%
 draft final: ^WIDEFIG %%
 
+## NEEDS WORK 2024 Jun 22 (Sat)
+LCFIG ^LANDFIG %%
+draft final: \hfill\includegraphics[width=0.9\textwidth,angle=270]{%}\hfill\mbox{}
 
 # Figures next to each other
 DBFIG \begin{minipage}{\dfwidth} \centering \n\includegraphics[height=%\dfheight]{%} \end{minipage} \hspace{\dfsep} \begin{minipage}{\dfwidth} \centering \n\includegraphics[height=%\dfheight]{%} \end{minipage}
