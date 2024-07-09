@@ -1,0 +1,9 @@
+%% This is all a mess 2024 Jun 16 (Sun); fontspec requires xetex or something like
+%% \usepackage{fontspec}
+%% \setsansfont{Noto Sans CJK TC}
+\newcommand{\nochinese}[1]{}
+\newcommand{\yeschinese}[1]{\setmainfont{Noto Serif CJK TC}\setsansfont{Noto Serif CJK TC} #1}
+\newcommand{\chinese}{\nochinese}
+\newcommand{\useChinese}{useChinese not renewed!}
+\renewcommand{\useChinese}{}
+\renewcommand{\useChinese}{\renewcommand{\chinese}{\yeschinese}}

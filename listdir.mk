@@ -32,6 +32,7 @@ screens.update: screens.arc
 	- $(call hide, screens.list)
 	 $(listscreens)
 
+## Tool for helping make a non-listdir to a listdir
 screens_resource:
 	perl -i -wf makestuff/screensource.pl screens.list
 	## perl -i -wf makestuff/oldsource.pl screens.list
@@ -48,4 +49,8 @@ Ignore += $(listdirs) $(resting)
 
 ## making
 $(ruledirs):
-	$(MV) $(old) $@ || git clone $(url) $@
+	git clone $(url) $@
+
+## The first one is outdated (for changeover); the last one is for linking but doesn't fail when it should
+$(oldruledirs):
+	$(MV) $(old) $@ || git clone $(url) $@ || ($(linkdirname))

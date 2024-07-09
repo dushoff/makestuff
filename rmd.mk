@@ -8,7 +8,9 @@
 ## Basically, it only seems to work to make render outputs in the file directory
 rmdmd_r = Rscript --vanilla -e 'library("rmarkdown"); render("$<", output_format="md_document", output_file="$@")'
 
-rmdh_r = Rscript --vanilla -e 'library("rmarkdown"); render("$<", output_format="html_document", output_file="$(notdir $@)")'
+rmdh_r = Rscript --vanilla -e 'library("rmarkdown"); render("$<", output_format="html_document", output_file="$(notdir $@)", output_dir="$(dir $@)")'
+
+rmdh_p = Rscript --vanilla -e 'library("rmarkdown"); render("$<", output_format="pdf_document", output_file="$(notdir $@)", output_dir="$(dir $@)")'
 
 tangle_r = Rscript --vanilla -e 'library("knitr"); knit("$<", output="$@", tangle=TRUE)'
 

@@ -1,10 +1,10 @@
-# Push runs the first perl script among its dependencies, using all the other dependencies as arguments
-
 ## Just the command (refactor using this?)
 PERLEX = perl -wf $(filter %.pl, $^)
 
-PUSH = perl -wf $(filter %.pl, $^) $(filter-out %.pl, $^) > $@
-PUSHRO = $(rm) $@; $(PUSHRO)
+# Push runs the first perl script among its dependencies, using all the other dependencies as arguments
+PUSH = $(RM) $@; perl -wf $(filter %.pl, $^) $(filter-out %.pl, $^) >  $(hiddentarget) && $(unhidetarget)
+
+LOGPUSH = (perl -wf $(filter %.pl, $^) $(filter-out %.pl, $^) >  $(hiddentarget) 2> $@.log || (cat $@.log && false)) && $(unhidetarget)
 
 define PUSHRO
 	- $(RM) $@
@@ -13,18 +13,19 @@ define PUSHRO
 endef
 
 # Pushout adds the name of the output file as the first argument (assuming you only have one .pl dependency)
-PUSHOUT = perl -wf $(filter %.pl, $^) $@ $(filter-out %.pl, $^) > $@
+PUSHOUT = perl -wf $(filter %.pl, $^) $@ $(filter-out %.pl, $^) >  $(hiddentarget) && $(unhidetarget)
 
 # Pushstar adds $*
-PUSHSTAR = perl -wf $(filter %.pl, $^) $* $(filter-out %.pl, $^) > $@
+PUSHSTAR = perl -wf $(filter %.pl, $^) $* $(filter-out %.pl, $^) >  $(hiddentarget) && $(unhidetarget)
 
-PUSHARGS = perl -wf $(filter %.pl, $^) $1 $(filter-out %.pl, $^) > $@
+PUSHARGS = perl -wf $(filter %.pl, $^) $1 $(filter-out %.pl, $^) >  $(hiddentarget) && $(unhidetarget)
 
 # Pushon appends (pushes onto the file that's already there)
+## No hiding
 PUSHON = perl -wf $(filter %.pl, $^) $(filter-out %.pl, $^) >> $@
 
 ## Paragraph perl for short programs that operate on paragraphs
-PPUSH = perl -00 -wf $(filter %.pl, $^) $(filter-out %.pl, $^) > $@
+PPUSH = perl -00 -wf $(filter %.pl, $^) $(filter-out %.pl, $^) >  $(hiddentarget) && $(unhidetarget)
 
 ## Perl in place
 ## Target not made, use a fake

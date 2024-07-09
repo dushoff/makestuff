@@ -1,4 +1,18 @@
 
+slowtarget.mk (see slowtarget.md) is now the recommended way to do things
+
+----------------------------------------------------------------------
+
+Older stuff below, maybe delete it!
+
+## 2023 Apr 15 (Sat)
+
+Starting again from scratch!
+
+timecache seems easy to make, but unbeautiful (it works like cacheflow, identifying slow dependencies). Would be better to mark slow targets
+
+makestuff/slowtarget.mk tries to do that. But it seems basically impossible to do without special marking for each slow rule, which I have been avoiding. The problem is that chaining would require a catch-all rule?
+
 ## 2020 Jul 04 (Sat)
 
 Redoing everything again

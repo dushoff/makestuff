@@ -1,3 +1,4 @@
+
 latex ?= pdflatex
 latexnon ?= pdflatex -interaction=nonstopmode
 texi ?= texi2pdf
@@ -16,9 +17,18 @@ endif
 %.tex.pdf: %.tex
 	$(texir) || $(latexnonly) || $(latexonly)
 
+%.TEX.pdf: %.TEX
+	$(texir) || $(latexnonly) || $(latexonly)
+
+%.tikz.pdf: %.tikz
+	$(latexonly) || $(latexnonly)
+
 ## .pdf is never up to date (makedeps is fake)
 ## Why is extra makedeps needed? Implicit rule recursion is confusing
+.PRECIOUS: %.pdf
 %.pdf: %.tex %.tex.deps %.makedeps makedeps
+	$(MAKE) $*.deps.pdf
+%.pdf: %.TEX %.tex.deps %.makedeps makedeps
 	$(MAKE) $*.deps.pdf
 
 ## Working on work flow choices 2021 Oct 20 (Wed)
@@ -53,8 +63,18 @@ makedeps: ;
 	($(bibtex)) || ($(RM) $@ && false)
 
 texfiles = $(wildcard *.tex)
+Ignore += $(texfiles:tex=loc)
 Ignore += $(texfiles:tex=pdf)
 Ignore += $(texfiles:tex=out)
+Ignore += $(texfiles:tex=tex.pdf)
+Ignore += $(texfiles:tex=tex.out)
+
+TEXfiles = $(wildcard *.TEX)
+Ignore += $(TEXfiles:TEX=loc)
+Ignore += $(TEXfiles:TEX=pdf)
+Ignore += $(TEXfiles:TEX=out)
+Ignore += $(TEXfiles:TEX=TEX.pdf)
+Ignore += $(TEXfiles:TEX=TEX.out)
 
 ## These direct exclusions can be replaced by fancier rules above if necessary
 Ignore += *.biblog *.log *.aux .*.aux *.blg *.bbl *.bcf 
