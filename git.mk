@@ -258,51 +258,13 @@ trackedTargets += $(wildcard gitarchive/*)
 ######################################################################
 
 ## Deprecate this for docs/-based directories 2021 Ақп 02 (Сс)
-## Redo in a more systematic way (like .branchdir)
+## Deleting a bunch of pages stuff 2024 Jul 16 (Tue)
 
-## Pages. Sort of like git_push, but for gh_pages (html, private repos)
-## May want to refactor as for git_push above (break link from pages/* to * for robustness)
-
-## 2021 Мам 27 (Бс) Probably deprecated, but could update to follow docs style
-## 2019 Sep 22 (Sun) Keeping checkout, but skipping early pull
-## That can make the remote copy look artificially new
-## 2019 Oct 10 (Thu)
-## But if we don't early pull we get spurious merges
-## Best is to pull pages when you pull
-Ignore += pagebranch
-%.pages:
-	$(MAKE) pages/pagebranch
-	$(MAKE) pages/$*
-	cd pages && git add -f $*
-	-cd pages && git commit -m "Pushed directly from parent"
-	@echo .pagepush to push to web …
-
-%.pushpage: %.pagepush ;
-%.pagepush: %.pages
-	cd pages && git pull && git push
-
-pages/Makefile:
-	cp Makefile $@
-
-## Don't call this directly and then we don't need the pages dependency
-## In development (or deprecation) 2021 Мам 27 (Бс)
-## pages/%: %; $(copy)
-
-## If you're going to pushpages automatically, you might want to say
-## pull: pages.gitpull
+######################################################################
 
 %.gitpull:
 	$(MAKE) $*
 	cd $* && git pull
-
-## Deprecated: use output, pages, docs ….
-%.gitpush:
-	$(MAKE) $*
-	cd $* && (git add *.* && ($(git_check))) || ((git commit -m "Commited by $(CURDIR)") && git pull && git push && git status)
-
-define createpages
-	(git checkout --orphan gh-pages && git rm -rf * && touch ../README.md && cp ../README.md . && git add README.md && git commit -m "Orphan pages branch" && git push --set-upstream origin gh-pages )
-endef
 
 %.branchdir:
 	git clone `git remote get-url origin` $*
@@ -404,7 +366,8 @@ cpdir: $(filter-out %.script, $(Sources))
 	cp -r $^ $@
 
 ## Still working on rev-parse line
-%.branchdir: $(Sources)
+## See older branchdir above; this one seems ambitious 2024 Jul 16 (Tue)
+%.makebranchdir: $(Sources)
 	$(MAKE) commit.time
 	git rev-parse --verify $* || git fetch origin $*:$*
 	git clone . $*
