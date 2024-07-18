@@ -61,4 +61,4 @@ Ignore += *.biblog *.log *.aux .*.aux *.blg *.bbl *.bcf *.repeat *.complete
 Ignore += *.nav *.snm *.toc
 Ignore += *.run.xml
 Ignore += *.tex.* *.subdeps *.makedeps
-Ignore += *.aux.pdf *.aux.out %.complete.pdf
+Ignore += *.aux.pdf *.aux.out *.complete.pdf
