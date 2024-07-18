@@ -12,10 +12,9 @@ RUNLatex = $(latexEngine) $(latexNonstop) $(latexJob) (basename $<)
 
 ## This .pdf should never be up to date
 ## because Makefile can't evaluate whether the deps are up to date
-%.pdf: phony
+%.pdf: %.aux phony
 	$(MAKE) -f $*.tex.mk -f Makefile $*.tex.deps
-	$(MAKE) $*.aux
-	$(CP) $*.aux.pdf $@
+	$(runLatex)
 
 %.bbl: %.aux 
 	$(rm)
