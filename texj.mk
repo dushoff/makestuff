@@ -17,8 +17,9 @@ RUNLatex = $(latexEngine) $(latexNonstop) $(latexJob) $(basename $<)
 %.repeat: %.aux %.tex.deps
 	-$(MAKE) -f $*.tex.mk -f Makefile $*.tex.deps
 	$(runLatex)
-	@(grep "Rerun to" $*.log && touch $<) || echo latex refs up to date
 	$(touch)
+	sleep 1
+	@(grep "Rerun to" $*.log && touch $<) || echo latex refs up to date
 
 ## The main .pdf should never be up to date
 ## because Makefile can't evaluate whether the deps are up to date
