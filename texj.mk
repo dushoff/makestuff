@@ -54,8 +54,8 @@ Ignore += $(texfiles:tex=pdf)
 Ignore += $(texfiles:tex=out)
 
 ## These direct exclusions can be replaced by fancier rules above if necessary
-Ignore += *.biblog *.log *.aux .*.aux *.blg *.bbl *.bcf *.repeat
+Ignore += *.biblog *.log *.aux .*.aux *.blg *.bbl *.bcf *.repeat *.complete
 Ignore += *.nav *.snm *.toc
 Ignore += *.run.xml
 Ignore += *.tex.* *.subdeps *.makedeps
-Ignore += *.aux.pdf *.aux.out
+Ignore += *.aux.pdf *.aux.out %.complete.pdf
