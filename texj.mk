@@ -15,6 +15,7 @@ RUNLatex = $(latexEngine) $(latexNonstop) $(latexJob) $(basename $<)
 	- $(RUNLatex)
 
 %.repeat: %.aux %.tex.deps
+	-$(MAKE) -f $*.tex.mk -f Makefile $*.tex.deps
 	$(runLatex)
 	@(grep "Rerun to" $< && touch $<) || echo latex refs up to date
 	$(touch)
