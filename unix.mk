@@ -166,7 +166,7 @@ endef
 
 ## WATCH OUT for the -
 %.filenames:
-	rename "s/[& ,?!-]+/_/g" $*/*.*
+	rename "s/[()& ,?!-]+/_/g" $*/*.*
 
 %.voice: voice.pl %
 	$(PUSH)
