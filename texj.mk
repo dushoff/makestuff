@@ -4,38 +4,57 @@ latexJob = -jobname=$(basename $@)
 bibtex ?= biber $* || bibtex $*
 
 runLatex = $(latexEngine) $(latexJob) $(basename $<)
-RUNLatex = $(latexEngine) $(latexNonstop) $(latexJob) (basename $<)
+RUNLatex = $(latexEngine) $(latexNonstop) $(latexJob) $(basename $<)
+
+######################################################################
+
+## Basic pathway
 
 %.aux: %.tex
-	$(runLatex)
-	$(MV) $*.pdf $*.aux.pdf
+	$(RUNLatex)
 
-%.complete: %.aux
+%.repeat: %.aux %.tex.deps
 	$(runLatex)
 	@(grep "Rerun to" $< && touch $<) || echo latex refs up to date
+	$(touch)
 
-## This .pdf should never be up to date
+## The main .pdf should never be up to date
 ## because Makefile can't evaluate whether the deps are up to date
-%.pdf: %.phony
+%.pdf: %.aux phony
 	$(MAKE) -f $*.tex.mk -f Makefile $*.tex.deps
-	$(MAKE) $*.complete
+	$(MAKE) $*.repeat
 
-%.bbl: %.aux 
+%.bbl: %.tex 
 	$(rm)
+	$(RUNLatex)
 	$(bibtex)
 
-%.phony: ;
+phony: ;
+
+######################################################################
+
+## Loop over reruns
+
+%.complete: phony
+	@while ! $(MAKE) -q $*.repeat ; do $(MAKE) $*.repeat; done;
+
+%.complete.pdf: %.complete
+	$(CP) $*.pdf $@
+
+######################################################################
 
 .PRECIOUS: %.tex.mk
 %.tex.mk: %.tex 
 	perl -wf makestuff/texi.pl $< > $@
+
+######################################################################
 
 texfiles = $(wildcard *.tex)
 Ignore += $(texfiles:tex=pdf)
 Ignore += $(texfiles:tex=out)
 
 ## These direct exclusions can be replaced by fancier rules above if necessary
-Ignore += *.biblog *.log *.aux .*.aux *.blg *.bbl *.bcf *.complete
+Ignore += *.biblog *.log *.aux .*.aux *.blg *.bbl *.bcf *.repeat
 Ignore += *.nav *.snm *.toc
 Ignore += *.run.xml
 Ignore += *.tex.* *.subdeps *.makedeps
