@@ -10,8 +10,9 @@ RUNLatex = $(latexEngine) $(latexNonstop) $(latexJob) $(basename $<)
 
 ## Basic pathway
 
+.PRECIOUS: %.aux
 %.aux: %.tex
-	$(RUNLatex)
+	- $(RUNLatex)
 
 %.repeat: %.aux %.tex.deps
 	$(runLatex)
@@ -26,7 +27,7 @@ RUNLatex = $(latexEngine) $(latexNonstop) $(latexJob) $(basename $<)
 
 %.bbl: %.tex 
 	$(rm)
-	$(RUNLatex)
+	$(MAKE) $*.aux
 	$(bibtex)
 
 phony: ;
