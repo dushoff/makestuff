@@ -34,6 +34,11 @@ RUNLatex = $(latexEngine) $(latexNonstop) $(latexJob) $(basename $<)
 
 phony: ;
 
+## This rule meant to be over-ridden by rules in the corresponding .mk
+.PRECIOUS: %.tex.deps
+%.tex.deps:
+	touch $@
+
 ######################################################################
 
 ## Loop over reruns
