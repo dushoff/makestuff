@@ -8,6 +8,7 @@ my $basename = $ARGV[0];
 $basename =~ s/\.tex$//;
 my $target =  "$basename.tex.deps";
 my $ftarget =  "$basename.tex.files";
+my $files =  $basename."Files";
 
 ### Read and parse
 my $f = <>;
@@ -19,6 +20,7 @@ $f =~ s/^%.*//;
 $f =~ s/\n%.*//g;
 while ($f =~ s/\\input\s*{(.*?)}//){
 	$inputs{$1}=0;
+}
 while ($f =~ s/\\include\s*{(.*?)}//){
 	$inputs{$1}=0;
 }
@@ -45,14 +47,12 @@ while ($f =~ s/\\(?:bibliography|addbibresource)\s*{(.*?)}//){
 ######################################################################
 ### Write rules
 
-say "$target: ; touch \$@";
-say"";
-
 ## Use order-only as of 2023 Nov 08 (Wed)
 ## Directories
 ## Needs to be above any dependencies that might look in the directories
 ## makehere and makethere would need to be in your own make file
 ## Only first-level subdirectories should be handled here
+my (%dirs);
 foreach(keys %inputs, keys %graphics, keys %bibs)
 {
 	s|/*[^/]*$||;
@@ -63,21 +63,19 @@ print "$target: | ", join " ", keys %dirs, "\n\n" if %dirs;
 
 ## Pictures
 if (%graphics){
-	say "$target: ", join " ", keys %graphics, "\n";
+	say "$files += ", join " ", keys %graphics, "\n";
 	say"";
 }
 
 ## Inputs
 if (%inputs){
-	say "$target: ", join " ", keys %inputs;
+	say "$files += ", join " ", keys %inputs;
 
 	# Don't try to recursively deal with tex dependencies across directories
-	# Yet
 	my @deps = keys %inputs;
 	@deps = grep(!/\//, @deps); 
 	if (@deps){
-		say "$mtarget: " . join " ", map {s|.tex$|.tex.deps|; $_} @deps;
-		say "$target: " . join " ", map {s|.makedeps$|.tex.deps|; $_} @deps;
+		say "$files += " . join " ", map {s|.tex$|.tex.deps|; $_} @deps;
 	}
 	say"";
 }
@@ -85,7 +83,9 @@ if (%inputs){
 ## Bib stuff
 if (%bibs){
 	say "$target: $basename.bbl";
-	say "$basename.bbl: " . join " ", keys %bibs, "\n";
+	say "$basename.bbl: " . join " ", keys %bibs;
 	## say "$target: " . join " ", keys %bibs, "\n";
 	say"";
 }
+
+say "$target: \$($files)";

@@ -12,6 +12,7 @@ RUNLatex = $(latexEngine) $(latexNonstop) $(latexJob) $(basename $<)
 
 .PRECIOUS: %.aux
 %.aux: %.tex
+	-$(MAKE) -f $*.tex.mk -f Makefile $*.tex.files
 	- $(RUNLatex)
 
 %.repeat: %.aux %.tex.deps
@@ -34,7 +35,7 @@ RUNLatex = $(latexEngine) $(latexNonstop) $(latexJob) $(basename $<)
 
 phony: ;
 
-## This rule meant to be over-ridden by rules in the corresponding .mk
+## Dependencies in the corresponding .mk
 .PRECIOUS: %.tex.deps
 %.tex.deps:
 	touch $@
@@ -65,5 +66,5 @@ Ignore += $(texfiles:tex=out)
 Ignore += *.biblog *.log *.aux .*.aux *.blg *.bbl *.bcf *.repeat *.complete
 Ignore += *.nav *.snm *.toc
 Ignore += *.run.xml
-Ignore += *.tex.* *.subdeps *.makedeps
+Ignore += *.tex.*
 Ignore += *.aux.pdf *.aux.out *.complete.pdf
