@@ -11,7 +11,7 @@ RUNLatex = $(latexEngine) $(latexNonstop) $(latexJob) $(basename $<)
 ## Basic pathway
 
 .PRECIOUS: %.aux
-%.aux: %.tex %.tex.mk
+%.aux: %.tex | %.tex.mk
 	-$(MAKE) -f $*.tex.mk -f Makefile $*.tex.files
 	- $(RUNLatex)
 
