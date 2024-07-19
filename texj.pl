@@ -7,29 +7,23 @@ my $basename = $ARGV[0];
 
 $basename =~ s/\.tex$//;
 my $target =  "$basename.tex.deps";
-my $mtarget =  "$basename.subdeps";
+my $ftarget =  "$basename.tex.files";
 
 ### Read and parse
 my $f = <>;
-my (%inputs, %packages, %graphics, %bibs, %dirs);
+my (%inputs, %graphics, %bibs);
 $f =~ s/.*%.*no_texdeps.*//;
 
-# Inputs (add include!)
+# input/include
 $f =~ s/^%.*//;
 $f =~ s/\n%.*//g;
 while ($f =~ s/\\input\s*{(.*?)}//){
 	$inputs{$1}=0;
+while ($f =~ s/\\include\s*{(.*?)}//){
+	$inputs{$1}=0;
 }
 
-## packages are tracked only for their directory
-while ($f =~ s/\\usepackage\s*{(.*?)}//){
-	my @packlist = split /,\s*/, $1;
-	foreach (@packlist){
-		$packages{$_}=0;
-	}
-}
-
-## Graphics (only one method so far)
+## Graphics
 while ($f =~ s/\\includegraphics\s*{(.*?)}//){
 	$graphics{$1}=0;
 }
@@ -51,7 +45,7 @@ while ($f =~ s/\\(?:bibliography|addbibresource)\s*{(.*?)}//){
 ######################################################################
 ### Write rules
 
-say "$target $mtarget: ; touch \$@";
+say "$target: ; touch \$@";
 say"";
 
 ## Use order-only as of 2023 Nov 08 (Wed)
@@ -59,7 +53,7 @@ say"";
 ## Needs to be above any dependencies that might look in the directories
 ## makehere and makethere would need to be in your own make file
 ## Only first-level subdirectories should be handled here
-foreach(keys %inputs, keys %packages, keys %graphics, keys %bibs)
+foreach(keys %inputs, keys %graphics, keys %bibs)
 {
 	s|/*[^/]*$||;
 	s|/.*||;

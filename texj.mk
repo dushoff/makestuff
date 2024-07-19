@@ -53,7 +53,7 @@ phony: ;
 
 .PRECIOUS: %.tex.mk
 %.tex.mk: %.tex 
-	perl -wf makestuff/texi.pl $< > $@
+	perl -wf makestuff/texj.pl $< > $@
 
 ######################################################################
 
