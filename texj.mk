@@ -40,6 +40,9 @@ phony: ;
 %.tex.deps:
 	touch $@
 
+%.tex.makedeps: %.tex.mk
+	-$(MAKE) -f $< -f Makefile $*.tex.deps
+
 ######################################################################
 
 ## Loop over reruns

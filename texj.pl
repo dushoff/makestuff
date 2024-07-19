@@ -71,11 +71,14 @@ if (%graphics){
 if (%inputs){
 	say "$files += ", join " ", keys %inputs;
 
-	# Don't try to recursively deal with tex dependencies across directories
+	## 2024 Jul 19 (Fri) Tex dependencies across directories
+	##  works well for texknit/ projects
+	## But doing it manually works well also …
+	## Suppressing for now (using grep line below)
 	my @deps = keys %inputs;
 	@deps = grep(!/\//, @deps); 
 	if (@deps){
-		say "$files += " . join " ", map {s|.tex$|.tex.deps|; $_} @deps;
+		say "$files += " . join " ", map {s|.tex$|.tex.makedeps|; $_} @deps;
 	}
 	say"";
 }
@@ -89,3 +92,4 @@ if (%bibs){
 }
 
 say "$target: \$($files)";
+say "$ftarget: \$($files)";

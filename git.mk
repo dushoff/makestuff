@@ -341,12 +341,17 @@ gitprune:
 
 ### Testing
 
+## 2024 Jul 19 (Fri)
+## No good reason not to have makestuff linked in dotdir for debugging
+## Obviates a lot of weird problems with trying to make that facultative
+## To do a "hard" test, use clonedir (right?)
 Ignore += dotdir/ clonedir/ cpdir/
 define dd_r
 	$(MAKE) commit.time
 	-/bin/rm -rf $@
 	git clone . $@
 	[ "$(pardirs)" = "" ] || ( cd $@ && $(LN) $(pardirs:%=../%) .)
+	cd $@ && ln -s ../makestuff .
 endef
 
 dotdir: $(Sources)
@@ -399,7 +404,8 @@ sourcedir: $(Sources)
 	$(MAKE) $*.testtarget
 	cd $* && $(MAKE) target
 
-## testsetup is before makestuff so we can use it to link makestuff sometimes
+## Testsetup not working to make makestuff, presumably because Makefile makes it
+## Probably not fixed by putting testsetup before Makefile, beause.
 %.testsetup: %
 	cd $* && $(MAKE) Makefile && ($(MAKE) testsetup || true) && $(MAKE) makestuff 
 
