@@ -11,15 +11,15 @@ RUNLatex = $(latexEngine) $(latexNonstop) $(latexJob) $(basename $<)
 ## Basic pathway
 
 .PRECIOUS: %.aux
-%.aux: %.tex | %.tex.mk
-	-$(MAKE) -f $*.tex.mk -f Makefile $*.tex.files
+%.aux: %.tex | %.texdeps.mk
+	-$(MAKE) -f $*.texdeps.mk -f Makefile $*.tex.files
 	- $(RUNLatex)
 
 %.repeat: %.aux %.tex.deps
-	-$(MAKE) -f $*.tex.mk -f Makefile $*.tex.deps
+	-$(MAKE) -f $*.texdeps.mk -f Makefile $*.tex.deps
 	$(runLatex)
 	$(touch)
-	sleep 1
+	## sleep 1
 	@(grep "Rerun to" $*.log && touch $<) || echo latex refs up to date
 
 ## The main .pdf should never be up to date
@@ -40,9 +40,6 @@ phony: ;
 %.tex.deps:
 	touch $@
 
-%.tex.makedeps: %.tex.mk
-	-$(MAKE) -f $< -f Makefile $*.tex.deps
-
 ######################################################################
 
 ## Loop over reruns
@@ -59,6 +56,10 @@ phony: ;
 %.tex.mk: %.tex 
 	perl -wf makestuff/texj.pl $< > $@
 
+.PRECIOUS: %.texdeps.mk
+%.texdeps.mk: %.tex.mk 
+	cat $^ > $@
+
 ######################################################################
 
 texfiles = $(wildcard *.tex)
@@ -69,5 +70,5 @@ Ignore += $(texfiles:tex=out)
 Ignore += *.biblog *.log *.aux .*.aux *.blg *.bbl *.bcf *.repeat *.complete
 Ignore += *.nav *.snm *.toc
 Ignore += *.run.xml
-Ignore += *.tex.*
+Ignore += *.tex.* *.texdeps.mk
 Ignore += *.aux.pdf *.aux.out *.complete.pdf

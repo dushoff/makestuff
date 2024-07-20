@@ -8,7 +8,6 @@ my $basename = $ARGV[0];
 $basename =~ s/\.tex$//;
 my $target =  "$basename.tex.deps";
 my $ftarget =  "$basename.tex.files";
-my $files =  $basename."Files";
 
 ### Read and parse
 my $f = <>;
@@ -59,27 +58,30 @@ foreach(keys %inputs, keys %graphics, keys %bibs)
 	s|/.*||;
 	$dirs{$_} = $_ if $_;
 }
-print "$target: | ", join " ", keys %dirs, "\n\n" if %dirs;
+if (%dirs){
+	my $ddep = join " ", keys %dirs;
+	say "$target: $ddep";
+	say "$ftarget: $ddep";
+	say"";
+}
 
 ## Pictures
 if (%graphics){
-	say "$files += ", join " ", keys %graphics, "\n";
+	my $gdep = join " ", keys %graphics;
+	say "$target: $gdep";
+	say "$ftarget: $gdep";
 	say"";
 }
 
 ## Inputs
 if (%inputs){
-	say "$files += ", join " ", keys %inputs;
-
-	## 2024 Jul 19 (Fri) Tex dependencies across directories
-	##  works well for texknit/ projects
-	## But doing it manually works well also …
-	## Suppressing for now (using grep line below)
-	my @deps = keys %inputs;
-	@deps = grep(!/\//, @deps); 
-	if (@deps){
-		say "$files += " . join " ", map {s|.tex$|.tex.makedeps|; $_} @deps;
-	}
+	my $idep = join " ", keys %inputs;
+	say "$target: $idep";
+	say "$ftarget: $idep";
+	my $iddep = join " ", map {s/$/.deps/; $_} keys %inputs;
+	say "$target: $iddep";
+	my $ifdep = join " ", map {s/$/.files/; $_} keys %inputs;
+	say "$ftarget: $ifdep";
 	say"";
 }
 
@@ -87,9 +89,6 @@ if (%inputs){
 if (%bibs){
 	say "$target: $basename.bbl";
 	say "$basename.bbl: " . join " ", keys %bibs;
-	## say "$target: " . join " ", keys %bibs, "\n";
 	say"";
 }
 
-say "$target: \$($files)";
-say "$ftarget: \$($files)";

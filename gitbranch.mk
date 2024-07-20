@@ -2,7 +2,7 @@
 ## 2023 Jan 29 (Sun)
 ## Dumping stuff from git.mk
 
-cmain = NULL
+cmain ?= NULL
 
 ## Made a strange loop _once_ (doesn't seem to be used anyway).
 # -include $(BRANCH).mk
@@ -32,10 +32,12 @@ endif
 	git branch -D $*
 	git push origin --delete $*
 
+## Need a separate rule to make sure both branches are up to date?
 upmerge: 
-	git rebase $(cmain) 
+	git merge $(cmain) 
 	git checkout $(cmain)
-	git pull
 	git merge $(BRANCH)
 	git push -u origin $(cmain)
+
+resting:
 	$(MAKE) $(BRANCH).nuke
