@@ -568,6 +568,9 @@ endef
 	-$(DIFF) $*.*.oldfile $* > $*.olddiff
 	$(RO) $*.olddiff
 
+######################################################################
+
+## 2024 Jul 22 (Mon) tf is this?
 Ignore += *.newfile *.newdiff
 %.newdiff: %.new.diff ;
 %.new.diff: %
