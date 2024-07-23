@@ -110,7 +110,8 @@ Sources += ignore.auth ignore.vim ignore.lock
 
 ## Various talkish stuff. Need to find out what's hot, what's not.
 
-Sources += $(wildcard newtalk/*.*)
+Ignore += $(wildcard newtalk/*.deps)
+Sources += $(wildcard newtalk/*.format newtalk/*.pl newtalk/*.sty newtalk/*.tex newtalk/*.tmp)
 # Sources += linkdirs.mk newtalk.def newtalk.mk newtalk.md $(wildcard newtalk/*.*)
 
 Sources += $(wildcard lect/*.*)
