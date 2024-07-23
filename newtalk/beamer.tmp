@@ -15,7 +15,7 @@
 
 \input{talkdir/bulletspace.tex}
 \input{talkdir/colors.tex}
-\input{pop.tex}
+\input{localcomm.tex}
 \usepackage{talkdir/slidecomm,talkdir/commands}
 \usepackage{graphicx,xspace}
 \usepackage{grffile}
