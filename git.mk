@@ -529,13 +529,37 @@ define oldfile_r
 	ls $@
 endef
 
-## Chaining trick to always remake
-## Is this better or worse than writing dependencies and making directly?
-%.olddiff: %.old.diff ;
-%.old.diff: %
+%.olddiff: %.*.oldfile %
 	- $(RM) $*.olddiff
-	-$(DIFF) $*.*.oldfile $* > $*.olddiff
+	-$(DIFF) $^ > $*.olddiff
 	$(RO) $*.olddiff
+
+######################################################################
+
+## Go back in time a certain number of _changes_ to the focal file
+## For a number of commits, use HEAD~n.oldfile (could make a .headfile, but probably won't)
+Ignore += *.prevfile *.prevdiff
+
+define prevfile_r
+	- $(call hide, $(basename $*))
+	- @echo `git log -- $(basename $*) | grep "^commit" | \
+		head -$(subst .,,$(suffix $*)) | tail -1 \
+		| sed -e "s/commit //" | \
+		xargs -I{} git checkout {} -- $(basename $*)`
+	-cp $(basename $*) $@
+	-git checkout HEAD -- $(basename $*)
+	- $(call unhide, $(basename $*))
+	ls $@
+endef
+
+%.prevfile:
+	-$(RM) $(basename $*).*.prevfile
+	$(prevfile_r)
+
+%.prevdiff: %.*.prevfile %
+	- $(RM) $*.prevdiff
+	-$(DIFF) $^ > $*.prevdiff
+	$(RO) $*.prevdiff
 
 ######################################################################
 
