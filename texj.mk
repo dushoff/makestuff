@@ -40,6 +40,10 @@ phony: ;
 %.tex.deps:
 	touch $@
 
+## This one should make if at all possible, and effectively only depend on the primary .tex; add dependencies for that if necessary?
+%.force.pdf: %.aux
+	$(CP) $*.pdf $@
+
 ######################################################################
 
 ## Loop over reruns
