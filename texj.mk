@@ -15,6 +15,8 @@ RUNLatex = $(latexEngine) $(latexNonstop) $(latexJob) $(basename $<)
 	-$(MAKE) -f $*.texdeps.mk -f Makefile $*.tex.files
 	- $(RUNLatex)
 
+## May need to make recipes and repeat these two with TEX ☹
+## Or these three
 %.repeat: %.aux %.tex.deps
 	-$(MAKE) -f $*.texdeps.mk -f Makefile $*.tex.deps
 	$(runLatex)
@@ -36,8 +38,8 @@ RUNLatex = $(latexEngine) $(latexNonstop) $(latexJob) $(basename $<)
 phony: ;
 
 ## Dependencies in the corresponding .mk
-.PRECIOUS: %.tex.deps
-%.tex.deps:
+.PRECIOUS: %.tex.deps %.TEX.deps
+%.tex.deps %.TEX.deps:
 	touch $@
 
 ## This one should make if at all possible, and effectively only depend on the primary .tex; add dependencies for that if necessary?
@@ -75,5 +77,5 @@ Ignore += $(texfiles:tex=out)
 Ignore += *.biblog *.log *.aux .*.aux *.blg *.bbl *.bcf *.repeat *.complete
 Ignore += *.nav *.snm *.toc
 Ignore += *.run.xml
-Ignore += *.tex.* *.texdeps.mk
+Ignore += *.tex.* *.TEX.* *.texdeps.mk
 Ignore += *.aux.pdf *.aux.out *.complete.pdf

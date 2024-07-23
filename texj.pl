@@ -5,9 +5,9 @@ undef $/;
 
 my $basename = $ARGV[0];
 
-$basename =~ s/\.tex$//;
-my $target =  "$basename.tex.deps";
-my $ftarget =  "$basename.tex.files";
+## $basename =~ s/\.tex$//;
+my $target =  "$basename.deps";
+my $ftarget =  "$basename.files";
 
 ### Read and parse
 my $f = <>;
