@@ -16,7 +16,6 @@ The recommended practice is to include a line in your Makefile that make can tra
 `outer.texdeps.mk: inner.texdeps.mk`.
 This is meant to work recursively.
 
-
 ## To do
 
 The logic of what files to make when is not very well thought-out and not very beautiful (this is the distinction between .files, made at the beginning, and the full set of dependencies .deps, made subsequently). This logic is implemented in texj.pl, and may not even be necessary at all.
