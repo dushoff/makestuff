@@ -1,7 +1,7 @@
-It would be good to make the final main target have the canonical name, doc.pdf: doc.tex
+texj.mk is an attempt to rebuild the functionality of texi.mk without using texi tools, which have weird CLI and don't account for changes in .bib files anyway.
 
-Help!! We want .tex.deps to signal when we have to remake the tex.pdf. But we also needed .makedeps for some reason …
+I still have some confusion about what would be the most efficient way to deal with interactions between building steps, but it seems to work OK for an early attempt.
 
-It feels like there's no way to make the current paradigm work with inclusions. We don't know if a file has its dependencies up to date  unless we go into its personal .tex.mk to see what it depends on. So we can never treat its deps as up to date on a new make. So anything that depends on it can't be up to date either. 
+To make <filename>.pdf, it first attempts to make included files (via filename.tex.mk), then to force-make the .aux file (the .pdf file can be made as a side-effect, but won't be seen as successfully made). It then tries again (via a rule for .repeat). This rule will mark the .aux as new based on messages in the .log (right now looks only for "Rerun to").
 
-The thing to do is to include all the make files (like webpix), or do some sort of thing where you include everything you happen to have (and make them as side-effects) -- OR, specify what generated files go in a specific tex.mk file. So let's try the last one.
+On subsequent attempts, filename.pdf is never considered up to date. This is because the main Makefile can't easily know about all of the calculated dependencies. But if dependencies are up to date, and the pdf is newer than the .aux, make won't actually do anything, just some checking.
