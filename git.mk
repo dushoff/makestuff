@@ -404,8 +404,8 @@ sourcedir: $(Sources)
 	$(MAKE) $*.testtarget
 	cd $* && $(MAKE) target
 
-## Testsetup not working to make makestuff, presumably because Makefile makes it
-## Probably not fixed by putting testsetup before Makefile, beause.
+## Testsetup not working to make makestuff,
+## presumably because Makefile makes it
 %.testsetup: %
 	cd $* && $(MAKE) Makefile && ($(MAKE) testsetup || true) && $(MAKE) makestuff 
 
