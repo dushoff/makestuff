@@ -41,6 +41,7 @@ phony: ;
 	touch $@
 
 ## This one should make if at all possible, and effectively only depend on the primary .tex; add dependencies for that if necessary?
+Ignore += *.force.pdf
 %.force.pdf: %.aux
 	$(CP) $*.pdf $@
 
