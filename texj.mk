@@ -59,6 +59,11 @@ Ignore += *.force.pdf
 
 ######################################################################
 
+## Development on bus (move to sandbox)
+body.tex.mk: body.tex makestuff/texj.pl
+
+######################################################################
+
 .PRECIOUS: %.tex.mk
 %.tex.mk: %.tex 
 	perl -wf makestuff/texj.pl $< > $@
