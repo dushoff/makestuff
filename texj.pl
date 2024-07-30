@@ -5,9 +5,7 @@ undef $/;
 
 my $basename = $ARGV[0];
 
-## $basename =~ s/\.tex$//;
-my $target =  "$basename.deps";
-my $ftarget =  "$basename.files";
+$basename =~ s/\.tex$//;
 
 ### Read and parse
 my $f = <>;
@@ -60,34 +58,31 @@ foreach(keys %inputs, keys %graphics, keys %bibs)
 }
 if (%dirs){
 	my $ddep = join " ", keys %dirs;
-	say "$target: $ddep";
-	say "$ftarget: $ddep";
+	say "$basename.tex.dirs: $ddep";
 	say"";
 }
 
 ## Pictures
 if (%graphics){
 	my $gdep = join " ", keys %graphics;
-	say "$target: $gdep";
-	say "$ftarget: $gdep";
+	say "$basename.tex.pix: $gdep";
 	say"";
 }
 
 ## Inputs
 if (%inputs){
 	my $idep = join " ", keys %inputs;
-	say "$target: $idep";
-	say "$ftarget: $idep";
+	say "$basename.tex.inputs: $idep";
 	my $iddep = join " ", map {s/$/.deps/; $_} keys %inputs;
-	say "$target: $iddep";
+	say "$basename.tex.inputs: $iddep";
 	my $ifdep = join " ", map {s/$/.files/; $_} keys %inputs;
-	say "$ftarget: $ifdep";
+	say "$basename.tex.inputs: $ifdep";
 	say"";
 }
 
 ## Bib stuff
 if (%bibs){
-	say "$target: $basename.bbl";
+	say "$basename.biblio: $basename.bbl";
 	say "$basename.bbl: " . join " ", keys %bibs;
 	say"";
 }
