@@ -81,7 +81,7 @@ ifdef autowrapR
 	$(wrapR)
 endif
 
-## A reasonable default
+## autopipeR seems like a reasonable default
 ifdef autopipeR
 .PRECIOUS: %.Rout
 %.Rout: %.R
