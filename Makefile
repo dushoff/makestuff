@@ -195,5 +195,6 @@ Ignore += repohome.auto.mk
 -include unix.mk
 -include local.mk
 include git.mk
+include gitbranch.mk
 include pandoc.mk
 include visual.mk
