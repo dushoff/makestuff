@@ -2,7 +2,8 @@ Makefile: bibdir
 Ignore += bibdir
 bibdir: 
 	@echo Checking for bibdir or Drop link
-	(touch $(Drop)/autorefs/testfile && $(LNF) $(Drop)/autorefs $@)
+	(touch $(Drop)/autorefs/testfile && $(LNF) $(Drop)/autorefs $@) \
+	|| mkdir $@
 
 ## Awkward holdovers from wiki setup?
 export ms
