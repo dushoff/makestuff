@@ -4,6 +4,8 @@
 current: target
 -include target.mk
 
+cmain = master
+
 ##################################################################
 
 ## 2020 Jul 05 (Sun): Think about how to partition this later 
