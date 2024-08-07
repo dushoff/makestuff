@@ -4,6 +4,8 @@
 current: target
 -include target.mk
 
+cmain = master
+
 ##################################################################
 
 ## 2020 Jul 05 (Sun): Think about how to partition this later 
@@ -195,5 +197,6 @@ Ignore += repohome.auto.mk
 -include unix.mk
 -include local.mk
 include git.mk
+include gitbranch.mk
 include pandoc.mk
 include visual.mk
