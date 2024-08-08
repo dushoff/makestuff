@@ -26,6 +26,7 @@ RUNLatex = $(latexEngine) $(latexNonstop) $(latexJob) $(basename $<)
 
 ## The main .pdf should never be up to date
 ## because Makefile alone can't evaluate whether the deps are up to date
+.PRECIOUS: %.pdf
 %.pdf: %.aux phony
 	$(MAKE) -f $*.tex.mk -f Makefile $*.tex.deps
 	$(MAKE) $*.repeat
