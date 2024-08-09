@@ -51,6 +51,7 @@ while ($f =~ s/\\(?:bibliography|addbibresource)\s*{(.*?)}//){
 ## Needs to be above any dependencies that might look in the directories
 ## makehere and makethere would need to be in your own make file
 ## Only first-level subdirectories should be handled here
+say("## Dirs");
 my (%dirs);
 foreach(keys %inputs, keys %graphics, keys %bibs)
 {
@@ -65,7 +66,7 @@ if (%dirs){
 	say"";
 }
 
-## Pictures
+say ("## Pictures");
 if (%graphics){
 	my $gdep = join " ", keys %graphics;
 	say "$target: $gdep";
@@ -73,19 +74,22 @@ if (%graphics){
 	say"";
 }
 
-## Inputs
+say "## Inputs";
 if (%inputs){
-	my $idep = join " ", keys %inputs;
+	my @ifiles = map
+		{s/$/.tex/; s/.tex.tex/.tex/; s/.sty.tex/.sty/; $_}
+	keys %inputs;
+	my $idep = join " ", @ifiles;
 	say "$target: $idep";
 	say "$ftarget: $idep";
-	my $iddep = join " ", map {s/$/.deps/; $_} keys %inputs;
+	my $iddep = join " ", map {s/$/.deps/; $_} @ifiles;
 	say "$target: $iddep";
 	my $ifdep = join " ", map {s/$/.files/; $_} keys %inputs;
 	say "$ftarget: $ifdep";
 	say"";
 }
 
-## Bib stuff
+say "## Bib stuff";
 if (%bibs){
 	say "$target: $basename.bbl";
 	say "$basename.bbl: " . join " ", keys %bibs;
