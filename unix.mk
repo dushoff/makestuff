@@ -26,9 +26,10 @@ DNE = (! $(LS) $@ > $(null))
 LSN = ($(LS) $@ > $(null))
 
 tgz = tar czf $@ $^
-zip = zip $@ $^
+zipin = zip $@ $?
+zip = $(RM) $@ && zip $@ $^
 TGZ = tar czf $@ $^
-ZIP = zip $@ $^
+ZIP = $(zip)
 
 touch = touch $@
 
@@ -36,9 +37,9 @@ null = /dev/null
 
 lscheck = @$(LS) $@ > $(null) || (echo ERROR upstream rule failed to make $@ && false)
 
-lstouch = ($(LS) $@ > $(null) || (echo ERROR upstream rule failed to make $@ && false)) && touch $@
+lstouch = @$(LS) $@ > $(null) || ((echo ERROR upstream rule failed to make $@ && false) && touch $@)
 
-impcheck = ($(LS) $$@ > $(null) || (echo ERROR upstream rule failed to make $$@ && false)) && touch $$@
+impcheck = @($(LS) $$@ > $(null) || (echo ERROR upstream rule failed to make $$@ && false)) && touch $$@
 
 hiddenfile = $(dir $1).$(notdir $1)
 hide = $(MVF) $1 $(dir $1).$(notdir $1)
@@ -74,6 +75,7 @@ linkelsewhere = cd $(dir $@) && $(LNF) $(CURDIR)/$< $(notdir $@)
 ## Possibly good for shared projects. Problematic if central user makes two 
 ## redundant dropboxes because of sync problems
 alwayslinkdir = (ls $(dir)/$@ > $(null) || $(MD) $(dir)/$@) && $(LNF) $(dir)/$@ .
+alwayslinkdirname = (ls $(dir) > $(null) || $(MD) $(dir)) && $(LNF) $(dir) $@
 
 forcelink = $(LNF) $< $@
 rcopy = $(CPR) $< $@
@@ -91,7 +93,9 @@ makedir = cd $(dir $@) && $(MD) $(notdir $@)
 cat = $(CAT) /dev/null $^ > $@
 catro = $(rm); $(CAT) /dev/null $^ > $@; $(readonly)
 ln = $(LN) $< $@
+link = $(ln)
 lnf = $(LNF) $< $@
+forcelink = $(lnf)
 lnp = $(LNF) $| $@
 rm = $(RM) $@
 pandoc = pandoc -o $@ $<
@@ -135,6 +139,8 @@ ddcopy = ($(LSN) && $(touch)) ||  $(rdcopy)
 %.rw:
 	chmod -R u+w $*
 
+PUSH ?= @(echo "PUSH not defined" & false)
+
 ## File listing and merging
 %.ls: %
 	ls $* > $@
@@ -145,9 +151,11 @@ index.lsd: .
 	ls -d * > $@
 
 define merge_files
-	$(PUSH)
-	- $(DIFF) $(word 2, $^) $@
-	$(MV) $@ $(word 2, $^)
+	@$(RM) *.oldfile
+	@$(PUSH)
+	@($(DIFF) $(word 2, $^) $@ && $(MV) $@ $(word 2, $^)) \
+	|| ($(MV) $@ $(word 2, $^) && false)
+	@! (grep MISSING $(word 2, $^))
 endef
  
 ## Track a directory from the parent directory, using <dir>.md
@@ -161,7 +169,7 @@ endef
 
 ## WATCH OUT for the -
 %.filenames:
-	rename "s/[& ,?!-]+/_/g" $*/*.*
+	rename "s/[()& ,?!-]+/_/g" $*/*.*
 
 %.voice: voice.pl %
 	$(PUSH)
