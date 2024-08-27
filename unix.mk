@@ -138,6 +138,8 @@ ddcopy = ($(LSN) && $(touch)) ||  $(rdcopy)
 %.rw:
 	chmod -R u+w $*
 
+PUSH ?= @(echo "PUSH not defined" & false)
+
 ## File listing and merging
 %.ls: %
 	ls $* > $@
@@ -150,7 +152,7 @@ index.lsd: .
 define merge_files
 	@$(RM) *.oldfile
 	@$(PUSH)
-	($(DIFF) $(word 2, $^) $@ && $(MV) $@ $(word 2, $^)) \
+	@($(DIFF) $(word 2, $^) $@ && $(MV) $@ $(word 2, $^)) \
 	|| ($(MV) $@ $(word 2, $^) && false)
 	@! (grep MISSING $(word 2, $^))
 endef
