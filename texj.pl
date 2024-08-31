@@ -77,7 +77,7 @@ if (%graphics){
 say "## Inputs";
 if (%inputs){
 	my @ifiles = map
-		{s/$/.tex/; s/.tex.tex/.tex/; s/.sty.tex/.sty/; $_}
+		{s/$/.tex/; s/.tex.tex/.tex/; s/.sty.tex/.sty/; s/.TEX.tex/.TEX/; $_}
 	keys %inputs;
 	my $idep = join " ", @ifiles;
 	say "$target: $idep";
