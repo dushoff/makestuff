@@ -82,6 +82,7 @@ rcopy = $(CPR) $< $@
 rdcopy = $(CPR) $(dir) $@
 copy = $(CP) $< $@
 pcopy = $(CP) $(word 1, $|) $@
+oocopy = $(CP) $| $@
 move = $(MV) $< $@
 Move = $(MVF) $< $@
 hardcopy = $(CPF) $< $@
