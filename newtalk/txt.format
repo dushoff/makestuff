@@ -173,7 +173,7 @@ draft final: ^%%
 ## Repeating (Need to refactor this for notes-based lectures, and non-notes based talks)
 REPSLIDE NULLSLIDE
 draft lecture: ^DEFHEAD {\sl %% (repeat)}
-final: ^DEFHEAD %%
+final: ^DEFHEAD {\sl %%}
 
 ## Previewing
 PRESLIDE NULLSLIDE
