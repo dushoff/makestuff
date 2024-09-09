@@ -52,10 +52,10 @@ Ignore += *.force.pdf
 
 ## Loop over reruns
 
-%.complete: phony
+%.texfinal: phony
 	@while ! $(MAKE) -q $*.repeat ; do $(MAKE) $*.repeat; done;
 
-%.complete.pdf: %.complete
+%.texfinal.pdf: %.texfinal
 	$(CP) $*.pdf $@
 
 ######################################################################
@@ -80,11 +80,11 @@ Ignore += $(texfiles:tex=pdf)
 Ignore += $(texfiles:tex=out)
 
 ## These direct exclusions can be replaced by fancier rules above if necessary
-Ignore += *.biblog *.log *.aux .*.aux *.blg *.bbl *.bcf *.repeat *.complete
+Ignore += *.biblog *.log *.aux .*.aux *.blg *.bbl *.bcf *.repeat *.texfinal
 Ignore += *.nav *.snm *.toc
 Ignore += *.run.xml
 Ignore += *.tex.* *.TEX.* *.texdeps.mk
-Ignore += *.aux.pdf *.aux.out *.complete.pdf
+Ignore += *.aux.pdf *.aux.out *.texfinal.pdf
 
 iclean:
 	$(RM) *.deps.pdf *.subdeps
