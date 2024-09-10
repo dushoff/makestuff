@@ -3,11 +3,13 @@ cloud:
 	rclone mkdir $(cloudFolder) --seafile-create-library=true
 	mkdir $@
 
-Ignore += cloud.time
-commit.time: cloud.time
+Ignore += cloud.time cloud
 cloud.time: $(wildcard cloud/*.*) | cloud
 	rclone sync -u cloud $(cloudFolder)
 	$(touch)
 
 cloud.get: | cloud
 	rclone sync -u $(cloudFolder) cloud
+
+pushup: cloud.time
+pullup: cloud.get
