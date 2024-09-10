@@ -10,12 +10,15 @@ define makeArgs
 	@echo >> $@.args
 endef
 
+## Potential infelicity if a script used to produce a file
+## but now runs successfully without producing it
+## file can still be used downstream
+## awkwardly delete known target types; or make all known targets start with full target name?
 define pipeR
 	@-$(RM) $@ $@.*
 	@$(makeArgs)
-	@echo pipeR: Making $@
-	@(($(rrun) --args $@ shellpipes $*.pipestar $^ < $(word 1, $(filter %.R, $^)) > $(@:%.Rout=%.rtmp)) 2> $(@:%.Rout=%.Rlog) && cat $(@:%.Rout=%.Rlog)) || (cat $(@:%.Rout=%.Rlog) && false)
-	$(MVF) $(@:%.Rout=%.rtmp) $@
+	@echo pipeR: Making $@ using $^
+	@(($(rrun) --args $@ shellpipes $*.pipestar $^ < $(word 1, $(filter %.R, $^)) > $@) 2> $(@:%.Rout=%.Rlog) && cat $(@:%.Rout=%.Rlog)) || (touch $(word 1, $(filter %.R, $^)) && cat $(@:%.Rout=%.Rlog) && false)
 endef
 
 ## Make the rpcall first so that we don't outdate things
@@ -78,7 +81,7 @@ ifdef autowrapR
 	$(wrapR)
 endif
 
-## A reasonable default
+## autopipeR seems like a reasonable default
 ifdef autopipeR
 .PRECIOUS: %.Rout
 %.Rout: %.R

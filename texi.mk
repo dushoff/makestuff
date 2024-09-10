@@ -1,6 +1,6 @@
 
 latex ?= pdflatex
-latexnon ?= pdflatex -interaction=nonstopmode
+latexnon ?= $(latex) -interaction=nonstopmode
 texi ?= texi2pdf
 job = -jobname=$(@:%.pdf=%)
 
@@ -59,6 +59,7 @@ makedeps: ;
 ## Include logic is still a bit tangled (sad face)
 
 ## We need ugly logic here because texi doesn't respond to changes in .bib
+## This is tangled with texi / non-tex logic!!
 %.bbl: %.tex %.tex.pdf $(wildcard *.bib)
 	($(bibtex)) || ($(RM) $@ && false)
 

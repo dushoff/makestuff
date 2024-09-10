@@ -40,6 +40,9 @@ pull: commit.time
 %.autosync: %.autocommit
 	$(MAKE) sync
 
+noreport: 
+	$(MAKE) report.md.theirs.pick
+
 ######################################################################
 
 ## parallel directories
@@ -169,16 +172,6 @@ Ignore += *.setbranch
 
 ######################################################################
 
-## autosync stuff not consolidated, needs work. 
-remotesync: commit.default
-	git pull
-	git push -u origin $(BRANCH)
-
-%.autosync: %
-	cd $< && $(MAKE) remotesync
-
-######################################################################
-
 %.status: %
 	cd $< && git status
 
@@ -238,7 +231,8 @@ outputs:
 	$(sourceTouch)
 
 ## Commented out because of stupid dataviz conflict 2021 Nov 02 (Tue)
-## docs: ; $(mkdir)
+## Commented back in because I suspect I fixed dataviz? Or at least qmee
+docs: ; $(mkdir)
 
 ######################################################################
 
@@ -264,51 +258,13 @@ trackedTargets += $(wildcard gitarchive/*)
 ######################################################################
 
 ## Deprecate this for docs/-based directories 2021 Ақп 02 (Сс)
-## Redo in a more systematic way (like .branchdir)
+## Deleting a bunch of pages stuff 2024 Jul 16 (Tue)
 
-## Pages. Sort of like git_push, but for gh_pages (html, private repos)
-## May want to refactor as for git_push above (break link from pages/* to * for robustness)
-
-## 2021 Мам 27 (Бс) Probably deprecated, but could update to follow docs style
-## 2019 Sep 22 (Sun) Keeping checkout, but skipping early pull
-## That can make the remote copy look artificially new
-## 2019 Oct 10 (Thu)
-## But if we don't early pull we get spurious merges
-## Best is to pull pages when you pull
-Ignore += pagebranch
-%.pages:
-	$(MAKE) pages/pagebranch
-	$(MAKE) pages/$*
-	cd pages && git add -f $*
-	-cd pages && git commit -m "Pushed directly from parent"
-	@echo .pagepush to push to web …
-
-%.pushpage: %.pagepush ;
-%.pagepush: %.pages
-	cd pages && git pull && git push
-
-pages/Makefile:
-	cp Makefile $@
-
-## Don't call this directly and then we don't need the pages dependency
-## In development (or deprecation) 2021 Мам 27 (Бс)
-## pages/%: %; $(copy)
-
-## If you're going to pushpages automatically, you might want to say
-## pull: pages.gitpull
+######################################################################
 
 %.gitpull:
 	$(MAKE) $*
 	cd $* && git pull
-
-## Deprecated: use output, pages, docs ….
-%.gitpush:
-	$(MAKE) $*
-	cd $* && (git add *.* && ($(git_check))) || ((git commit -m "Commited by $(CURDIR)") && git pull && git push && git status)
-
-define createpages
-	(git checkout --orphan gh-pages && git rm -rf * && touch ../README.md && cp ../README.md . && git add README.md && git commit -m "Orphan pages branch" && git push --set-upstream origin gh-pages )
-endef
 
 %.branchdir:
 	git clone `git remote get-url origin` $*
@@ -358,8 +314,8 @@ $(Outside):
 ######################################################################
 
 %.reset:
-	- $(RMR) $*.olddir
-	mv $* $*.olddir
+	- $(RMR) $*.resetdir
+	mv $* $*.resetdir
 
 %.what:
 	rm -fr $*.new
@@ -385,18 +341,29 @@ gitprune:
 
 ### Testing
 
+## 2024 Jul 19 (Fri)
+## No good reason not to have makestuff linked in dotdir for debugging
+## Obviates a lot of weird problems with trying to make that facultative
+## To do a "hard" test, use clonedir (right?)
 Ignore += dotdir/ clonedir/ cpdir/
-dotdir: $(Sources)
+define dd_r
 	$(MAKE) commit.time
 	-/bin/rm -rf $@
 	git clone . $@
 	[ "$(pardirs)" = "" ] || ( cd $@ && $(LN) $(pardirs:%=../%) .)
+	cd $@ && ln -s ../makestuff .
+endef
+
+dotdir: $(Sources)
+	$(dd_r)
+
+Ignore += *.dd/
+%.dd: $(Sources)
+	$(dd_r)
 
 ## Note cpdir really means directory (usually); dotdir means the whole repo
 ## DON'T use cpdir for repos with Sources in subdirectories
 ## Do use for light applications focused on a particular directory
-## DON'T use for service (i.e., makeR scripts)
-## Do we have a solution for makeR scripts in subdirectories?
 ## Note that I am using it now for pipeR scripts, so that's probably fragile 2021 Jun 27 (Sun)
 cpdir: $(filter-out %.script, $(Sources))
 	-/bin/rm -rf $@
@@ -404,7 +371,8 @@ cpdir: $(filter-out %.script, $(Sources))
 	cp -r $^ $@
 
 ## Still working on rev-parse line
-%.branchdir: $(Sources)
+## See older branchdir above; this one seems ambitious 2024 Jul 16 (Tue)
+%.makebranchdir: $(Sources)
 	$(MAKE) commit.time
 	git rev-parse --verify $* || git fetch origin $*:$*
 	git clone . $*
@@ -431,12 +399,13 @@ sourcedir: $(Sources)
 %.mslink: %
 	cd $* && (ls makestuff/Makefile || $(LN) ../makestuff)
 
-%.dirtest: % 
+%.dirtest: 
 	$(MAKE) $*.testsetup
 	$(MAKE) $*.testtarget
 	cd $* && $(MAKE) target
 
-## testsetup is before makestuff so we can use it to link makestuff sometimes
+## Testsetup not working to make makestuff,
+## presumably because Makefile makes it
 %.testsetup: %
 	cd $* && $(MAKE) Makefile && ($(MAKE) testsetup || true) && $(MAKE) makestuff 
 
@@ -448,8 +417,7 @@ sourcedir: $(Sources)
 
 ## To open the dirtest final target when appropriate (and properly set up) 
 %.vdtest: %.dirtest
-	$(MAKE) pdftarget
-
+	cd $* && $(MAKE) pdftarget
 
 ## To make and display files in the all variable
 alltest:
@@ -561,14 +529,41 @@ define oldfile_r
 	ls $@
 endef
 
-## Chaining trick to always remake
-## Is this better or worse than writing dependencies and making directly?
-%.olddiff: %.old.diff ;
-%.old.diff: %
+%.olddiff: %.*.oldfile %
 	- $(RM) $*.olddiff
-	-$(DIFF) $*.*.oldfile $* > $*.olddiff
+	-$(DIFF) $^ > $*.olddiff
 	$(RO) $*.olddiff
 
+######################################################################
+
+## Go back in time a certain number of _changes_ to the focal file
+## For a number of commits, use HEAD~n.oldfile (could make a .headfile, but probably won't)
+Ignore += *.prevfile *.prevdiff
+
+define prevfile_r
+	- $(call hide, $(basename $*))
+	- @echo `git log -- $(basename $*) | grep "^commit" | \
+		head -$(subst .,,$(suffix $*)) | tail -1 \
+		| sed -e "s/commit //" | \
+		xargs -I{} git checkout {} -- $(basename $*)`
+	-cp $(basename $*) $@
+	-git checkout HEAD -- $(basename $*)
+	- $(call unhide, $(basename $*))
+	ls $@
+endef
+
+%.prevfile:
+	-$(RM) $(basename $*).*.prevfile
+	$(prevfile_r)
+
+%.prevdiff: %.*.prevfile %
+	- $(RM) $*.prevdiff
+	-$(DIFF) $^ > $*.prevdiff
+	$(RO) $*.prevdiff
+
+######################################################################
+
+## 2024 Jul 22 (Mon) tf is this?
 Ignore += *.newfile *.newdiff
 %.newdiff: %.new.diff ;
 %.new.diff: %

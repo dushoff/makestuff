@@ -37,7 +37,7 @@ null = /dev/null
 
 lscheck = @$(LS) $@ > $(null) || (echo ERROR upstream rule failed to make $@ && false)
 
-lstouch = @($(LS) $@ > $(null) || (echo ERROR upstream rule failed to make $@ && false)) && touch $@
+lstouch = @$(LS) $@ > $(null) || ((echo ERROR upstream rule failed to make $@ && false) && touch $@)
 
 impcheck = @($(LS) $$@ > $(null) || (echo ERROR upstream rule failed to make $$@ && false)) && touch $$@
 
@@ -82,6 +82,7 @@ rcopy = $(CPR) $< $@
 rdcopy = $(CPR) $(dir) $@
 copy = $(CP) $< $@
 pcopy = $(CP) $(word 1, $|) $@
+oocopy = $(CP) $| $@
 move = $(MV) $< $@
 Move = $(MVF) $< $@
 hardcopy = $(CPF) $< $@
@@ -138,6 +139,8 @@ ddcopy = ($(LSN) && $(touch)) ||  $(rdcopy)
 %.rw:
 	chmod -R u+w $*
 
+PUSH ?= @(echo "PUSH not defined" & false)
+
 ## File listing and merging
 %.ls: %
 	ls $* > $@
@@ -148,9 +151,11 @@ index.lsd: .
 	ls -d * > $@
 
 define merge_files
-	$(PUSH)
-	- $(DIFF) $(word 2, $^) $@
-	$(MV) $@ $(word 2, $^)
+	@$(RM) *.oldfile
+	@$(PUSH)
+	@($(DIFF) $(word 2, $^) $@ && $(MV) $@ $(word 2, $^)) \
+	|| ($(MV) $@ $(word 2, $^) && false)
+	@! (grep MISSING $(word 2, $^))
 endef
  
 ## Track a directory from the parent directory, using <dir>.md
@@ -164,7 +169,7 @@ endef
 
 ## WATCH OUT for the -
 %.filenames:
-	rename "s/[& ,?!-]+/_/g" $*/*.*
+	rename "s/[()& ,?!-]+/_/g" $*/*.*
 
 %.voice: voice.pl %
 	$(PUSH)

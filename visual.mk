@@ -69,6 +69,7 @@ target.mk:
 	-cd $* && screen -t "$(notdir $*)"
 
 %.vscreen: | %
+	- $(MAKE) $*/Makefile && cd $* && $(MAKE) Makefile 
 	- cd $* && ($(MAKE) vimclean || true)
 	cd $* && screen -t "$*" bash -cl "vvs"
 
