@@ -5,7 +5,7 @@ cloud:
 
 Ignore += cloud.time cloud
 cloud.time: $(wildcard cloud/*.*) | cloud
-	rclone sync -au cloud $(cloudFolder)
+	rclone sync -u cloud $(cloudFolder)
 	$(touch)
 
 cloud.get: | cloud
