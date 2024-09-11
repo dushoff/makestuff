@@ -11,5 +11,11 @@ cloud.time: $(wildcard cloud/*.*) | cloud
 cloud.get: | cloud
 	rclone sync -u $(cloudFolder) cloud
 
-pushup: cloud.time
-pullup: cloud.get
+######################################################################
+
+## Building slowly
+
+%.get: | %
+	rclone sync -u $(cloudFolder) $*
+%.put: | %
+	rclone sync -u $* $(cloudFolder)
