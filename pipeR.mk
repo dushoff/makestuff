@@ -18,7 +18,7 @@ define pipeR
 	@-$(RM) $@ $@.*
 	@$(makeArgs)
 	@echo pipeR: Making $@ using $^
-	@(($(rrun) --args $@ shellpipes $*.pipestar $^ < $(word 1, $(filter %.R, $^)) > $@) 2> $(@:%.Rout=%.Rlog) && cat $(@:%.Rout=%.Rlog)) || (touch $(word 1, $(filter %.R, $^)) && cat $(@:%.Rout=%.Rlog) && false)
+	@(($(rrun) --args $@ shellpipes $*.pipestar $^ < $(word 1, $(filter %.R, $^)) > $@) 2> $(@:%.Rout=%.Rlog) && cat $(@:%.Rout=%.Rlog)) || (sleep 1 && touch $(word 1, $(filter %.R, $^)) && cat $(@:%.Rout=%.Rlog) && false)
 endef
 
 ## Make the rpcall first so that we don't outdate things
