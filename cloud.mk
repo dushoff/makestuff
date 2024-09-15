@@ -17,5 +17,9 @@ cloud.get: | cloud
 
 %.get: | %
 	rclone sync -u $(cloudFolder) $*
-%.put: | %
-	rclone sync -u $* $(cloudFolder)
+
+## If we always get before we put, then we should have the newest version
+## of any file, and there's no risk to sync without -u
+## But we still probably can't get rid of files that are in more than one place
+%.put: %.get
+	rclone sync $* $(cloudFolder)
