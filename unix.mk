@@ -171,6 +171,10 @@ endef
 %.filenames:
 	rename "s/[()& ,?!-]+/_/g" $*/*.*
 
+## Temporary 2024 Sep 10 (Tue)
+%.qfiles:
+	rename "s/[()& ,?!-]+/_QQ_/g" $*/*.*
+
 %.voice: voice.pl %
 	$(PUSH)
 	$(MV) $@ $*
