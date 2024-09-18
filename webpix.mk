@@ -62,7 +62,7 @@ allsteps.mk: $(stepmks)
 
 webpix/%: | allsteps.mk
 	$(MAKE) webpix
-	$(MAKE) -f $< $@
+	$(MAKE) -f $| $@
 
 my_images/%: | my_images
 	(cd $< && $(MAKE) $*) || convert $(word 2, $^) $@

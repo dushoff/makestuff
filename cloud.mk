@@ -4,18 +4,13 @@ cloud:
 	mkdir $@
 
 Ignore += cloud.time cloud
-cloud.time: $(wildcard cloud/*.*) | cloud
-	rclone sync -u cloud $(cloudFolder)
+cloud.time: cloud $(wildcard cloud/*.*)
+	$(MAKE) cloud.put
 	$(touch)
 
-cloud.get: | cloud
-	rclone sync -u $(cloudFolder) cloud
-
-######################################################################
-
-## Building slowly
-
+## No way to delete anything for now, figure it out later 2024 Sep 15 (Sun)
 %.get: | %
-	rclone sync -u $(cloudFolder) $*
-%.put: | %
-	rclone sync -u $* $(cloudFolder)
+	rclone copy -u $(cloudFolder) $*
+
+%.put: %.get
+	rclone copy -u $* $(cloudFolder)
