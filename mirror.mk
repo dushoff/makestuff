@@ -12,6 +12,7 @@ mirror = $(cloud):$(CURDIR:/home/$(USER)/%=%)
 
 Ignore += *.mirror
 
+.PRECIOUS: %.mirror
 %.mirror: 
 	rclone copy $*/ $(mirror)/$*
 	$(touch)
