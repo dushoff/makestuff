@@ -1,7 +1,7 @@
 
 ## Rules for sharing files under a standard directory structure with rcloud
-## The user must create an rclone “library” at a location pointed to by $(cloud)
-## cloudmirror by default
+## User must create an rclone “library” at a location pointed to by $(cloud)
+## cloudmirror: by default
 
 ## Where are some .local or .lmk rules??
 Ignore += local.mk
@@ -23,14 +23,30 @@ Ignore += *.mirror
 %.backup:
 	rclone copy $*/ $(mirror)/backup/$*
 
-%.time: % $(wildcard %/*) | %.mirror
-	rclone copy -u $*/ $(mirror)/$*
 
-## This can squash things (intended), but can also go backwards if you have changed anything local since syncing
-%.get: %.time
-	rclone sync -u $(mirror)/$* $*/ 
+######################################################################
 
-## Push deletions upstream (if you're sure you sunk before deleting)
+## Dangerous rules
 %.syncup:
 	rclone sync -u $*/ $(mirror)/$*
+%.syncdown:
+	rclone sync -u $(mirror)/$* $*/ 
 
+## Normally copy up safely; syncup can be called manually
+%.put: | %.mirror
+	rclone copy -u $*/ $(mirror)/$*
+
+%.puttime: % $(wildcard %/*)
+	$(MAKE) $*.put
+	$(touch)
+
+## Allow file deletions to propagate
+## But only if nothing here has changed since last sync
+%.get: %.puttime
+	rclone sync -u $(mirror)/$* $*/ 
+
+mirrorGet = $(mirrors:%=%.get)
+mirrorPut = $(mirrors:%=%.puttime)
+
+pushup: $(mirrorGet)
+pullup: $(mirrorPut)

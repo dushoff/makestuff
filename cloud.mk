@@ -1,3 +1,4 @@
+## Currently working on mirror.mk instead 2024 Sep 21 (Sat)
 ## If these are working, try to generalize so that we can name our own folders
 cloud:
 	rclone mkdir $(cloudFolder) --seafile-create-library=true
