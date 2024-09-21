@@ -14,6 +14,7 @@ Ignore += *.mirror
 
 .PRECIOUS: %.mirror
 %.mirror: 
+	rclone mkdir $(mirror)/$*
 	rclone copy $*/ $(mirror)/$*
 	$(touch)
 
@@ -22,7 +23,6 @@ Ignore += *.mirror
 
 %.backup:
 	rclone copy $*/ $(mirror)/backup/$*
-
 
 ######################################################################
 
@@ -36,6 +36,7 @@ Ignore += *.mirror
 %.put: | %.mirror
 	rclone copy -u $*/ $(mirror)/$*
 
+Ignore += *.puttime
 %.puttime: % $(wildcard %/*)
 	$(MAKE) $*.put
 	$(touch)
