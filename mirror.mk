@@ -24,10 +24,8 @@ Ignore += *.mirror
 	rclone copy $*/ $(mirror)/backup/$*
 
 %.time: % $(wildcard %/*) | %.mirror
-	rclone copy -u $(mirror)/$* $*/ 
 	rclone sync -u $*/ $(mirror)/$*
 
 %.get: %.time | %.mirror
-	rclone copy -u $*/ $(mirror)/$*
 	rclone sync -u $(mirror)/$* $*/ 
 
