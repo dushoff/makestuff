@@ -24,8 +24,13 @@ Ignore += *.mirror
 	rclone copy $*/ $(mirror)/backup/$*
 
 %.time: % $(wildcard %/*) | %.mirror
-	rclone sync -u $*/ $(mirror)/$*
+	rclone copy -u $*/ $(mirror)/$*
 
-%.get: %.time | %.mirror
+## This can squash things (intended), but can also go backwards if you have changed anything local since syncing
+%.get: %.time
 	rclone sync -u $(mirror)/$* $*/ 
+
+## Push deletions upstream (if you're sure you sunk before deleting)
+%.syncup:
+	rclone sync -u $*/ $(mirror)/$*
 
