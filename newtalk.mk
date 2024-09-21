@@ -20,6 +20,9 @@ txt.format: $(talkdir)/txt.format local.txt.format
 local.txt.format:
 	touch $@
 
+localcomm.TEX:
+	$(touch)
+
 ## tmp files should be de-protected and sourced if you want to change locally
 %.tmp: 
 	$(MAKE) talkdir

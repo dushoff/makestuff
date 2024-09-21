@@ -4,10 +4,11 @@ current: target
 -include target.mk
 
 vim_session:
-	bash -cl "vmt"
+	bash -cl "vmt makefile"
 
 ######################################################################
 
+## Don't use this unless there is already a Makefile
 include Makefile
 
 ######################################################################

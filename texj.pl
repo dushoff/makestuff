@@ -7,29 +7,24 @@ my $basename = $ARGV[0];
 
 $basename =~ s/\.tex$//;
 my $target =  "$basename.tex.deps";
-my $mtarget =  "$basename.subdeps";
+my $ftarget =  "$basename.tex.files";
 
 ### Read and parse
 my $f = <>;
-my (%inputs, %packages, %graphics, %bibs, %dirs);
+my (%inputs, %graphics, %bibs);
 $f =~ s/.*%.*no_texdeps.*//;
 
-# Inputs (add include!)
+# input/include
 $f =~ s/^%.*//;
 $f =~ s/\n%.*//g;
 while ($f =~ s/\\input\s*{(.*?)}//){
 	$inputs{$1}=0;
 }
-
-## packages are tracked only for their directory
-while ($f =~ s/\\usepackage\s*{(.*?)}//){
-	my @packlist = split /,\s*/, $1;
-	foreach (@packlist){
-		$packages{$_}=0;
-	}
+while ($f =~ s/\\include\s*{(.*?)}//){
+	$inputs{$1}=0;
 }
 
-## Graphics (only one method so far)
+## Graphics
 while ($f =~ s/\\includegraphics\s*{(.*?)}//){
 	$graphics{$1}=0;
 }
@@ -51,47 +46,53 @@ while ($f =~ s/\\(?:bibliography|addbibresource)\s*{(.*?)}//){
 ######################################################################
 ### Write rules
 
-say "$target $mtarget: ; touch \$@";
-say"";
-
 ## Use order-only as of 2023 Nov 08 (Wed)
 ## Directories
 ## Needs to be above any dependencies that might look in the directories
 ## makehere and makethere would need to be in your own make file
 ## Only first-level subdirectories should be handled here
-foreach(keys %inputs, keys %packages, keys %graphics, keys %bibs)
+say("## Dirs");
+my (%dirs);
+foreach(keys %inputs, keys %graphics, keys %bibs)
 {
 	s|/*[^/]*$||;
 	s|/.*||;
 	$dirs{$_} = $_ if $_;
 }
-print "$target: | ", join " ", keys %dirs, "\n\n" if %dirs;
+if (%dirs){
+	my $ddep = join " ", keys %dirs;
+	say "$target: $ddep";
+	say "$ftarget: $ddep";
+	say"";
+}
 
-## Pictures
+say ("## Pictures");
 if (%graphics){
-	say "$target: ", join " ", keys %graphics, "\n";
+	my $gdep = join " ", keys %graphics;
+	say "$target: $gdep";
+	say "$ftarget: $gdep";
 	say"";
 }
 
-## Inputs
+say "## Inputs";
 if (%inputs){
-	say "$target: ", join " ", keys %inputs;
-
-	# Don't try to recursively deal with tex dependencies across directories
-	# Yet
-	my @deps = keys %inputs;
-	@deps = grep(!/\//, @deps); 
-	if (@deps){
-		say "$mtarget: " . join " ", map {s|.tex$|.tex.deps|; $_} @deps;
-		say "$target: " . join " ", map {s|.makedeps$|.tex.deps|; $_} @deps;
-	}
+	my @ifiles = map
+		{s/$/.tex/; s/.tex.tex/.tex/; s/.sty.tex/.sty/; s/.TEX.tex/.TEX/; $_}
+	keys %inputs;
+	my $idep = join " ", @ifiles;
+	say "$target: $idep";
+	say "$ftarget: $idep";
+	my $iddep = join " ", map {s/$/.deps/; $_} @ifiles;
+	say "$target: $iddep";
+	my $ifdep = join " ", map {s/$/.files/; $_} keys %inputs;
+	say "$ftarget: $ifdep";
 	say"";
 }
 
-## Bib stuff
+say "## Bib stuff";
 if (%bibs){
 	say "$target: $basename.bbl";
-	say "$basename.bbl: " . join " ", keys %bibs, "\n";
-	## say "$target: " . join " ", keys %bibs, "\n";
+	say "$basename.bbl: " . join " ", keys %bibs;
 	say"";
 }
+
