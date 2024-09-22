@@ -11,6 +11,7 @@ cloud ?= cloudmirror
 mirror = $(cloud):$(CURDIR:/home/$(USER)/%=%)
 
 Ignore += *.mirror
+Ignore += $(mirrors)
 
 .PRECIOUS: %.mirror
 %.mirror: 
@@ -33,7 +34,7 @@ Ignore += *.mirror
 	rclone sync -u $(mirror)/$* $*/ 
 
 ## Normally copy up safely; syncup can be called manually
-%.put: | %.mirror
+%.put: | % %.mirror
 	rclone copy -u $*/ $(mirror)/$*
 
 Ignore += *.puttime
@@ -49,5 +50,6 @@ Ignore += *.puttime
 mirrorGet = $(mirrors:%=%.get)
 mirrorPut = $(mirrors:%=%.puttime)
 
+## $(mirrors): ; $(mkdir)
 pushup: $(mirrorGet)
 pullup: $(mirrorPut)

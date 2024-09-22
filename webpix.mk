@@ -31,22 +31,13 @@ all.html: $(htmls)
 
 ######################################################################
 
-## Make a webpix directory (user should define or pay attention to imageDrop)
-## I can't figure out where default imageDrop comes from!
+## Violently deprecating imageDrop in wake of Dropbox catastrophe 2024 Sep 22 (Sun)
 
 ## jd.local: jd.local.mk
 Sources += $(wildcard *.local.mk)
 %.local: | %.local.mk
 	$(LN) $| local.mk
 -include local.mk
-
-webpix my_images: dir = $(imageDrop)
-webpix my_images: 
-	$(MAKE)  $(imageDrop)/$@
-	$(linkdir)
-
-$(imageDrop)/webpix $(imageDrop)/my_images:
-	$(mkdir)
 
 ## Reload a figure if you messed up the link or something
 %.remake:
