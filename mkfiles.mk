@@ -59,4 +59,8 @@ wraplink = cd $* && $(LN) ../mkfiles/$*.wrap makefile
 	$(CP) makestuff/project.Makefile $*/Makefile
 
 ## Make a new directory that is ready for a Dushoff-style project
-## Is
+## Is this the best place for that? Maybe, since defmake is here already
+%.newrepo:
+	mkdir -p $*
+	$(MAKE) $*.defmake
+	$(MAKE) $*.vscreen
