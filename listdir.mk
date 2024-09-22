@@ -37,6 +37,7 @@ screens_resource:
 	perl -i -wf makestuff/screensource.pl screens.list
 	## perl -i -wf makestuff/oldsource.pl screens.list
 
+## This is a made file for cloning or copying directories that are not here yet
 -include screens.mk
 
 ######################################################################
@@ -54,3 +55,5 @@ $(ruledirs):
 ## The first one is outdated (for changeover); the last one is for linking but doesn't fail when it should
 $(oldruledirs):
 	$(MV) $(old) $@ || git clone $(url) $@ || ($(linkdirname))
+
+######################################################################
