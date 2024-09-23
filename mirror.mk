@@ -50,6 +50,6 @@ Ignore += *.puttime
 mirrorGet = $(mirrors:%=%.get)
 mirrorPut = $(mirrors:%=%.puttime)
 
-## $(mirrors): ; $(mkdir)
+$(mirrors): ; $(mkdir)
 pushup: $(mirrorGet)
 pullup: $(mirrorPut)
