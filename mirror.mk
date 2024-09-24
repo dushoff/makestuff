@@ -16,14 +16,14 @@ Ignore += $(mirrors)
 .PRECIOUS: %.mirror
 %.mirror: 
 	rclone mkdir $(mirror)/$*
-	rclone copy $*/ $(mirror)/$*
+	rclone copy -u $*/ $(mirror)/$*
 	$(touch)
 
 %.mirror.ls: | %.mirror
 	rclone ls $(mirror)/$*
 
 %.backup:
-	rclone copy $*/ $(mirror)/backup/$*
+	rclone copy -u $*/ $(mirror)/backup/$*
 
 ######################################################################
 
