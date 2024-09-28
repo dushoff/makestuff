@@ -19,10 +19,12 @@ Ignore += makestuff
 msrepo = https://github.com/dushoff
 
 Makefile: makestuff/00.stamp
-makestuff/%.stamp:
+makestuff/%.stamp: | makestuff
 	- $(RM) makestuff/*.stamp
-	(cd makestuff && $(MAKE) pull) || git clone --depth 1 $(msrepo)/makestuff
+	cd makestuff && $(MAKE) pull
 	touch $@
+makestuff:
+	git clone --depth 1 $(msrepo)/makestuff
 
 -include makestuff/os.mk
 
