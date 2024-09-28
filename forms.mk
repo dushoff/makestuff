@@ -1,5 +1,6 @@
 include makestuff/forms.def
 
+Ignore += formDrop
 formDrop: dir = $(formDrop)
 formDrop: 
 	$(linkdirname)
