@@ -48,6 +48,10 @@ pull: commit.time
 %.autosync: %.autocommit
 	$(MAKE) sync
 
+## For finalizing reports
+%.autoup: %.autocommit
+	git push
+
 noreport: 
 	$(MAKE) report.md.theirs.pick
 
