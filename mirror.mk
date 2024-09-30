@@ -38,7 +38,7 @@ Ignore += $(mirrors)
 	rclone copy -u $*/ $(mirror)/$*
 
 Ignore += *.puttime
-%.puttime: % $(wildcard %/*)
+%.puttime: %/ $(wildcard %/*)
 	$(MAKE) $*.put
 	$(touch)
 
