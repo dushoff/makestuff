@@ -170,6 +170,12 @@ endef
 ## WATCH OUT for the -
 %.filenames:
 	rename "s/[()& ,?!-]+/_/g" $*/*.*
+%.fileversions:
+	cd $* && rename -f "s/ *\([0-9]\)//" *\([0-9]\).*
+
+## Temporary 2024 Sep 10 (Tue)
+%.qfiles:
+	rename "s/[()& ,?!-]+/_QQ_/g" $*/*.*
 
 %.voice: voice.pl %
 	$(PUSH)
