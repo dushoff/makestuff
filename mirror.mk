@@ -13,6 +13,7 @@ mirror = $(cloud):$(CURDIR:/home/$(USER)/%=%)
 Ignore += *.mirror
 Ignore += $(mirrors)
 
+## Maybe not needed, pay attention
 .PRECIOUS: %.mirror
 %.mirror: 
 	rclone mkdir $(mirror)/$*
