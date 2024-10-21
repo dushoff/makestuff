@@ -1,4 +1,3 @@
-
 ## Rules for sharing files under a standard directory structure with rcloud
 ## User must create an rclone “library” at a location pointed to by $(cloud)
 ## cloudmirror: by default
@@ -7,6 +6,7 @@
 Ignore += local.mk
 -include local.mk
 
+## This is the default parent location established by an rclone create command
 cloud ?= cloudmirror
 mirror = $(cloud):$(CURDIR:/home/$(USER)/%=%)
 
