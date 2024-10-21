@@ -35,8 +35,9 @@ Ignore += $(mirrors)
 	rclone sync -u $(mirror)/$* $*/ 
 
 ## Normally copy up safely; syncup can be called manually
+## Can try to fix with an || !ls something
 %.put: | % %.mirror
-	rclone copy -u $*/ $(mirror)/$*
+	rclone copy -u $* $(mirror)/$* --exclude ".*"
 
 Ignore += *.puttime
 %.puttime: % $(wildcard %/*)
