@@ -7,7 +7,7 @@
 .git:
 	git init
 
-## use github_private or github_public to make a repo named after directory
+## USE github_private or github_public to make a repo named after directory
 github_%: | .git commit.time
 	gh repo create --$* --source . --push
 
