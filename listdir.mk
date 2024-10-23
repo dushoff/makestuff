@@ -32,6 +32,9 @@ screens.update: screens.arc
 	- $(call hide, screens.list)
 	 $(listscreens)
 
+refresh: sync
+	$(MAKE) screens.update
+
 ## Tool for helping make a non-listdir to a listdir
 screens_resource:
 	perl -i -wf makestuff/screensource.pl screens.list
@@ -41,6 +44,8 @@ screens_resource:
 -include screens.mk
 
 ######################################################################
+
+#### Subdirs
 
 ## Syncing
 
