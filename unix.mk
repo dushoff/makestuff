@@ -82,11 +82,12 @@ rcopy = $(CPR) $< $@
 rdcopy = $(CPR) $(dir) $@
 copy = $(CP) $< $@
 pcopy = $(CP) $(word 1, $|) $@
-oocopy = $(CP) $| $@
-move = $(MV) $< $@
-Move = $(MVF) $< $@
+
 hardcopy = $(CPF) $< $@
 allcopy =  $(CP) $^ $@
+
+move = $(MV) $< $@
+Move = $(MVF) $< $@
 ccrib = $(CP) $(crib)/$@ .
 mkdir = $(MD) $@
 makedir = cd $(dir $@) && $(MD) $(notdir $@)
@@ -100,6 +101,10 @@ lnp = $(LNF) $| $@
 rm = $(RM) $@
 pandoc = pandoc -o $@ $<
 pandocs = pandoc -s -o $@ $<
+
+## Deprecate (see pipecopy); oocopy seems just lazy
+pcopy = $(CP) $(word 1, $|) $@
+oocopy = $(CP) $| $@
 
 ######################################################################
 
