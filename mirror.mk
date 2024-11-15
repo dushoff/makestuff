@@ -53,6 +53,6 @@ mirrorGet = $(mirrors:%=%.get)
 mirrorPut = $(mirrors:%=%.puttime)
 
 $(mirrors): ; $(mkdir)
-pullup: $(mirrorGet)
+mirrorGet pullup: $(mirrorGet)
 pushup: $(mirrorPut)
 up.time: $(mirrorPut)
