@@ -6,6 +6,7 @@ formDrop: dir = $(formDrop)
 formDrop: 
 	$(linkdirname)
 
+Ignore += date.txt
 date.txt:
 	$(MAKE) up_date
 
