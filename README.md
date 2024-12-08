@@ -4,22 +4,25 @@ Various makefiles for including, primarily intended for other git projects.
 
 Very much core to @jd-mathbio's work flow; should be better supported for others
 
-## Start simple
+## Getting started
 
-To install makestuff in an existing project, you can try the following.
+Add [this file](https://raw.githubusercontent.com/dushoff/makestuff/refs/heads/master/project.Makefile) to your Makefile. One way to do this is:
+`wget -O - https://raw.githubusercontent.com/dushoff/makestuff/refs/heads/master/project.Makefile >> Makefile`
 
-* If you have a Makefile, move it: `mv Makefile content.mk`
-* Clone this repo as a subdirectory: `git clone https://github.com/dushoff/makestuff.git`
-* Get a simple Makefile: `cp makestuff/simple.Makefile Makefile`
+You should then be able to automatically download a copy of makestuff by typing `make Makefile`. You should still be able to make anything you could make before. Let me know if this doesn't work for you.
 
-That should be it. You should still be able to make anything you could make before, and at least some makestuff should be working. Let me know if this does or doesn't work for you
+## git rules
 
-Next, you could look at your new Makefile and see what it says about moving old content (if any) and about including makestuff rules.
+git rules are enabled by default. These are cool, but poorly documented. 
+
+## R rules
+
+If you uncomment the -include line for pipeR.mk, you should be able to [use the rules there](pipeR.md) to co-ordinate R scripts. pipeR.mk also depends on [the shellpipes package](https://dushoff.github.io/shellpipes/). 
 
 ## Files
 
 ### Usable
-* [wrapR.mk](wrapR.mk) ([Documentation](wrapR.md))
+* [pipeR.mk](pipeR.mk) ([Documentation](pipeR.md))
 * [stepR.mk](stepR.mk) ([Documentation](stepR.md))
 * [texdeps.mk](texdeps.mk) ([Documentation](texdeps.md))
 

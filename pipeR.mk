@@ -113,8 +113,12 @@ endif
 ######################################################################
 
 ifdef autoknit
+%.html: %.rmd
+	$(knithtml)
 %.html: %.Rmd
 	$(knithtml)
+%.pdf: %.rmd
+	$(knitpdf)
 %.pdf: %.Rmd
 	$(knitpdf)
 endif
