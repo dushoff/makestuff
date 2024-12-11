@@ -151,7 +151,7 @@ endif
 	$(lstouch)
 .PRECIOUS: %.Rout.pdf
 %.Rout.pdf: %.Rout
-	$(lstouch) || ($(pdfcheck) $@.tmp && $(MVF) $@.tmp $@) || (ls Rplots.pdf && echo WARNING: Trying an orphaned Rplots file && mv Rplots.pdf $@) || (echo ERROR: Failed to find, make or rescue $@ && false)
+	$(lstouch) || (ls $@.tmp && $(pdfcheck) $@.tmp && $(MVF) $@.tmp $@) || (ls Rplots.pdf && echo "WARNING: Using an orphaned Rplots file; maybe try startGraphics()" && mv Rplots.pdf $@) || (echo ERROR: Failed to find, make or rescue $@ && false)
 
 Ignore += .Rhistory .RData
 Ignore += *.RData *.Rlog *.rdata *.rda *.rtmp
