@@ -1,4 +1,3 @@
-
 ## Rules for sharing files under a standard directory structure with rcloud
 ## User must create an rclone “library” at a location pointed to by $(cloud)
 ## cloudmirror: by default
@@ -7,23 +6,25 @@
 Ignore += local.mk
 -include local.mk
 
+## This is the default parent location established by an rclone create command
 cloud ?= cloudmirror
 mirror = $(cloud):$(CURDIR:/home/$(USER)/%=%)
 
 Ignore += *.mirror
 Ignore += $(mirrors)
 
+## Maybe not needed, pay attention
 .PRECIOUS: %.mirror
 %.mirror: 
 	rclone mkdir $(mirror)/$*
-	rclone copy $*/ $(mirror)/$*
+	rclone copy -u $*/ $(mirror)/$*
 	$(touch)
 
 %.mirror.ls: | %.mirror
 	rclone ls $(mirror)/$*
 
 %.backup:
-	rclone copy $*/ $(mirror)/backup/$*
+	rclone copy -u $*/ $(mirror)/backup/$*
 
 ######################################################################
 
@@ -34,8 +35,9 @@ Ignore += $(mirrors)
 	rclone sync -u $(mirror)/$* $*/ 
 
 ## Normally copy up safely; syncup can be called manually
+## Can try to fix with an || !ls something
 %.put: | % %.mirror
-	rclone copy -u $*/ $(mirror)/$*
+	rclone copy -u $* $(mirror)/$* --exclude ".*"
 
 Ignore += *.puttime
 %.puttime: % $(wildcard %/*)
@@ -51,5 +53,6 @@ mirrorGet = $(mirrors:%=%.get)
 mirrorPut = $(mirrors:%=%.puttime)
 
 $(mirrors): ; $(mkdir)
-pushup: $(mirrorGet)
-pullup: $(mirrorPut)
+mirrorGet pullup: $(mirrorGet)
+pushup: $(mirrorPut)
+up.time: $(mirrorPut)

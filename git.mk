@@ -7,6 +7,7 @@
 .git:
 	git init
 
+## USE github_private or github_public to make a repo named after directory
 github_%: | .git commit.time
 	gh repo create --$* --source . --push
 
@@ -47,6 +48,10 @@ pull: commit.time
 
 %.autosync: %.autocommit
 	$(MAKE) sync
+
+## For finalizing reports
+%.autoup: %.autocommit
+	git push
 
 noreport: 
 	$(MAKE) report.md.theirs.pick
