@@ -31,6 +31,7 @@ Ignore += $(mirrors)
 ## Dangerous rules
 %.syncup:
 	rclone sync -u $*/ $(mirror)/$*
+	touch $*.puttime
 %.syncdown:
 	rclone sync -u $(mirror)/$* $*/ 
 
@@ -51,7 +52,9 @@ Ignore += *.puttime
 
 mirrorGet = $(mirrors:%=%.get)
 mirrorPut = $(mirrors:%=%.puttime)
+mirrorUp = $(mirrors:%=%.syncup)
 
 $(mirrors): ; $(mkdir)
 pullup: $(mirrorGet)
 pushup: $(mirrorPut)
+syncup: $(mirrorUp)
