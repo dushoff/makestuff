@@ -6,8 +6,12 @@ formDrop: dir = $(formDrop)
 formDrop: 
 	$(linkdirname)
 
+Ignore += date.txt
 date.txt:
 	$(MAKE) up_date
+
+name.txt:
+	echo "Jonathan Dushoff" > $@
 
 up_date: 
 	date +"%d %b %Y" > date.txt
