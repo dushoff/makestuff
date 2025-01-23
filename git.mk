@@ -22,7 +22,7 @@ branch:
 sourceTouch = touch $(word 1, $(Sources))
 
 Ignore += commit.time commit.default
-commit.time: $(Sources)
+commit.time: $(Sources) | .git
 	$(MAKE) exclude
 	-git add -f $? $(trackedTargets)
 	(head -1 ~/.commitnow > $@ && echo " ~/.commitnow" >> $@) || echo Autocommit > $@
