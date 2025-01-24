@@ -6,8 +6,15 @@ formDrop: dir = $(formDrop)
 formDrop: 
 	$(linkdirname)
 
+Ignore += date.txt
 date.txt:
 	$(MAKE) up_date
+
+name.txt:
+	echo "Jonathan Dushoff" > $@
+
+X.txt:
+	echo "X" > $@
 
 up_date: 
 	date +"%d %b %Y" > date.txt
@@ -20,7 +27,11 @@ up_date:
 
 ## This all seems like a disaster; files are sometimes local and sometimes in formDrop!
 
+## Refactor this! Sig uses a different paradimg, can it be matched?
 text.pdf: text.txt
+	pdfroff $< | cpdf -crop "0.9in 10.8in 0.9in 0.2in" -stdin -o $@ 
+
+X.pdf: X.txt
 	pdfroff $< | cpdf -crop "0.9in 10.8in 0.9in 0.2in" -stdin -o $@ 
 
 name.pdf: name.txt
@@ -39,6 +50,9 @@ date_%.pdf: date.pdf
 	cpdf -scale-page "$* $*" -o $@ $<
 
 name_%.pdf: name.pdf
+	cpdf -scale-page "$* $*" -o $@ $<
+
+X_%.pdf: X.pdf
 	cpdf -scale-page "$* $*" -o $@ $<
 
 ######################################################################

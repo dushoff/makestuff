@@ -1,4 +1,3 @@
-
 ## Rules for sharing files under a standard directory structure with rcloud
 ## User must create an rclone “library” at a location pointed to by $(cloud)
 ## cloudmirror: by default
@@ -7,6 +6,7 @@
 Ignore += local.mk
 -include local.mk
 
+## This is the default parent location established by an rclone create command
 cloud ?= cloudmirror
 mirror = $(cloud):$(CURDIR:/home/$(USER)/%=%)
 
@@ -31,12 +31,14 @@ Ignore += $(mirrors)
 ## Dangerous rules
 %.syncup:
 	rclone sync -u $*/ $(mirror)/$*
+	touch $*.puttime
 %.syncdown:
 	rclone sync -u $(mirror)/$* $*/ 
 
 ## Normally copy up safely; syncup can be called manually
+## Can try to fix with an || !ls something
 %.put: | % %.mirror
-	rclone copy -u $*/ $(mirror)/$*
+	rclone copy -u $* $(mirror)/$* --exclude ".*"
 
 Ignore += *.puttime
 %.puttime: % $(wildcard %/*)
@@ -50,7 +52,9 @@ Ignore += *.puttime
 
 mirrorGet = $(mirrors:%=%.get)
 mirrorPut = $(mirrors:%=%.puttime)
+mirrorUp = $(mirrors:%=%.syncup)
 
 $(mirrors): ; $(mkdir)
-pullup: $(mirrorGet)
-pushup: $(mirrorPut)
+mirrorGet pullup: $(mirrorGet)
+syncup: $(mirrorUp)
+up.time: $(mirrorPut)
