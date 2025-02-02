@@ -30,7 +30,7 @@ Ignore += $(mirrors)
 
 ## Dangerous rules
 %.syncup:
-	rclone sync -u $*/ $(mirror)/$*
+	rclone sync --skip-links -u $*/ $(mirror)/$*
 	touch $*.puttime
 %.syncdown:
 	rclone sync -u $(mirror)/$* $*/ 
@@ -38,7 +38,7 @@ Ignore += $(mirrors)
 ## Normally copy up safely; syncup can be called manually
 ## Can try to fix with an || !ls something
 %.put: | % %.mirror
-	rclone copy -u $* $(mirror)/$* --exclude ".*"
+	rclone copy --skip-links -u $* $(mirror)/$* --exclude ".*"
 
 Ignore += *.puttime
 %.puttime: % $(wildcard %/*)
