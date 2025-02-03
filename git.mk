@@ -514,6 +514,14 @@ Ignore += *.ours *.theirs *.common
 	$(CP) $* $(basename $*)
 	git add $(basename $*)
 
+%.prevpick: 
+	$(CP) $*.*.prevfile $*
+	git add $*
+
+%.oldpick: 
+	$(CP) $*.*.oldfile $*
+	git add $*
+
 Ignore += *.gitdiff
 %.gitdiff: %.ours %.theirs
 	- $(diff)
