@@ -102,7 +102,7 @@ rm = $(RM) $@
 pandoc = pandoc -o $@ $<
 pandocs = pandoc -s -o $@ $<
 
-## Deprecate (see pipecopy); oocopy seems just lazy
+## oocopy seems just lazy, use pcopy
 pcopy = $(CP) $(word 1, $|) $@
 oocopy = $(CP) $| $@
 
