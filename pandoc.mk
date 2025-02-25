@@ -5,6 +5,9 @@
 ## -S for “smart” quotes
 pandocs = pandoc -s -o $@ $<
 
+%.pdf: %.md
+	$(pandocs)
+
 %.html: %.md
 	$(pandocs)
 
@@ -55,11 +58,7 @@ Ignore += *.comb.md
 %.out: %.md
 	pandoc -t plain -o $@ $<
 
-%.html: %.wikitext
-	pandoc -f mediawiki -o $@ $<
-
-%.md: %.wikitext
-	pandoc -f mediawiki -o $@ $<
+mediawikir = pandoc -f mediawiki -o $@ $<
 
 %.html: %.csv
 	csv2html -o $@ $<

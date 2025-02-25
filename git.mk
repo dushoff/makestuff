@@ -4,6 +4,15 @@
 
 ######################################################################
 
+.git:
+	git init
+
+## USE github_private or github_public to make a repo named after directory
+github_%: | .git commit.time
+	gh repo create --$* --source . --push
+
+######################################################################
+
 ### Push and pull
 
 branch:
@@ -13,7 +22,7 @@ branch:
 sourceTouch = touch $(word 1, $(Sources))
 
 Ignore += commit.time commit.default
-commit.time: $(Sources)
+commit.time: $(Sources) | .git
 	$(MAKE) exclude
 	-git add -f $? $(trackedTargets)
 	(head -1 ~/.commitnow > $@ && echo " ~/.commitnow" >> $@) || echo Autocommit > $@
@@ -40,6 +49,10 @@ pull: commit.time
 %.autosync: %.autocommit
 	$(MAKE) sync
 
+## For finalizing reports
+%.autoup: %.autocommit
+	git push
+
 noreport: 
 	$(MAKE) report.md.theirs.pick
 
@@ -54,7 +67,7 @@ $(pardirs):
 
 Ignore += up.time all.time
 up.time: commit.time
-	$(MAKE) pullup
+	$(MAKE) pull
 	$(MAKE) pushup
 	touch $@
 
@@ -146,6 +159,7 @@ push.%: commit.time
 ## without adding to all pulls; maybe not useful?
 ## 2022 Aug 05 (Fri) added submodule incantation
 ## 2023 Jan 29 (Sun) subtracted submodule incantation; add it manually to submodule directories
+## 2025 Jan 24 (Fri) pullup is used now for rclone; use it for manual pulls but not for pulls that are required just to push
 
 pullup: pull
 
@@ -499,6 +513,14 @@ Ignore += *.ours *.theirs *.common
 %.pick: %
 	$(CP) $* $(basename $*)
 	git add $(basename $*)
+
+%.prevpick: 
+	$(CP) $*.*.prevfile $*
+	git add $*
+
+%.oldpick: 
+	$(CP) $*.*.oldfile $*
+	git add $*
 
 Ignore += *.gitdiff
 %.gitdiff: %.ours %.theirs

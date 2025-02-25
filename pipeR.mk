@@ -18,7 +18,7 @@ define pipeR
 	@-$(RM) $@ $@.*
 	@$(makeArgs)
 	@echo pipeR: Making $@ using $^
-	@(($(rrun) --args $@ shellpipes $*.pipestar $^ < $(word 1, $(filter %.R, $^)) > $@) 2> $(@:%.Rout=%.Rlog) && cat $(@:%.Rout=%.Rlog)) || (touch $(word 1, $(filter %.R, $^)) && cat $(@:%.Rout=%.Rlog) && false)
+	@(($(rrun) --args $@ shellpipes $*.pipestar $^ < $(word 1, $(filter %.R, $^)) > $@) 2> $(@:%.Rout=%.Rlog) && cat $(@:%.Rout=%.Rlog)) || (sleep 1 && touch $(word 1, $(filter %.R, $^)) && cat $(@:%.Rout=%.Rlog) && false)
 endef
 
 ## Make the rpcall first so that we don't outdate things
@@ -113,8 +113,12 @@ endif
 ######################################################################
 
 ifdef autoknit
+%.html: %.rmd
+	$(knithtml)
 %.html: %.Rmd
 	$(knithtml)
+%.pdf: %.rmd
+	$(knitpdf)
 %.pdf: %.Rmd
 	$(knitpdf)
 endif
@@ -147,7 +151,7 @@ endif
 	$(lstouch)
 .PRECIOUS: %.Rout.pdf
 %.Rout.pdf: %.Rout
-	$(lstouch) || ($(pdfcheck) $@.tmp && $(MVF) $@.tmp $@) || (ls Rplots.pdf && echo WARNING: Trying an orphaned Rplots file && mv Rplots.pdf $@) || (echo ERROR: Failed to find, make or rescue $@ && false)
+	$(lstouch) || (ls $@.tmp && $(pdfcheck) $@.tmp && $(MVF) $@.tmp $@) || (ls Rplots.pdf && echo "WARNING: Using an orphaned Rplots file; maybe try startGraphics()" && mv Rplots.pdf $@) || (echo ERROR: Failed to find, make or rescue $@ && false)
 
 Ignore += .Rhistory .RData
 Ignore += *.RData *.Rlog *.rdata *.rda *.rtmp

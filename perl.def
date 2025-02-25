@@ -1,3 +1,5 @@
+Sources += $(wildcard *.pl)
+
 ## Just the command (refactor using this?)
 PERLEX = perl -wf $(filter %.pl, $^)
 

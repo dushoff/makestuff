@@ -12,7 +12,6 @@ RUNLatex = $(latexEngine) $(latexNonstop) $(latexJob) $(basename $<)
 
 .PRECIOUS: %.aux
 %.aux: %.tex | %.texdeps.mk
-	-$(MAKE) -f $*.texdeps.mk -f Makefile $*.tex.files
 	- $(RUNLatex)
 
 ## May need to make recipes and repeat these two with TEX ☹
@@ -52,10 +51,10 @@ Ignore += *.force.pdf
 
 ## Loop over reruns
 
-%.complete: phony
+%.texfinal: phony
 	@while ! $(MAKE) -q $*.repeat ; do $(MAKE) $*.repeat; done;
 
-%.complete.pdf: %.complete
+%.texfinal.pdf: %.texfinal
 	$(CP) $*.pdf $@
 
 ######################################################################
@@ -69,8 +68,11 @@ body.tex.mk: body.tex makestuff/texj.pl
 %.tex.mk: %.tex 
 	perl -wf makestuff/texj.pl $< > $@
 
+## This seems like a mess; why should it be here?
+## Why not just use tex.mk
 .PRECIOUS: %.texdeps.mk
 %.texdeps.mk: %.tex.mk 
+	-$(MAKE) -f $*.tex.mk -f Makefile $*.tex.files
 	cat $^ > $@
 
 ######################################################################
@@ -80,11 +82,11 @@ Ignore += $(texfiles:tex=pdf)
 Ignore += $(texfiles:tex=out)
 
 ## These direct exclusions can be replaced by fancier rules above if necessary
-Ignore += *.biblog *.log *.aux .*.aux *.blg *.bbl *.bcf *.repeat *.complete
+Ignore += *.biblog *.log *.aux .*.aux *.blg *.bbl *.bcf *.repeat *.texfinal
 Ignore += *.nav *.snm *.toc
 Ignore += *.run.xml
 Ignore += *.tex.* *.TEX.* *.texdeps.mk
-Ignore += *.aux.pdf *.aux.out *.complete.pdf
+Ignore += *.aux.pdf *.aux.out *.texfinal.pdf
 
 iclean:
 	$(RM) *.deps.pdf *.subdeps

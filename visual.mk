@@ -62,15 +62,16 @@ target.mk:
 ## open directory in a screen window (for running things)
 ## meant to be called from within screen (otherwise makes a new one)
 %.newscreen: %.dir
-	cd $* && screen -t "$*"
+	cd $* && screen -t "$(notdir $*)"
 
 %.rscreen:
 	-cd $* && $(MAKE) startscreen 
 	-cd $* && screen -t "$(notdir $*)"
 
 %.vscreen: | %
+	- $(MAKE) $*/Makefile && cd $* && $(MAKE) Makefile 
 	- cd $* && ($(MAKE) vimclean || true)
-	cd $* && screen -t "$*" bash -cl "vvs"
+	cd $* && screen -t "$(notdir $*)" bash -cl "vvs"
 
 %.dir:
 	cd $(dir $*) && $(MAKE) $(notdir $*)

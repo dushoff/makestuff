@@ -1,8 +1,14 @@
 ## USAGE
-## Make a Makefile that's hidden from the repo: `make <dir>.mkfile`
-## Add it to repo: `make <dir>.repofile`
-#### Don't forget to un-ignore!
-## make an untracked wrapper makefile `make dir/makefile`
+## Make a Makefile that's hidden from the repo
+#### `make <dir>.mkfile`
+## To add it to the repo later (back to a normal structure):
+#### `make <dir>.repofile` #### Don't forget to un-ignore!
+
+## make an exogenously tracked wrapper makefile:
+#### `make dir/makefile`
+
+## Make a default Makefile from the start instead:
+#### `make <dir>.defmake`
 
 ## Curate linked Makefiles in a mkfiles directory in the parent
 Sources += $(wildcard mkfiles/*.make)
@@ -51,3 +57,10 @@ wraplink = cd $* && $(LN) ../mkfiles/$*.wrap makefile
 %.defmake: 
 	$(MAKE) $*
 	$(CP) makestuff/project.Makefile $*/Makefile
+
+## Make a new directory that is ready for a Dushoff-style project
+## Is this the best place for that? Maybe, since defmake is here already
+%.newrepo:
+	mkdir -p $*
+	$(MAKE) $*.defmake
+	$(MAKE) $*.vscreen

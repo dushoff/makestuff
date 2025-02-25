@@ -64,6 +64,8 @@ setcheckfile = touch $(checkfile) && false
 
 diff = $(DIFF) $^ > $@
 
+## Need to upgrade use $(notdir … to handle case where it's not in the cwd
+## This is tricky because ln is also weird about what directory it's in
 # Generic (vars that use the ones above)
 linkdir = ls $(dir)/$@ > $(null) && $(LNF) $(dir)/$@ .
 linkdirname = ls $(dir) > $(null) && $(LNF) $(dir) $@ 
@@ -82,10 +84,12 @@ rcopy = $(CPR) $< $@
 rdcopy = $(CPR) $(dir) $@
 copy = $(CP) $< $@
 pcopy = $(CP) $(word 1, $|) $@
-move = $(MV) $< $@
-Move = $(MVF) $< $@
+
 hardcopy = $(CPF) $< $@
 allcopy =  $(CP) $^ $@
+
+move = $(MV) $< $@
+Move = $(MVF) $< $@
 ccrib = $(CP) $(crib)/$@ .
 mkdir = $(MD) $@
 makedir = cd $(dir $@) && $(MD) $(notdir $@)
@@ -99,6 +103,10 @@ lnp = $(LNF) $| $@
 rm = $(RM) $@
 pandoc = pandoc -o $@ $<
 pandocs = pandoc -s -o $@ $<
+
+## oocopy seems just lazy, use pcopy
+pcopy = $(CP) $(word 1, $|) $@
+oocopy = $(CP) $| $@
 
 ######################################################################
 
@@ -138,6 +146,8 @@ ddcopy = ($(LSN) && $(touch)) ||  $(rdcopy)
 %.rw:
 	chmod -R u+w $*
 
+PUSH ?= @(echo "PUSH not defined" & false)
+
 ## File listing and merging
 %.ls: %
 	ls $* > $@
@@ -167,6 +177,12 @@ endef
 ## WATCH OUT for the -
 %.filenames:
 	rename "s/[()& ,?!-]+/_/g" $*/*.*
+%.fileversions:
+	cd $* && rename -f "s/ *\([0-9]\)//" *\([0-9]\).*
+
+## Temporary 2024 Sep 10 (Tue)
+%.qfiles:
+	rename "s/[()& ,?!-]+/_QQ_/g" $*/*.*
 
 %.voice: voice.pl %
 	$(PUSH)

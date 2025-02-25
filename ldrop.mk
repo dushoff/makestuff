@@ -1,8 +1,9 @@
 ## This file is for adding a default, repo-specific Dropbox
 ## The local subdirectory is called drop
 
-## local.mk needs to point to your Dropbox
+## local.mk needs to point to your Dropbox parent directory
 ## `make null.lmk` if the folder is under ~/Dropbox/resources/<thisdirname>
+## If you do this, you are not protected from having two ldrops in the same directory.
 ## Otherwise edit <yourname>.local and use `make <yourname.lmk>`
 
 -include local.mk

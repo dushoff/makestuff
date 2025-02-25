@@ -31,22 +31,16 @@ all.html: $(htmls)
 
 ######################################################################
 
-## Make a webpix directory (user should define or pay attention to imageDrop)
-## I can't figure out where default imageDrop comes from!
+## Violently deprecating imageDrop in wake of Dropbox catastrophe 2024 Sep 22 (Sun)
+
+## I guess this is the default; and shouldn't hurt anything unless some sort of mirrors are enabled
+mirrors += webpix my_images
 
 ## jd.local: jd.local.mk
 Sources += $(wildcard *.local.mk)
 %.local: | %.local.mk
 	$(LN) $| local.mk
 -include local.mk
-
-webpix my_images: dir = $(imageDrop)
-webpix my_images: 
-	$(MAKE)  $(imageDrop)/$@
-	$(linkdir)
-
-$(imageDrop)/webpix $(imageDrop)/my_images:
-	$(mkdir)
 
 ## Reload a figure if you messed up the link or something
 %.remake:
@@ -62,7 +56,7 @@ allsteps.mk: $(stepmks)
 
 webpix/%: | allsteps.mk
 	$(MAKE) webpix
-	$(MAKE) -f $< $@
+	$(MAKE) -f $| $@
 
 my_images/%: | my_images
 	(cd $< && $(MAKE) $*) || convert $(word 2, $^) $@
