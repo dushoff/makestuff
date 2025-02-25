@@ -227,11 +227,12 @@ Ignore += *.ld.tex
 	$(RM) $*
 	$(MAKE) $*
 
-%.log: 
+## Changed to not conflict with makegraph 2025 Feb 24 (Mon)
+%.make.log: 
 	$(RM) $*
 	$(MAKE) $* > $*.makelog
 
-%.makelog: %.log ;
+%.makelog: %.make.log ;
 
 %.continue:
 	$(MAKE) $* || echo CONTINUING past error in target $*

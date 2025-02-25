@@ -1,18 +1,18 @@
 ## Graphing (weird stuff, and acting weird for now)
 
-Ignore += *.ndlog
-%.ndlog: Makefile
+Ignore += *.nd.log
+%.nd.log: Makefile
 	make -nd $* > $@
 
-Ignore += *.cleanlog
-%.cleanlog: %.ndlog
-	cat $< | grep -v makestuff | grep -v "\.mk" | grep -v makedeps | grep -v subdeps > $@
+Ignore += *.nom.log
+%.nom.log: %.nd.log
+	cat $< | grep -v makestuff | grep -v "\.mk" > $@
 
-%.fast.cleanlog: %.cleanlog
+%.fast.log: %.log
 	cat $< | grep -v slowtarget > $@
 
 Ignore += *.mg.dot
-%.mg.dot: %.cleanlog
+%.mg.dot: %.log
 	make2graph $< > $@
 
 Ignore += *.mg.pdf
@@ -20,7 +20,7 @@ Ignore += *.mg.pdf
 	dot -Tpdf -o $@ $<
 
 ## Does not chain through wildcard; also, the graph has unexplained orphanism
-%.dd.cleanlog: %.dd.testsetup $(wildcard %.dd/*.*)
-	cd $*.dd && $(MAKE) $*.cleanlog
-	$(CP) $*.dd/$*.cleanlog $@
+%.dd.log: %.dd.testsetup $(wildcard %.dd/*.*)
+	cd $*.dd && $(MAKE) $*.log
+	$(CP) $*.dd/$*.log $@
 
