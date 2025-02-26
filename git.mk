@@ -9,7 +9,7 @@
 
 ## USE github_private or github_public to make a repo named after directory
 github_%: | .git commit.time
-	gh repo create --$* --source . --push
+	gh repo create $(repoName) --$* --source=. --remote=upstream --push
 
 ######################################################################
 
