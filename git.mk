@@ -4,8 +4,15 @@
 
 ######################################################################
 
+## gh repo create --public mac-theobio/makeIntro2025 --source . --push
+
+initBranch ?= main
 .git:
-	git init
+	git init -b $(initBranch)
+
+## USE github_private or github_public to make a repo named after directory
+github_%: | .git commit.time
+	gh repo create --$* --source=. --push
 
 ## USE github_private or github_public to make a repo named after directory
 github_%: | .git commit.time
