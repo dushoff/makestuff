@@ -23,8 +23,7 @@ If you uncomment the -include line for pipeR.mk, you should be able to [use the 
 
 ### Usable
 * [pipeR.mk](pipeR.mk) ([Documentation](pipeR.md))
-* [stepR.mk](stepR.mk) ([Documentation](stepR.md))
-* [texdeps.mk](texdeps.mk) ([Documentation](texdeps.md))
+* [texj.mk](texj.mk) ([Documentation](texj.md))
 
 ### Documented
 * [autorefs.mk](autorefs.mk) ([Documentation](autorefs.md))
@@ -36,6 +35,8 @@ If you uncomment the -include line for pipeR.mk, you should be able to [use the 
 ### Documented but deprecated
 * [cache.mk](cache.mk) ([Documentation](cache.md))
 * [flextex.mk](flextex.mk) ([Documentation](flextex.md))
+* [stepR.mk](stepR.mk) ([Documentation](stepR.md))
+* [texdeps.mk](texdeps.mk) ([Documentation](texdeps.md))
 
 ### Undocumented (some of these are simple and usable)
 * [accounts.mk](accounts.mk)

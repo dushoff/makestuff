@@ -9,7 +9,7 @@
 
 ## USE github_private or github_public to make a repo named after directory
 github_%: | .git commit.time
-	gh repo create --$* --source . --push
+	gh repo create $(repoName) --$* --source=. --remote=upstream --push
 
 ######################################################################
 
@@ -22,7 +22,7 @@ branch:
 sourceTouch = touch $(word 1, $(Sources))
 
 Ignore += commit.time commit.default
-commit.time: $(Sources) | .git
+commit.time: $(Sources)
 	$(MAKE) exclude
 	-git add -f $? $(trackedTargets)
 	(head -1 ~/.commitnow > $@ && echo " ~/.commitnow" >> $@) || echo Autocommit > $@
@@ -607,3 +607,4 @@ Ignore += *.blame
 
 store_all:
 	git config --global credential.helper 'store'
+

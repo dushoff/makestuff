@@ -64,6 +64,8 @@ setcheckfile = touch $(checkfile) && false
 
 diff = $(DIFF) $^ > $@
 
+## Need to upgrade use $(notdir … to handle case where it's not in the cwd
+## This is tricky because ln is also weird about what directory it's in
 # Generic (vars that use the ones above)
 linkdir = ls $(dir)/$@ > $(null) && $(LNF) $(dir)/$@ .
 linkdirname = ls $(dir) > $(null) && $(LNF) $(dir) $@ 
@@ -225,11 +227,12 @@ Ignore += *.ld.tex
 	$(RM) $*
 	$(MAKE) $*
 
-%.log: 
+## Changed to not conflict with makegraph 2025 Feb 24 (Mon)
+%.make.log: 
 	$(RM) $*
 	$(MAKE) $* > $*.makelog
 
-%.makelog: %.log ;
+%.makelog: %.make.log ;
 
 %.continue:
 	$(MAKE) $* || echo CONTINUING past error in target $*

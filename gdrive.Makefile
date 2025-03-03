@@ -1,6 +1,6 @@
 ## This is the GENERIC gdrive mirror file
 
-current: target
+current: sync
 -include target.mk
 Ignore = target.mk
 
