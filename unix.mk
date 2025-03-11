@@ -64,6 +64,8 @@ setcheckfile = touch $(checkfile) && false
 
 diff = $(DIFF) $^ > $@
 
+## Need to upgrade use $(notdir … to handle case where it's not in the cwd
+## This is tricky because ln is also weird about what directory it's in
 # Generic (vars that use the ones above)
 linkdir = ls $(dir)/$@ > $(null) && $(LNF) $(dir)/$@ .
 linkdirname = ls $(dir) > $(null) && $(LNF) $(dir) $@ 
@@ -82,11 +84,12 @@ rcopy = $(CPR) $< $@
 rdcopy = $(CPR) $(dir) $@
 copy = $(CP) $< $@
 pcopy = $(CP) $(word 1, $|) $@
-oocopy = $(CP) $| $@
-move = $(MV) $< $@
-Move = $(MVF) $< $@
+
 hardcopy = $(CPF) $< $@
 allcopy =  $(CP) $^ $@
+
+move = $(MV) $< $@
+Move = $(MVF) $< $@
 ccrib = $(CP) $(crib)/$@ .
 mkdir = $(MD) $@
 makedir = cd $(dir $@) && $(MD) $(notdir $@)
@@ -100,6 +103,10 @@ lnp = $(LNF) $| $@
 rm = $(RM) $@
 pandoc = pandoc -o $@ $<
 pandocs = pandoc -s -o $@ $<
+
+## oocopy seems just lazy, use pcopy
+pcopy = $(CP) $(word 1, $|) $@
+oocopy = $(CP) $| $@
 
 ######################################################################
 
@@ -220,11 +227,12 @@ Ignore += *.ld.tex
 	$(RM) $*
 	$(MAKE) $*
 
-%.log: 
+## Changed to not conflict with makegraph 2025 Feb 24 (Mon)
+%.make.log: 
 	$(RM) $*
 	$(MAKE) $* > $*.makelog
 
-%.makelog: %.log ;
+%.makelog: %.make.log ;
 
 %.continue:
 	$(MAKE) $* || echo CONTINUING past error in target $*

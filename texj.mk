@@ -12,7 +12,6 @@ RUNLatex = $(latexEngine) $(latexNonstop) $(latexJob) $(basename $<)
 
 .PRECIOUS: %.aux
 %.aux: %.tex | %.texdeps.mk
-	-$(MAKE) -f $*.texdeps.mk -f Makefile $*.tex.files
 	- $(RUNLatex)
 
 ## May need to make recipes and repeat these two with TEX ☹
@@ -69,8 +68,11 @@ body.tex.mk: body.tex makestuff/texj.pl
 %.tex.mk: %.tex 
 	perl -wf makestuff/texj.pl $< > $@
 
+## This seems like a mess; why should it be here?
+## Why not just use tex.mk
 .PRECIOUS: %.texdeps.mk
 %.texdeps.mk: %.tex.mk 
+	-$(MAKE) -f $*.tex.mk -f Makefile $*.tex.files
 	cat $^ > $@
 
 ######################################################################
@@ -87,7 +89,7 @@ Ignore += *.tex.* *.TEX.* *.texdeps.mk
 Ignore += *.aux.pdf *.aux.out *.texfinal.pdf
 
 iclean:
-	$(RM) *.deps.pdf *.subdeps
+	$(RM) *.deps.pdf *.subdeps *.deps.out
 
 jclean:
 	$(RM) *.biblog *.log *.aux .*.aux *.blg *.bbl *.bcf *.repeat *.complete

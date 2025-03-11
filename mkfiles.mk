@@ -4,7 +4,7 @@
 ## To add it to the repo later (back to a normal structure):
 #### `make <dir>.repofile` #### Don't forget to un-ignore!
 
-## make an untracked wrapper makefile:
+## make an exogenously tracked wrapper makefile:
 #### `make dir/makefile`
 
 ## Make a default Makefile from the start instead:
