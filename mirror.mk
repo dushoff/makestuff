@@ -57,9 +57,6 @@ $(mirrors): ; $(mkdir)
 pushup: mirrorGet
 pullup: mirrorPut
 
-$(mirrors): ; $(mkdir)
-mirrorGet pullup: $(mirrorGet)
-
 ## syncup never finishes (make-wise), but it does put $(mirrorPut) up to date
 mirrorUp = $(mirrors:%=%.syncup)
 syncup: mirrorUp
