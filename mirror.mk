@@ -48,9 +48,9 @@ Ignore += *.puttime
 %.get: %.puttime
 	rclone sync -u $(mirror)/$* $*/ 
 
-mirrorGet = $(mirrors:%=%.get)
-mirrorPut = $(mirrors:%=%.puttime)
+mirrorGet: $(mirrors:%=%.get)
+mirrorPut: $(mirrors:%=%.puttime)
 
 $(mirrors): ; $(mkdir)
-pushup: $(mirrorGet)
-pullup: $(mirrorPut)
+pushup: mirrorGet
+pullup: mirrorPut
