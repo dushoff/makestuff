@@ -50,13 +50,17 @@ Ignore += *.puttime
 %.get: %.puttime
 	rclone sync -u $(mirror)/$* $*/ 
 
-mirrorGet = $(mirrors:%=%.get)
-mirrorPut = $(mirrors:%=%.puttime)
-mirrorUp = $(mirrors:%=%.syncup)
+mirrorGet: $(mirrors:%=%.get)
+mirrorPut: $(mirrors:%=%.puttime)
 
 $(mirrors): ; $(mkdir)
-mirrorGet pullup: $(mirrorGet)
+pushup: mirrorPut
+pullup: mirrorGet
 
 ## syncup never finishes (make-wise), but it does put $(mirrorPut) up to date
-syncup: $(mirrorUp)
-up.time: $(mirrorPut)
+mirrorUp = $(mirrors:%=%.syncup)
+syncup: mirrorUp
+
+## Check on this; repetitive with pushup?
+up.time: mirrorPut
+
