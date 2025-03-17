@@ -30,14 +30,15 @@ Ignore += $(mirrors)
 
 ## Dangerous rules
 %.syncup:
-	rclone sync -u $*/ $(mirror)/$*
+	rclone sync --skip-links -u $*/ $(mirror)/$*
+	touch $*.puttime
 %.syncdown:
 	rclone sync -u $(mirror)/$* $*/ 
 
 ## Normally copy up safely; syncup can be called manually
-## Can try to fix with an || !ls something
+## Can try to fix with an || !ls something [[fix WHAT? 2025 Feb 12 (Wed)]]
 %.put: | % %.mirror
-	rclone copy -u $* $(mirror)/$* --exclude ".*"
+	rclone copy --skip-links -u $* $(mirror)/$* --exclude ".*"
 
 Ignore += *.puttime
 %.puttime: % $(wildcard %/*)
@@ -49,10 +50,17 @@ Ignore += *.puttime
 %.get: %.puttime
 	rclone sync -u $(mirror)/$* $*/ 
 
-mirrorGet = $(mirrors:%=%.get)
-mirrorPut = $(mirrors:%=%.puttime)
+mirrorGet: $(mirrors:%=%.get)
+mirrorPut: $(mirrors:%=%.puttime)
 
 $(mirrors): ; $(mkdir)
-pullup: $(mirrorGet)
-pushup: $(mirrorPut)
-up.time: $(mirrorPut)
+pushup: mirrorPut
+pullup: mirrorGet
+
+## syncup never finishes (make-wise), but it does put $(mirrorPut) up to date
+mirrorUp = $(mirrors:%=%.syncup)
+syncup: mirrorUp
+
+## Check on this; repetitive with pushup?
+up.time: mirrorPut
+

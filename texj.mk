@@ -89,7 +89,7 @@ Ignore += *.tex.* *.TEX.* *.texdeps.mk
 Ignore += *.aux.pdf *.aux.out *.texfinal.pdf
 
 iclean:
-	$(RM) *.deps.pdf *.subdeps
+	$(RM) *.deps.pdf *.subdeps *.deps.out
 
 jclean:
 	$(RM) *.biblog *.log *.aux .*.aux *.blg *.bbl *.bcf *.repeat *.complete
