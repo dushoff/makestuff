@@ -126,7 +126,11 @@ include makestuff/pdfsplit.mk
 	cd ~ && $(mkdir)
 
 %.print.pdf: %.pdf | ~/PDF
+	$(cups_print)
+
+define cups_print
 	-rm -fr ~/PDF/*.*
 	lpr -P PDF $<
 	sleep 2
 	$(MV) ~/PDF/*.* $@
+endef
