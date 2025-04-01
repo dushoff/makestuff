@@ -422,10 +422,12 @@ sourcedir: $(Sources)
 ## presumably because Makefile makes it
 %.testsetup: %
 	cd $* && $(MAKE) Makefile && ($(MAKE) testsetup || true) && $(MAKE) makestuff 
+	$(CP) testtarget.mk $*/target.mk || $(CP) target.mk $*
 
 %.makestuff: %
 	cd $* && $(MAKE) Makefile && $(MAKE) makestuff
 
+## Deprecate this rule; it should be part of testsetup
 %.testtarget: %
 	$(CP) testtarget.mk $*/target.mk || $(CP) target.mk $*
 

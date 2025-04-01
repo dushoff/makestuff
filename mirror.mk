@@ -2,9 +2,8 @@
 ## User must create an rclone “library” at a location pointed to by $(cloud)
 ## cloudmirror: by default
 
+## Deleting some local stuff, why was it here?? 2025 Mar 24 (Mon)
 ## Where are some .local or .lmk rules??
-Ignore += local.mk
--include local.mk
 
 ## This is the default parent location established by an rclone create command
 cloud ?= cloudmirror
