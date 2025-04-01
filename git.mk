@@ -509,6 +509,8 @@ Ignore += *.ours *.theirs *.common
 %.theirs: %
 	git show :3:$* > $@
 
+######################################################################
+
 ## Pick one
 %.pick: %
 	$(CP) $* $(basename $*)
@@ -560,6 +562,35 @@ endef
 
 ## Go back in time a certain number of _changes_ to the focal file
 ## For a number of commits, use HEAD~n.oldfile (could make a .headfile, but probably won't)
+Ignore += *.datefile *.datediff
+
+define datefile_r
+	- $(call hide, $(basename $*))
+ 	- @echo ` \
+		git log --before=$(subst .,,$(suffix $*)) -- $(basename $*) \
+		| head -1 \
+		| sed -e "s/commit //" \
+		| xargs -I{} git checkout {} -- $(basename $*) \
+	`
+	-cp $(basename $*) $@
+	-git checkout HEAD -- $(basename $*)
+	- $(call unhide, $(basename $*))
+	ls $@
+endef
+
+%.datefile:
+	-$(RM) $(basename $*).*.datefile
+	$(datefile_r)
+
+%.datediff: %.*.datefile %
+	- $(RM) $*.datediff
+	-$(DIFF) $^ > $*.datediff
+	$(RO) $*.datediff
+
+######################################################################
+
+## Go back in time a certain number of _changes_ to the focal file
+## For a number of commits, use HEAD~n.oldfile (could make a .headfile, but probably won't)
 Ignore += *.prevfile *.prevdiff
 
 define prevfile_r
@@ -586,6 +617,7 @@ endef
 ######################################################################
 
 ## 2024 Jul 22 (Mon) tf is this?
+## Use this for editor/git conflicts; save the conflicted file as .newfile
 Ignore += *.newfile *.newdiff
 %.newdiff: %.new.diff ;
 %.new.diff: %
