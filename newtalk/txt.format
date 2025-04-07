@@ -335,6 +335,16 @@ draft final: \href{%}{\color{linkcolor}%%}
 handouts complete: \nhref{%}{%%}
 outline: %!
 
+## Moved from talks assorted local files
+ONSLIDE ^DEFHEAD %%
+ONREP ^PSLIDE %%
+OFFSLIDE NULLSLIDE
+
+VSFIG \includegraphics[height=0.45\textheight]{%}\hfill\mbox{}
+VSRFIG \hfill\includegraphics[height=0.45\textheight]{%}
+BSFIG \includegraphics[height=0.52\textheight]{%}\hfill\mbox{}
+BSRFIG \hfill\includegraphics[height=0.38\textheight]{%}
+
 ### Input
 
 INPUT \input{%} %%
