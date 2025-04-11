@@ -2,9 +2,8 @@
 ## User must create an rclone “library” at a location pointed to by $(cloud)
 ## cloudmirror: by default
 
+## Deleting some local stuff, why was it here?? 2025 Mar 24 (Mon)
 ## Where are some .local or .lmk rules??
-Ignore += local.mk
--include local.mk
 
 ## This is the default parent location established by an rclone create command
 ## Modularize later 2025 Apr 11 (Fri)
@@ -56,13 +55,17 @@ Ignore += *.puttime
 %.get: %.puttime
 	rclone sync -u $(mirror)/$* $*/ 
 
-mirrorGet = $(mirrors:%=%.get)
-mirrorPut = $(mirrors:%=%.puttime)
-mirrorUp = $(mirrors:%=%.syncup)
+mirrorGet: $(mirrors:%=%.get)
+mirrorPut: $(mirrors:%=%.puttime)
 
 $(mirrors): ; $(mkdir)
-mirrorGet pullup: $(mirrorGet)
+pushup: mirrorPut
+pullup: mirrorGet
 
 ## syncup never finishes (make-wise), but it does put $(mirrorPut) up to date
-syncup: $(mirrorUp)
-up.time: $(mirrorPut)
+mirrorUp = $(mirrors:%=%.syncup)
+syncup: mirrorUp
+
+## Check on this; repetitive with pushup?
+up.time: mirrorPut
+
