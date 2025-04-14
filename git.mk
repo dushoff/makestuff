@@ -509,7 +509,8 @@ Ignore += *.ours *.theirs *.common
 %.theirs: %
 	git show :3:$* > $@
 
-## Pick one
+## Pick one 
+## ours or theirs
 %.pick: %
 	$(CP) $* $(basename $*)
 	git add $(basename $*)
