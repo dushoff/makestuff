@@ -76,6 +76,10 @@ draft final: NOFRAME \subsection{%%}
 SSS \subsubsection{%%}
 draft final: NOFRAME \subsection{%%}
 
+SLIDEHEAD \noindent {\large\bf %%}
+draft final:\frametitle{%%} 
+outline: \noindent * %%
+
 DEFHEAD \noindent {\large\bf %%}
 draft final:\frametitle{%%} 
 outline: \noindent * %%
@@ -172,13 +176,13 @@ draft final: ^%%
 
 ## Repeating (Need to refactor this for notes-based lectures, and non-notes based talks)
 REPSLIDE NULLSLIDE
-draft lecture: ^DEFHEAD {\sl %% (repeat)}
-final: ^DEFHEAD {\sl %%}
+draft lecture: ^SLIDEHEAD {\sl %% (repeat)}
+final: ^SLIDEHEAD {\sl %%}
 
 ## Previewing
 PRESLIDE NULLSLIDE
-draft lecture: ^DEFHEAD {\sl %% (preview)}
-final: ^DEFHEAD %%
+draft lecture: ^SLIDEHEAD {\sl %% (preview)}
+final: ^SLIDEHEAD %%
 
 ## This should be elsewhere!
 ## Refer to something outside like the textbook (NEW 2023 Sep 02 (Sat))
@@ -330,6 +334,16 @@ HREF \href{%}{%%}
 draft final: \href{%}{\color{linkcolor}%%}
 handouts complete: \nhref{%}{%%}
 outline: %!
+
+## Moved from talks assorted local files
+ONSLIDE ^DEFHEAD %%
+ONREP ^PSLIDE %%
+OFFSLIDE NULLSLIDE
+
+VSFIG \includegraphics[height=0.45\textheight]{%}\hfill\mbox{}
+VSRFIG \hfill\includegraphics[height=0.45\textheight]{%}
+BSFIG \includegraphics[height=0.52\textheight]{%}\hfill\mbox{}
+BSRFIG \hfill\includegraphics[height=0.38\textheight]{%}
 
 ### Input
 

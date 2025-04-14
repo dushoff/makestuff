@@ -2,13 +2,14 @@
 ## User must create an rclone “library” at a location pointed to by $(cloud)
 ## cloudmirror: by default
 
+## Deleting some local stuff, why was it here?? 2025 Mar 24 (Mon)
 ## Where are some .local or .lmk rules??
-Ignore += local.mk
--include local.mk
 
 ## This is the default parent location established by an rclone create command
+## Modularize later 2025 Apr 11 (Fri)
 cloud ?= cloudmirror
 mirror = $(cloud):$(CURDIR:/home/$(USER)/%=%)
+gmirror = gdrive:$(CURDIR:/home/$(USER)/%=%)
 
 Ignore += *.mirror
 Ignore += $(mirrors)
@@ -34,6 +35,10 @@ Ignore += $(mirrors)
 	touch $*.puttime
 %.syncdown:
 	rclone sync -u $(mirror)/$* $*/ 
+
+## Copy to a gooogle drive for someone to see
+%.gsync: %.get
+	rclone sync --skip-links -u $*/ $(gmirror)/$*
 
 ## Normally copy up safely; syncup can be called manually
 ## Can try to fix with an || !ls something [[fix WHAT? 2025 Feb 12 (Wed)]]
