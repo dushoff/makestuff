@@ -1,6 +1,6 @@
 ## This is the GENERIC gdrive mirror file
 
-current: up.time
+current: mirrorGet
 -include target.mk
 Ignore = target.mk
 
