@@ -231,3 +231,5 @@ Ignore += $(wildcard *.allR)
 wrapclean wrapClean:
 	rm -fr *.wrapR* .*.wrapR*
 
+pipeclean pipeClean:
+	rm -fr *.Rout *.Rout.* *.rda *.rds 

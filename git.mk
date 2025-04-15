@@ -9,7 +9,7 @@
 
 ## USE github_private or github_public to make a repo named after directory
 github_%: | .git commit.time
-	gh repo create --$* --source . --push
+	gh repo create $(repoName) --$* --source=. --remote=upstream --push
 
 ######################################################################
 
@@ -22,7 +22,7 @@ branch:
 sourceTouch = touch $(word 1, $(Sources))
 
 Ignore += commit.time commit.default
-commit.time: $(Sources) | .git
+commit.time: $(Sources)
 	$(MAKE) exclude
 	-git add -f $? $(trackedTargets)
 	(head -1 ~/.commitnow > $@ && echo " ~/.commitnow" >> $@) || echo Autocommit > $@
@@ -422,10 +422,12 @@ sourcedir: $(Sources)
 ## presumably because Makefile makes it
 %.testsetup: %
 	cd $* && $(MAKE) Makefile && ($(MAKE) testsetup || true) && $(MAKE) makestuff 
+	$(CP) testtarget.mk $*/target.mk || $(CP) target.mk $*
 
 %.makestuff: %
 	cd $* && $(MAKE) Makefile && $(MAKE) makestuff
 
+## Deprecate this rule; it should be part of testsetup
 %.testtarget: %
 	$(CP) testtarget.mk $*/target.mk || $(CP) target.mk $*
 
@@ -509,7 +511,10 @@ Ignore += *.ours *.theirs *.common
 %.theirs: %
 	git show :3:$* > $@
 
-## Pick one
+######################################################################
+## Pick one 
+## ours or theirs
+
 %.pick: %
 	$(CP) $* $(basename $*)
 	git add $(basename $*)
@@ -520,6 +525,10 @@ Ignore += *.ours *.theirs *.common
 
 %.oldpick: 
 	$(CP) $*.*.oldfile $*
+	git add $*
+
+%.datepick: 
+	$(CP) $*.*.datefile $*
 	git add $*
 
 Ignore += *.gitdiff
@@ -560,6 +569,35 @@ endef
 
 ## Go back in time a certain number of _changes_ to the focal file
 ## For a number of commits, use HEAD~n.oldfile (could make a .headfile, but probably won't)
+Ignore += *.datefile *.datediff
+
+define datefile_r
+	- $(call hide, $(basename $*))
+ 	- @echo ` \
+		git log --before=$(subst .,,$(suffix $*)) -- $(basename $*) \
+		| head -1 \
+		| sed -e "s/commit //" \
+		| xargs -I{} git checkout {} -- $(basename $*) \
+	`
+	-cp $(basename $*) $@
+	-git checkout HEAD -- $(basename $*)
+	- $(call unhide, $(basename $*))
+	ls $@
+endef
+
+%.datefile:
+	-$(RM) $(basename $*).*.datefile
+	$(datefile_r)
+
+%.datediff: %.*.datefile %
+	- $(RM) $*.datediff
+	-$(DIFF) $^ > $*.datediff
+	$(RO) $*.datediff
+
+######################################################################
+
+## Go back in time a certain number of _changes_ to the focal file
+## For a number of commits, use HEAD~n.oldfile (could make a .headfile, but probably won't)
 Ignore += *.prevfile *.prevdiff
 
 define prevfile_r
@@ -586,6 +624,7 @@ endef
 ######################################################################
 
 ## 2024 Jul 22 (Mon) tf is this?
+## Use this for editor/git conflicts; save the conflicted file as .newfile
 Ignore += *.newfile *.newdiff
 %.newdiff: %.new.diff ;
 %.new.diff: %
@@ -607,3 +646,4 @@ Ignore += *.blame
 
 store_all:
 	git config --global credential.helper 'store'
+
