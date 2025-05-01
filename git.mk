@@ -45,6 +45,7 @@ pull: commit.time
 	touch $<
 
 Ignore += *.autocommit
+.PRECIOUS: %.autocommit
 %.autocommit: $(Sources)
 	git add -f $? 
 	-git commit -m $*
