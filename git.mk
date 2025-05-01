@@ -4,12 +4,15 @@
 
 ######################################################################
 
+initBranch ?= main
 .git:
-	git init
+	git init -b $(initBranch)
 
-## USE github_private or github_public to make a repo named after directory
-github_%: | .git commit.time
-	gh repo create $(repoName) --$* --source=. --remote=upstream --push
+## USE ghrepo_private or ghrepo_public to make a repo named after directory
+
+## More flexible version?? Doesn't match origin somehow. What is origin?
+ghrepo_%: | .git commit.time
+	gh repo create $(repoName) --$* --source=. --remote=origin --push
 
 ######################################################################
 
@@ -632,7 +635,7 @@ Ignore += *.newfile *.newdiff
 %.newdiff: %.new.diff ;
 %.new.diff: %
 	- $(RM) $*.newdiff
-	-$(DIFF) $*.*.newfile $* > $*.newdiff
+	-$(DIFF) $**.newfile $* > $*.newdiff
 	$(RO) $*.newdiff
 
 ######################################################################
