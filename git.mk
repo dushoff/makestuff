@@ -41,10 +41,12 @@ pull: commit.time
 	git pull
 	touch $<
 
+Ignore += *.autocommit
 %.autocommit: $(Sources)
 	git add -f $? 
 	-git commit -m $*
 	touch commit.time
+	$(touch)
 
 %.autosync: %.autocommit
 	$(MAKE) sync
@@ -52,6 +54,7 @@ pull: commit.time
 ## For finalizing reports
 %.autoup: %.autocommit
 	git push
+	touch up.time
 
 noreport: 
 	$(MAKE) report.md.theirs.pick
