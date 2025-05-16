@@ -10,6 +10,10 @@ Ignore += date.txt
 date.txt:
 	$(MAKE) up_date
 
+Ignore += *.echo.txt
+%.echo.txt:
+	echo $* > $@
+
 name.txt:
 	echo "Jonathan Dushoff" > $@
 
