@@ -86,7 +86,7 @@ Ignore += *.biblog *.log *.aux .*.aux *.blg *.bbl *.bcf *.repeat *.texfinal
 Ignore += *.nav *.snm *.toc
 Ignore += *.run.xml
 Ignore += *.tex.* *.TEX.* *.texdeps.mk
-Ignore += *.aux.pdf *.aux.out *.texfinal.pdf
+Ignore += *.aux.pdf *.aux.out *.texfinal.pdf *.out
 
 iclean:
 	$(RM) *.deps.pdf *.subdeps *.deps.out
