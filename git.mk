@@ -617,6 +617,7 @@ define prevfile_r
 	-git checkout HEAD -- $(basename $*)
 	- $(call unhide, $(basename $*))
 	ls $@
+	$(RO)
 endef
 
 %.prevfile:
