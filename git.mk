@@ -4,12 +4,15 @@
 
 ######################################################################
 
+initBranch ?= main
 .git:
-	git init
+	git init -b $(initBranch)
 
-## USE github_private or github_public to make a repo named after directory
-github_%: | .git commit.time
-	gh repo create $(repoName) --$* --source=. --remote=upstream --push
+## USE ghrepo_private or ghrepo_public to make a repo named after directory
+
+## More flexible version?? Doesn't match origin somehow. What is origin?
+ghrepo_%: | .git commit.time
+	gh repo create $(repoName) --$* --source=. --remote=origin --push
 
 ######################################################################
 
@@ -41,10 +44,13 @@ pull: commit.time
 	git pull
 	touch $<
 
+Ignore += *.autocommit
+.PRECIOUS: %.autocommit
 %.autocommit: $(Sources)
 	git add -f $? 
 	-git commit -m $*
 	touch commit.time
+	$(touch)
 
 %.autosync: %.autocommit
 	$(MAKE) sync
@@ -52,6 +58,7 @@ pull: commit.time
 ## For finalizing reports
 %.autoup: %.autocommit
 	git push
+	touch up.time
 
 noreport: 
 	$(MAKE) report.md.theirs.pick
