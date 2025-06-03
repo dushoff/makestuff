@@ -76,6 +76,7 @@ draft final: NOFRAME \subsection{%%}
 SSS \subsubsection{%%}
 draft final: NOFRAME \subsection{%%}
 
+## TF? Deprecate this
 SLIDEHEAD \noindent {\large\bf %%}
 draft final:\frametitle{%%} 
 outline: \noindent * %%
