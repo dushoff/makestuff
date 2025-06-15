@@ -19,9 +19,12 @@ MD = mkdir
 MKDIR = mkdir
 CAT = cat
 
-readonly = chmod a-w $@
+## Use RO and RW as components
 RO = chmod a-w $@
 RW = chmod ug+w $@
+readonly = $(RO) $@
+readwrite = $(RW) $@
+
 DNE = (! $(LS) $@ > $(null))
 LSN = ($(LS) $@ > $(null))
 
