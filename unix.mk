@@ -20,8 +20,8 @@ MKDIR = mkdir
 CAT = cat
 
 readonly = chmod a-w $@
-RO = chmod a-w 
-RW = chmod ug+w
+RO = chmod a-w $@
+RW = chmod ug+w $@
 DNE = (! $(LS) $@ > $(null))
 LSN = ($(LS) $@ > $(null))
 
