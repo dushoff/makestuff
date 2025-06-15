@@ -19,9 +19,11 @@ MD = mkdir
 MKDIR = mkdir
 CAT = cat
 
+## Think about this; is RW being used? It didn't have the $@
 readonly = chmod a-w $@
-RO = chmod a-w 
-RW = chmod ug+w
+RO = chmod a-w $@
+RW = chmod ug+w $@
+
 DNE = (! $(LS) $@ > $(null))
 LSN = ($(LS) $@ > $(null))
 
