@@ -184,6 +184,7 @@ $(1).%.pdf: $(1).Rout ; $(impcheck)
 Ignore += $(1).*.pdf
 endef
 
+## Why do I have both of these variables?
 pipeRdesc += $(pdfDesc)
 $(foreach stem,$(pipeRdesc),$(eval $(call pipedesc_r,$(stem))))
 
