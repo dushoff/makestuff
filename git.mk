@@ -519,6 +519,7 @@ Ignore += *.ours *.theirs *.common
 	git show :3:$* > $@
 
 ######################################################################
+
 ## Pick one 
 ## ours or theirs
 
@@ -528,14 +529,17 @@ Ignore += *.ours *.theirs *.common
 
 %.prevpick: 
 	$(CP) $*.*.prevfile $*
+	$(RW)
 	git add $*
 
 %.oldpick: 
 	$(CP) $*.*.oldfile $*
+	$(RW)
 	git add $*
 
 %.datepick: 
 	$(CP) $*.*.datefile $*
+	$(RW)
 	git add $*
 
 Ignore += *.gitdiff
@@ -565,6 +569,7 @@ define oldfile_r
 	-git checkout HEAD -- $(basename $*)
 	- $(call unhide, $(basename $*))
 	ls $@
+	$(RO)
 endef
 
 %.olddiff: %.*.oldfile %
@@ -590,6 +595,7 @@ define datefile_r
 	-git checkout HEAD -- $(basename $*)
 	- $(call unhide, $(basename $*))
 	ls $@
+	$(RO)
 endef
 
 %.datefile:
@@ -617,6 +623,7 @@ define prevfile_r
 	-git checkout HEAD -- $(basename $*)
 	- $(call unhide, $(basename $*))
 	ls $@
+	$(RO)
 endef
 
 %.prevfile:
@@ -653,4 +660,5 @@ Ignore += *.blame
 
 store_all:
 	git config --global credential.helper 'store'
+
 
