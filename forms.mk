@@ -124,6 +124,14 @@ include makestuff/pdfsplit.mk
 
 ######################################################################
 
+## Page selection?
+
+%.select.pdf:
+	$(MAKE) $(basename $*).pdf
+	pdfjam -o $@ $(basename $*).pdf $(subst .,,$(suffix $*))
+
+######################################################################
+
 ## Requires cups-pdf.apt
 
 ~/PDF:
