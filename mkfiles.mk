@@ -55,7 +55,7 @@ wraplink = cd $* && $(LN) ../mkfiles/$*.wrap makefile
 
 ## Make a default Makefile instead (don't use links at all)
 %.defmake: 
-	$(MAKE) $*
+	$(MAKE) $* || mkdir $*
 	$(CP) makestuff/project.Makefile $*/Makefile
 
 ## Make a new directory that is ready for a Dushoff-style project

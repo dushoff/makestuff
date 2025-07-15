@@ -4,6 +4,8 @@
 
 ######################################################################
 
+## Directory stuff is in mkfiles.mk Use <name>.newrepo to create and vscreen in the directory (from listdir)
+
 initBranch ?= main
 .git:
 	git init -b $(initBranch)
