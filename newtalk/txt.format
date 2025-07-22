@@ -352,6 +352,22 @@ BSRFIG \hfill\includegraphics[height=0.38\textheight]{%}
 INPUT \input{%} %%
 outline: %!
 
+######################################################################
+
+## Control words; edit for specific talks ## NO mismatched omissions!
+
+## Change in source file: for things that can be skipped if discussed elsewhere in same talk
+OFF NULLSLIDE
+draft: ^DEFHEAD OFF %%
+draft: NULLSLIDE
+
+ON ^DEFHEAD %%
+draft: ^DEFHEAD ON %%
+
+ONLINE ^%%
+OFFLINE %!
+draft: OFF %%
+
 ## End of newtalk content
 
 ## Begin local content
