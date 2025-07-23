@@ -56,6 +56,8 @@ Ignore += *.final.*
 	$(PUSH)
 
 ## For debugging talks?? 2025 Jul 23 (Wed)
+Ignore += *.now.*
+.PRECIOUS: %.now.tex
 %.now.tex: %.TXT beamer.tmp draft.txt.fmt talkdir/now.fmt talkdir/lect.pl
 	$(PUSH)
 
