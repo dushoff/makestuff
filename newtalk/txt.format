@@ -157,6 +157,9 @@ outline: %!
 CREDIT {\small\emph{%%}}
 outline: %!
 
+CCREDIT {\small\emph{Credit: %%}}
+outline: %!
+
 ######################################## Content switching
 
 ### Slide level
