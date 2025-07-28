@@ -230,6 +230,7 @@ gptargets: $(gptargets)
 
 ## Unify some of these by recipe
 ## use a better touch command
+## 2025 Jul 28 (Mon) Why am I noticing now that this chokes on subdirectories?
 
 ## 2020 Nov 11 (Wed) an alternative name for git_push
 ## Not copying the all-update rule here; outputs can have other purposes
@@ -250,7 +251,7 @@ outputs:
 
 %.docs: % docs
 	- cp $* docs
-	git add -f docs/$*
+	git add -f docs/$(notdir $*)
 	$(sourceTouch)
 
 ## Commented out because of stupid dataviz conflict 2021 Nov 02 (Tue)
