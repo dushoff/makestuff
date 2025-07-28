@@ -53,41 +53,41 @@ outline: \n
 # Sectioning
 
 WORKSHOP NOFRAME
-draft final: NOFRAME \date{\jddate} \title{\jdtitle} \subtitle{\jdsub} \author{\jdauth}\date{\wdate}\maketitle
+slides draft final: NOFRAME \date{\jddate} \title{\jdtitle} \subtitle{\jdsub} \author{\jdauth}\date{\wdate}\maketitle
 handouts: {\centering \textsf{ \textbf{ {\Large\jdtitle} \\ {\large\jdsub} }} \\ {\large \wdate} \\ \mbox{} } }
 outline: NULLSLIDE
 
 ICI3DTHEME NOFRAME
-draft final: NOFRAME \date{\jddate} \title{\jdtitle} \subtitle{\jdsub} \author{\jdauth} {\topBar\maketitle}
+slides draft final: NOFRAME \date{\jddate} \title{\jdtitle} \subtitle{\jdsub} \author{\jdauth} {\topBar\maketitle}
 handouts: \noindent\includegraphics[width=\textwidth]{LatexTemplates/bar.pdf} {\centering \textsf{ \textbf{ {\Large\jdtitle} \\ \centering \mbox{}\large\jdsub}} \\ \centering \jdauth} \vspace{3ex} 
 
 TOP NULLSLIDE
-draft final: NOFRAME
+slides draft final: NOFRAME
 
 PSEC \clearpage\section{%%}
-draft final: NOFRAME \section{%%}
+slides draft final: NOFRAME \section{%%}
 
 SEC \section{%%}
-draft final: NOFRAME \section{%%}
+slides draft final: NOFRAME \section{%%}
 
 SS \subsection{%%}
-draft final: NOFRAME \subsection{%%}
+draft slides final: NOFRAME \subsection{%%}
 
 SSS \subsubsection{%%}
-draft final: NOFRAME \subsection{%%}
+slides draft final: NOFRAME \subsection{%%}
 
 ## TF? Deprecate this (repetitive with DEFHEAD)
 ## I guess the idea was to alienate it for flexibility
 SLIDEHEAD \noindent {\large\bf %%}
-draft final:\frametitle{%%} 
+slides draft final:\frametitle{%%} 
 outline: \noindent * %%
 
 DEFHEAD \noindent {\large\bf %%}
-draft final:\frametitle{%%} 
+slides draft final:\frametitle{%%} 
 outline: \noindent * %%
 
 SUBH \noindent {\bf %%}
-draft final:\framesubtitle{%%} 
+slides draft final:\framesubtitle{%%} 
 outline: \indent * %%
 
 DEFCOMM %%
@@ -96,23 +96,23 @@ outline: %!
 ## Reuse section name as frame title in presentation
 
 TPSEC ^PSEC %%
-draft final: \section{%+} SLIDESTART \frametitle{%%}
+slides draft final: \section{%+} SLIDESTART \frametitle{%%}
 outline: \section{%+} \noindent * %%
 
 TSEC ^SEC %%
-draft final: \section{%+} SLIDESTART \frametitle{%%}
+slides draft final: \section{%+} SLIDESTART \frametitle{%%}
 outline: \section{%+} \noindent * %%
 
 TSS ^SS %%
-draft final: \subsection{%+} SLIDESTART \frametitle{%%}
+slides draft final: \subsection{%+} SLIDESTART \frametitle{%%}
 outline: \subsection{%+} \noindent * %%
 
 TSSS ^SSS %%
-draft final: \subsubsection{%+} SLIDESTART \frametitle{%%}
+slides draft final: \subsubsection{%+} SLIDESTART \frametitle{%%}
 outline: \subsubsection{%+} \noindent * %%
 
 NOSEC ^DEFHEAD %%
-complete handouts: \hrule\paragraph{%%} 
+slides complete handouts: \hrule\paragraph{%%} 
 
 ########################################
 # Logical content formatting
@@ -122,19 +122,20 @@ handouts: \mbox{}%!
 complete: {\bf\underline{Answer}: }%%
 final: * \uncover<+->{\color{blue} %%}
 draft: * {\color{blue} %%}
+slides: * {\color{white} %%}
 outline: %!
 
 NOANS 
 handouts: \mbox{}%!
 complete: {\bf\underline{Answer postponed}: }%%
-final: * \uncover<+->{\color{blue} %!}
+slides final: * \uncover<+->{\color{blue} %!}
 draft: * {\color{blue} NOANS}
 outline: %!
 
 # Comments are shown in class, but not in the notes
 COMMENT %!
 complete: {\em\underline{Comment}: }%%
-draft final: {\color{shortcolor}\sl %%}
+slides draft final: {\color{shortcolor}\sl %%}
 
 RESTING %!
 
@@ -156,6 +157,9 @@ outline: %!
 CREDIT {\small\emph{%%}}
 outline: %!
 
+CCREDIT {\small\emph{Credit: %%}}
+outline: %!
+
 ######################################## Content switching
 
 ### Slide level
@@ -166,12 +170,12 @@ EXTRA NULLSLIDE
 
 # Presentation-only slides
 PSLIDE NULLSLIDE
-final: ^DEFHEAD {%%}
+slides final: ^DEFHEAD {%%}
 draft: ^DEFHEAD {\sl %% (present)}
 
 # Just one pic (no header)
 PICSLIDE NULLSLIDE
-draft final: ^%%
+slides draft final: ^%%
 ## Also, I don't actually have any idea how to do this!
 
 # Slides with purely repetitive information (for classroom exposition)
@@ -179,31 +183,31 @@ draft final: ^%%
 ## Repeating (Need to refactor this for notes-based lectures, and non-notes based talks)
 REPSLIDE NULLSLIDE
 draft lecture: ^SLIDEHEAD {\sl %% (repeat)}
-final: ^SLIDEHEAD {\sl %%}
+slides final: ^SLIDEHEAD {\sl %%}
 
 ## Previewing
 PRESLIDE NULLSLIDE
 draft lecture: ^SLIDEHEAD {\sl %% (preview)}
-final: ^SLIDEHEAD %%
+slides final: ^SLIDEHEAD %%
 
 ## This should be elsewhere!
 ## Refer to something outside like the textbook (NEW 2023 Sep 02 (Sat))
 OUTSLIDE NULLSLIDE
-draft final: ^DEFHEAD {\sl %% (outside)}
+slides draft final: ^DEFHEAD {\sl %% (outside)}
 
 ## Extra
 FUNSLIDE NULLSLIDE
-draft final: ^DEFHEAD {\sl %% (Extra)}
+slides draft final: ^DEFHEAD {\sl %% (Extra)}
 
 ## Deprecated
 RSLIDE NULLSLIDE
-final: ^DEFHEAD {\sl %% (repeat)}
+slides final: ^DEFHEAD {\sl %% (repeat)}
 draft: ^DEFHEAD {\sl %% (repeat OR preview?)}
 
 ## Titlespace omit from notes
 
 TSPACE %!
-draft final: \vfill
+slides draft final: \vfill
 
 ## A whole slide for notes only
 NSLIDE NULLSLIDE
@@ -216,11 +220,11 @@ SHORTCLASS {\color{shortcolor}%%}
 handouts complete: %!
 
 NOTES ^%%
-draft final: %!
+slides draft final: %!
 
 # Presentation only
 PRESENT %!
-draft final: ^%%
+slides draft final: ^%%
 
 # Mark as repetitive
 REP ^PRESENT %%
@@ -230,7 +234,7 @@ PIC ^PRESENT %%
 
 # Repetitive slide heading (don't repeat the heading in notes)
 RHEAD %!
-draft final: ^DEFHEAD %%
+slides draft final: ^DEFHEAD %%
 
 ########################################
 
@@ -245,20 +249,20 @@ NSS \column{0.47\textwidth} \small
 ESS \end{columns}
 
 BC %!
-draft final: \begin{columns}[c] \column{0.54\textwidth} \small
+slides draft final: \begin{columns}[c] \column{0.54\textwidth} \small
 
 NC %!
-draft final: \column{0.4\textwidth} \small
+slides draft final: \column{0.4\textwidth} \small
 
 EC %!
-draft final: \end{columns}
+slides draft final: \end{columns}
 
 ## 
 BCC %!
-draft final: \begin{columns}[c] \column{0.47\textwidth} \small
+slides draft final: \begin{columns}[c] \column{0.47\textwidth} \small
 
 NCC %!
-draft final: \column{0.47\textwidth} \small
+slides draft final: \column{0.47\textwidth} \small
 
 ECC ^EC
 
@@ -277,17 +281,17 @@ HIGHPIC ^PIC HIGHFIG %%
 WIDEPIC ^PIC WIDEFIG %%
 
 FIG ^HFIG 0.4 %%
-draft final: ^HFIG 0.9 %%
+slides draft final: ^HFIG 0.9 %%
 
 SMALLFIG ^HFIG 0.4 %%
-draft final: ^HFIG 0.8 %%
+slides draft final: ^HFIG 0.8 %%
 
 ## Landscape version
 LFIG \hfill\includegraphics[height=%\textheight,angle=270]{%}\hfill\mbox{}
 outline: %!
 
 LANDFIG ^LFIG 0.4 %%
-draft final: ^LFIG 0.9 %%
+slides draft final: ^LFIG 0.9 %%
 
 ## Width for scale
 
@@ -301,19 +305,19 @@ DIAGRAM ^WIDEFIG % \vspace{-0.7in}
 # handouts: ^WIDEFIG % \vspace{-1.2in}
 
 SIDEFIG %!
-draft final: ^WIDEFIG %%
+slides draft final: ^WIDEFIG %%
 
 ## High version
 HIDEFIG %!
-draft final: ^HFIG 0.45 %%
+slides draft final: ^HFIG 0.45 %%
 
 # Column figure by default is wide in presentations only
 CFIG ^FIG %%
-draft final: ^WIDEFIG %%
+slides draft final: ^WIDEFIG %%
 
 ## NEEDS WORK 2024 Jun 22 (Sat)
 LCFIG ^LANDFIG %%
-draft final: \hfill\includegraphics[width=0.9\textwidth,angle=270]{%}\hfill\mbox{}
+slides draft final: \hfill\includegraphics[width=0.9\textwidth,angle=270]{%}\hfill\mbox{}
 
 # Figures next to each other
 DBFIG \begin{minipage}{\dfwidth} \centering \n\includegraphics[height=%\dfheight]{%} \end{minipage} \hspace{\dfsep} \begin{minipage}{\dfwidth} \centering \n\includegraphics[height=%\dfheight]{%} \end{minipage}
@@ -333,7 +337,7 @@ HLINK \url{%%}
 outline: %!
 
 HREF \href{%}{%%}
-draft final: \href{%}{\color{linkcolor}%%}
+slides draft final: \href{%}{\color{linkcolor}%%}
 handouts complete: \nhref{%}{%%}
 outline: %!
 
@@ -351,6 +355,22 @@ BSRFIG \hfill\includegraphics[height=0.38\textheight]{%}
 
 INPUT \input{%} %%
 outline: %!
+
+######################################################################
+
+## Control words; edit for specific talks ## NO mismatched omissions!
+
+## Change in source file: for things that can be skipped if discussed elsewhere in same talk
+OFF NULLSLIDE
+draft: ^DEFHEAD OFF %%
+draft: NULLSLIDE
+
+ON ^DEFHEAD %%
+draft: ^DEFHEAD ON %%
+
+ONLINE ^%%
+OFFLINE %!
+draft: OFF %%
 
 ## End of newtalk content
 
