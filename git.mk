@@ -234,12 +234,12 @@ gptargets: $(gptargets)
 
 ## 2020 Nov 11 (Wed) an alternative name for git_push
 ## Not copying the all-update rule here; outputs can have other purposes
-%.op: % outputs
+%.op: % | outputs
 	- $(CPF) $* outputs
 	git add -f outputs/$*
 	$(sourceTouch)
 
-%.opdir: % outputs
+%.opdir: % | outputs
 	- $(RMR) outputs/$*
 	- $(CPR) $* outputs
 	git add -f outputs/$*
@@ -249,7 +249,7 @@ gptargets: $(gptargets)
 outputs:
 	$(mkdir)
 
-%.docs: % docs
+%.docs: % | docs
 	- cp $* docs
 	git add -f docs/$(notdir $*)
 	$(sourceTouch)
@@ -257,6 +257,14 @@ outputs:
 ## Commented out because of stupid dataviz conflict 2021 Nov 02 (Tue)
 ## Commented back in because I suspect I fixed dataviz? Or at least qmee
 docs: ; $(mkdir)
+
+Ignore += temp
+%.temp: % | temp
+	- cp $* $|
+
+## Commented out because of stupid dataviz conflict 2021 Nov 02 (Tue)
+## Commented back in because I suspect I fixed dataviz? Or at least qmee
+temp: ; $(mkdir)
 
 ######################################################################
 
