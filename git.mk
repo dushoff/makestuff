@@ -262,9 +262,16 @@ Ignore += temp
 %.temp: % | temp
 	- cp $* $|
 
-## Commented out because of stupid dataviz conflict 2021 Nov 02 (Tue)
-## Commented back in because I suspect I fixed dataviz? Or at least qmee
 temp: ; $(mkdir)
+
+######################################################################
+
+## Recipes for new directories
+define projectDir
+	$(MAKE) pullup
+	$(mkdir)
+	cp makestuff/project.Makefile $@/Makefile
+endef
 
 ######################################################################
 
@@ -383,8 +390,11 @@ define dd_r
 	-/bin/rm -rf $@
 	git clone . $@
 	[ "$(pardirs)" = "" ] || ( cd $@ && $(LN) $(pardirs:%=../%) .)
-	cd $@ && ln -s ../makestuff .
+	$(stufflink)
 endef
+
+## Untested change 2025 Aug 02 (Sat)
+stufflink = cd $@ && ln -s ../makestuff .
 
 dotdir: $(Sources)
 	$(dd_r)
