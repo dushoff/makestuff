@@ -75,6 +75,7 @@ $(pardirs):
 	ls ../$@ > $(null) && $(LNF) ../$@ .
 
 Ignore += up.time all.time
+## Experimenting 2025 Aug 23 (Sat)
 ## up.time: commit.time
 up.time: commit.time
 	$(MAKE) pull
