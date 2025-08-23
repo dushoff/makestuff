@@ -75,6 +75,7 @@ $(pardirs):
 	ls ../$@ > $(null) && $(LNF) ../$@ .
 
 Ignore += up.time all.time
+## up.time: commit.time
 up.time: commit.time
 	$(MAKE) pull
 	$(MAKE) pushup
