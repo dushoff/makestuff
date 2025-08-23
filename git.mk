@@ -76,7 +76,7 @@ $(pardirs):
 
 Ignore += up.time all.time
 ## Experimenting 2025 Aug 23 (Sat)
-## up.time: commit.time
+## commit.time is redundant for work, but not as a dependency
 up.time: commit.time
 	$(MAKE) pull
 	$(MAKE) pushup
