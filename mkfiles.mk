@@ -5,6 +5,7 @@
 #### `make <dir>.repofile` #### Don't forget to un-ignore!
 
 ## make an exogenously tracked wrapper makefile:
+## ONLY if there is alread a Makefile
 #### `make dir/makefile`
 
 ## Make a default Makefile from the start instead:
