@@ -3,8 +3,12 @@ Sources += $(wildcard *.pl)
 ## Just the command (refactor using this?)
 PERLEX = perl -wf $(filter %.pl, $^)
 
+## Now the tail!
+PERLFILES = $(filter %.pl, $^) $(filter-out %.pl, $^) >  $(hiddentarget) && $(unhidetarget) && $(readonly)
+
 # Push runs the first perl script among its dependencies, using all the other dependencies as arguments
-PUSH = $(RM) $@; perl -wf $(filter %.pl, $^) $(filter-out %.pl, $^) >  $(hiddentarget) && $(unhidetarget)
+PUSH = $(rm); perl -wf $(filter %.pl, $^) $(filter-out %.pl, $^) >  $(hiddentarget) && $(unhidetarget)
+NOTSED = $(RM) $@; perl -p -wf $(PERLFILES)
 
 LOGPUSH = (perl -wf $(filter %.pl, $^) $(filter-out %.pl, $^) >  $(hiddentarget) 2> $@.log || (cat $@.log && false)) && $(unhidetarget)
 
@@ -32,3 +36,4 @@ PPUSH = perl -00 -wf $(filter %.pl, $^) $(filter-out %.pl, $^) >  $(hiddentarget
 ## Perl in place
 ## Target not made, use a fake
 PIPUSH = perl -i -wf $(filter %.pl, $^) $(filter-out %.pl, $^)
+
