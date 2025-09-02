@@ -10,8 +10,10 @@ DIFF = diff
 
 ## VEDIT is set in bashrc (and inherited)
 ## Not sure what I should do if it doesn't work?
+## Would be fun to re-jigger this, but there's not much demand, and definitely some risk
 MSEDIT = $(MSEDITOR) $@ || $(EDITOR) $@ || $(VISUAL) $@ || gvim -f $@ || vim $@ || ((echo ERROR: No editor found makestuff/unix.mk && echo set shell MSEDITOR variable && false))
 RMR = /bin/rm -rf
+RMRF = /bin/rm -rf
 LS = /bin/ls
 LN = /bin/ln -s
 LNF = /bin/ln -fs
@@ -19,9 +21,12 @@ MD = mkdir
 MKDIR = mkdir
 CAT = cat
 
-readonly = chmod a-w $@
-RO = chmod a-w 
-RW = chmod ug+w
+## Use RO and RW as components
+RO = chmod a-w $@
+RW = chmod ug+w $@
+readonly = $(RO) $@
+readwrite = $(RW) $@
+
 DNE = (! $(LS) $@ > $(null))
 LSN = ($(LS) $@ > $(null))
 
@@ -64,6 +69,8 @@ setcheckfile = touch $(checkfile) && false
 
 diff = $(DIFF) $^ > $@
 
+## Need to upgrade use $(notdir … to handle case where it's not in the cwd
+## This is tricky because ln is also weird about what directory it's in
 # Generic (vars that use the ones above)
 linkdir = ls $(dir)/$@ > $(null) && $(LNF) $(dir)/$@ .
 linkdirname = ls $(dir) > $(null) && $(LNF) $(dir) $@ 
@@ -82,11 +89,12 @@ rcopy = $(CPR) $< $@
 rdcopy = $(CPR) $(dir) $@
 copy = $(CP) $< $@
 pcopy = $(CP) $(word 1, $|) $@
-oocopy = $(CP) $| $@
-move = $(MV) $< $@
-Move = $(MVF) $< $@
+
 hardcopy = $(CPF) $< $@
 allcopy =  $(CP) $^ $@
+
+move = $(MV) $< $@
+Move = $(MVF) $< $@
 ccrib = $(CP) $(crib)/$@ .
 mkdir = $(MD) $@
 makedir = cd $(dir $@) && $(MD) $(notdir $@)
@@ -100,6 +108,10 @@ lnp = $(LNF) $| $@
 rm = $(RM) $@
 pandoc = pandoc -o $@ $<
 pandocs = pandoc -s -o $@ $<
+
+## oocopy seems just lazy, use pcopy
+pcopy = $(CP) $(word 1, $|) $@
+oocopy = $(CP) $| $@
 
 ######################################################################
 
@@ -173,6 +185,10 @@ endef
 %.fileversions:
 	cd $* && rename -f "s/ *\([0-9]\)//" *\([0-9]\).*
 
+## Temporary 2024 Sep 10 (Tue)
+%.qfiles:
+	rename "s/[()& ,?!-]+/_QQ_/g" $*/*.*
+
 %.voice: voice.pl %
 	$(PUSH)
 	$(MV) $@ $*
@@ -216,11 +232,12 @@ Ignore += *.ld.tex
 	$(RM) $*
 	$(MAKE) $*
 
-%.log: 
+## Changed to not conflict with makegraph 2025 Feb 24 (Mon)
+%.make.log: 
 	$(RM) $*
 	$(MAKE) $* > $*.makelog
 
-%.makelog: %.log ;
+%.makelog: %.make.log ;
 
 %.continue:
 	$(MAKE) $* || echo CONTINUING past error in target $*

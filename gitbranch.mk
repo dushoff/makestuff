@@ -17,6 +17,9 @@ endif
 %.newbranch:
 	git checkout -b $*
 	$(MAKE) commit.time
+	$(MAKE) $*.newpush
+
+%.newpush:
 	git push --set-upstream origin $*
 	git push -u origin $*
 

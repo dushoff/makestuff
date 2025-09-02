@@ -76,15 +76,17 @@ if (%graphics){
 
 say "## Inputs";
 if (%inputs){
+	## Add .tex to all inputs, then strip from compounds
 	my @ifiles = map
-		{s/$/.tex/; s/.tex.tex/.tex/; s/.sty.tex/.sty/; s/.TEX.tex/.TEX/; $_}
+		{s/$/.tex/; s/(\.\w*)\.tex/$1/; $_}
 	keys %inputs;
+	my @iifiles = grep {/.tex$/} keys %inputs;
 	my $idep = join " ", @ifiles;
 	say "$target: $idep";
 	say "$ftarget: $idep";
-	my $iddep = join " ", map {s/$/.deps/; $_} @ifiles;
+	my $iddep = join " ", map {s/$/.deps/; $_} @iifiles;
 	say "$target: $iddep";
-	my $ifdep = join " ", map {s/$/.files/; $_} keys %inputs;
+	my $ifdep = join " ", map {s/$/.files/; $_} @iifiles;
 	say "$ftarget: $ifdep";
 	say"";
 }

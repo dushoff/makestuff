@@ -8,7 +8,7 @@ vim_session:
 
 ######################################################################
 
-## Don't use this unless there is already a Makefile
+## Don't use a wrapper makefile unless there is already a Makefile
 include Makefile
 
 ######################################################################

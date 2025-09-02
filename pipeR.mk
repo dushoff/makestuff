@@ -113,8 +113,12 @@ endif
 ######################################################################
 
 ifdef autoknit
+%.html: %.rmd
+	$(knithtml)
 %.html: %.Rmd
 	$(knithtml)
+%.pdf: %.rmd
+	$(knitpdf)
 %.pdf: %.Rmd
 	$(knitpdf)
 endif
@@ -147,7 +151,7 @@ endif
 	$(lstouch)
 .PRECIOUS: %.Rout.pdf
 %.Rout.pdf: %.Rout
-	$(lstouch) || ($(pdfcheck) $@.tmp && $(MVF) $@.tmp $@) || (ls Rplots.pdf && echo WARNING: Trying an orphaned Rplots file && mv Rplots.pdf $@) || (echo ERROR: Failed to find, make or rescue $@ && false)
+	$(lstouch) || (ls $@.tmp && $(pdfcheck) $@.tmp && $(MVF) $@.tmp $@) || (ls Rplots.pdf && echo "WARNING: Using an orphaned Rplots file; maybe try startGraphics()" && mv Rplots.pdf $@) || (echo ERROR: Failed to find, make or rescue $@ && false)
 
 Ignore += .Rhistory .RData
 Ignore += *.RData *.Rlog *.rdata *.rda *.rtmp
@@ -180,6 +184,7 @@ $(1).%.pdf: $(1).Rout ; $(impcheck)
 Ignore += $(1).*.pdf
 endef
 
+## Why do I have both of these variables?
 pipeRdesc += $(pdfDesc)
 $(foreach stem,$(pipeRdesc),$(eval $(call pipedesc_r,$(stem))))
 
@@ -227,3 +232,5 @@ Ignore += $(wildcard *.allR)
 wrapclean wrapClean:
 	rm -fr *.wrapR* .*.wrapR*
 
+pipeclean pipeClean:
+	rm -fr *.Rout *.Rout.* *.rda *.rds 

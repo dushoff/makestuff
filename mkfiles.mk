@@ -4,7 +4,8 @@
 ## To add it to the repo later (back to a normal structure):
 #### `make <dir>.repofile` #### Don't forget to un-ignore!
 
-## make an untracked wrapper makefile:
+## make an exogenously tracked wrapper makefile:
+## ONLY if there is alread a Makefile
 #### `make dir/makefile`
 
 ## Make a default Makefile from the start instead:
@@ -45,8 +46,9 @@ wraplink = cd $* && $(LN) ../mkfiles/$*.wrap makefile
 	$(wraplink)
 
 ## Make Linked Makefile into a repository file
-## Keep any changes made before that (remember to change Source and so one)
-## This is a dangerous rule!
+## Keep any changes made before that
+## Remember to change Ignore to Source and so one
+## This is a dangerous rule! Is it, though?
 %.repofile:
 	$(RM) $*/Makefile
 	$(CPF) mkfiles/$*.make $*/Makefile
@@ -55,7 +57,7 @@ wraplink = cd $* && $(LN) ../mkfiles/$*.wrap makefile
 
 ## Make a default Makefile instead (don't use links at all)
 %.defmake: 
-	$(MAKE) $*
+	$(MAKE) $* || mkdir $*
 	$(CP) makestuff/project.Makefile $*/Makefile
 
 ## Make a new directory that is ready for a Dushoff-style project

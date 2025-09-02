@@ -4,11 +4,17 @@
 
 ######################################################################
 
-.git:
-	git init
+## Directory stuff is in mkfiles.mk Use <name>.newrepo to create and vscreen in the directory (from listdir)
 
-github_%: | .git commit.time
-	gh repo create --$* --source . --push
+initBranch ?= main
+.git:
+	git init -b $(initBranch)
+
+## USE ghrepo_private or ghrepo_public to make a repo named after directory
+
+## More flexible version?? Doesn't match origin somehow. What is origin?
+ghrepo_%: | .git commit.time
+	gh repo create $(repoName) --$* --source=. --remote=origin --push
 
 ######################################################################
 
@@ -40,13 +46,21 @@ pull: commit.time
 	git pull
 	touch $<
 
+Ignore += *.autocommit
+.PRECIOUS: %.autocommit
 %.autocommit: $(Sources)
 	git add -f $? 
 	-git commit -m $*
 	touch commit.time
+	$(touch)
 
 %.autosync: %.autocommit
 	$(MAKE) sync
+
+## For finalizing reports
+%.autoup: %.autocommit
+	git push
+	touch up.time
 
 noreport: 
 	$(MAKE) report.md.theirs.pick
@@ -61,8 +75,10 @@ $(pardirs):
 	ls ../$@ > $(null) && $(LNF) ../$@ .
 
 Ignore += up.time all.time
+## Experimenting 2025 Aug 23 (Sat)
+## commit.time is redundant for work, but not as a dependency
 up.time: commit.time
-	$(MAKE) pullup
+	$(MAKE) pull
 	$(MAKE) pushup
 	touch $@
 
@@ -154,6 +170,7 @@ push.%: commit.time
 ## without adding to all pulls; maybe not useful?
 ## 2022 Aug 05 (Fri) added submodule incantation
 ## 2023 Jan 29 (Sun) subtracted submodule incantation; add it manually to submodule directories
+## 2025 Jan 24 (Fri) pullup is used now for rclone; use it for manual pulls but not for pulls that are required just to push
 
 pullup: pull
 
@@ -215,15 +232,16 @@ gptargets: $(gptargets)
 
 ## Unify some of these by recipe
 ## use a better touch command
+## 2025 Jul 28 (Mon) Why am I noticing now that this chokes on subdirectories?
 
 ## 2020 Nov 11 (Wed) an alternative name for git_push
 ## Not copying the all-update rule here; outputs can have other purposes
-%.op: % outputs
+%.op: % | outputs
 	- $(CPF) $* outputs
 	git add -f outputs/$*
 	$(sourceTouch)
 
-%.opdir: % outputs
+%.opdir: % | outputs
 	- $(RMR) outputs/$*
 	- $(CPR) $* outputs
 	git add -f outputs/$*
@@ -233,14 +251,29 @@ gptargets: $(gptargets)
 outputs:
 	$(mkdir)
 
-%.docs: % docs
+%.docs: % | docs
 	- cp $* docs
-	git add -f docs/$*
+	git add -f docs/$(notdir $*)
 	$(sourceTouch)
 
 ## Commented out because of stupid dataviz conflict 2021 Nov 02 (Tue)
 ## Commented back in because I suspect I fixed dataviz? Or at least qmee
 docs: ; $(mkdir)
+
+Ignore += temp
+%.temp: % | temp
+	- cp $* $|
+
+temp: ; $(mkdir)
+
+######################################################################
+
+## Recipes for new directories
+define projectDir
+	$(MAKE) pullup
+	$(mkdir)
+	cp makestuff/project.Makefile $@/Makefile
+endef
 
 ######################################################################
 
@@ -359,8 +392,11 @@ define dd_r
 	-/bin/rm -rf $@
 	git clone . $@
 	[ "$(pardirs)" = "" ] || ( cd $@ && $(LN) $(pardirs:%=../%) .)
-	cd $@ && ln -s ../makestuff .
+	$(stufflink)
 endef
+
+## Untested change 2025 Aug 02 (Sat)
+stufflink = cd $@ && ln -s ../makestuff .
 
 dotdir: $(Sources)
 	$(dd_r)
@@ -416,10 +452,12 @@ sourcedir: $(Sources)
 ## presumably because Makefile makes it
 %.testsetup: %
 	cd $* && $(MAKE) Makefile && ($(MAKE) testsetup || true) && $(MAKE) makestuff 
+	$(CP) testtarget.mk $*/target.mk || $(CP) target.mk $*
 
 %.makestuff: %
 	cd $* && $(MAKE) Makefile && $(MAKE) makestuff
 
+## Deprecate this rule; it should be part of testsetup
 %.testtarget: %
 	$(CP) testtarget.mk $*/target.mk || $(CP) target.mk $*
 
@@ -503,10 +541,29 @@ Ignore += *.ours *.theirs *.common
 %.theirs: %
 	git show :3:$* > $@
 
-## Pick one
+######################################################################
+
+## Pick one 
+## ours or theirs
+
 %.pick: %
 	$(CP) $* $(basename $*)
 	git add $(basename $*)
+
+%.prevpick: 
+	$(CP) $*.*.prevfile $*
+	$(RW)
+	git add $*
+
+%.oldpick: 
+	$(CP) $*.*.oldfile $*
+	$(RW)
+	git add $*
+
+%.datepick: 
+	$(CP) $*.*.datefile $*
+	$(RW)
+	git add $*
 
 Ignore += *.gitdiff
 %.gitdiff: %.ours %.theirs
@@ -535,12 +592,43 @@ define oldfile_r
 	-git checkout HEAD -- $(basename $*)
 	- $(call unhide, $(basename $*))
 	ls $@
+	$(RO)
 endef
 
 %.olddiff: %.*.oldfile %
 	- $(RM) $*.olddiff
 	-$(DIFF) $^ > $*.olddiff
 	$(RO) $*.olddiff
+
+######################################################################
+
+## Go back in time a certain number of _changes_ to the focal file
+## For a number of commits, use HEAD~n.oldfile (could make a .headfile, but probably won't)
+Ignore += *.datefile *.datediff
+
+define datefile_r
+	- $(call hide, $(basename $*))
+ 	- @echo ` \
+		git log --before=$(subst .,,$(suffix $*)) -- $(basename $*) \
+		| head -1 \
+		| sed -e "s/commit //" \
+		| xargs -I{} git checkout {} -- $(basename $*) \
+	`
+	-cp $(basename $*) $@
+	-git checkout HEAD -- $(basename $*)
+	- $(call unhide, $(basename $*))
+	ls $@
+	$(RO)
+endef
+
+%.datefile:
+	-$(RM) $(basename $*).*.datefile
+	$(datefile_r)
+
+%.datediff: %.*.datefile %
+	- $(RM) $*.datediff
+	-$(DIFF) $^ > $*.datediff
+	$(RO) $*.datediff
 
 ######################################################################
 
@@ -558,6 +646,7 @@ define prevfile_r
 	-git checkout HEAD -- $(basename $*)
 	- $(call unhide, $(basename $*))
 	ls $@
+	$(RO)
 endef
 
 %.prevfile:
@@ -572,11 +661,12 @@ endef
 ######################################################################
 
 ## 2024 Jul 22 (Mon) tf is this?
+## Use this for editor/git conflicts; save the conflicted file as .newfile
 Ignore += *.newfile *.newdiff
 %.newdiff: %.new.diff ;
 %.new.diff: %
 	- $(RM) $*.newdiff
-	-$(DIFF) $*.*.newfile $* > $*.newdiff
+	-$(DIFF) $**.newfile $* > $*.newdiff
 	$(RO) $*.newdiff
 
 ######################################################################
@@ -593,3 +683,5 @@ Ignore += *.blame
 
 store_all:
 	git config --global credential.helper 'store'
+
+
