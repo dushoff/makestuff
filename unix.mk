@@ -10,6 +10,7 @@ DIFF = diff
 
 ## VEDIT is set in bashrc (and inherited)
 ## Not sure what I should do if it doesn't work?
+## Would be fun to re-jigger this, but there's not much demand, and definitely some risk
 MSEDIT = $(MSEDITOR) $@ || $(EDITOR) $@ || $(VISUAL) $@ || gvim -f $@ || vim $@ || ((echo ERROR: No editor found makestuff/unix.mk && echo set shell MSEDITOR variable && false))
 RMR = /bin/rm -rf
 RMRF = /bin/rm -rf

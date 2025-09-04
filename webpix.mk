@@ -33,7 +33,7 @@ all.html: $(htmls)
 
 ## Violently deprecating imageDrop in wake of Dropbox catastrophe 2024 Sep 22 (Sun)
 
-## I guess this is the default; and shouldn't hurt anything unless some sort of mirrors are enabled
+## This seems fine, but don't manually add these to mirrors if using this file
 mirrors += webpix my_images
 
 ## jd.local: jd.local.mk
