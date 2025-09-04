@@ -36,7 +36,7 @@ Ignore += $(mirrors)
 %.syncdown:
 	rclone sync -u $(mirror)/$* $*/ 
 
-## Copy to a gooogle drive for someone to see
+## Copy to a google drive for someone to see
 %.gsync: %.get
 	rclone sync --skip-links -u $*/ $(gmirror)/$*
 
