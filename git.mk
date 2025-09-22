@@ -550,19 +550,18 @@ Ignore += *.ours *.theirs *.common
 	$(CP) $* $(basename $*)
 	git add $(basename $*)
 
+## Pick rescues
+## default copy uses default permissions, which is what is wanted
 %.prevpick: 
 	$(CP) $*.*.prevfile $*
-	$(RW)
 	git add $*
 
 %.oldpick: 
 	$(CP) $*.*.oldfile $*
-	$(RW)
 	git add $*
 
 %.datepick: 
 	$(CP) $*.*.datefile $*
-	$(RW)
 	git add $*
 
 Ignore += *.gitdiff
