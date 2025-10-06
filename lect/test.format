@@ -75,6 +75,10 @@ SQ \vspace{2.ex plus 8.ex minus 1.ex}\noindent\stepcounter{qpart}\alph{qpart})~%
 
 COMMENT \vspace{2.0ex plus 12.0ex}\pagebreak[3]\noindent{\sl %|} %%
 
+## INSTRUCTIONs show up on test but not keys
+INSTRUCTION ^COMMENT %%
+key rub: %!
+
 HEAD \subsection*{%%}
 
 INTRO %%
