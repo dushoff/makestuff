@@ -214,8 +214,11 @@ Ignore += *.ld.tex
 %.ld.tex: %.tex
 	latexdiff $*.tex.*.oldfile $< > $@
 
-%.pd: %
-	$(CP) $< $(pushdir) || $(CP) $< ~/Downloads
+%.pd: % | $(pushdir)
+	$(CP) $< $(pushdir)
+
+pushmake:
+	cd $(dir $(pushdir)) && mkdir $(notdir $(pushdir))
 
 %.pdown: %
 	$(RM) ~/Downloads/$<
