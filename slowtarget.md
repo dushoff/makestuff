@@ -7,6 +7,7 @@ Once included, you can avoid remaking targets by:
 
 * using slowtarget/ for the target
 * using slow/ in parallel as a dependency 
+* It may be better practice to use `slow/` when you make; the slowtarget directory will not be made by default.
 
 e.g:
 ```make
