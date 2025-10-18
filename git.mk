@@ -4,9 +4,10 @@
 
 ######################################################################
 
-## Directory stuff is in mkfiles.mk Use <name>.newrepo to create and vscreen in the directory (from listdir)
-
+## Directory stuff is in mkfiles.mk 
+## Use <name>.newrepo to create and vscreen in the directory (from listdir)
 ## THEN use ghrepo_private or ghrepo_public to make a repo named after directory
+
 ghrepo_%: | .git commit.time
 	gh repo create $(repoName) --$* --source=. --remote=origin --push
 
