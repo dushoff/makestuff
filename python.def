@@ -1,3 +1,4 @@
+Sources += $(wildcard *.py)
 
 pyscr = python $(filter %.py, $^)
 pydep = $(filter-out %.py, $^)
