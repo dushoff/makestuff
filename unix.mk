@@ -21,9 +21,9 @@ MD = mkdir
 MKDIR = mkdir
 CAT = cat
 
-## Use RO and RW as components
-RO = chmod a-w $@
-RW = chmod ug+w $@
+## Use RO and RW as components; fixing this back to original 2025 Oct 25 (Sat)
+RO = chmod a-w
+RW = chmod ug+w
 readonly = $(RO) $@
 readwrite = $(RW) $@
 
