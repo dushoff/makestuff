@@ -1,4 +1,5 @@
 ## pypath =  pyenv | pyvenv ## pick one for your Makefile
+Ignore += $(pypath)
 Makefile: | $(pypath)
 
 ## Clean virtual environment
