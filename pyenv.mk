@@ -11,5 +11,5 @@ pyenv:
 	
 Ignore += *.pip
 %.pip:
-	$(pypath)/bin/pip $* && $(touch)
+	$(pypath)/bin/pip install $* && $(touch)
 
