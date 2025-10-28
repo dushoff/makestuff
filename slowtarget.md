@@ -27,6 +27,8 @@ If you want to work on slow steps without remaking all of them, you can say `mak
 
 Use `Sources += $(wildcard slow/*)` to share the managed slow/ directory via git. It would probably be better practice to share some other way, but I am not vibing these days with Dropbox or Google, and I don't know what robust, universal options are out there.
 
+When you update something slow, you want to get it on the slow/ side for pushing. You can do this by making a `slow/<fn>.final` target, or a downstream `.final` target. 
+
 ## Issues
 
 Automatic intermediaries (like .Rout) can be missed, and trigger unwanted making.
