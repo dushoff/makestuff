@@ -23,6 +23,8 @@ When sharing with others, you will generally want to share the target files in s
 
 If you want to work on slow steps without remaking all of them, you can say `make slowsync` before you start, to bring your slowtarget/ directory up-to-date with the managed slow/ directory. This should mean that `make <target>.final` remakes things that are really new, but not up-to-date things that were made elsewhere.
 
+** slowsync seems to have some issues 2025 Oct 17 (Fri) **
+
 ## Sharing
 
 Use `Sources += $(wildcard slow/*)` to share the managed slow/ directory via git. It would probably be better practice to share some other way, but I am not vibing these days with Dropbox or Google, and I don't know what robust, universal options are out there.
