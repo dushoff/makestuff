@@ -36,9 +36,14 @@ Ignore += $(mirrors)
 %.syncdown:
 	rclone sync -u $(mirror)/$* $*/ 
 
-## Copy to a google drive for someone to see
+## Copy a mirror folder to a google drive for someone to see
 %.gsync: %.get
 	rclone sync --skip-links -u $*/ $(gmirror)/$*
+
+## This is more like regular posting, but requires mirror logic
+%.gp: %
+	rclone copy -u $* $(gmirror)/$(notdir $*)
+	rclone link $(gmirror)/$(notdir $*)
 
 ## Normally copy up safely; syncup can be called manually
 ## Can try to fix with an || !ls something [[fix WHAT? 2025 Feb 12 (Wed)]]
