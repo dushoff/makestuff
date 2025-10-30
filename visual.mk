@@ -1,6 +1,13 @@
 ## Make things appear; some of it feels pretty Dushoff-specific
 ## Need to transition to $(target)-based rules (no $<)
-## See visual.md for ideas about updating startscreen/rscreen/vscreen paradigm
+
+target.%:
+	$(MAKE) $(target:%=%.pdf.$*) || $(MAKE) $(target:%=%.$*)
+
+ttarget.%:
+	$(MAKE) $(target:%=%.$*)
+
+## What is any of the stuff below? Target stuff should be simplified, and maybe put in a better-named place. Except that visual is in every single goshdarned Makefile 2025 Oct 30 (Thu)
 
 pngtarget: 
 	$(MAKE) $<.png

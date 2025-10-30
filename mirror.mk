@@ -43,6 +43,8 @@ Ignore += $(mirrors)
 ## This is more like regular posting, but requires mirror logic
 %.gp: %
 	rclone copy -u $* $(gmirror)/$(notdir $*)
+
+%.glink: %
 	rclone link $(gmirror)/$(notdir $*)
 
 ## Normally copy up safely; syncup can be called manually
