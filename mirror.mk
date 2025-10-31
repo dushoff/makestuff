@@ -24,6 +24,9 @@ Ignore += $(mirrors)
 %.mirror.ls: | %.mirror
 	rclone ls $(mirror)/$*
 
+gmirror.ls:
+	rclone ls $(gmirror)
+
 %.backup:
 	rclone copy -u $*/ $(mirror)/backup/$*
 
@@ -45,7 +48,7 @@ Ignore += $(mirrors)
 	rclone copy -u $* $(gmirror)/$(notdir $*)
 
 %.glink: %
-	rclone link $(gmirror)/$(notdir $*)
+	echo $(open) `rclone link $(gmirror)/$(notdir $*)` | bash
 
 ## Normally copy up safely; syncup can be called manually
 ## Can try to fix with an || !ls something [[fix WHAT? 2025 Feb 12 (Wed)]]

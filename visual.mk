@@ -1,11 +1,20 @@
 ## Make things appear; some of it feels pretty Dushoff-specific
 ## Need to transition to $(target)-based rules (no $<)
 
+######################################################################
+
+## Not clear why these are not fragile (why they seem to take precedence)
+## Consider names that _end_ with target
+## Note that this file is usually read last
+## It may be that it's fine as long as make doesn't know how to make a target named “target”
+
 target.%:
 	$(MAKE) $(target:%=%.pdf.$*) || $(MAKE) $(target:%=%.$*)
 
 ttarget.%:
 	$(MAKE) $(target:%=%.$*)
+
+######################################################################
 
 ## What is any of the stuff below? Target stuff should be simplified, and maybe put in a better-named place. Except that visual is in every single goshdarned Makefile 2025 Oct 30 (Thu)
 
