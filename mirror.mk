@@ -21,9 +21,13 @@ Ignore += $(mirrors)
 	rclone copy -u $*/ $(mirror)/$*
 	$(touch)
 
+######################################################################
+
+## List a subdirectory of the main mirror
 %.mirror.ls: | %.mirror
 	rclone ls $(mirror)/$*
 
+## Sometimes we use gmirror in parallel (for sharing)
 gmirror.ls:
 	rclone ls $(gmirror)
 
@@ -43,12 +47,39 @@ gmirror.ls:
 %.gsync: %.get
 	rclone sync --skip-links -u $*/ $(gmirror)/$*
 
-## This is more like regular posting, but requires mirror logic
+######################################################################
+
+## This is more like regular posting, but it's here because of $(gmirror)
 %.gp: %
 	rclone copy -u $* $(gmirror)/$(notdir $*)
 
+## This way is supposed to do less slow uploading
+%.gd: gdrive/$(notdir %) ;
+
+.PRECIOUS: gdrive/%
+gdrive/%: % | gdrive
+	$(copy)
+	rclone copy -u $@ $(gmirror)/$(notdir $@)
+
+gdtargets = $(addprefix gdrive/, $(notdir $(gdsub)))
+$(gdtargets): | gdrive
+	$(copy)
+	rclone copy -u $@ $(gmirror)/$(notdir $@)
+
+define gdsub_dep
+gdrive/$(notdir $(1)): $(1) | gdrive
+endef
+$(foreach f,$(gdsub),$(eval $(call gdsub_dep,$(f))))
+
+gdrive:
+	$(mkdir)
+
+######################################################################
+
 %.glink: %
 	echo $(open) `rclone link $(gmirror)/$(notdir $*)` | bash
+
+######################################################################
 
 ## Normally copy up safely; syncup can be called manually
 ## Can try to fix with an || !ls something [[fix WHAT? 2025 Feb 12 (Wed)]]
