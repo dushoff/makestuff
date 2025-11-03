@@ -11,6 +11,7 @@ pyenv:
 	python -m venv --system-site-packages $@
 	
 Ignore += *.pip
+.PRECIOUS: %.pip
 %.pip:
 	$(pypath)/bin/pip install $* && $(touch)
 	$(touch)
