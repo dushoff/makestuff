@@ -36,6 +36,10 @@ Ignore += $(mirrors)
 %.syncdown:
 	rclone sync -u $(mirror)/$* $*/ 
 
+%.vaporize:
+	rm -fr $*/*
+	$(MAKE) $*.syncup
+
 ## Copy to a google drive for someone to see
 %.gsync: %.get
 	rclone sync --skip-links -u $*/ $(gmirror)/$*
