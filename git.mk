@@ -590,7 +590,7 @@ define oldfile_r
 	-git checkout HEAD -- $(basename $*)
 	- $(call unhide, $(basename $*))
 	ls $@
-	$(RO)
+	$(ro)
 endef
 
 %.olddiff: %.*.oldfile %
