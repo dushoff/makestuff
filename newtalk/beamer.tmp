@@ -1,21 +1,15 @@
 \documentclass{beamer}
 
-%% Put this in talkdir/chinese? Use scoping instead of $#@!ing around to deal with punctuation issues
-%% \usepackage{fontspec}
-%% \setmainfont{Noto Serif CJK TC}
-%% \setsansfont{Noto Sans CJK TC}
-
+%% 2024 Nov 15 (Fri) Something weird going on with these templates
 %% \input{LatexTemplates/ici3dTemplate.tex}
 %% \input{LatexTemplates/ici3dCurrent.tex}
+\input{talkdir/bulletspace.tex}
+
+%% If you enable Chinese, you need to also 
+%% latexEngine = xelatex
 
 %% \usepackage{talkdir/chinese}
-%% Seems baddish to control Chinese from talkdir?
-%% \renewcommand{\chinese}{\nochinese}
-%% \renewcommand{\chinese}{\yeschinese}
-
-\input{talkdir/bulletspace.tex}
-\input{talkdir/colors.tex}
-\input{localcomm.TEX}
+\newcommand{\chinese}[1]{}
 \usepackage{talkdir/slidecomm,talkdir/commands}
 \usepackage{graphicx,xspace}
 \usepackage{grffile}
@@ -24,6 +18,7 @@
 
 \input{talkdir/section.tex}
 \input{talkdir/lengths.tex}
+\input{talkdir/colors.tex}
 
 \begin{document}
 

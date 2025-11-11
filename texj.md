@@ -22,3 +22,5 @@ Warning: If you find some other way to get the text “Rerun to” into the tex 
 The logic of what files to make when is not very well thought-out and not very beautiful (this is the distinction between .files, made at the beginning, and the full set of dependencies .deps, made subsequently). This logic is implemented in texj.pl, and may not even be necessary at all.
 
 It would be nice maybe to have a robust way of getting the bibliography stuff to compile even when picture dependencies are not ready.
+
+.bbl should be made to depend on something, for applications where .bbl is being used for something else. pdf would presumably be a loop, but something inside.
