@@ -20,6 +20,7 @@ txt.format: $(talkdir)/txt.format local.txt.format
 local.txt.format:
 	touch $@
 
+Ignore += localcomm.TEX
 localcomm.TEX:
 	$(touch)
 
