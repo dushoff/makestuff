@@ -31,6 +31,7 @@ screens.arc: screens.list makestuff/listarc.pl
 screens.update: screens.arc
 	- $(call hide, screens.list)
 	 $(listscreens)
+	 $(MAKE) screens.mk
 
 pullups: pullup screens.update
 

@@ -1,6 +1,7 @@
 ## Thinking about pandoc 2 and less-random rules 
 ## 2019 Feb 12 (Tue)
 ## Quite a mess here; maybe legacy it and come up with a different name or structure 2020 Feb 15 (Sat)
+## Also, having simple default rules, like the first two, conflicts with the idea of sometimes having markdown for notes.
 
 ## -S for “smart” quotes
 pandocs = pandoc -s -o $@ $<
@@ -86,6 +87,8 @@ rmdh = Rscript -e "library(\"rmarkdown\"); render(\"$<\")"
 
 %.th.tex: %.md
 	pandoc -s -S -t latex -V documentclass=tufte-handout $*.md -o $*.tex
+
+%.inc.TEX: %.md
 
 Ignore += *.tex.md
 %.tex.md: %.tex
