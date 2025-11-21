@@ -32,6 +32,8 @@ screens.update: screens.arc
 	- $(call hide, screens.list)
 	 $(listscreens)
 
+pullups: pullup screens.update
+
 refresh: sync
 	$(MAKE) screens.update
 
