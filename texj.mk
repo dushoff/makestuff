@@ -1,3 +1,5 @@
+## TEX is not empowered yet except for simple applications;
+## need to distinguish .whatever.tex
 latexEngine ?= pdflatex
 latexNonstop ?= -interaction=nonstopmode
 latexJob = -jobname=$(basename $@)
