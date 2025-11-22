@@ -8,6 +8,6 @@ addgh_%:
 	/repos/dushoff/nsercMixing/collaborators/$* \
 	-f permission=push > addgh.log
 
-checkgh:
-	gh api /repos/dushoff/nsercMixing/invitations > checkgh.log
+checkgh.log:
+	gh api /repos/dushoff/nsercMixing/invitations > $@
 
