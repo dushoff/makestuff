@@ -4,6 +4,7 @@
 
 ######################################################################
 
+## github
 ## Directory stuff is in mkfiles.mk 
 ## Use <name>.newrepo to create and vscreen in the directory (from listdir)
 ## THEN use ghrepo_private or ghrepo_public to make a repo named after directory
@@ -14,6 +15,20 @@ ghrepo_%: | .git commit.time
 initBranch ?= main
 .git:
 	git init -b $(initBranch)
+
+ghput = gh api --method PUT
+jsonaccept = Accept: application/vnd.github+json
+
+Ignore += *.invite
+## This could be generalized to other roles, e.g.
+## %.push.invite:
+%.invite: 
+	$(ghput) repos/$(repoonly)/collaborators/$* \
+	-f permission=push > $@
+
+## checkgh: checkgh.log
+checkgh:
+	gh api repos/$(repoonly)/invitations > $@.log
 
 ######################################################################
 
