@@ -486,6 +486,8 @@ hub:
 	echo go `git remote get-url origin` | bash 
 
 gitremote = git remote get-url origin
+thisrepo = $(shell $(gitremote))
+repoonly = $(shell echo $(thisrepo) | sed "s/.*com\///; s/\.git//")
 gitremoteopen = echo go `$(gitremote) | perl -pe "s/[.]git$$//"` | bash --login
 gitremotestraight = echo go `$(gitremote) | perl -pe "s/[.]git$$//"` | bash
 

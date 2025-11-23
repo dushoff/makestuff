@@ -1,13 +1,18 @@
 ## Randomly spun 2025 Oct 27 (Mon)
 ## Need to make it make-y or something
 ## The JSON return text is terrible
-addgh_%:
-	gh api \
-	--method PUT \
-	-H "Accept: application/vnd.github+json" \
-	/repos/dushoff/nsercMixing/collaborators/$* \
-	-f permission=push > addgh.log
 
+ghput = gh api --method PUT
+jsonaccept = Accept: application/vnd.github+json
+
+Ignore += *.invite
+## This could be generalized to other roles, e.g.
+## %.push.invite:
+%.invite: makestuff/github.mk
+	$(ghput) repos/$(repoonly)/collaborators/$* \
+	-f permission=push > $@
+
+## checkgh: checkgh.log
 checkgh:
 	gh api /repos/dushoff/nsercMixing/invitations > checkgh.log
 
