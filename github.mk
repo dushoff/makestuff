@@ -8,7 +8,7 @@ jsonaccept = Accept: application/vnd.github+json
 Ignore += *.invite
 ## This could be generalized to other roles, e.g.
 ## %.push.invite:
-%.invite: makestuff/github.mk
+%.invite: 
 	$(ghput) repos/$(repoonly)/collaborators/$* \
 	-f permission=push > $@
 
