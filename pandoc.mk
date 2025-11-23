@@ -5,6 +5,7 @@
 
 ## -S for “smart” quotes
 pandocs = pandoc -s -o $@ $<
+pandoc = pandoc -o $@ $<
 
 %.pdf: %.md
 	$(pandocs)

@@ -14,5 +14,5 @@ Ignore += *.invite
 
 ## checkgh: checkgh.log
 checkgh:
-	gh api /repos/dushoff/nsercMixing/invitations > checkgh.log
+	gh api repos/$(repoonly)/invitations > $@.log
 
