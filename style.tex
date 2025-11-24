@@ -1,5 +1,6 @@
-%% Probably don't use this but break it up into logical chunks??
-H
+%% Probably don't use this for long but instead break it up into logical chunks??
+
+%% Needs xcolor 
 \newcommand{\comment}{RENEW the comment command}
 \renewcommand{\comment}[3]{}
 \renewcommand{\comment}[3]{\textcolor{#1}{\textbf{[#2: }\textit{#3}\textbf{]}}}
@@ -7,9 +8,11 @@ H
 %% Generally don't use this; set an example for others
 \newcommand{\jgd}[1]{\comment{cyan}{JD}{#1}}
 
-\newcommand{\Ro}{$\mathcal{R}_0$}
-
 \newcommand{\RR}{\ensuremath{{\mathcal R}}}
 \newcommand{\Rx}[1]{\ensuremath{\RR_{\mathrm{#1}}}}
 \newcommand{\Ro}{\Rx{0}}
+
+\newcommand{\flab}[1]{\label{fig:#1}}
+\newcommand{\fref}[1]{Figure~\ref{fig:#1}}
+\newcommand{\Fref}[1]{Figure~\ref{fig:#1}}
 
