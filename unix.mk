@@ -8,7 +8,7 @@ CPF = /bin/cp -f
 CPR = /bin/cp -rf
 DIFF = diff
 
-MSEDIT = nano $@ || $(MSEDITOR) $@ || $(EDITOR) $@ || $(VISUAL) $@ || $(VEDIT) $@ || gvim -f $@ || nano $@ || vim $@ || ((echo ERROR: No editor found makestuff/unix.mk && echo set shell MSEDITOR variable && false))
+MSEDIT = xterm -e nano $@ || $(MSEDITOR) $@ || $(EDITOR) $@ || $(VISUAL) $@ || $(VEDIT) $@ || gvim -f $@ || nano $@ || vim $@ || ((echo ERROR: No editor found makestuff/unix.mk && echo set shell MSEDITOR variable && false))
 RMR = /bin/rm -rf
 RMRF = /bin/rm -rf
 LS = /bin/ls
