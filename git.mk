@@ -174,6 +174,7 @@ makestuff.allexclude: ;
 sync: 
 	-$(RM) up.time
 	$(MAKE) up.time
+	git status
 
 ## Use for first push if not linked to a branch
 ## push.main is the right target for new repos
