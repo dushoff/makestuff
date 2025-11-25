@@ -17,7 +17,7 @@ initBranch ?= main
 	git init -b $(initBranch)
 
 ghput = gh api --method PUT
-jsonaccept = Accept: application/vnd.github+json
+## jsonaccept = Accept: application/vnd.github+json ## Not really needed, and causes parsing errors
 
 Ignore += *.invite
 ## This could be generalized to other roles, e.g.
