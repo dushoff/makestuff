@@ -4,6 +4,7 @@
 
 ######################################################################
 
+## github
 ## Directory stuff is in mkfiles.mk 
 ## Use <name>.newrepo to create and vscreen in the directory (from listdir)
 ## THEN use ghrepo_private or ghrepo_public to make a repo named after directory
@@ -14,6 +15,20 @@ ghrepo_%: | .git commit.time
 initBranch ?= main
 .git:
 	git init -b $(initBranch)
+
+ghput = gh api --method PUT
+## jsonaccept = Accept: application/vnd.github+json ## Not really needed, and causes parsing errors
+
+Ignore += *.invite
+## This could be generalized to other roles, e.g.
+## %.push.invite:
+%.invite: 
+	$(ghput) repos/$(repoonly)/collaborators/$* \
+	-f permission=push > $@
+
+## checkgh: checkgh.log
+checkgh:
+	gh api repos/$(repoonly)/invitations > $@.log
 
 ######################################################################
 
@@ -159,6 +174,7 @@ makestuff.allexclude: ;
 sync: 
 	-$(RM) up.time
 	$(MAKE) up.time
+	git status
 
 ## Use for first push if not linked to a branch
 ## push.main is the right target for new repos
@@ -486,6 +502,8 @@ hub:
 	echo go `git remote get-url origin` | bash 
 
 gitremote = git remote get-url origin
+thisrepo = $(shell $(gitremote))
+repoonly = $(shell echo $(thisrepo) | sed "s/.*com\///; s/\.git//")
 gitremoteopen = echo go `$(gitremote) | perl -pe "s/[.]git$$//"` | bash --login
 gitremotestraight = echo go `$(gitremote) | perl -pe "s/[.]git$$//"` | bash
 

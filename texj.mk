@@ -1,3 +1,5 @@
+## TEX is not empowered yet except for simple applications;
+## need to distinguish .whatever.tex
 latexEngine ?= pdflatex
 latexNonstop ?= -interaction=nonstopmode
 latexJob = -jobname=$(basename $@)
@@ -68,11 +70,12 @@ body.tex.mk: body.tex makestuff/texj.pl
 %.tex.mk: %.tex 
 	perl -wf makestuff/texj.pl $< > $@
 
-## This seems like a mess; why should it be here?
-## Why not just use tex.mk
-.PRECIOUS: %.texdeps.mk
-%.texdeps.mk: %.tex.mk 
+## More complexities trying to chain with includes 2025 Nov 24 (Mon)
+%.texdeps: %.tex.mk 
 	-$(MAKE) -f $*.tex.mk -f Makefile $*.tex.files
+
+.PRECIOUS: %.texdeps.mk
+%.texdeps.mk: %.texdeps 
 	cat $^ > $@
 
 ######################################################################

@@ -33,6 +33,8 @@ screens.update: screens.arc
 	 $(listscreens)
 	 $(MAKE) screens.mk
 
+pullups: pullup screens.update
+
 refresh: sync
 	$(MAKE) screens.update
 

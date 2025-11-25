@@ -5,6 +5,7 @@
 
 ## -S for “smart” quotes
 pandocs = pandoc -s -o $@ $<
+pandoc = pandoc -o $@ $<
 
 %.pdf: %.md
 	$(pandocs)
@@ -87,6 +88,8 @@ rmdh = Rscript -e "library(\"rmarkdown\"); render(\"$<\")"
 
 %.th.tex: %.md
 	pandoc -s -S -t latex -V documentclass=tufte-handout $*.md -o $*.tex
+
+%.inc.TEX: %.md
 
 Ignore += *.tex.md
 %.tex.md: %.tex
