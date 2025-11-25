@@ -14,6 +14,7 @@ endef
 ## but now runs successfully without producing it
 ## file can still be used downstream
 ## awkwardly delete known target types; or make all known targets start with full target name?
+## Also a problem with startGraphics; does it make the file before success?
 define pipeR
 	@-$(RM) $@ $@.*
 	@$(makeArgs)
