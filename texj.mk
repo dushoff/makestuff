@@ -78,7 +78,7 @@ body.tex.mk: body.tex makestuff/texj.pl
 
 .PRECIOUS: %.texdeps.mk
 %.texdeps.mk: %.texdeps 
-	cat $^ > $@
+	cat $*.tex.mk > $@
 
 ######################################################################
 
