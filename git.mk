@@ -4,15 +4,31 @@
 
 ######################################################################
 
+## github
+## Directory stuff is in mkfiles.mk 
+## Use <name>.newrepo to create and vscreen in the directory (from listdir)
+## THEN use ghrepo_private or ghrepo_public to make a repo named after directory
+
+ghrepo_%: | .git commit.time
+	gh repo create $(repoName) --$* --source=. --remote=origin --push
+
 initBranch ?= main
 .git:
 	git init -b $(initBranch)
 
-## USE ghrepo_private or ghrepo_public to make a repo named after directory
+ghput = gh api --method PUT
+## jsonaccept = Accept: application/vnd.github+json ## Not really needed, and causes parsing errors
 
-## More flexible version?? Doesn't match origin somehow. What is origin?
-ghrepo_%: | .git commit.time
-	gh repo create $(repoName) --$* --source=. --remote=origin --push
+Ignore += *.invite
+## This could be generalized to other roles, e.g.
+## %.push.invite:
+%.invite: 
+	$(ghput) repos/$(repoonly)/collaborators/$* \
+	-f permission=push > $@
+
+## checkgh: checkgh.log
+checkgh:
+	gh api repos/$(repoonly)/invitations > $@.log
 
 ######################################################################
 
@@ -73,6 +89,8 @@ $(pardirs):
 	ls ../$@ > $(null) && $(LNF) ../$@ .
 
 Ignore += up.time all.time
+## Experimenting 2025 Aug 23 (Sat)
+## commit.time is redundant for work, but not as a dependency
 up.time: commit.time
 	$(MAKE) pull
 	$(MAKE) pushup
@@ -156,6 +174,7 @@ makestuff.allexclude: ;
 sync: 
 	-$(RM) up.time
 	$(MAKE) up.time
+	git status
 
 ## Use for first push if not linked to a branch
 ## push.main is the right target for new repos
@@ -228,15 +247,16 @@ gptargets: $(gptargets)
 
 ## Unify some of these by recipe
 ## use a better touch command
+## 2025 Jul 28 (Mon) Why am I noticing now that this chokes on subdirectories?
 
 ## 2020 Nov 11 (Wed) an alternative name for git_push
 ## Not copying the all-update rule here; outputs can have other purposes
-%.op: % outputs
+%.op: % | outputs
 	- $(CPF) $* outputs
 	git add -f outputs/$*
 	$(sourceTouch)
 
-%.opdir: % outputs
+%.opdir: % | outputs
 	- $(RMR) outputs/$*
 	- $(CPR) $* outputs
 	git add -f outputs/$*
@@ -246,14 +266,29 @@ gptargets: $(gptargets)
 outputs:
 	$(mkdir)
 
-%.docs: % docs
+%.docs: % | docs
 	- cp $* docs
-	git add -f docs/$*
+	git add -f docs/$(notdir $*)
 	$(sourceTouch)
 
 ## Commented out because of stupid dataviz conflict 2021 Nov 02 (Tue)
 ## Commented back in because I suspect I fixed dataviz? Or at least qmee
 docs: ; $(mkdir)
+
+Ignore += temp
+%.temp: % | temp
+	- cp $* $|
+
+temp: ; $(mkdir)
+
+######################################################################
+
+## Recipes for new directories
+define projectDir
+	$(MAKE) pullup
+	$(mkdir)
+	cp makestuff/project.Makefile $@/Makefile
+endef
 
 ######################################################################
 
@@ -372,8 +407,11 @@ define dd_r
 	-/bin/rm -rf $@
 	git clone . $@
 	[ "$(pardirs)" = "" ] || ( cd $@ && $(LN) $(pardirs:%=../%) .)
-	cd $@ && ln -s ../makestuff .
+	$(stufflink)
 endef
+
+## Untested change 2025 Aug 02 (Sat)
+stufflink = cd $@ && ln -s ../makestuff .
 
 dotdir: $(Sources)
 	$(dd_r)
@@ -464,6 +502,8 @@ hub:
 	echo go `git remote get-url origin` | bash 
 
 gitremote = git remote get-url origin
+thisrepo = $(shell $(gitremote))
+repoonly = $(shell echo $(thisrepo) | sed "s/.*com\///; s/\.git//")
 gitremoteopen = echo go `$(gitremote) | perl -pe "s/[.]git$$//"` | bash --login
 gitremotestraight = echo go `$(gitremote) | perl -pe "s/[.]git$$//"` | bash
 
@@ -519,6 +559,7 @@ Ignore += *.ours *.theirs *.common
 	git show :3:$* > $@
 
 ######################################################################
+
 ## Pick one 
 ## ours or theirs
 
@@ -526,6 +567,8 @@ Ignore += *.ours *.theirs *.common
 	$(CP) $* $(basename $*)
 	git add $(basename $*)
 
+## Pick rescues
+## default copy uses default permissions, which is what is wanted
 %.prevpick: 
 	$(CP) $*.*.prevfile $*
 	git add $*
@@ -565,6 +608,7 @@ define oldfile_r
 	-git checkout HEAD -- $(basename $*)
 	- $(call unhide, $(basename $*))
 	ls $@
+	$(ro)
 endef
 
 %.olddiff: %.*.oldfile %
@@ -590,6 +634,7 @@ define datefile_r
 	-git checkout HEAD -- $(basename $*)
 	- $(call unhide, $(basename $*))
 	ls $@
+	$(RO)
 endef
 
 %.datefile:
@@ -617,6 +662,7 @@ define prevfile_r
 	-git checkout HEAD -- $(basename $*)
 	- $(call unhide, $(basename $*))
 	ls $@
+	$(RO)
 endef
 
 %.prevfile:
@@ -653,4 +699,5 @@ Ignore += *.blame
 
 store_all:
 	git config --global credential.helper 'store'
+
 

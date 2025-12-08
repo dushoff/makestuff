@@ -8,10 +8,9 @@ CPF = /bin/cp -f
 CPR = /bin/cp -rf
 DIFF = diff
 
-## VEDIT is set in bashrc (and inherited)
-## Not sure what I should do if it doesn't work?
-MSEDIT = $(MSEDITOR) $@ || $(EDITOR) $@ || $(VISUAL) $@ || gvim -f $@ || vim $@ || ((echo ERROR: No editor found makestuff/unix.mk && echo set shell MSEDITOR variable && false))
+MSEDIT = $(MSEDITOR) $@ || $(EDITOR) $@ || $(VISUAL) $@ || $(VEDIT) $@ || gvim -f $@ || xterm -e nano $@ || nano $@ || vim $@ || ((echo ERROR: No editor found makestuff/unix.mk && echo set shell MSEDITOR variable && false))
 RMR = /bin/rm -rf
+RMRF = /bin/rm -rf
 LS = /bin/ls
 LN = /bin/ln -s
 LNF = /bin/ln -fs
@@ -19,9 +18,12 @@ MD = mkdir
 MKDIR = mkdir
 CAT = cat
 
-readonly = chmod a-w $@
-RO = chmod a-w 
+## Use RO and RW as components; fixing this back to original 2025 Oct 25 (Sat)
+RO = chmod a-w
 RW = chmod ug+w
+readonly = $(RO) $@
+readwrite = $(RW) $@
+
 DNE = (! $(LS) $@ > $(null))
 LSN = ($(LS) $@ > $(null))
 
@@ -209,8 +211,11 @@ Ignore += *.ld.tex
 %.ld.tex: %.tex
 	latexdiff $*.tex.*.oldfile $< > $@
 
-%.pd: %
-	$(CP) $< $(pushdir) || $(CP) $< ~/Downloads
+%.pd: % | $(pushdir)
+	$(CP) $< $(pushdir)
+
+pushmake:
+	cd $(dir $(pushdir)) && mkdir $(notdir $(pushdir))
 
 %.pdown: %
 	$(RM) ~/Downloads/$<

@@ -80,8 +80,11 @@ name.%.png: name.png
 %.img.png: %.pdf
 	$(imageconvert)
 
-%.txt.ps: %.txt
-	groff $< > $@
+## Suppressing 2025 Jul 06 (Sun)
+## %.txt.ps: %.txt; groff $< > $@
+
+%.txt.pdf: %.txt
+	pdfroff $< > $@
 
 ######################################################################
 
@@ -121,6 +124,14 @@ sig.%.pdf: sig.%.jpg
 ## Reinstating for now
 
 include makestuff/pdfsplit.mk
+
+######################################################################
+
+## Page selection?
+
+%.select.pdf:
+	$(MAKE) $(basename $*).pdf
+	pdfjam -o $@ $(basename $*).pdf $(subst .,,$(suffix $*))
 
 ######################################################################
 

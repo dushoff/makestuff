@@ -9,6 +9,8 @@ Ignore = target.mk
 vim_session:
 	bash -cl "vmt"
 
+## -include makestuff/perl.def
+
 ######################################################################
 
 ### Makestuff
