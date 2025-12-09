@@ -1,5 +1,11 @@
+Sources += $(wildcard *.py)
 
-pyscr = python $(filter %.py, $^)
+python = python
+ifdef pypath
+python = $(pypath)/bin/python
+endif
+
+pyscr = $(python) $(filter %.py, $^)
 pydep = $(filter-out %.py, $^)
 
 # Runs the first script among its dependencies, using all the other dependencies as arguments
@@ -12,4 +18,4 @@ PITHOUT = $(pyscr) $@ $(pydep) > $(hiddentarget) && $(unhidetarget)
 PITHSTAR = $(pyscr) $* $(pydep) > $(hiddentarget) && $(unhidetarget)
 
 # Appends (pushes onto the file that's already there)
-# PPITH = python -00 $(filter %.py, $^) $(filter-out %.py, $^) > $@
+# PPITH = $python -00 $(filter %.py, $^) $(filter-out %.py, $^) > $@

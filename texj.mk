@@ -1,3 +1,5 @@
+## TEX is not empowered yet except for simple applications;
+## need to distinguish .whatever.tex
 latexEngine ?= pdflatex
 latexNonstop ?= -interaction=nonstopmode
 latexJob = -jobname=$(basename $@)
@@ -44,8 +46,10 @@ phony: ;
 
 ## This one should make if at all possible, and effectively only depend on the primary .tex; add dependencies for that if necessary?
 Ignore += *.force.pdf
-%.force.pdf: %.aux
+%.force.pdf: force
+	$(MAKE) $*.pdf || $(MAKE) $*.aux 
 	$(CP) $*.pdf $@
+force: 
 
 ######################################################################
 
@@ -68,12 +72,13 @@ body.tex.mk: body.tex makestuff/texj.pl
 %.tex.mk: %.tex 
 	perl -wf makestuff/texj.pl $< > $@
 
-## This seems like a mess; why should it be here?
-## Why not just use tex.mk
-.PRECIOUS: %.texdeps.mk
-%.texdeps.mk: %.tex.mk 
+## More complexities trying to chain with includes 2025 Nov 24 (Mon)
+%.texdeps: %.tex.mk 
 	-$(MAKE) -f $*.tex.mk -f Makefile $*.tex.files
-	cat $^ > $@
+
+.PRECIOUS: %.texdeps.mk
+%.texdeps.mk: %.texdeps 
+	cat $*.tex.mk > $@
 
 ######################################################################
 
@@ -83,10 +88,10 @@ Ignore += $(texfiles:tex=out)
 
 ## These direct exclusions can be replaced by fancier rules above if necessary
 Ignore += *.biblog *.log *.aux .*.aux *.blg *.bbl *.bcf *.repeat *.texfinal
-Ignore += *.nav *.snm *.toc
+Ignore += *.nav *.snm *.toc *.ptc
 Ignore += *.run.xml
 Ignore += *.tex.* *.TEX.* *.texdeps.mk
-Ignore += *.aux.pdf *.aux.out *.texfinal.pdf
+Ignore += *.aux.pdf *.aux.out *.texfinal.pdf *.out
 
 iclean:
 	$(RM) *.deps.pdf *.subdeps *.deps.out
