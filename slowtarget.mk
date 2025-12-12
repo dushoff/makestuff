@@ -25,7 +25,7 @@ slowtarget slow:
 	$(MAKE) makeSlow=defined $*
 
 %.finalview: %.final
-	$(MAKE) $*.pdf.go) || $(MAKE) $<.go
+	$(MAKE) $*.pdf.go || $(MAKE) $<.go
 
 slowsync:
 	rsync -r slow/ slowtarget
