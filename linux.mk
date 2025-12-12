@@ -1,8 +1,11 @@
 -include makestuff/unix.mk
 
+open ?= xdg-open
+usershell ?= bash
+
 %.go:
 	$(MAKE) $*
-	echo "xdg-open $* >& go.log &" | bash
+	echo "$(open) $* >& go.log &" | $(usershell)
 
 %.acr:
 	$(MAKE) $*
