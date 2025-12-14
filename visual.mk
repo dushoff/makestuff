@@ -84,9 +84,11 @@ target.mk:
 	-cd $* && $(MAKE) startscreen 
 	-cd $* && screen -t "$(notdir $*)"
 
-## Beefed up first recipe for MMED25; maybe this rule should go into screendir Makefile instead?
-%.vscreen: | %
+## Beefed up for MMED25; maybe should go into screendir Makefile instead?
+%.mset: | %
 	- $(MAKE) $*/Makefile && (cd $* && $(MAKE) Makefile) || $(MAKE) $*.mkfile
+
+%.vscreen: %.mset
 	- cd $* && ($(MAKE) vimclean || true)
 	cd $* && screen -t "$(notdir $*)" bash -cl "vvs"
 
