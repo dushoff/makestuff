@@ -46,8 +46,10 @@ phony: ;
 
 ## This one should make if at all possible, and effectively only depend on the primary .tex; add dependencies for that if necessary?
 Ignore += *.force.pdf
-%.force.pdf: %.aux
+%.force.pdf: force
+	$(MAKE) $*.pdf || $(MAKE) $*.aux 
 	$(CP) $*.pdf $@
+force: 
 
 ######################################################################
 
@@ -76,7 +78,7 @@ body.tex.mk: body.tex makestuff/texj.pl
 
 .PRECIOUS: %.texdeps.mk
 %.texdeps.mk: %.texdeps 
-	cat $^ > $@
+	cat $*.tex.mk > $@
 
 ######################################################################
 
