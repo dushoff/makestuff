@@ -1,6 +1,7 @@
 ## This whole file seems to be in a random-ish order; not sure how much this matters
 
 ## TEMPORARY recipe
+Ignore += reff
 .PRECIOUS: reff/%
 reff/%: | reff
 	$(CP) ~/screens/org/nsercMixing/$* $@
@@ -12,6 +13,7 @@ reff: | makestuff
 	$(PITH)
 
 Sources += $(wildcard bibdir/*.corr)
+Ignore += $(wildcard bibdir/*.rec)
 bibdir/%: | bibdir
 bibdir:
 	$(mkdir)
@@ -23,6 +25,7 @@ Ignore += *.reff.bib *.recs
 %.recs: %.rmu reff/rmu.py
 	$(PITH)
 
+Ignore += *.gfm
 %.gfm: %.reff.MD reff/MDgfm.pl %.downloads
 	$(PUSH)
 
@@ -30,7 +33,7 @@ Ignore += *.reff.html
 %.reff.html: %.gfm
 	pandoc -f gfm -t html $< > $@
 
-Ignore += %.downloads unfetched_pmcids.tsv
+Ignore += *.downloads unfetched_pmcids.tsv
 %.downloads: %.tags.pgr library reff/download.py | doi2pdf.pip metapub.pip pubmed-pdf-downloader.pip
 	$(PITH)
 
@@ -49,7 +52,7 @@ Ignore += *.reff.MD
 auto.bib: auto.tags.pgr pgrbib.pl
 	$(PUSHRO)
 
-
+Ignore += library
 library:
 	$(mkdir)
 
