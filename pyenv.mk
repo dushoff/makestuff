@@ -1,3 +1,4 @@
+## Deprecated, see pyvenv.mk
 ## pypath =  pyenv | pyvenv ## pick one for your Makefile
 Ignore += $(pypath) __pycache__
 Makefile: | $(pypath)
