@@ -139,7 +139,7 @@ Sources += mkfiles.Makefile mkfiles.wrap
 
 ######################################################################
 
-Sources += $(wildcard reff/*.pl reff/*/py)
+Sources += $(wildcard reff/*.pl reff/*.py)
 
 ######################################################################
 
