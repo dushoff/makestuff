@@ -39,6 +39,7 @@ refresh: sync
 	$(MAKE) screens.update
 
 ## Tool for helping make a non-listdir to a listdir
+## Deprecated 2025 Dec 26 (Fri)
 screens_resource:
 	perl -i -wf makestuff/screensource.pl screens.list
 	## perl -i -wf makestuff/oldsource.pl screens.list

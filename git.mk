@@ -618,8 +618,7 @@ endef
 
 ######################################################################
 
-## Go back in time a certain number of _changes_ to the focal file
-## For a number of commits, use HEAD~n.oldfile (could make a .headfile, but probably won't)
+## Find the focal file at a particular time
 Ignore += *.datefile *.datediff
 
 define datefile_r
@@ -632,9 +631,9 @@ define datefile_r
 	`
 	-cp $(basename $*) $@
 	-git checkout HEAD -- $(basename $*)
-	- $(call unhide, $(basename $*))
-	ls $@
-	$(RO)
+	$(call unhide, $(basename $*))
+	ls $@ || (echo Requested version not found && false)
+	$(readonly)
 endef
 
 %.datefile:
@@ -649,7 +648,7 @@ endef
 ######################################################################
 
 ## Go back in time a certain number of _changes_ to the focal file
-## For a number of commits, use HEAD~n.oldfile (could make a .headfile, but probably won't)
+## For a number of _commits_, use HEAD~n.oldfile (could make a .headfile, but probably won't)
 Ignore += *.prevfile *.prevdiff
 
 define prevfile_r
@@ -662,7 +661,7 @@ define prevfile_r
 	-git checkout HEAD -- $(basename $*)
 	- $(call unhide, $(basename $*))
 	ls $@
-	$(RO)
+	$(readonly)
 endef
 
 %.prevfile:
