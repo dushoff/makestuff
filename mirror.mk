@@ -36,7 +36,8 @@ Ignore += $(mirrors)
 %.syncdown:
 	rclone sync -u $(mirror)/$* $*/ 
 
-## Copy to a gooogle drive for someone to see
+## Copy a default mirror to a gooogle drive for someone to see
+## Used to be a simple way to get the link??
 %.gsync: %.get
 	rclone sync --skip-links -u $*/ $(gmirror)/$*
 
