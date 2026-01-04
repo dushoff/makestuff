@@ -1,6 +1,22 @@
 ## Make things appear; some of it feels pretty Dushoff-specific
 ## Need to transition to $(target)-based rules (no $<)
-## See visual.md for ideas about updating startscreen/rscreen/vscreen paradigm
+
+######################################################################
+
+## Not clear why these are not fragile (why they seem to take precedence)
+## Consider names that _end_ with target
+## Note that this file is usually read last
+## It may be that it's fine as long as make doesn't know how to make a target named “target”
+
+target.%:
+	$(MAKE) $(target:%=%.pdf.$*) || $(MAKE) $(target:%=%.$*)
+
+ttarget.%:
+	$(MAKE) $(target:%=%.$*)
+
+######################################################################
+
+## What is any of the stuff below? Target stuff should be simplified, and maybe put in a better-named place. Except that visual is in every single goshdarned Makefile 2025 Oct 30 (Thu)
 
 pngtarget: 
 	$(MAKE) $<.png
@@ -68,9 +84,11 @@ target.mk:
 	-cd $* && $(MAKE) startscreen 
 	-cd $* && screen -t "$(notdir $*)"
 
-## Beefed up first recipe for MMED25; maybe this rule should go into screendir Makefile instead?
-%.vscreen: | %
+## Beefed up for MMED25; maybe should go into screendir Makefile instead?
+%.mset: | %
 	- $(MAKE) $*/Makefile && (cd $* && $(MAKE) Makefile) || $(MAKE) $*.mkfile
+
+%.vscreen: %.mset
 	- cd $* && ($(MAKE) vimclean || true)
 	cd $* && screen -t "$(notdir $*)" bash -cl "vvs"
 

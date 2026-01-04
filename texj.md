@@ -15,10 +15,14 @@ If there are input or include dependencies, texj will automatically make require
 The recommended practice is to include a line in your Makefile that make can trace along and try to get all of your dependencies:
 `outer.texdeps.mk: inner.texdeps.mk`. This is meant to work recursively.
 
-Warning: If you find some other way to get the text “Rerun to” into the tex log file, the rules will exhibit persistently annoying behaviour.
+2025 Nov 24 (Mon): Not currently working well; there is a question I guess about whether .texdeps.mk should be real or PHONY file. PHONY I guess annoyed me by looping, but real makes it harder to flag changes in dependencies called from dependencies.
+
+_Warning:_ If you find some other way to get the text “Rerun to” into the tex log file, the rules will exhibit persistently annoying behaviour.
 
 ## To do
 
 The logic of what files to make when is not very well thought-out and not very beautiful (this is the distinction between .files, made at the beginning, and the full set of dependencies .deps, made subsequently). This logic is implemented in texj.pl, and may not even be necessary at all.
 
 It would be nice maybe to have a robust way of getting the bibliography stuff to compile even when picture dependencies are not ready.
+
+.bbl should be made to depend on something, for applications where .bbl is being used for something else. pdf would presumably be a loop, so use something inside something inside.
