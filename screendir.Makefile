@@ -17,29 +17,29 @@ Ignore += screenlog.32
 
 ######################################################################
 
-## Use to search for defunct directories
+## Identify defunct directories
 Ignore += time.tmp
-time.tmp: phony
-	ls -lt */Makefile > $@
+time.tmp: $(wildcard */Makefile)
+	ls -lt $^ > $@
 
-phony: ;
+######################################################################
 
 ### Makestuff
 
-Sources += Makefile 
+Sources += Makefile
 
 Ignore += makestuff
 msrepo = https://github.com/dushoff
-Makefile: makestuff/Makefile Downloads
-makestuff/Makefile:
-	git clone $(msrepo)/makestuff
-	ls $@
 
-### Includes
+Makefile: makestuff/00.stamp
+makestuff/%.stamp: | makestuff
+	- $(RM) makestuff/*.stamp
+	cd makestuff && $(MAKE) pull
+	touch $@
+makestuff:
+	git clone --depth 1 $(msrepo)/makestuff
 
 -include makestuff/os.mk
-
-## -include makestuff/wrapR.mk
 
 -include makestuff/listdir.mk
 -include makestuff/screendir.mk
