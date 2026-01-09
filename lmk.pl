@@ -34,7 +34,7 @@ while(<>){
 	}
 
 	## Things that parse like rules are rules
-	my $rule = (my ($d, $l) = /^([\w]*)(: .*)/);
+	my $rule = (my ($d, $l) = /^([\w-]*)(: .*)/);
 
 	if ($rule or $number){
 		$ignoredirs{$name} = 0;

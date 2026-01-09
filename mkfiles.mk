@@ -7,6 +7,7 @@
 ## make an exogenously tracked wrapper makefile:
 ## ONLY if there is alread a Makefile
 #### `make dir/makefile`
+## Consider using stealth instead (newish, not documented 2026 Jan 08 (Thu))
 
 ## Make a default Makefile from the start instead:
 #### `make <dir>.defmake`
@@ -27,11 +28,14 @@ mkfiles/%.wrap:
 mkfiles:
 	$(mkdir)
 
+## Make this a real target 2026 Jan 08 (Thu)
+Ignore += *.mkfile
 mklink = ls mkfiles/$*.make && cd $* && $(LN) ../mkfiles/$*.make Makefile
 %.mkfile: 
 	$(MAKE) $*
 	$(MAKE) mkfiles/$*.make
 	$(mklink)
+	touch $@
 
 ## If somebody wants a make file and the linked one already exists, then use it
 %/Makefile:
