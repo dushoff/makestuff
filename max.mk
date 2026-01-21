@@ -5,6 +5,5 @@ Ignore += *.mac.out
 	maxima -b $< > $@
 
 Ignore += *.maxima
-
 %.maxima: %.max
 	maxima -b $< > $@
