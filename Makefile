@@ -53,7 +53,7 @@ Sources += $(wildcard *.mk *.pl *.Makefile *.def)
 Sources += ignore.pl
 
 ## Inputs for .config ignore file (see git.mk)
-Sources += ignore.auth ignore.vim ignore.lock
+Sources += ignore.*
 
 # Sources += os.mk unix.mk linux.mk windows.mk up.mk
 
@@ -136,6 +136,10 @@ Sources += $(wildcard lect/*.*)
 ## mkfiles
 
 Sources += mkfiles.Makefile mkfiles.wrap
+
+######################################################################
+
+Sources += $(wildcard reff/*.pl reff/*.py)
 
 ######################################################################
 

@@ -336,6 +336,7 @@ draft: *
 HLINK \url{%%}
 outline: %!
 
+## nhref adds explicit url for clarity in notes
 HREF \href{%}{%%}
 slides draft final: \href{%}{\color{linkcolor}%%}
 handouts complete: \nhref{%}{%%}

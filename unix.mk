@@ -37,8 +37,11 @@ touch = touch $@
 
 null = /dev/null
 
+lsquery = @$(LS) $@ > $(null)
+
 lscheck = @$(LS) $@ > $(null) || (echo ERROR upstream rule failed to make $@ && false)
 
+## Confused about the touch logic here; not sure it can be reached
 lstouch = @$(LS) $@ > $(null) || ((echo ERROR upstream rule failed to make $@ && false) && touch $@)
 
 impcheck = @($(LS) $$@ > $(null) || (echo ERROR upstream rule failed to make $$@ && false)) && touch $$@
