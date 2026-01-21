@@ -49,7 +49,7 @@ Ignore += *.reff.MD
 %.reff.MD: %.tags.pgr reff/pgrMD.pl
 	$(PUSHRO)
 
-auto.bib: auto.tags.pgr pgrbib.pl
+%.bib: %.tags.pgr reff/pgrbib.pl
 	$(PUSHRO)
 
 Ignore += library
