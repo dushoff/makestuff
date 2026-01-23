@@ -1,4 +1,4 @@
-## This whole file seems to be in a random-ish order; not sure how much this matters
+# This whole file seems to be in a random-ish order; not sure how much this matters
 
 ## TEMPORARY recipe
 Ignore += reff
@@ -49,7 +49,7 @@ Ignore += *.reff.MD
 %.reff.MD: %.tags.pgr reff/pgrMD.pl
 	$(PUSHRO)
 
-auto.bib: auto.tags.pgr pgrbib.pl
+%.bib: %.tags.pgr reff/pgrbib.pl
 	$(PUSHRO)
 
 Ignore += library

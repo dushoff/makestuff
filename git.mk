@@ -6,8 +6,8 @@
 
 ## github
 ## Directory stuff is in mkfiles.mk 
-## Use <name>.newrepo to create and vscreen in the directory (from listdir)
-## THEN use ghrepo_private or ghrepo_public to make a repo named after directory
+## Use <name>.newrepo to create and vscreen in the directory (from listdir or topdir)
+## THEN use ghrepo_private or ghrepo_public to make a repo named after directory BEFORE trying anything else
 
 ghrepo_%: | .git commit.time
 	gh repo create $(repoName) --$* --source=. --remote=origin --push
