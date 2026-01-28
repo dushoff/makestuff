@@ -56,4 +56,3 @@ Ignore += library
 library:
 	$(mkdir)
 
-
