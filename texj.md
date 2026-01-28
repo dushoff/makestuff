@@ -13,7 +13,10 @@ To put an output pdf in a real pipeline, it is recommended to use `filename.comp
 If there are input or include dependencies, texj will automatically make required files, but does not automatically look at their dependencies. This is because of a chicken-and-egg problem.
 
 The recommended practice is to include a line in your Makefile that make can trace along and try to get all of your dependencies:
-`outer.texdeps.mk: inner.texdeps.mk`. This is meant to work recursively.
+```
+	outer.texdeps.mk: inner.texdeps.mk
+```
+This is meant to work recursively.
 
 Warning: If you find some other way to get the text “Rerun to” into the tex log file, the rules will exhibit persistently annoying behaviour.
 
