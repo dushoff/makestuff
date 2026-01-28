@@ -37,7 +37,7 @@ Ignore += *.downloads unfetched_pmcids.tsv
 %.downloads: %.tags.pgr library reff/download.py | doi2pdf.pip metapub.pip pubmed-pdf-downloader.pip
 	$(PITH)
 
-Ignore += %.reff.pgr
+Ignore += *.reff.pgr
 %.reff.pgr: %.recs reff/recspgr.pl
 	$(PUSHRO)
 
