@@ -28,7 +28,10 @@ Ignore += *.invite
 
 ## checkgh: checkgh.log
 checkgh:
-	gh api repos/$(repoonly)/invitations > $@.log
+	@echo Invitations:
+	@gh api repos/{owner}/{repo}/invitations --jq '.[].invitee.login'
+	@echo Collaborators:
+	@gh api repos/{owner}/{repo}/collaborators --jq '.[].login'
 
 ######################################################################
 
