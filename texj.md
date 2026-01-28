@@ -12,8 +12,9 @@ To put an output pdf in a real pipeline, it is recommended to use `filename.comp
 
 If there are input or include dependencies, texj will automatically make required files, but does not automatically look at their dependencies. This is because of a chicken-and-egg problem.
 
-The recommended practice is to manually include a line in your Makefile that make can trace along and try to get all of your dependencies:
-`outer.texdeps.mk: inner.texdeps.mk`. This is meant to work recursively, but has been problematic.
+The recommended practice is to include a line in your Makefile that make can trace along and try to get all of your dependencies:
+	outer.texdeps.mk: inner.texdeps.mk
+This is meant to work recursively.
 
 2025 Nov 24 (Mon): Not currently working well; there is a question I guess about whether .texdeps.mk should be real or PHONY file. PHONY I guess annoyed me by looping, but real makes it harder to flag changes in dependencies called from dependencies.
 
