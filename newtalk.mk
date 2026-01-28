@@ -20,8 +20,8 @@ txt.format: $(talkdir)/txt.format local.txt.format
 local.txt.format:
 	touch $@
 
-localcomm.TEX:
-	$(touch)
+## Not sure what this was for -- there's an additional localcomm pathway anyway (see beamer.tex)
+## localcomm.TEX: ; $(touch)
 
 ## tmp files should be de-protected and sourced if you want to change locally
 %.tmp: 

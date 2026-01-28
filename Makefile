@@ -53,7 +53,7 @@ Sources += $(wildcard *.mk *.pl *.Makefile *.def)
 Sources += ignore.pl
 
 ## Inputs for .config ignore file (see git.mk)
-Sources += ignore.auth ignore.vim ignore.lock
+Sources += ignore.*
 
 # Sources += os.mk unix.mk linux.mk windows.mk up.mk
 
@@ -139,6 +139,10 @@ Sources += mkfiles.Makefile mkfiles.wrap
 
 ######################################################################
 
+Sources += $(wildcard reff/*.pl reff/*.py)
+
+######################################################################
+
 # wrapR scripts
 ## Deprecated 2021 May 03 (Mon)
 
@@ -176,8 +180,16 @@ personal.pdf:
 
 ## WLS
 
+## Case-sensitivity is a problem here; maybe deprecate case-sensitivity in makestuff flows?
+
 Sources += WSL/*.sh
 Sources += WSL.md
+
+######################################################################
+
+## 2025 Nov 23 (Sun) Suddenly adding LaTeX stuff here
+
+Sources += style.tex
 
 ######################################################################
 
