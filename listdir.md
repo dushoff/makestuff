@@ -13,6 +13,7 @@ To set up listdir foo:
 * find or create a repo (any name)
 * add it (as foo:) to screens.list in the topdir
 * open it as ssx
+	* make ghrepo_private or ghrepo_public if necessary
 * build a Makefile from makestuff/screendir.Makefile
 * make a screens.list in the directory
 * make

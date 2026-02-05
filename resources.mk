@@ -67,3 +67,4 @@ endef
 # $(eval $(call dirmake,Lecture_images))
 
 $(foreach dir,$(rdirs),$(eval $(call dirmake,$(dir))))
+	* out of time 2025 as well (
