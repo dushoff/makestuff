@@ -10,12 +10,17 @@ define makeArgs
 	@echo >> $@.args
 endef
 
+## Potential infelicity if a script used to produce a file
+## but now runs successfully without producing it
+## file can still be used downstream
+## awkwardly delete known target types; or make all known targets start with full target name?
+## Also a problem with startGraphics; does it make the file before success?
+## Not clear if we are successfully deleting the .rd* files 2025 Dec 09 (Tue)
 define pipeR
-	@-$(RM) $@ $@.*
+	@-$(RM) $@ $@.* $*.rd*
 	@$(makeArgs)
-	@echo pipeR: Making $@
-	@(($(rrun) --args $@ shellpipes $*.pipestar $^ < $(word 1, $(filter %.R, $^)) > $(@:%.Rout=%.rtmp)) 2> $(@:%.Rout=%.Rlog) && cat $(@:%.Rout=%.Rlog)) || (cat $(@:%.Rout=%.Rlog) && false)
-	$(MVF) $(@:%.Rout=%.rtmp) $@
+	@echo pipeR: Making $@ using $^
+	@(($(rrun) --args $@ shellpipes $*.pipestar $^ < $(word 1, $(filter %.R, $^)) > $@) 2> $(@:%.Rout=%.Rlog) && cat $(@:%.Rout=%.Rlog)) || (sleep 1 && touch $(word 1, $(filter %.R, $^)) && cat $(@:%.Rout=%.Rlog) && false)
 endef
 
 ## Make the rpcall first so that we don't outdate things
@@ -56,7 +61,7 @@ endef
 define knithtml
 	-$(RM) $@ $@.*
 	$(makeArgs)
-	Rscript --vanilla -e 'library("rmarkdown"); render("$(word 1, $(filter %.rmd %.Rmd, $^))", output_format="html_document", output_file="$@")' shellpipes $*.pipestar $^
+	Rscript --vanilla -e 'library("rmarkdown"); render("$(word 1, $(filter %.rmd %.Rmd, $^))", output_format="html_document", output_file="$(notdir $@)")' shellpipes $*.pipestar $^
 endef
 
 define wrapR
@@ -78,7 +83,7 @@ ifdef autowrapR
 	$(wrapR)
 endif
 
-## A reasonable default
+## autopipeR seems like a reasonable default
 ifdef autopipeR
 .PRECIOUS: %.Rout
 %.Rout: %.R
@@ -109,10 +114,13 @@ endif
 
 ######################################################################
 
-
 ifdef autoknit
+%.html: %.rmd
+	$(knithtml)
 %.html: %.Rmd
 	$(knithtml)
+%.pdf: %.rmd
+	$(knitpdf)
 %.pdf: %.Rmd
 	$(knitpdf)
 endif
@@ -145,7 +153,7 @@ endif
 	$(lstouch)
 .PRECIOUS: %.Rout.pdf
 %.Rout.pdf: %.Rout
-	$(lstouch) || ($(pdfcheck) $@.tmp && $(MVF) $@.tmp $@) || (ls Rplots.pdf && echo WARNING: Trying an orphaned Rplots file && mv Rplots.pdf $@) || (echo ERROR: Failed to find, make or rescue $@ && false)
+	$(lsquery) || (ls $@.tmp && $(pdfcheck) $@.tmp && $(MVF) $@.tmp $@) || (ls Rplots.pdf && echo "WARNING: Using an orphaned Rplots file; maybe try startGraphics()" && mv Rplots.pdf $@) || (echo ERROR: Failed to find, make or rescue $@ && false)
 
 Ignore += .Rhistory .RData
 Ignore += *.RData *.Rlog *.rdata *.rda *.rtmp
@@ -178,6 +186,7 @@ $(1).%.pdf: $(1).Rout ; $(impcheck)
 Ignore += $(1).*.pdf
 endef
 
+## Why do I have both of these variables?
 pipeRdesc += $(pdfDesc)
 $(foreach stem,$(pipeRdesc),$(eval $(call pipedesc_r,$(stem))))
 
@@ -225,3 +234,5 @@ Ignore += $(wildcard *.allR)
 wrapclean wrapClean:
 	rm -fr *.wrapR* .*.wrapR*
 
+pipeclean pipeClean:
+	rm -fr *.Rout *.Rout.* *.rda *.rds 

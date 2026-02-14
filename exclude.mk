@@ -22,10 +22,12 @@ ignore:
 $(git_dir)/info/exclude: Makefile $(Sources)
 	perl -wf makestuff/ignore.pl > $@ || perl -wf ignore.pl > $@
 
-export Ignore += local.mk target.mk make.log go.log tmp.scr
+export Ignore += local.mk target.mk make.log go.log tmp.scr background.log
 
 ## Make global ignore file on a new machine
-config_ignore = makestuff/ignore.vim makestuff/ignore.auth makestuff/ignore.lock
+## Experimenting with boldness 2025 Dec 08 (Mon). Maybe worried about jekyll?
+## config_ignore = makestuff/ignore.vim makestuff/ignore.auth makestuff/ignore.lock makestuff/ignore.macpan
+config_ignore = makestuff/ignore.hide
 ignore.config: ~/.config/git
 	cat $(config_ignore) > $</ignore
 

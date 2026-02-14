@@ -10,6 +10,9 @@ rmdmd_r = Rscript --vanilla -e 'library("rmarkdown"); render("$<", output_format
 
 rmdh_r = Rscript --vanilla -e 'library("rmarkdown"); render("$<", output_format="html_document", output_file="$(notdir $@)", output_dir="$(dir $@)")'
 
+## Used to be rmdh_p because I was not parsing correctly
+rmdp_r = Rscript --vanilla -e 'library("rmarkdown"); render("$<", output_format="pdf_document", output_file="$(notdir $@)", output_dir="$(dir $@)")'
+
 tangle_r = Rscript --vanilla -e 'library("knitr"); knit("$<", output="$@", tangle=TRUE)'
 
 ## Use small r here to avoid accidental commits?

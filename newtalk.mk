@@ -20,6 +20,9 @@ txt.format: $(talkdir)/txt.format local.txt.format
 local.txt.format:
 	touch $@
 
+## Not sure what this was for -- there's an additional localcomm pathway anyway (see beamer.tex)
+## localcomm.TEX: ; $(touch)
+
 ## tmp files should be de-protected and sourced if you want to change locally
 %.tmp: 
 	$(MAKE) talkdir
@@ -43,6 +46,7 @@ Makefile:
 talkdir:
 	/bin/ln -fs $(talkdir) $@
 
+## What is THIS?? 2025 Jul 22 (Tue)
 %.TXT: %.txt
 	$(copy)
 
@@ -50,6 +54,19 @@ Ignore += *.final.*
 .PRECIOUS: %.final.tex
 %.final.tex: %.TXT beamer.tmp final.txt.fmt $(talkdir)/lect.pl
 	$(PUSH)
+
+## For debugging talks?? 2025 Jul 23 (Wed)
+Ignore += *.now.*
+.PRECIOUS: %.now.tex
+%.now.tex: %.TXT beamer.tmp draft.txt.fmt talkdir/now.fmt talkdir/lect.pl
+	$(PUSH)
+
+Ignore += *.slides.*
+.PRECIOUS: %.slides.tex
+%.slides.tex: %.TXT beamer.tmp slides.txt.fmt $(talkdir)/lect.pl
+	$(PUSH)
+## What was this? I hate myself
+## %.slides.tex: %.final.tex  $(talkdir)/nopause.pl
 
 Ignore += *.talk.*
 %.talk.pdf: %.final.pdf %.draft.pdf
@@ -60,9 +77,6 @@ Ignore += *.draft.*
 %.draft.tex: %.TXT beamer.tmp draft.txt.fmt $(talkdir)/lect.pl
 	$(PUSH)
 
-Ignore += *.slides.*
-.PRECIOUS: %.slides.tex
-%.slides.tex: %.final.tex  $(talkdir)/nopause.pl
 	$(PUSH)
 
 Ignore += *.handouts.*

@@ -4,6 +4,37 @@
 
 ######################################################################
 
+## github
+## Directory stuff is in mkfiles.mk 
+## Use <name>.newrepo to create and vscreen in the directory (from listdir or topdir)
+## THEN use ghrepo_private or ghrepo_public to make a repo named after directory BEFORE trying anything else
+
+ghrepo_%: | .git commit.time
+	gh repo create $(repoName) --$* --source=. --remote=origin --push
+
+initBranch ?= main
+.git:
+	git init -b $(initBranch)
+
+ghput = gh api --method PUT
+## jsonaccept = Accept: application/vnd.github+json ## Not really needed, and causes parsing errors
+
+Ignore += *.invite
+## This could be generalized to other roles, e.g.
+## %.push.invite:
+%.invite: 
+	$(ghput) repos/$(repoonly)/collaborators/$* \
+	-f permission=push > $@
+
+## checkgh: checkgh.log
+checkgh:
+	@echo Invitations:
+	@gh api repos/{owner}/{repo}/invitations --jq '.[].invitee.login'
+	@echo Collaborators:
+	@gh api repos/{owner}/{repo}/collaborators --jq '.[].login'
+
+######################################################################
+
 ### Push and pull
 
 branch:
@@ -32,13 +63,24 @@ pull: commit.time
 	git pull
 	touch $<
 
+Ignore += *.autocommit
+.PRECIOUS: %.autocommit
 %.autocommit: $(Sources)
 	git add -f $? 
 	-git commit -m $*
 	touch commit.time
+	$(touch)
 
 %.autosync: %.autocommit
 	$(MAKE) sync
+
+## For finalizing reports
+%.autoup: %.autocommit
+	git push
+	touch up.time
+
+noreport: 
+	$(MAKE) report.md.theirs.pick
 
 ######################################################################
 
@@ -46,12 +88,14 @@ pull: commit.time
 ## not part of all.time by default because usually updated in parallel
 $(pardirs):
 	cd .. && $(MAKE) $@
-	cd ../$@ &&  $(MAKE) Makefile
+	- cd ../$@ &&  $(MAKE) Makefile
 	ls ../$@ > $(null) && $(LNF) ../$@ .
 
 Ignore += up.time all.time
+## Experimenting 2025 Aug 23 (Sat)
+## commit.time is redundant for work, but not as a dependency
 up.time: commit.time
-	$(MAKE) pullup
+	$(MAKE) pull
 	$(MAKE) pushup
 	touch $@
 
@@ -133,6 +177,7 @@ makestuff.allexclude: ;
 sync: 
 	-$(RM) up.time
 	$(MAKE) up.time
+	git status
 
 ## Use for first push if not linked to a branch
 ## push.main is the right target for new repos
@@ -143,6 +188,7 @@ push.%: commit.time
 ## without adding to all pulls; maybe not useful?
 ## 2022 Aug 05 (Fri) added submodule incantation
 ## 2023 Jan 29 (Sun) subtracted submodule incantation; add it manually to submodule directories
+## 2025 Jan 24 (Fri) pullup is used now for rclone; use it for manual pulls but not for pulls that are required just to push
 
 pullup: pull
 
@@ -166,16 +212,6 @@ Ignore += *.setbranch
 	$(RM) *.setbranch
 	git checkout $* 
 	$(touch)
-
-######################################################################
-
-## autosync stuff not consolidated, needs work. 
-remotesync: commit.default
-	git pull
-	git push -u origin $(BRANCH)
-
-%.autosync: %
-	cd $< && $(MAKE) remotesync
 
 ######################################################################
 
@@ -214,15 +250,16 @@ gptargets: $(gptargets)
 
 ## Unify some of these by recipe
 ## use a better touch command
+## 2025 Jul 28 (Mon) Why am I noticing now that this chokes on subdirectories?
 
 ## 2020 Nov 11 (Wed) an alternative name for git_push
 ## Not copying the all-update rule here; outputs can have other purposes
-%.op: % outputs
+%.op: % | outputs
 	- $(CPF) $* outputs
 	git add -f outputs/$*
 	$(sourceTouch)
 
-%.opdir: % outputs
+%.opdir: % | outputs
 	- $(RMR) outputs/$*
 	- $(CPR) $* outputs
 	git add -f outputs/$*
@@ -232,13 +269,29 @@ gptargets: $(gptargets)
 outputs:
 	$(mkdir)
 
-%.docs: % docs
+%.docs: % | docs
 	- cp $* docs
-	git add -f docs/$*
+	git add -f docs/$(notdir $*)
 	$(sourceTouch)
 
 ## Commented out because of stupid dataviz conflict 2021 Nov 02 (Tue)
-## docs: ; $(mkdir)
+## Commented back in because I suspect I fixed dataviz? Or at least qmee
+docs: ; $(mkdir)
+
+Ignore += temp
+%.temp: % | temp
+	- cp $* $|
+
+temp: ; $(mkdir)
+
+######################################################################
+
+## Recipes for new directories
+define projectDir
+	$(MAKE) pullup
+	$(mkdir)
+	cp makestuff/project.Makefile $@/Makefile
+endef
 
 ######################################################################
 
@@ -264,51 +317,13 @@ trackedTargets += $(wildcard gitarchive/*)
 ######################################################################
 
 ## Deprecate this for docs/-based directories 2021 Ақп 02 (Сс)
-## Redo in a more systematic way (like .branchdir)
+## Deleting a bunch of pages stuff 2024 Jul 16 (Tue)
 
-## Pages. Sort of like git_push, but for gh_pages (html, private repos)
-## May want to refactor as for git_push above (break link from pages/* to * for robustness)
-
-## 2021 Мам 27 (Бс) Probably deprecated, but could update to follow docs style
-## 2019 Sep 22 (Sun) Keeping checkout, but skipping early pull
-## That can make the remote copy look artificially new
-## 2019 Oct 10 (Thu)
-## But if we don't early pull we get spurious merges
-## Best is to pull pages when you pull
-Ignore += pagebranch
-%.pages:
-	$(MAKE) pages/pagebranch
-	$(MAKE) pages/$*
-	cd pages && git add -f $*
-	-cd pages && git commit -m "Pushed directly from parent"
-	@echo .pagepush to push to web …
-
-%.pushpage: %.pagepush ;
-%.pagepush: %.pages
-	cd pages && git pull && git push
-
-pages/Makefile:
-	cp Makefile $@
-
-## Don't call this directly and then we don't need the pages dependency
-## In development (or deprecation) 2021 Мам 27 (Бс)
-## pages/%: %; $(copy)
-
-## If you're going to pushpages automatically, you might want to say
-## pull: pages.gitpull
+######################################################################
 
 %.gitpull:
 	$(MAKE) $*
 	cd $* && git pull
-
-## Deprecated: use output, pages, docs ….
-%.gitpush:
-	$(MAKE) $*
-	cd $* && (git add *.* && ($(git_check))) || ((git commit -m "Commited by $(CURDIR)") && git pull && git push && git status)
-
-define createpages
-	(git checkout --orphan gh-pages && git rm -rf * && touch ../README.md && cp ../README.md . && git add README.md && git commit -m "Orphan pages branch" && git push --set-upstream origin gh-pages )
-endef
 
 %.branchdir:
 	git clone `git remote get-url origin` $*
@@ -358,8 +373,8 @@ $(Outside):
 ######################################################################
 
 %.reset:
-	- $(RMR) $*.olddir
-	mv $* $*.olddir
+	- $(RMR) $*.resetdir
+	mv $* $*.resetdir
 
 %.what:
 	rm -fr $*.new
@@ -385,18 +400,32 @@ gitprune:
 
 ### Testing
 
+## 2024 Jul 19 (Fri)
+## No good reason not to have makestuff linked in dotdir for debugging
+## Obviates a lot of weird problems with trying to make that facultative
+## To do a "hard" test, use clonedir (right?)
 Ignore += dotdir/ clonedir/ cpdir/
-dotdir: $(Sources)
+define dd_r
 	$(MAKE) commit.time
 	-/bin/rm -rf $@
 	git clone . $@
 	[ "$(pardirs)" = "" ] || ( cd $@ && $(LN) $(pardirs:%=../%) .)
+	$(stufflink)
+endef
+
+## Untested change 2025 Aug 02 (Sat)
+stufflink = cd $@ && ln -s ../makestuff .
+
+dotdir: $(Sources)
+	$(dd_r)
+
+Ignore += *.dd/
+%.dd: $(Sources)
+	$(dd_r)
 
 ## Note cpdir really means directory (usually); dotdir means the whole repo
 ## DON'T use cpdir for repos with Sources in subdirectories
 ## Do use for light applications focused on a particular directory
-## DON'T use for service (i.e., makeR scripts)
-## Do we have a solution for makeR scripts in subdirectories?
 ## Note that I am using it now for pipeR scripts, so that's probably fragile 2021 Jun 27 (Sun)
 cpdir: $(filter-out %.script, $(Sources))
 	-/bin/rm -rf $@
@@ -404,7 +433,8 @@ cpdir: $(filter-out %.script, $(Sources))
 	cp -r $^ $@
 
 ## Still working on rev-parse line
-%.branchdir: $(Sources)
+## See older branchdir above; this one seems ambitious 2024 Jul 16 (Tue)
+%.makebranchdir: $(Sources)
 	$(MAKE) commit.time
 	git rev-parse --verify $* || git fetch origin $*:$*
 	git clone . $*
@@ -431,25 +461,27 @@ sourcedir: $(Sources)
 %.mslink: %
 	cd $* && (ls makestuff/Makefile || $(LN) ../makestuff)
 
-%.dirtest: % 
+%.dirtest: 
 	$(MAKE) $*.testsetup
 	$(MAKE) $*.testtarget
 	cd $* && $(MAKE) target
 
-## testsetup is before makestuff so we can use it to link makestuff sometimes
+## Testsetup not working to make makestuff,
+## presumably because Makefile makes it
 %.testsetup: %
 	cd $* && $(MAKE) Makefile && ($(MAKE) testsetup || true) && $(MAKE) makestuff 
+	$(CP) testtarget.mk $*/target.mk || $(CP) target.mk $*
 
 %.makestuff: %
 	cd $* && $(MAKE) Makefile && $(MAKE) makestuff
 
+## Deprecate this rule; it should be part of testsetup
 %.testtarget: %
 	$(CP) testtarget.mk $*/target.mk || $(CP) target.mk $*
 
 ## To open the dirtest final target when appropriate (and properly set up) 
 %.vdtest: %.dirtest
-	$(MAKE) pdftarget
-
+	cd $* && $(MAKE) pdftarget
 
 ## To make and display files in the all variable
 alltest:
@@ -473,6 +505,8 @@ hub:
 	echo go `git remote get-url origin` | bash 
 
 gitremote = git remote get-url origin
+thisrepo = $(shell $(gitremote))
+repoonly = $(shell echo $(thisrepo) | sed "s/.*com\///; s/\.git//")
 gitremoteopen = echo go `$(gitremote) | perl -pe "s/[.]git$$//"` | bash --login
 gitremotestraight = echo go `$(gitremote) | perl -pe "s/[.]git$$//"` | bash
 
@@ -503,6 +537,16 @@ hup:
 
 ######################################################################
 
+## Stashing
+
+smerge:
+	git stash
+	git fetch
+	git merge
+	git stash apply
+
+######################################################################
+
 ## Merging
 
 Ignore += *.ours *.theirs *.common
@@ -517,10 +561,28 @@ Ignore += *.ours *.theirs *.common
 %.theirs: %
 	git show :3:$* > $@
 
-## Pick one
+######################################################################
+
+## Pick one 
+## ours or theirs
+
 %.pick: %
 	$(CP) $* $(basename $*)
 	git add $(basename $*)
+
+## Pick rescues
+## default copy uses default permissions, which is what is wanted
+%.prevpick: 
+	$(CP) $*.*.prevfile $*
+	git add $*
+
+%.oldpick: 
+	$(CP) $*.*.oldfile $*
+	git add $*
+
+%.datepick: 
+	$(CP) $*.*.datefile $*
+	git add $*
 
 Ignore += *.gitdiff
 %.gitdiff: %.ours %.theirs
@@ -549,21 +611,87 @@ define oldfile_r
 	-git checkout HEAD -- $(basename $*)
 	- $(call unhide, $(basename $*))
 	ls $@
+	$(ro)
 endef
 
-## Chaining trick to always remake
-## Is this better or worse than writing dependencies and making directly?
-%.olddiff: %.old.diff ;
-%.old.diff: %
+%.olddiff: %.*.oldfile %
 	- $(RM) $*.olddiff
-	-$(DIFF) $*.*.oldfile $* > $*.olddiff
+	-$(DIFF) $^ > $*.olddiff
 	$(RO) $*.olddiff
 
+######################################################################
+
+## Find the focal file at a particular time
+Ignore += *.datefile *.datediff
+
+define datefile_r
+	- $(call hide, $(basename $*))
+ 	- @echo ` \
+		git log --before=$(subst .,,$(suffix $*)) -- $(basename $*) \
+		| head -1 \
+		| sed -e "s/commit //" \
+		| xargs -I{} git checkout {} -- $(basename $*) \
+	`
+	-cp $(basename $*) $@
+	-git checkout HEAD -- $(basename $*)
+	$(call unhide, $(basename $*))
+	ls $@ || (echo Requested version not found && false)
+	$(readonly)
+endef
+
+%.datefile:
+	-$(RM) $(basename $*).*.datefile
+	$(datefile_r)
+
+%.datediff: %.*.datefile %
+	- $(RM) $*.datediff
+	-$(DIFF) $^ > $*.datediff
+	$(RO) $*.datediff
+
+## Needs more work, low priority
+hashClip:
+	printf '%s' "$$(git rev-parse --short=8 HEAD)" | xclip -selection clipboard -in -quiet
+
+currHash:
+	printf '%s\n' "$$(git rev-parse --short=8 HEAD)"
+
+######################################################################
+
+## Go back in time a certain number of _changes_ to the focal file
+## For a number of _commits_, use HEAD~n.oldfile (could make a .headfile, but probably won't)
+Ignore += *.prevfile *.prevdiff
+
+define prevfile_r
+	- $(call hide, $(basename $*))
+	- @echo `git log -- $(basename $*) | grep "^commit" | \
+		head -$(subst .,,$(suffix $*)) | tail -1 \
+		| sed -e "s/commit //" | \
+		xargs -I{} git checkout {} -- $(basename $*)`
+	-cp $(basename $*) $@
+	-git checkout HEAD -- $(basename $*)
+	- $(call unhide, $(basename $*))
+	ls $@
+	$(readonly)
+endef
+
+%.prevfile:
+	-$(RM) $(basename $*).*.prevfile
+	$(prevfile_r)
+
+%.prevdiff: %.*.prevfile %
+	- $(RM) $*.prevdiff
+	-$(DIFF) $^ > $*.prevdiff
+	$(RO) $*.prevdiff
+
+######################################################################
+
+## 2024 Jul 22 (Mon) tf is this?
+## Use this for editor/git conflicts; save the conflicted file as .newfile
 Ignore += *.newfile *.newdiff
 %.newdiff: %.new.diff ;
 %.new.diff: %
 	- $(RM) $*.newdiff
-	-$(DIFF) $*.*.newfile $* > $*.newdiff
+	-$(DIFF) $**.newfile $* > $*.newdiff
 	$(RO) $*.newdiff
 
 ######################################################################
@@ -580,3 +708,5 @@ Ignore += *.blame
 
 store_all:
 	git config --global credential.helper 'store'
+
+
