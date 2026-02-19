@@ -8,8 +8,8 @@ pandocs = pandoc -s -o $@ $<
 %.pdf: %.md
 	$(pandocs)
 
-%.html: %.md
-	$(pandocs)
+## Disabling 2026 Feb 19 (Thu) because it's adding stuff that gmail doesn't like
+## %.html: %.md; $(pandocs)
 
 ghh_r = pandoc -s -f gfm -o $@ $<
 %.gh.html: %.md
