@@ -5,5 +5,8 @@
 \newcommand{\yeschinese}[1]{\setmainfont{Noto Serif CJK TC}\setsansfont{Noto Serif CJK TC} #1}
 \newcommand{\chinese}{\nochinese}
 \newcommand{\useChinese}{useChinese not renewed!}
-\renewcommand{\useChinese}{}
+
+%% Change the order of these two lines;
+%% Chinese seems to still work in StatPhil, for example 2026 Jan 22 (Thu)
 \renewcommand{\useChinese}{\renewcommand{\chinese}{\yeschinese}}
+\renewcommand{\useChinese}{}

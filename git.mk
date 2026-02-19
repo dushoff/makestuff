@@ -4,15 +4,34 @@
 
 ######################################################################
 
-## Directory stuff is in mkfiles.mk Use <name>.newrepo to create and vscreen in the directory (from listdir)
+## github
+## Directory stuff is in mkfiles.mk 
+## Use <name>.newrepo to create and vscreen in the directory (from listdir or topdir)
+## THEN use ghrepo_private or ghrepo_public to make a repo named after directory BEFORE trying anything else
 
-## THEN use ghrepo_private or ghrepo_public to make a repo named after directory
 ghrepo_%: | .git commit.time
 	gh repo create $(repoName) --$* --source=. --remote=origin --push
 
 initBranch ?= main
 .git:
 	git init -b $(initBranch)
+
+ghput = gh api --method PUT
+## jsonaccept = Accept: application/vnd.github+json ## Not really needed, and causes parsing errors
+
+Ignore += *.invite
+## This could be generalized to other roles, e.g.
+## %.push.invite:
+%.invite: 
+	$(ghput) repos/$(repoonly)/collaborators/$* \
+	-f permission=push > $@
+
+## checkgh: checkgh.log
+checkgh:
+	@echo Invitations:
+	@gh api repos/{owner}/{repo}/invitations --jq '.[].invitee.login'
+	@echo Collaborators:
+	@gh api repos/{owner}/{repo}/collaborators --jq '.[].login'
 
 ######################################################################
 
@@ -158,6 +177,7 @@ makestuff.allexclude: ;
 sync: 
 	-$(RM) up.time
 	$(MAKE) up.time
+	git status
 
 ## Use for first push if not linked to a branch
 ## push.main is the right target for new repos
@@ -485,6 +505,8 @@ hub:
 	echo go `git remote get-url origin` | bash 
 
 gitremote = git remote get-url origin
+thisrepo = $(shell $(gitremote))
+repoonly = $(shell echo $(thisrepo) | sed "s/.*com\///; s/\.git//")
 gitremoteopen = echo go `$(gitremote) | perl -pe "s/[.]git$$//"` | bash --login
 gitremotestraight = echo go `$(gitremote) | perl -pe "s/[.]git$$//"` | bash
 
@@ -589,7 +611,7 @@ define oldfile_r
 	-git checkout HEAD -- $(basename $*)
 	- $(call unhide, $(basename $*))
 	ls $@
-	$(RO)
+	$(ro)
 endef
 
 %.olddiff: %.*.oldfile %
@@ -599,8 +621,7 @@ endef
 
 ######################################################################
 
-## Go back in time a certain number of _changes_ to the focal file
-## For a number of commits, use HEAD~n.oldfile (could make a .headfile, but probably won't)
+## Find the focal file at a particular time
 Ignore += *.datefile *.datediff
 
 define datefile_r
@@ -613,9 +634,9 @@ define datefile_r
 	`
 	-cp $(basename $*) $@
 	-git checkout HEAD -- $(basename $*)
-	- $(call unhide, $(basename $*))
-	ls $@
-	$(RO)
+	$(call unhide, $(basename $*))
+	ls $@ || (echo Requested version not found && false)
+	$(readonly)
 endef
 
 %.datefile:
@@ -627,10 +648,17 @@ endef
 	-$(DIFF) $^ > $*.datediff
 	$(RO) $*.datediff
 
+## Needs more work, low priority
+hashClip:
+	printf '%s' "$$(git rev-parse --short=8 HEAD)" | xclip -selection clipboard -in -quiet
+
+currHash:
+	printf '%s\n' "$$(git rev-parse --short=8 HEAD)"
+
 ######################################################################
 
 ## Go back in time a certain number of _changes_ to the focal file
-## For a number of commits, use HEAD~n.oldfile (could make a .headfile, but probably won't)
+## For a number of _commits_, use HEAD~n.oldfile (could make a .headfile, but probably won't)
 Ignore += *.prevfile *.prevdiff
 
 define prevfile_r
@@ -643,7 +671,7 @@ define prevfile_r
 	-git checkout HEAD -- $(basename $*)
 	- $(call unhide, $(basename $*))
 	ls $@
-	$(RO)
+	$(readonly)
 endef
 
 %.prevfile:

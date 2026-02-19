@@ -13,7 +13,7 @@ NOTSED = $(RM) $@; perl -p -wf $(PERLFILES)
 LOGPUSH = (perl -wf $(filter %.pl, $^) $(filter-out %.pl, $^) >  $(hiddentarget) 2> $@.log || (cat $@.log && false)) && $(unhidetarget)
 
 define PUSHRO
-	- $(RM) $@
+	- $(rm)
 	$(PUSH)
 	$(readonly)
 endef
