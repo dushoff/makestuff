@@ -22,7 +22,7 @@ $(wildcard *.recs): $(wildcard bibdir/*.corr)
 
 Sources += *.rmu
 Ignore += *.reff.bib *.recs
-%.recs: %.rmu reff/rmu.py
+%.recs: %.rmu reff/rmu.py | Bio.pip bibdir
 	$(PITH)
 
 Ignore += *.gfm
