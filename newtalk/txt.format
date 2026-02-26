@@ -342,11 +342,6 @@ slides draft final: \href{%}{\color{linkcolor}%%}
 handouts complete: \nhref{%}{%%}
 outline: %!
 
-## Moved from talks assorted local files
-ONSLIDE ^DEFHEAD %%
-ONREP ^PSLIDE %%
-OFFSLIDE NULLSLIDE
-
 VSFIG \includegraphics[height=0.45\textheight]{%}\hfill\mbox{}
 VSRFIG \hfill\includegraphics[height=0.45\textheight]{%}
 BSFIG \includegraphics[height=0.52\textheight]{%}\hfill\mbox{}
@@ -360,14 +355,22 @@ outline: %!
 ######################################################################
 
 ## Control words; edit for specific talks ## NO mismatched omissions!
+## No more ON and OFF maybe since they've been used in two ways
+## Use SLIDE or LINE
 
 ## Change in source file: for things that can be skipped if discussed elsewhere in same talk
-OFF NULLSLIDE
+NOOFF NULLSLIDE
 draft: ^DEFHEAD OFF %%
 draft: NULLSLIDE
 
-ON ^DEFHEAD %%
+NOON ^DEFHEAD %%
 draft: ^DEFHEAD ON %%
+
+## Moved from talks assorted local files
+ONSLIDE ^DEFHEAD %%
+ONREP ^REPSLIDE %%
+ONPRES ^PSLIDE %%
+OFFSLIDE NULLSLIDE
 
 ONLINE ^%%
 OFFLINE %!
