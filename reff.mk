@@ -2,12 +2,7 @@
 
 PUSHRO ?= @echo ERROR: perl definitions are needed && false
 
-## TEMPORARY recipe
-Ignore += jeff
-.PRECIOUS: jeff/%
-reff/%: | reff
-	$(CP) ~/screens/org/nsercMixing/$* $@
-	
+Ignore += reff
 reff: | makestuff
 	$(LN) makestuff/$@ .
 
