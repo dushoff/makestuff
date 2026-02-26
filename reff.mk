@@ -1,8 +1,10 @@
 # This whole file seems to be in a random-ish order; not sure how much this matters
 
+PUSHRO ?= @echo ERROR: perl definitions are needed && false
+
 ## TEMPORARY recipe
-Ignore += reff
-.PRECIOUS: reff/%
+Ignore += jeff
+.PRECIOUS: jeff/%
 reff/%: | reff
 	$(CP) ~/screens/org/nsercMixing/$* $@
 	

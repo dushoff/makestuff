@@ -14,6 +14,7 @@ doibase = "https://doi.org/"
 pmcbase = "https://pmc.ncbi.nlm.nih.gov/articles/"
 testfile = "library/testfile"
 
+## print(filename)
 with open(filename, 'r', encoding='utf-8') as f:
 	content = f.read()
 
