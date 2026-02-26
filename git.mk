@@ -648,6 +648,13 @@ endef
 	-$(DIFF) $^ > $*.datediff
 	$(RO) $*.datediff
 
+## Needs more work, low priority
+hashClip:
+	printf '%s' "$$(git rev-parse --short=8 HEAD)" | xclip -selection clipboard -in -quiet
+
+currHash:
+	printf '%s\n' "$$(git rev-parse --short=8 HEAD)"
+
 ######################################################################
 
 ## Go back in time a certain number of _changes_ to the focal file
