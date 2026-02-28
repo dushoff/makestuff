@@ -17,6 +17,7 @@ bibdir:
 ## If we change a correction file we need to remake any .recs file
 $(wildcard *.recs): $(wildcard bibdir/*.corr)
 
+reff/%: | reff
 Sources += *.rmu
 Ignore += *.reff.bib *.recs
 %.recs: %.rmu reff/rmu.py | Bio.pip bibdir
