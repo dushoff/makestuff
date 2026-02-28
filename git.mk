@@ -30,6 +30,7 @@ Ignore += *.invite
 checkgh:
 	@echo Invitations:
 	@gh api repos/{owner}/{repo}/invitations --jq '.[].invitee.login'
+	@echo
 	@echo Collaborators:
 	@gh api repos/{owner}/{repo}/collaborators --jq '.[].login'
 
