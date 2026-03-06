@@ -16,7 +16,8 @@ endef
 ## awkwardly delete known target types; or make all known targets start with full target name?
 ## Also a problem with startGraphics; does it make the file before success?
 ## Not clear if we are successfully deleting the .rd* files 2025 Dec 09 (Tue)
-## @-$(RM) $@ $@.* $*.rd*
+## @-$(RM) $@ $@.* $*.rd* -- this breaks things!
+## Redo with a manipulation of $@; $* not to be trusted here.
 define pipeR
 	@-$(RM) $@ $@.*
 	@$(makeArgs)
