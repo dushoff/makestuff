@@ -342,7 +342,6 @@ slides draft final: \href{%}{\color{linkcolor}%%}
 handouts complete: \nhref{%}{%%}
 outline: %!
 
-## Moved from talks assorted local files
 ONSLIDE ^DEFHEAD %%
 ONREP ^PSLIDE %%
 OFFSLIDE NULLSLIDE
@@ -361,12 +360,20 @@ outline: %!
 ######################################################################
 
 ## Control words; edit for specific talks ## NO mismatched omissions!
+## No more ON and OFF maybe since they've been used in two ways
+## Use SLIDE or LINE
 
 ## Change in source file: for things that can be skipped if discussed elsewhere in same talk
 OFF Do not use off!!
 
-ON ^DEFHEAD %%
+NOON ^DEFHEAD %%
 draft: ^DEFHEAD ON %%
+
+## Moved from talks assorted local files
+ONSLIDE ^DEFHEAD %%
+ONREP ^REPSLIDE %%
+ONPRES ^PSLIDE %%
+OFFSLIDE NULLSLIDE
 
 ONLINE ^%%
 OFFLINE %!

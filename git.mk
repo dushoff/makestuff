@@ -30,6 +30,7 @@ Ignore += *.invite
 checkgh:
 	@echo Invitations:
 	@gh api repos/{owner}/{repo}/invitations --jq '.[].invitee.login'
+	@echo
 	@echo Collaborators:
 	@gh api repos/{owner}/{repo}/collaborators --jq '.[].login'
 
@@ -647,6 +648,13 @@ endef
 	- $(RM) $*.datediff
 	-$(DIFF) $^ > $*.datediff
 	$(RO) $*.datediff
+
+## Needs more work, low priority
+hashClip:
+	printf '%s' "$$(git rev-parse --short=8 HEAD)" | xclip -selection clipboard -in -quiet
+
+currHash:
+	printf '%s\n' "$$(git rev-parse --short=8 HEAD)"
 
 ######################################################################
 

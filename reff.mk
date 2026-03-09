@@ -1,11 +1,8 @@
 # This whole file seems to be in a random-ish order; not sure how much this matters
 
-## TEMPORARY recipe
+PUSHRO ?= @echo ERROR: perl definitions are needed && false
+
 Ignore += reff
-.PRECIOUS: reff/%
-reff/%: | reff
-	$(CP) ~/screens/org/nsercMixing/$* $@
-	
 reff: | makestuff
 	$(LN) makestuff/$@ .
 
@@ -20,9 +17,10 @@ bibdir:
 ## If we change a correction file we need to remake any .recs file
 $(wildcard *.recs): $(wildcard bibdir/*.corr)
 
+reff/%: | reff
 Sources += *.rmu
 Ignore += *.reff.bib *.recs
-%.recs: %.rmu reff/rmu.py
+%.recs: %.rmu reff/rmu.py | Bio.pip bibdir
 	$(PITH)
 
 Ignore += *.gfm

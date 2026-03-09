@@ -138,7 +138,7 @@ test: %!
 
 HFIG \includegraphics[height=%\textheight]{%}
 FIG ^HFIG 0.4 %%
-PageFIG ^HFIG 0.5 %%
+PageFIG ^HFIG 0.6 %%
 HIGHFIG ^FIG %%
 
 WFIG \includegraphics[width=%\textwidth]{%}
