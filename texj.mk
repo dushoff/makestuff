@@ -32,6 +32,10 @@ RUNLatex = $(latexEngine) $(latexNonstop) $(latexJob) $(basename $<)
 	$(MAKE) -f $*.tex.mk -f Makefile $*.tex.deps
 	$(MAKE) $*.repeat
 
+## Under development 2026 Mar 11 (Wed) over-makes and loops!!
+%.included: %.tex phony
+	$(MAKE) -f $*.tex.mk -f Makefile $*.tex.deps
+
 %.bbl: %.tex 
 	$(rm)
 	$(MAKE) $*.aux
