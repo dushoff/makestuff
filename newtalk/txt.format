@@ -342,6 +342,11 @@ slides draft final: \href{%}{\color{linkcolor}%%}
 handouts complete: \nhref{%}{%%}
 outline: %!
 
+ONSLIDE ^DEFHEAD %%
+ONREP ^PSLIDE %%
+OFFSLIDE NULLSLIDE
+ONCOMM ^%%
+
 VSFIG \includegraphics[height=0.45\textheight]{%}\hfill\mbox{}
 VSRFIG \hfill\includegraphics[height=0.45\textheight]{%}
 BSFIG \includegraphics[height=0.52\textheight]{%}\hfill\mbox{}
@@ -359,9 +364,7 @@ outline: %!
 ## Use SLIDE or LINE
 
 ## Change in source file: for things that can be skipped if discussed elsewhere in same talk
-NOOFF NULLSLIDE
-draft: ^DEFHEAD OFF %%
-draft: NULLSLIDE
+OFF Do not use off!!
 
 NOON ^DEFHEAD %%
 draft: ^DEFHEAD ON %%
