@@ -5,6 +5,9 @@ else
 include makestuff/apple.mk
 endif
 
+## Seems radical, but also just good
+.SUFFIXES:
+
 ## Stuff that should work in any OS goes here, I guess; haven't been good about this
 %.var:
 	@echo $($*)

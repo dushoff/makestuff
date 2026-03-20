@@ -16,14 +16,12 @@ my %ruledirs;
 
 while(<>){
 	## Space and comments
-	my $top = 1 .. /-------------------------/;
-	## my $active =  (! /#.*NOSCREEN/) && $top; ## Delete this 2021 May 19 (Wed)
 	next if /^$/;
 	next if /^#/;
 	chomp;
 	die ("Non-blank line at $.") if /^\s*$/;
 
-	## Numbered things are screens
+	## Numbered things are screens (no more top hrule logic)
 	my $number  = (s/^[0-9]+\.\s*//);
 
 	## Name is the first thing after the optional number
@@ -36,7 +34,7 @@ while(<>){
 	}
 
 	## Things that parse like rules are rules
-	my $rule = (my ($d, $l) = /^([\w]*)(: .*)/);
+	my $rule = (my ($d, $l) = /^([\w-]*)(: .*)/);
 
 	if ($rule or $number){
 		$ignoredirs{$name} = 0;

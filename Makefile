@@ -4,6 +4,8 @@
 current: target
 -include target.mk
 
+cmain = master
+
 ##################################################################
 
 ## 2020 Jul 05 (Sun): Think about how to partition this later 
@@ -51,7 +53,7 @@ Sources += $(wildcard *.mk *.pl *.Makefile *.def)
 Sources += ignore.pl
 
 ## Inputs for .config ignore file (see git.mk)
-Sources += ignore.auth ignore.vim ignore.lock
+Sources += ignore.*
 
 # Sources += os.mk unix.mk linux.mk windows.mk up.mk
 
@@ -110,7 +112,8 @@ Sources += ignore.auth ignore.vim ignore.lock
 
 ## Various talkish stuff. Need to find out what's hot, what's not.
 
-Sources += $(wildcard newtalk/*.*)
+Ignore += $(wildcard newtalk/*.deps)
+Sources += $(wildcard newtalk/*.format newtalk/*.pl newtalk/*.sty newtalk/*.tex newtalk/*.tmp)
 # Sources += linkdirs.mk newtalk.def newtalk.mk newtalk.md $(wildcard newtalk/*.*)
 
 Sources += $(wildcard lect/*.*)
@@ -133,6 +136,10 @@ Sources += $(wildcard lect/*.*)
 ## mkfiles
 
 Sources += mkfiles.Makefile mkfiles.wrap
+
+######################################################################
+
+Sources += $(wildcard reff/*.pl reff/*.py)
 
 ######################################################################
 
@@ -173,8 +180,16 @@ personal.pdf:
 
 ## WLS
 
+## Case-sensitivity is a problem here; maybe deprecate case-sensitivity in makestuff flows?
+
 Sources += WSL/*.sh
 Sources += WSL.md
+
+######################################################################
+
+## 2025 Nov 23 (Sun) Suddenly adding LaTeX stuff here
+
+Sources += style.tex
 
 ######################################################################
 
@@ -194,5 +209,6 @@ Ignore += repohome.auto.mk
 -include unix.mk
 -include local.mk
 include git.mk
+include gitbranch.mk
 include pandoc.mk
 include visual.mk

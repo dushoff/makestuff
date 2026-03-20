@@ -1,13 +1,15 @@
 ## This is [project.Makefile] …
 
+## This section is for Dushoff-style vim-setup and vim targeting
+## You can delete it if you don't want it
 current: target
 -include target.mk
 Ignore = target.mk
 
-# -include makestuff/perl.def
-
 vim_session:
 	bash -cl "vmt"
+
+## -include makestuff/perl.def
 
 ######################################################################
 
@@ -18,11 +20,14 @@ Sources += Makefile
 Ignore += makestuff
 msrepo = https://github.com/dushoff
 
+## ln -s ../makestuff . ## Do this first if you want a linked makestuff
 Makefile: makestuff/00.stamp
-makestuff/%.stamp:
+makestuff/%.stamp: | makestuff
 	- $(RM) makestuff/*.stamp
-	(cd makestuff && $(MAKE) pull) || git clone --depth 1 $(msrepo)/makestuff
+	cd makestuff && $(MAKE) pull
 	touch $@
+makestuff:
+	git clone --depth 1 $(msrepo)/makestuff
 
 -include makestuff/os.mk
 

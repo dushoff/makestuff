@@ -1,5 +1,6 @@
 
 ## See also makestuff/pdfsplit.mk
+## Does not play well with pdfDesc
 
 Ignore += *.page.pdf
 

@@ -31,15 +31,25 @@ screens.arc: screens.list makestuff/listarc.pl
 screens.update: screens.arc
 	- $(call hide, screens.list)
 	 $(listscreens)
+	 $(MAKE) screens.mk
+
+pullups: pullup screens.update
+
+refresh: sync
+	$(MAKE) screens.update
 
 ## Tool for helping make a non-listdir to a listdir
+## Deprecated 2025 Dec 26 (Fri)
 screens_resource:
 	perl -i -wf makestuff/screensource.pl screens.list
 	## perl -i -wf makestuff/oldsource.pl screens.list
 
+## This is a made file for cloning or copying directories that are not here yet
 -include screens.mk
 
 ######################################################################
+
+#### Subdirs
 
 ## Syncing
 
@@ -48,8 +58,11 @@ alldirs += makestuff
 Ignore += $(listdirs) $(resting)
 
 ## making
-$(oldruledirs):
-	$(MV) $(old) $@ || git clone $(url) $@
-
 $(ruledirs):
-	git clone $(url) $@ || ($(linkdirname))
+	git clone $(url) $@
+
+## The first one is outdated (for changeover); the last one is for linking but doesn't fail when it should
+$(oldruledirs):
+	$(MV) $(old) $@ || git clone $(url) $@ || ($(linkdirname))
+
+######################################################################

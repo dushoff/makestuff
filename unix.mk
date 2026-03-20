@@ -8,10 +8,9 @@ CPF = /bin/cp -f
 CPR = /bin/cp -rf
 DIFF = diff
 
-## VEDIT is set in bashrc (and inherited)
-## Not sure what I should do if it doesn't work?
-MSEDIT = $(MSEDITOR) $@ || $(EDITOR) $@ || $(VISUAL) $@ || gvim -f $@ || vim $@ || ((echo ERROR: No editor found makestuff/unix.mk && echo set shell MSEDITOR variable && false))
+MSEDIT = $(MSEDITOR) $@ || $(EDITOR) $@ || $(VISUAL) $@ || $(VEDIT) $@ || gvim -f $@ || xterm -e nano $@ || nano $@ || vim $@ || ((echo ERROR: No editor found makestuff/unix.mk && echo set shell MSEDITOR variable && false))
 RMR = /bin/rm -rf
+RMRF = /bin/rm -rf
 LS = /bin/ls
 LN = /bin/ln -s
 LNF = /bin/ln -fs
@@ -19,9 +18,12 @@ MD = mkdir
 MKDIR = mkdir
 CAT = cat
 
-readonly = chmod a-w $@
-RO = chmod a-w 
+## Use RO and RW as components; fixing this back to original 2025 Oct 25 (Sat)
+RO = chmod a-w
 RW = chmod ug+w
+readonly = $(RO) $@
+readwrite = $(RW) $@
+
 DNE = (! $(LS) $@ > $(null))
 LSN = ($(LS) $@ > $(null))
 
@@ -35,9 +37,12 @@ touch = touch $@
 
 null = /dev/null
 
+lsquery = @$(LS) $@ > $(null)
+
 lscheck = @$(LS) $@ > $(null) || (echo ERROR upstream rule failed to make $@ && false)
 
-lstouch = @($(LS) $@ > $(null) || (echo ERROR upstream rule failed to make $@ && false)) && touch $@
+## Confused about the touch logic here; not sure it can be reached
+lstouch = @$(LS) $@ > $(null) || ((echo ERROR upstream rule failed to make $@ && false) && touch $@)
 
 impcheck = @($(LS) $$@ > $(null) || (echo ERROR upstream rule failed to make $$@ && false)) && touch $$@
 
@@ -64,6 +69,8 @@ setcheckfile = touch $(checkfile) && false
 
 diff = $(DIFF) $^ > $@
 
+## Need to upgrade use $(notdir … to handle case where it's not in the cwd
+## This is tricky because ln is also weird about what directory it's in
 # Generic (vars that use the ones above)
 linkdir = ls $(dir)/$@ > $(null) && $(LNF) $(dir)/$@ .
 linkdirname = ls $(dir) > $(null) && $(LNF) $(dir) $@ 
@@ -82,10 +89,12 @@ rcopy = $(CPR) $< $@
 rdcopy = $(CPR) $(dir) $@
 copy = $(CP) $< $@
 pcopy = $(CP) $(word 1, $|) $@
-move = $(MV) $< $@
-Move = $(MVF) $< $@
+
 hardcopy = $(CPF) $< $@
 allcopy =  $(CP) $^ $@
+
+move = $(MV) $< $@
+Move = $(MVF) $< $@
 ccrib = $(CP) $(crib)/$@ .
 mkdir = $(MD) $@
 makedir = cd $(dir $@) && $(MD) $(notdir $@)
@@ -99,6 +108,10 @@ lnp = $(LNF) $| $@
 rm = $(RM) $@
 pandoc = pandoc -o $@ $<
 pandocs = pandoc -s -o $@ $<
+
+## oocopy seems just lazy, use pcopy
+pcopy = $(CP) $(word 1, $|) $@
+oocopy = $(CP) $| $@
 
 ######################################################################
 
@@ -138,6 +151,8 @@ ddcopy = ($(LSN) && $(touch)) ||  $(rdcopy)
 %.rw:
 	chmod -R u+w $*
 
+PUSH ?= @(echo "PUSH not defined" & false)
+
 ## File listing and merging
 %.ls: %
 	ls $* > $@
@@ -148,9 +163,11 @@ index.lsd: .
 	ls -d * > $@
 
 define merge_files
-	$(PUSH)
-	- $(DIFF) $(word 2, $^) $@
-	$(MV) $@ $(word 2, $^)
+	@$(RM) *.oldfile
+	@$(PUSH)
+	@($(DIFF) $(word 2, $^) $@ && $(MV) $@ $(word 2, $^)) \
+	|| ($(MV) $@ $(word 2, $^) && false)
+	@! (grep MISSING $(word 2, $^))
 endef
  
 ## Track a directory from the parent directory, using <dir>.md
@@ -164,7 +181,13 @@ endef
 
 ## WATCH OUT for the -
 %.filenames:
-	rename "s/[& ,?!-]+/_/g" $*/*.*
+	rename "s/[()& ,?!-]+/_/g" $*/*.*
+%.fileversions:
+	cd $* && rename -f "s/ *\([0-9]\)//" *\([0-9]\).*
+
+## Temporary 2024 Sep 10 (Tue)
+%.qfiles:
+	rename "s/[()& ,?!-]+/_QQ_/g" $*/*.*
 
 %.voice: voice.pl %
 	$(PUSH)
@@ -191,8 +214,11 @@ Ignore += *.ld.tex
 %.ld.tex: %.tex
 	latexdiff $*.tex.*.oldfile $< > $@
 
-%.pd: %
-	$(CP) $< $(pushdir) || $(CP) $< ~/Downloads
+%.pd: % | $(pushdir)
+	$(CP) $< $(pushdir)
+
+pushmake:
+	cd $(dir $(pushdir)) && mkdir $(notdir $(pushdir))
 
 %.pdown: %
 	$(RM) ~/Downloads/$<
@@ -209,11 +235,12 @@ Ignore += *.ld.tex
 	$(RM) $*
 	$(MAKE) $*
 
-%.log: 
+## Changed to not conflict with makegraph 2025 Feb 24 (Mon)
+%.make.log: 
 	$(RM) $*
 	$(MAKE) $* > $*.makelog
 
-%.makelog: %.log ;
+%.makelog: %.make.log ;
 
 %.continue:
 	$(MAKE) $* || echo CONTINUING past error in target $*
