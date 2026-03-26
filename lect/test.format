@@ -90,7 +90,7 @@ NOCOMMENT \vspace{2.0ex plus 8.0ex}\pagebreak[3]%%
 OPT ^STAR %%
 
 STAR ^DEFCOMM %%
-key rub: ^DEFCOMM {\bf %%}
+key rub: ^DEFCOMM {\bfseries\boldmath %%}
 
 KEY %!
 key rub: {\bf ANS: %%}
