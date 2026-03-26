@@ -23,6 +23,8 @@ WK \subsection*{Population ecology worksheet %%}
 DUE \emph{%%}
 key rub: %!
 
+NOTDUE %!
+
 # Question (use vfill in the assignment, except before the first question)
 Q \vfill\vspace{1.0ex plus 1.0 ex}\noindent\stepcounter{question}\arabic{question}.~%%
 key rub: ^FQ %%
