@@ -86,7 +86,7 @@ body.tex.mk: body.tex makestuff/texj.pl
 
 ######################################################################
 
-texfiles = $(wildcard *.tex)
+texfiles = $(wildcard *.tex */*.tex)
 Ignore += $(texfiles:tex=pdf)
 Ignore += $(texfiles:tex=out)
 
