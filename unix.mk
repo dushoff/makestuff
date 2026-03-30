@@ -193,6 +193,8 @@ endef
 # What?
 convert = convert $< $@
 imageconvert = convert -density 600 -trim $< -quality 100 -sharpen 0x1.0 $@
+whiteconvert = convert -density 600 -background white -flatten -trim $< -quality 100 -sharpen 0x1.0 $@
+
 shell_execute = sh < $@
 
 %.cnv.png: %.pdf
