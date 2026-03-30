@@ -139,6 +139,10 @@ Sources += mkfiles.Makefile mkfiles.wrap
 
 ######################################################################
 
+Sources += $(wildcard reff/*.pl reff/*.py)
+
+######################################################################
+
 # wrapR scripts
 ## Deprecated 2021 May 03 (Mon)
 

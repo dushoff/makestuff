@@ -16,8 +16,10 @@ endef
 ## awkwardly delete known target types; or make all known targets start with full target name?
 ## Also a problem with startGraphics; does it make the file before success?
 ## Not clear if we are successfully deleting the .rd* files 2025 Dec 09 (Tue)
+## @-$(RM) $@ $@.* $*.rd* -- this breaks things!
+## Redo with a manipulation of $@; $* not to be trusted here.
 define pipeR
-	@-$(RM) $@ $@.* $*.rd*
+	@-$(RM) $@ $@.*
 	@$(makeArgs)
 	@echo pipeR: Making $@ using $^
 	@(($(rrun) --args $@ shellpipes $*.pipestar $^ < $(word 1, $(filter %.R, $^)) > $@) 2> $(@:%.Rout=%.Rlog) && cat $(@:%.Rout=%.Rlog)) || (sleep 1 && touch $(word 1, $(filter %.R, $^)) && cat $(@:%.Rout=%.Rlog) && false)
@@ -61,7 +63,7 @@ endef
 define knithtml
 	-$(RM) $@ $@.*
 	$(makeArgs)
-	Rscript --vanilla -e 'library("rmarkdown"); render("$(word 1, $(filter %.rmd %.Rmd, $^))", output_format="html_document", output_file="$@")' shellpipes $*.pipestar $^
+	Rscript --vanilla -e 'library("rmarkdown"); render("$(word 1, $(filter %.rmd %.Rmd, $^))", output_format="html_document", output_file="$(notdir $@)")' shellpipes $*.pipestar $^
 endef
 
 define wrapR
@@ -153,7 +155,7 @@ endif
 	$(lstouch)
 .PRECIOUS: %.Rout.pdf
 %.Rout.pdf: %.Rout
-	$(lstouch) || (ls $@.tmp && $(pdfcheck) $@.tmp && $(MVF) $@.tmp $@) || (ls Rplots.pdf && echo "WARNING: Using an orphaned Rplots file; maybe try startGraphics()" && mv Rplots.pdf $@) || (echo ERROR: Failed to find, make or rescue $@ && false)
+	$(lsquery) || (ls $@.tmp && $(pdfcheck) $@.tmp && $(MVF) $@.tmp $@) || (ls Rplots.pdf && echo "WARNING: Using an orphaned Rplots file; maybe try startGraphics()" && mv Rplots.pdf $@) || (echo ERROR: Failed to find, make or rescue $@ && false)
 
 Ignore += .Rhistory .RData
 Ignore += *.RData *.Rlog *.rdata *.rda *.rtmp

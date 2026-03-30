@@ -48,6 +48,7 @@ gmirror.ls:
 	$(MAKE) $*.syncup
 
 ## Copy a mirror folder to a google drive for someone to see
+## Use .glink to get the link
 %.gsync: %.get
 	rclone sync --skip-links -u $*/ $(gmirror)/$*
 

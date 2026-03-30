@@ -19,6 +19,7 @@
 \input{talkdir/section.tex}
 \input{talkdir/lengths.tex}
 \input{talkdir/colors.tex}
+\InputIfFileExists{./localcomm.tex}{}{}
 
 \begin{document}
 

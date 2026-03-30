@@ -1,5 +1,7 @@
 Ignore += slowtarget/
 
+## See also slowtarget.md makestuff/slowtarget.md
+
 ## Put this in your Makefile maybe
 ## Sources += $(wildcard slow/*)
 ## We always want to track stuff in slow, but not necessarily in the same repo
