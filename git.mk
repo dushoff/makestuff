@@ -508,11 +508,10 @@ hub:
 gitremote = git remote get-url origin
 thisrepo = $(shell $(gitremote))
 repoonly = $(shell echo $(thisrepo) | sed "s/.*com\///; s/\.git//")
-gitremoteopen = echo go `$(gitremote) | perl -pe "s/[.]git$$//"` | bash --login
-gitremotestraight = echo go `$(gitremote) | perl -pe "s/[.]git$$//"` | bash
+gitremoteopen = echo go `$(gitremote) | perl -pe "s/[.]git$$//"` | bash -ic
 
 hupstream:
-	$(gitremotestraight)
+	$(gitremoteopen)
 
 hup:
 	$(gitremote)
