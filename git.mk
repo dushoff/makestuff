@@ -27,7 +27,7 @@ Ignore += *.invite
 	-f permission=push > $@
 
 ## checkgh: checkgh.log
-ghInvites:
+ghInvites ghTeam:
 	@echo Invitations:
 	@gh api repos/{owner}/{repo}/invitations --jq '.[].invitee.login'
 	@echo
