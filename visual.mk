@@ -94,3 +94,11 @@ target.mk:
 
 %.dir:
 	cd $(dir $*) && $(MAKE) $(notdir $*)
+
+######################################################################
+
+## 2026 May 07 (Thu) tmux window protocol
+
+twindow:
+	$(MAKE) vim_session || bash -ic vmt
+	$(MAKE) all.time
