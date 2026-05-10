@@ -36,6 +36,7 @@ ZIP = $(zip)
 touch = touch $@
 
 null = /dev/null
+nullstreams = < /dev/null > /dev/null 2>&1
 
 lsquery = @$(LS) $@ > $(null)
 
