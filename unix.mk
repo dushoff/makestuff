@@ -90,6 +90,7 @@ rcopy = $(CPR) $< $@
 rdcopy = $(CPR) $(dir) $@
 copy = $(CP) $< $@
 pcopy = $(CP) $(word 1, $|) $@
+pipecopy = $(CP) $(word 1, $|) $@
 
 hardcopy = $(CPF) $< $@
 allcopy =  $(CP) $^ $@
