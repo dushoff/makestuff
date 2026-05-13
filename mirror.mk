@@ -112,3 +112,14 @@ report.autoup: mirrorPut
 ## syncup never finishes (make-wise), but it does put $(mirrorPut) up to date
 mirrorUp = $(mirrors:%=%.syncup)
 syncup: mirrorUp
+
+######################################################################
+
+oldmirror/%: | % oldmirror
+	rclone sync -u $(mirror)/$* $*/ 
+	$(MV) $* $@
+	$(MAKE) $*
+	$(MAKE) $*.syncup
+
+oldmirror:
+	$(mkdir)
