@@ -115,11 +115,15 @@ syncup: mirrorUp
 
 ######################################################################
 
-oldmirror/%: | % oldmirror
+archivemirror/%: | % oldmirror
 	rclone sync -u $(mirror)/$* $*/ 
 	$(MV) $* $@
 	$(MAKE) $*
 	$(MAKE) $*.syncup
+
+oldmirror/%: | % oldmirror
+	$(MV) $* $@
+	rclone sync -u $(mirror)/$* $*/ 
 
 oldmirror:
 	$(mkdir)
