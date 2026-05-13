@@ -36,6 +36,7 @@ ZIP = $(zip)
 touch = touch $@
 
 null = /dev/null
+nullstreams = < /dev/null > /dev/null 2>&1
 
 lsquery = @$(LS) $@ > $(null)
 
@@ -89,6 +90,7 @@ rcopy = $(CPR) $< $@
 rdcopy = $(CPR) $(dir) $@
 copy = $(CP) $< $@
 pcopy = $(CP) $(word 1, $|) $@
+pipecopy = $(CP) $(word 1, $|) $@
 
 hardcopy = $(CPF) $< $@
 allcopy =  $(CP) $^ $@

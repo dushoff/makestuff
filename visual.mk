@@ -100,5 +100,7 @@ target.mk:
 ## 2026 May 07 (Thu) tmux window protocol
 
 twindow:
+	$(MAKE) Makefile
+	$(MAKE) pull
 	$(MAKE) vim_session || bash -ic vmt
 	$(MAKE) all.time
