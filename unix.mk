@@ -98,8 +98,12 @@ allcopy =  $(CP) $^ $@
 move = $(MV) $< $@
 Move = $(MVF) $< $@
 ccrib = $(CP) $(crib)/$@ .
+
+## not sure when makedir is good. Note that if we have a simple target, mpdir will not be needed (thus the *)
 mkdir = $(MD) $@
 makedir = cd $(dir $@) && $(MD) $(notdir $@)
+mpdir = $(MD) $*
+
 cat = $(CAT) /dev/null $^ > $@
 catro = $(rm); $(CAT) /dev/null $^ > $@; $(readonly)
 ln = $(LN) $< $@
@@ -180,6 +184,10 @@ endef
 
 %.filemerge: %.lsd %.mkd makestuff/filemerge.pl
 	$(merge_files)
+
+%.mergedir:
+	$(mpdir)
+	touch $*.md
 
 ## WATCH OUT for the -
 %.filenames:

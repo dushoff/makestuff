@@ -106,9 +106,25 @@ mirrorPut: $(mirrors:%=%.puttime)
 
 $(mirrors): ; $(mkdir)
 pushup: mirrorPut
-pullup: mirrorGet
+## pullup: mirrorGet
 report.autoup: mirrorPut
 
 ## syncup never finishes (make-wise), but it does put $(mirrorPut) up to date
 mirrorUp = $(mirrors:%=%.syncup)
 syncup: mirrorUp
+
+######################################################################
+
+## This logic needs more work
+archivemirror/%: | % oldmirror
+	rclone sync -u $(mirror)/$* $*/ 
+	$(MV) $* $@
+	$(MAKE) $*
+	$(MAKE) $*.syncup
+
+oldmirror/%: | % oldmirror
+	$(MV) $* $@
+	rclone sync -u $(mirror)/$* $*/ 
+
+oldmirror:
+	$(mkdir)
