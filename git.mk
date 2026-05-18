@@ -504,6 +504,13 @@ testclean:
 
 ######################################################################
 
+## Advice on how to clone locally not tested 2026 May 18 (Mon)
+
+## UPSTREAM=$(git -C /source/repo remote get-url origin)
+## git clone --depth 50 "$UPSTREAM" /dest/repo
+
+######################################################################
+
 ## Open the web page associated with the repo
 ## Not clear why sometimes one of these works, and sometimes the other
 hub:
