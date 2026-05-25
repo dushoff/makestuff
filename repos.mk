@@ -1,7 +1,7 @@
 ## This file used to be something pre- ~/screens, repurposed now for ~/terminal
 ## Cribbing from makestuff/mkfiles.mk (and much more to think about)
 
-## Make a default Makefile instead (don't use links at all)
+## Make a default Makefile
 %.defmake: 
 	$(MAKE) $* || mkdir $*
 	$(CP) makestuff/project.Makefile $*/Makefile

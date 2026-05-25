@@ -102,5 +102,6 @@ target.mk:
 twindow:
 	$(MAKE) Makefile
 	$(MAKE) pull
+	$(MAKE) Makefile
 	$(MAKE) vim_session || bash -ic vmt
 	$(MAKE) all.time
