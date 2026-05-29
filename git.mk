@@ -36,7 +36,10 @@ ghInvites ghTeam:
 
 ghCollab:
 	@echo Collaborators:
-	@gh api repos/{owner}/{repo}/collaborators --jq '.[].login'
+	@gh api --paginate repos/{owner}/{repo}/collaborators --jq '.[].login'
+
+## Claude made an affiliation suggestion:
+## @gh api --paginate 'repos/{owner}/{repo}/collaborators?affiliation=all' --jq '.[].login'
 
 ######################################################################
 
