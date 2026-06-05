@@ -50,7 +50,7 @@ Ignore += *.reff.MD
 %.bib: %.tags.pgr reff/pgrbib.pl
 	$(PUSHRO)
 
-Ignore += library
-library:
-	$(mkdir)
+## You should manage library on your own (e.g., with rclone or git)
+## Ignore += library
+## library: ; $(mkdir)
 
