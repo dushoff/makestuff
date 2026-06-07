@@ -58,7 +58,8 @@ handouts: {\centering \textsf{ \textbf{ {\Large\jdtitle} \\ {\large\jdsub} }} \\
 outline: NULLSLIDE
 
 ICI3DTHEME NOFRAME
-slides draft final: NOFRAME \date{\jddate} \title{\jdtitle} \subtitle{\jdsub} \author{\jdauth} {\topBar\maketitle}
+slides draft final: NOFRAME \title{\jdtitle} \subtitle{\jdsub} \date{}\author{\wlong\\[\medskipamount]\jdauth}\institute{\figshare}{\topBar\maketitle}
+handouts: \noindent\includegraphics[width=\textwidth]{LatexTemplates/bar.pdf} {\centering \textsf{ \textbf{ {\Large\jdtitle} \\ \centering \mbox{}\large\jdsub}} \\ \centering \jdauth} \vspace{3ex} 
 handouts: \noindent\includegraphics[width=\textwidth]{LatexTemplates/bar.pdf} {\centering \textsf{ \textbf{ {\Large\jdtitle} \\ \centering \mbox{}\large\jdsub}} \\ \centering \jdauth} \vspace{3ex} 
 
 TOP NULLSLIDE
@@ -181,6 +182,7 @@ slides draft final: ^%%
 # Slides with purely repetitive information (for classroom exposition)
 
 ## Repeating (Need to refactor this for notes-based lectures, and non-notes based talks)
+## Maybe should be suppressed for "slides" (are they reliable)?
 REPSLIDE NULLSLIDE
 draft lecture: ^SLIDEHEAD {\sl %% (repeat)}
 slides final: ^SLIDEHEAD {\sl %%}
