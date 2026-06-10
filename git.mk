@@ -38,6 +38,10 @@ ghCollab:
 	@echo Collaborators:
 	@gh api repos/{owner}/{repo}/collaborators --jq '.[].login'
 
+ghContrib:
+	@echo Contributors:
+	@gh api repos/{owner}/{repo}/contributors --jq '.[].login'
+
 ######################################################################
 
 ### Push and pull
