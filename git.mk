@@ -41,6 +41,10 @@ ghCollab:
 ## Claude made an affiliation suggestion:
 ## @gh api --paginate 'repos/{owner}/{repo}/collaborators?affiliation=all' --jq '.[].login'
 
+ghContrib:
+	@echo Contributors:
+	@gh api repos/{owner}/{repo}/contributors --jq '.[].login'
+
 ######################################################################
 
 ### Push and pull

@@ -99,6 +99,7 @@ target.mk:
 
 ## 2026 May 07 (Thu) tmux window protocol
 
+## This often takes several tries on new repo. Investigate?
 twindow:
 	$(MAKE) Makefile
 	$(MAKE) pull
