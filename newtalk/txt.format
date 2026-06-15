@@ -118,12 +118,13 @@ slides complete handouts: \hrule\paragraph{%%}
 ########################################
 # Logical content formatting
 
+## Slides are meant for handing out after so answers are there. For now
 ANS 
 handouts: \mbox{}%!
 complete: {\bf\underline{Answer}: }%%
 final: * \uncover<+->{\color{blue} %%}
 draft: * {\color{blue} %%}
-slides: * {\color{white} %%}
+slides: * {\color{blue} %%}
 outline: %!
 
 NOANS 
@@ -183,9 +184,10 @@ slides draft final: ^%%
 
 ## Repeating (Need to refactor this for notes-based lectures, and non-notes based talks)
 ## Maybe should be suppressed for "slides" (are they reliable)?
+
 REPSLIDE NULLSLIDE
-draft lecture: ^SLIDEHEAD {\sl %% (repeat)}
-slides final: ^SLIDEHEAD {\sl %%}
+draft lecture: ^DEFHEAD {\sl %% (repeat)}
+final: ^DEFHEAD {\sl %%}
 
 ## Previewing
 PRESLIDE NULLSLIDE
@@ -344,10 +346,16 @@ slides draft final: \href{%}{\color{linkcolor}%%}
 handouts complete: \nhref{%}{%%}
 outline: %!
 
+## Moved from talks assorted local files
+## Title commands are not chaining well (DEFHEAD I guess)
 ONSLIDE ^DEFHEAD %%
-ONREP ^PSLIDE %%
+ONREP ^REPSLIDE %%
 OFFSLIDE NULLSLIDE
 ONCOMM ^%%
+ONSLIDE ^DEFHEAD %%
+ONREP ^REPSLIDE %%
+ONPRES ^PSLIDE %%
+OFFSLIDE NULLSLIDE
 
 VSFIG \includegraphics[height=0.45\textheight]{%}\hfill\mbox{}
 VSRFIG \hfill\includegraphics[height=0.45\textheight]{%}
@@ -370,12 +378,6 @@ OFF Do not use off!!
 
 NOON ^DEFHEAD %%
 draft: ^DEFHEAD ON %%
-
-## Moved from talks assorted local files
-ONSLIDE ^DEFHEAD %%
-ONREP ^REPSLIDE %%
-ONPRES ^PSLIDE %%
-OFFSLIDE NULLSLIDE
 
 ONLINE ^%%
 OFFLINE %!
