@@ -1,5 +1,6 @@
 
-maketouch = cd $(1) && $$(MAKE) Makefile && $$(MAKE) $$* && touch $$*
+## maketouch = cd $(1) && $$(MAKE) Makefile && $$(MAKE) $$* && touch $$*
+maketouch = $$(MAKE) -C $(1) Makefile && $$(MAKE) -C $(1) $$* && touch $(1)/$$*
 
 ## Maybe improved? 2020 Oct 20 (Tue)
 ## Still will loop forever if you're calling two things from the same place
