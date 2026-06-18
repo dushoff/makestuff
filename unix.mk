@@ -57,10 +57,12 @@ difftouch = diff $1 $(dir $1).$(notdir $1) > /dev/null || touch $1
 
 ## makethere is behaving weird 2022 Apr 29 (Fri)
 ## makestuffthere, too 2022 Aug 04 (Thu)
-makethere = $(makedir) && cd $(dir $@) && $(MAKE) makestuff && $(MAKE) $(notdir $@)
+## Need to figure out weird looping and make it simpler
+makethere = false && $(makedir) && cd $(dir $@) && $(MAKE) makestuff && $(MAKE) $(notdir $@)
+makestuffthere = false && cd $(dir $@) && $(MAKE) makestuff && $(MAKE) $(notdir $@)
 makedir = $(MAKE) $(dir $@)
+
 justmakethere = cd $(dir $@) && $(MAKE) $(notdir $@)
-makestuffthere = cd $(dir $@) && $(MAKE) makestuff && $(MAKE) $(notdir $@)
 
 Ignore += *.checkfile
 .PRECIOUS: %.checkfile
