@@ -1,4 +1,6 @@
 
+## Still experimenting with these two; I guess they're the same
+## catalyzing problem was elsewhere
 ## maketouch = cd $(1) && $$(MAKE) Makefile && $$(MAKE) $$* && touch $$*
 maketouch = $$(MAKE) -C $(1) Makefile && $$(MAKE) -C $(1) $$* && touch $(1)/$$*
 
