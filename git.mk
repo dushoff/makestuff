@@ -36,7 +36,14 @@ ghInvites ghTeam:
 
 ghCollab:
 	@echo Collaborators:
-	@gh api repos/{owner}/{repo}/collaborators --jq '.[].login'
+	@gh api --paginate repos/{owner}/{repo}/collaborators --jq '.[].login'
+
+## Claude made an affiliation suggestion:
+## @gh api --paginate 'repos/{owner}/{repo}/collaborators?affiliation=all' --jq '.[].login'
+
+ghContrib:
+	@echo Contributors:
+	@gh api repos/{owner}/{repo}/contributors --jq '.[].login'
 
 ######################################################################
 
@@ -58,21 +65,26 @@ commit.time: $(Sources)
 	$(git_check) || (perl -ne 'print unless /^#/' $@ | git commit -F -)
 	date >> $@
 
+pull: commit.time
+	git pull
+	touch $<
+
 commit.default: $(Sources)
 	git add -f $^ 
 	-git commit -m "commit.default"
 	touch $@
 	touch commit.time
 
-pull: commit.time
-	git pull
-	touch $<
+autocommit:
+	$(MAKE) exclude
+	$(git_check) || git commit -am "autocommit from git.mk"
+	git status .
 
 Ignore += *.autocommit
 .PRECIOUS: %.autocommit
 %.autocommit: $(Sources)
 	git add -f $? 
-	-git commit -m $*
+	-git commit -m "$* autocommit"
 	touch commit.time
 	$(touch)
 
@@ -127,11 +139,6 @@ makestuff.all: %.all: %
 ## Should there be a dependency here? Better chaining?
 %.all: 
 	$(MAKE) $* $*/Makefile && cd $* && $(MAKE) makestuff && $(MAKE) all.time
-
-autocommit:
-	$(MAKE) exclude
-	$(git_check) || git commit -am "autocommit from git.mk"
-	git status .
 
 ## No idea what add -u is supposed to do. What if I added a dot?
 ## Also it doesn't work, where commit -am seems to.
@@ -501,6 +508,13 @@ alltest:
 ## This is def. incomplete, but I never use it 2022 Sep 24 (Sat)
 testclean:
 	-/bin/rm -rf clonedir dotdir
+
+######################################################################
+
+## Advice on how to clone locally not tested 2026 May 18 (Mon)
+
+## UPSTREAM=$(git -C /source/repo remote get-url origin)
+## git clone --depth 50 "$UPSTREAM" /dest/repo
 
 ######################################################################
 

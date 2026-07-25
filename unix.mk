@@ -57,10 +57,12 @@ difftouch = diff $1 $(dir $1).$(notdir $1) > /dev/null || touch $1
 
 ## makethere is behaving weird 2022 Apr 29 (Fri)
 ## makestuffthere, too 2022 Aug 04 (Thu)
-makethere = $(makedir) && cd $(dir $@) && $(MAKE) makestuff && $(MAKE) $(notdir $@)
+## Need to figure out weird looping and make it simpler
+makethere = false && $(makedir) && cd $(dir $@) && $(MAKE) makestuff && $(MAKE) $(notdir $@)
+makestuffthere = false && cd $(dir $@) && $(MAKE) makestuff && $(MAKE) $(notdir $@)
 makedir = $(MAKE) $(dir $@)
+
 justmakethere = cd $(dir $@) && $(MAKE) $(notdir $@)
-makestuffthere = cd $(dir $@) && $(MAKE) makestuff && $(MAKE) $(notdir $@)
 
 Ignore += *.checkfile
 .PRECIOUS: %.checkfile
@@ -98,8 +100,12 @@ allcopy =  $(CP) $^ $@
 move = $(MV) $< $@
 Move = $(MVF) $< $@
 ccrib = $(CP) $(crib)/$@ .
+
+## not sure when makedir is good. Note that if we have a simple target, mpdir will not be needed (thus the *)
 mkdir = $(MD) $@
 makedir = cd $(dir $@) && $(MD) $(notdir $@)
+mpdir = $(MD) $*
+
 cat = $(CAT) /dev/null $^ > $@
 catro = $(rm); $(CAT) /dev/null $^ > $@; $(readonly)
 ln = $(LN) $< $@
@@ -173,13 +179,17 @@ define merge_files
 endef
  
 ## Track a directory from the parent directory, using <dir>.md
-## index.md for current file
+## index.md for current directory
 ## Testing; can filemerge use md or mkd alternatively? Which one is prioritized? 2023 Mar 10 (Fri)
 %.filemerge: %.lsd %.md makestuff/filemerge.pl
 	$(merge_files)
 
 %.filemerge: %.lsd %.mkd makestuff/filemerge.pl
 	$(merge_files)
+
+%.mergedir:
+	$(mpdir)
+	touch $*.md
 
 ## WATCH OUT for the -
 %.filenames:

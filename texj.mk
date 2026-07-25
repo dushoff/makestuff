@@ -86,6 +86,14 @@ body.tex.mk: body.tex makestuff/texj.pl
 
 ######################################################################
 
+## Won't usually work, but shouldn't cause any problems
+## (no prereq)
+
+comments.tex comments.TEX: ../LatexTemplates/comments.tex
+	$(copy)
+
+######################################################################
+
 texfiles = $(wildcard *.tex */*.tex)
 Ignore += $(texfiles:tex=pdf)
 Ignore += $(texfiles:tex=out)

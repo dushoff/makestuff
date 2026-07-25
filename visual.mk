@@ -99,8 +99,11 @@ target.mk:
 
 ## 2026 May 07 (Thu) tmux window protocol
 
+## This often takes several tries on new repo. Investigate?
+## Should it be changed to pullup??
 twindow:
 	$(MAKE) Makefile
 	$(MAKE) pull
+	$(MAKE) Makefile
 	$(MAKE) vim_session || bash -ic vmt
 	$(MAKE) all.time
