@@ -21,6 +21,8 @@ ignore:
 ## dirdir ../.git/info/exclude
 $(git_dir)/info/exclude: Makefile $(Sources)
 	perl -wf makestuff/ignore.pl > $@ || perl -wf ignore.pl > $@
+	$(CP) $@ .gitignore
+	$(touch)
 
 export Ignore += local.mk target.mk make.log go.log tmp.scr background.log
 

@@ -6,9 +6,11 @@ my $delim = "## content from makestuff";
 my $head = "## edited content";
 
 if (open(my $fh, '<', '.gitignore')) {
-	while (my $line = <$fh>) {
-		last if /$delim/;
+	while (<$fh>) {
+		last if /^$delim/;
 		say $head if $.==1;
+		next if /^$head/;
+		print;
 	}
 	close $fh;
 }
