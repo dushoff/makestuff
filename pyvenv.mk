@@ -7,6 +7,7 @@ Makefile: | pyvenv
 cleanpyvenv = python -m venv pyvenv
 systempyvenv = python -m venv --system-site-packages pyvenv
 
+## Add one of these to your makefile
 ## pyvenv: ; $(cleanpyvenv)
 ## pyvenv: ; $(systempyvenv)
 	
