@@ -3,7 +3,6 @@ pypath =  pyvenv
 Ignore += pyvenv __pycache__
 Makefile: | pyvenv
 
-## Clean virtual environment
 cleanpyvenv = python -m venv pyvenv
 systempyvenv = python -m venv --system-site-packages pyvenv
 
@@ -16,3 +15,6 @@ Ignore += *.pip
 %.pip:
 	pyvenv/bin/pip install $* && $(touch)
 	$(touch)
+
+venvclean:
+	$(RMRF) *.pip pyvenv
