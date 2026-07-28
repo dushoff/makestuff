@@ -58,7 +58,7 @@ sourceTouch = touch $(word 1, $(Sources))
 Ignore += commit.time commit.default
 commit.time: $(Sources)
 	$(MAKE) exclude
-	-git add -f $? $(trackedTargets)
+	-git add -f $? $(filter .gitignore, $(Sources))
 	(head -1 ~/.commitnow > $@ && echo " ~/.commitnow" >> $@) || echo Autocommit > $@
 	echo "## $(CURDIR)" >> $@
 	!(git commit --dry-run >> $@) || (perl -pi -e 's/^/#/ unless $$.==1' $@ && $(MSEDIT))
