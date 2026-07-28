@@ -17,4 +17,4 @@ Ignore += *.pip
 	$(touch)
 
 venvclean:
-	$(RMRF) *.pip pyvenv
+	$(RMRF) *.pip pyvenv pyenv
