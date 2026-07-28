@@ -12,6 +12,9 @@ rmdh_r = Rscript --vanilla -e 'library("rmarkdown"); render("$<", output_format=
 
 rmdg_r = Rscript --vanilla -e 'library("rmarkdown"); render("$<", output_format="github_document", output_file="$(notdir $@)", output_dir="$(dir $@)")'
 
+## New hotness? 2026 Jul 28 (Tue)
+mewRecipe = Rscript -e 'rmarkdown::render("$<", output_format="github_document", output_file="$(abspath $@)")'
+
 ## Used to be rmdh_p because I was not parsing correctly
 rmdp_r = Rscript --vanilla -e 'library("rmarkdown"); render("$<", output_format="pdf_document", output_file="$(notdir $@)", output_dir="$(dir $@)")'
 
