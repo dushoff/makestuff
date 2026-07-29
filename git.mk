@@ -58,7 +58,7 @@ sourceTouch = touch $(word 1, $(Sources))
 Ignore += commit.time commit.default
 commit.time: $(Sources)
 	$(MAKE) exclude
-	-git add -f $? $(trackedTargets)
+	-git add -f $? $(filter .gitignore, $(Sources))
 	(head -1 ~/.commitnow > $@ && echo " ~/.commitnow" >> $@) || echo Autocommit > $@
 	echo "## $(CURDIR)" >> $@
 	!(git commit --dry-run >> $@) || (perl -pi -e 's/^/#/ unless $$.==1' $@ && $(MSEDIT))
@@ -262,15 +262,16 @@ gptargets: $(gptargets)
 
 ## Unify some of these by recipe
 ## use a better touch command
-## 2025 Jul 28 (Mon) Why am I noticing now that this chokes on subdirectories?
 
 ## 2020 Nov 11 (Wed) an alternative name for git_push
-## Not copying the all-update rule here; outputs can have other purposes
+## 2026 Jul 28 (Tue) Updating to handle things taken directly from subdirectories
 %.op: % | outputs
 	- $(CPF) $* outputs
-	git add -f outputs/$*
+	git add -f outputs/$(notdir $*)
 	$(sourceTouch)
 
+## Not used much and I'm not in touch with motivation 2026 Jul 28 (Tue)
+## Apparently meant to copy a whole directory
 %.opdir: % | outputs
 	- $(RMR) outputs/$*
 	- $(CPR) $* outputs
