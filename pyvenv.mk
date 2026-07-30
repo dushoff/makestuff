@@ -10,11 +10,13 @@ systempyvenv = python -m venv --system-site-packages pyvenv
 ## pyvenv: ; $(cleanpyvenv)
 ## pyvenv: ; $(systempyvenv)
 	
-Ignore += *.pip
+Ignore += *.pip *.lpip
 .PRECIOUS: %.pip
 %.pip:
 	pyvenv/bin/pip install $*
 	$(touch)
+
+## Probably want an .lpip rule with just ./$*…
 
 venvclean:
 	$(RMRF) *.pip pyvenv pyenv
