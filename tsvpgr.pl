@@ -4,10 +4,9 @@ use 5.10.0;
 $_ = <>;
 chomp;
 my @head = split /\t/;
-for my $head (@head){
-	say "$head:";
-}
-say "";
+
+## Generally not wanting this; try addhead rules if you need .pgr header
+## for my $head (@head){ say "$head:"; } say "";
 
 my (%tags, @tags);
 foreach(@head){

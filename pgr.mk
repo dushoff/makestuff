@@ -3,7 +3,8 @@ Ignore += *.new.tsv *.pgr *.TSV
 
 newtsv = perl -wf makestuff/newtsv.pl $< >  $(hiddentarget) && $(unhidetarget)
 
-%.TSV: %.pgr
+## 2026 Jul 30 (Thu): base pgr should never have header, right?
+%.TSV: %.addhead.pgr
 	perl -wf makestuff/pgrtsv.pl $< >  $(hiddentarget) && $(unhidetarget)
 
 tsvpgr_r = perl -wf makestuff/tsvpgr.pl $< >  $(hiddentarget) && $(unhidetarget)
