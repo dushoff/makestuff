@@ -6,8 +6,9 @@ newtsv = perl -wf makestuff/newtsv.pl $< >  $(hiddentarget) && $(unhidetarget)
 %.TSV: %.pgr
 	perl -wf makestuff/pgrtsv.pl $< >  $(hiddentarget) && $(unhidetarget)
 
+tsvpgr_r = perl -wf makestuff/tsvpgr.pl $< >  $(hiddentarget) && $(unhidetarget)
 %.pgr: %.tsv
-	perl -wf makestuff/tsvpgr.pl $< >  $(hiddentarget) && $(unhidetarget)
+	$(tsvpgr_r)
 
 %.header.pgr: %.pgr makestuff/pgrHead.pl
 	$(PUSH)
@@ -26,6 +27,9 @@ tsv_stems = $(tsv_files:%.tsv=%)
 tsv_pgr = $(filter $(tsv_stems), $(pgr_stems))
 tsv_updates = $(tsv_pgr:%=%.tsv.update)
 tsv_updates: $(tsv_updates) ;
+
+## Idea could be to track these, but it still seems complicated
+tsv_pgr_files =  $(tsv_pgr:%=%.tsv)
 
 ######################################################################
 
