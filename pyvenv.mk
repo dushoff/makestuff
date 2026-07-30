@@ -13,7 +13,7 @@ systempyvenv = python -m venv --system-site-packages pyvenv
 Ignore += *.pip
 .PRECIOUS: %.pip
 %.pip:
-	pyvenv/bin/pip install $* && $(touch)
+	pyvenv/bin/pip install $*
 	$(touch)
 
 venvclean:
