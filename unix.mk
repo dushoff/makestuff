@@ -286,3 +286,6 @@ killserve:
 
 %.wc: %
 	wc $< > $@
+
+%.twc: %.tex
+	texcount -inc -total $< > $@
