@@ -25,6 +25,7 @@ Ignore += *.reff.bib *.recs
 	$(PITH)
 
 Ignore += *.gfm
+.PRECIOUS: %.gfm
 %.gfm: %.reff.MD reff/MDgfm.pl %.downloads
 	$(PUSH)
 
