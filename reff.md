@@ -1,5 +1,5 @@
 
-Right now it wants to start from a very simple .rmu file
+The only editable file in the pipeline is rmu, which should specify each publication with a single directive, DOI:, PMID: or PMCID:
 
 Primary target is .tags.pgr
 
