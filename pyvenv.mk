@@ -1,7 +1,6 @@
 ## Put this BEFORE python.def to get the definitions to work
 pypath =  pyvenv
 Ignore += pyvenv __pycache__
-Makefile: | pyvenv
 
 cleanpyvenv = python -m venv pyvenv
 systempyvenv = python -m venv --system-site-packages pyvenv
@@ -12,7 +11,7 @@ systempyvenv = python -m venv --system-site-packages pyvenv
 	
 Ignore += *.pip *.lpip
 .PRECIOUS: %.pip
-%.pip:
+%.pip: | pyvenv
 	pyvenv/bin/pip install $*
 	$(touch)
 
