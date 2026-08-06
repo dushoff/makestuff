@@ -1,3 +1,5 @@
+## Awkwardly look up pmid from DOI; not useful now
+## Doesn't always get the right one.
 from Bio import Entrez   
 from Bio import Medline
 import numpy as np
