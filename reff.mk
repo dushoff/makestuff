@@ -34,9 +34,10 @@ Ignore += *.reff.html
 	pandoc -f gfm -t html $< > $@
 
 Ignore += *.downloads unfetched_pmcids.tsv
-%.downloads: %.tags.pgr library reff/download.py | doi2pdf.pip metapub.pip pubmed-pdf-downloader.pip
+%.downloads: %.tags.pgr library reff/download.py | unpywall.pip requests.pip
 	$(PITH)
 
+## pyvenv/bin/python -c "import unpywall"
 Ignore += *.reff.pgr
 %.reff.pgr: %.recs reff/recspgr.pl
 	$(PUSHRO)
