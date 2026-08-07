@@ -33,7 +33,8 @@ Ignore += *.reff.html
 %.reff.html: %.gfm
 	pandoc -f gfm -t html $< > $@
 
-Ignore += *.downloads unfetched_pmcids.tsv
+Ignore += *.downloads unfetched_pmcids.tsv unpaywall_cache
+
 %.downloads: %.tags.pgr library reff/download.py | unpywall.pip requests.pip
 	$(PITH)
 
