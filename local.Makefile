@@ -14,7 +14,7 @@ Ignore += local.mk
 
 ######################################################################
 
-## Add to Makefile
+## Add to bottom of Makefile
 
 # Optional features (add your own MK file, or use someone else's)
 -include local.mk
