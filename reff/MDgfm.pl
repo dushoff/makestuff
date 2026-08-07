@@ -5,11 +5,14 @@ use 5.10.0;
 
 while(<>){
 	chomp;
-	s/^@\w*\s*//;
 	s/^$/\n---------------------------------------------------\n/;
+	s/^@\w*\s*//;
 	if (m|library/(.*).pdf|){
-		my $lib = $&;
-		s|library/(.*).pdf|[$1]($&)| if -e $lib;
+		my $lib = $1;
+		my $art = "library/$lib.pdf";
+		my $supp = "library/${lib}Supp.pdf";
+		s|library/(.*).pdf|[$lib]($art)| if -e $&;
+		s/$/; [Supp]($supp)/ if -e $supp;
 	}
 	s|[ *]*(.*pubmed.*)|; [Pubmed]($1)|; 
 	s|[ *]*(.*/PMC.*)|; [PMC]($1)|; 

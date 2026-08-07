@@ -21,6 +21,8 @@ while(<LS>)
 ## filename should be the first "word" thing on the line, and should have a .
 ## Use a single quote to "escape" for files not in target directory
 ## Try to remove a the first markdown [] tag (not looking for ! yet) 2021 Sep 14 (Tue)
+## Tried to make this target-safe 2026 Jul 25 (Sat)
+#### Gave up because targets are there sometimes but not others.
 my $ll;
 while(<>)
 {

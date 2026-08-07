@@ -57,10 +57,12 @@ difftouch = diff $1 $(dir $1).$(notdir $1) > /dev/null || touch $1
 
 ## makethere is behaving weird 2022 Apr 29 (Fri)
 ## makestuffthere, too 2022 Aug 04 (Thu)
-makethere = $(makedir) && cd $(dir $@) && $(MAKE) makestuff && $(MAKE) $(notdir $@)
+## Need to figure out weird looping and make it simpler
+makethere = false && $(makedir) && cd $(dir $@) && $(MAKE) makestuff && $(MAKE) $(notdir $@)
+makestuffthere = false && cd $(dir $@) && $(MAKE) makestuff && $(MAKE) $(notdir $@)
 makedir = $(MAKE) $(dir $@)
+
 justmakethere = cd $(dir $@) && $(MAKE) $(notdir $@)
-makestuffthere = cd $(dir $@) && $(MAKE) makestuff && $(MAKE) $(notdir $@)
 
 Ignore += *.checkfile
 .PRECIOUS: %.checkfile
@@ -177,11 +179,13 @@ define merge_files
 endef
  
 ## Track a directory from the parent directory, using <dir>.md
-## index.md for current file
+## index.md for current directory
+## Seems terrible that we don't have a special rule for index.md
 ## Testing; can filemerge use md or mkd alternatively? Which one is prioritized? 2023 Mar 10 (Fri)
 %.filemerge: %.lsd %.md makestuff/filemerge.pl
 	$(merge_files)
 
+## .mkd version; I tend to avoid this now 2026 Jul 28 (Tue)
 %.filemerge: %.lsd %.mkd makestuff/filemerge.pl
 	$(merge_files)
 
@@ -282,3 +286,6 @@ killserve:
 
 %.wc: %
 	wc $< > $@
+
+%.twc: %.tex
+	texcount -inc -total $< > $@

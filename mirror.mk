@@ -106,7 +106,7 @@ mirrorPut: $(mirrors:%=%.puttime)
 
 $(mirrors): ; $(mkdir)
 pushup: mirrorPut
-## pullup: mirrorGet
+pullup: mirrorGet
 report.autoup: mirrorPut
 
 ## syncup never finishes (make-wise), but it does put $(mirrorPut) up to date
