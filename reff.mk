@@ -49,7 +49,7 @@ Ignore += *.reff.MD
 %.reff.MD: %.tags.pgr reff/pgrMD.pl
 	$(PUSHRO)
 
-%.bib: %.tags.pgr reff/pgrbib.pl
+%.reff.bib: %.tags.pgr reff/pgrbib.pl
 	$(PUSHRO)
 
 ## You should manage library on your own (e.g., with rclone or git)
