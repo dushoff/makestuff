@@ -1,9 +1,11 @@
+
 from Bio import Entrez
 from Bio import Medline
 from sys import argv
 import requests
 import re
 import os
+import sys
 
 bib = "bibdir/"
 Entrez.email = "jdushoff@gmail.com"
@@ -29,20 +31,21 @@ with open(filename, 'r') as file:
 		line = line.strip()
 		m = re.match(pmid_pattern, line)
 		if m:
-			entries.append({"PMID": m.group(1)})
+			entries.append({"PMID": m.group(1), "call": f"PMID:{m.group(1)}"})
 			continue
 		m = re.match(pmcid_pattern, line)
 		if m:
-			entries.append({"PMCID": m.group(1)})
+			entries.append({"PMCID": m.group(1), "call": f"PMCID:{m.group(1)}"})
 			continue
 		m = re.match(doi_pattern, line)
 		if m:
-			entries.append({"DOI": m.group(1)})
+			entries.append({"DOI": m.group(1), "call": f"DOI:{m.group(1)}"})
 
 idlist = []
-entry_pmids = {}
+pmid_calls = {}  # pmid -> list of call strings
 
 for entry in entries:
+	call = entry["call"]
 	if "PMID" in entry:
 		pmid = entry["PMID"]
 	elif "PMCID" in entry:
@@ -56,6 +59,8 @@ for entry in entries:
 		if pmid is None:
 			continue
 
+	pmid_calls.setdefault(pmid, []).append(call)
+
 	base = f"{bib}PM{pmid}"
 	rec  = base + ".rec"
 	corr = base + ".corr"
@@ -64,7 +69,12 @@ for entry in entries:
 	elif os.path.exists(rec):
 		os.system(f"cat {rec}")
 	else:
-		idlist.append(pmid)
+		if pmid not in idlist:
+			idlist.append(pmid)
+
+for pmid, calls in pmid_calls.items():
+	if len(calls) > 1:
+		print(f"DUPLICATE PMID {pmid}: {', '.join(calls)}", file=sys.stderr)
 
 if idlist:
 	handle = Entrez.efetch(db="pubmed", id=idlist, rettype="medline", retmode="text")
