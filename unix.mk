@@ -176,6 +176,7 @@ define merge_files
 	@($(DIFF) $(word 2, $^) $@ && $(MV) $@ $(word 2, $^)) \
 	|| ($(MV) $@ $(word 2, $^) && false)
 	@! (grep MISSING $(word 2, $^))
+	@! (grep Untracked $(word 2, $^))
 endef
  
 ## Track a directory from the parent directory, using <dir>.md
