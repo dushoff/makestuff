@@ -102,7 +102,7 @@ noreport:
 ######################################################################
 
 ## parallel directories
-## not part of all.time by default because usually updated in parallel
+## not part of all.time by default because sometimes updated in parallel
 $(pardirs):
 	cd .. && $(MAKE) $@
 	- cd ../$@ &&  $(MAKE) Makefile
@@ -127,8 +127,9 @@ parpull: pull pardirpull
 ## haven't been cloned yet
 ## malldirs are alldirs that have already been made
 ## pullall might fill in things that aren't here
+## Changed order 2026 Sep 04 (Fri), does that avoid errors from empty commits?
 malldirs = $(filter $(alldirs), $(wildcard *))
-all.time: exclude up.time $(malldirs:%=%.all)
+all.time: exclude $(malldirs:%=%.all) up.time
 	touch $@
 	git status .
 
