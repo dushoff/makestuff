@@ -1,7 +1,9 @@
 use 5.10.0;
 use strict;
 
-my $recipe = 'wget -O $@.tmpfig "URL" && mv $@.tmpfig $@';
+## Wikimedia (and some other hosts) now reject wget's default User-Agent
+## with 429 "Please set a proper user-agent" -- so identify ourselves.
+my $recipe = 'wget --user-agent="dushoff-makestuff-webpix/1.0 (+https://github.com/dushoff/makestuff)" -O $@.tmpfig "URL" && mv $@.tmpfig $@';
 my @images;
 my @thumbs;
 
