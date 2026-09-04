@@ -1,7 +1,7 @@
 use 5.10.0;
 use strict;
 
-my $recipe = 'wget -O $@ "URL"';
+my $recipe = 'wget -O $@.tmpfig "URL" && mv $@.tmpfig $@';
 my @images;
 my @thumbs;
 
