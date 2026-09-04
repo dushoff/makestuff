@@ -8,8 +8,11 @@ Ignore += webpix my_images
 steps = $(wildcard *.step)
 Sources += $(steps)
 
+webpix:
+	$(mkdir)
+
 Ignore += $(steps:%=%.mk)
-%.step.mk: %.step makestuff/webmk.pl
+%.step.mk: %.step makestuff/webmk.pl | webpix
 	$(PUSH)
 
 Ignore += $(steps:.step=.html)
