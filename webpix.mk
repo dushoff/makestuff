@@ -37,6 +37,7 @@ all.html: $(htmls)
 ## Violently deprecating imageDrop in wake of Dropbox catastrophe 2024 Sep 22 (Sun)
 
 ## This seems fine, but don't manually add these to mirrors if using this file
+## Also, doesn't do anything unless you add mirrors.mk, which seems good.
 mirrors += webpix my_images
 
 ## jd.local: jd.local.mk
