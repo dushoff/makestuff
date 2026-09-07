@@ -17,13 +17,15 @@ bibdir:
 ## If we change a correction file we need to remake any .recs file
 $(wildcard *.recs): $(wildcard bibdir/*.corr)
 
-reff/%: | reff
+.PRECIOUS: reff/%
+reff/%: | reff ;
 Sources += *.rmu
 Ignore += *.reff.bib *.recs
 %.recs: %.rmu reff/rmu.py | Bio.pip bibdir
 	$(PITH)
 
 Ignore += *.gfm
+.PRECIOUS: %.gfm
 %.gfm: %.reff.MD reff/MDgfm.pl %.downloads
 	$(PUSH)
 
@@ -31,10 +33,12 @@ Ignore += *.reff.html
 %.reff.html: %.gfm
 	pandoc -f gfm -t html $< > $@
 
-Ignore += *.downloads unfetched_pmcids.tsv
-%.downloads: %.tags.pgr library reff/download.py | doi2pdf.pip metapub.pip pubmed-pdf-downloader.pip
+Ignore += *.downloads unfetched_pmcids.tsv unpaywall_cache
+
+%.downloads: %.tags.pgr library reff/download.py | unpywall.pip requests.pip
 	$(PITH)
 
+## pyvenv/bin/python -c "import unpywall"
 Ignore += *.reff.pgr
 %.reff.pgr: %.recs reff/recspgr.pl
 	$(PUSHRO)
@@ -47,10 +51,10 @@ Ignore += *.reff.MD
 %.reff.MD: %.tags.pgr reff/pgrMD.pl
 	$(PUSHRO)
 
-%.bib: %.tags.pgr reff/pgrbib.pl
+%.reff.bib: %.tags.pgr reff/pgrbib.pl
 	$(PUSHRO)
 
-Ignore += library
-library:
-	$(mkdir)
+## You should manage library on your own (e.g., with rclone or git)
+## Ignore += library
+## library: ; $(mkdir)
 

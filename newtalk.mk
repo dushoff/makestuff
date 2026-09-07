@@ -29,6 +29,8 @@ local.txt.format:
 	$(CP) $(talkdir)/$@ .
 	$(readonly)
 
+## This sets workshop files to ici3d, but there is no escape plan that I can see!
+## Should be handled through templates, I guess!
 ici3d:
 	/bin/ln -fs talkdir/ici3d.tmp beamer.tmp
 
