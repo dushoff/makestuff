@@ -60,8 +60,9 @@ webpix/%: | allsteps.mk
 	$(MAKE) webpix
 	$(MAKE) -f $| $@
 
+## Fiddled 2026 Sep 09 (Wed)
 my_images/%: | my_images
-	(cd $< && $(MAKE) $*) || convert $(word 2, $^) $@
+	(cd $| && $(MAKE) $*) || convert $< $@
 
 ## Make things that programs need?
 %.gif.jpg: %.gif
