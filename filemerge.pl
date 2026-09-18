@@ -11,6 +11,9 @@ while(<LS>)
 {
 	chomp;
 	next unless /[.]/;
+	next if /^tmp\./;
+	next if /\.temp$/;
+	next if /\.stamp$/;
 	$ls{$_} = 0;
 }
 ## say "There: " . join "; ", keys %ls;
