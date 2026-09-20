@@ -200,6 +200,9 @@ endef
 %.fileversions:
 	cd $* && rename -f "s/ *\([0-9]\)//" *\([0-9]\).*
 
+%.ffnames:
+	perl -pi -e "s/[()& ,?!-]+/_/g" $*.md
+
 ## Temporary 2024 Sep 10 (Tue)
 %.qfiles:
 	rename "s/[()& ,?!-]+/_QQ_/g" $*/*.*
