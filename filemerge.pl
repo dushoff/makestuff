@@ -44,12 +44,6 @@ while(<>)
 	$ll = $_;
 }
 
-## Not working for subdirectories right now? 2022 Nov 22 (Tue)
-
-## say "Here: " . join "; ", keys %ls;
-
-## while (my ($k, $v) = each %ls){ say "$k: $v"; }
-
 ## Print out things not noted as present
 my %untracked;
 foreach my $fn (keys %ls){
