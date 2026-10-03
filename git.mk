@@ -668,7 +668,7 @@ endef
 
 ## Needs more work, low priority
 hashClip:
-	printf '%s' "$$(git rev-parse --short=8 HEAD)" | xclip -selection clipboard -in -quiet
+	printf '%s' "$$(git rev-parse --short=8 HEAD)" | xclip -selection clipboard -in > /dev/null 2>&1
 
 currHash:
 	printf '%s\n' "$$(git rev-parse --short=8 HEAD)"
