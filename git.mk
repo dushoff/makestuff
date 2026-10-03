@@ -481,8 +481,8 @@ sourcedir: $(Sources)
 
 ## Hacking at this 2026 Oct 02 (Fri)
 %.testsetup: %
-	- cd $* && $(MAKE) testsetup
 	cd $* && $(MAKE) Makefile && $(MAKE) makestuff 
+	- cd $* && $(MAKE) testsetup
 	$(CP) testtarget.mk $*/target.mk || $(CP) target.mk $*
 
 ## To open the dirtest final target when appropriate (and properly set up) 
