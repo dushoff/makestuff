@@ -481,6 +481,7 @@ sourcedir: $(Sources)
 
 ## Hacking at this 2026 Oct 02 (Fri)
 %.testsetup: %
+	- cd $* && $(MAKE) pretest
 	cd $* && $(MAKE) Makefile && $(MAKE) makestuff 
 	- cd $* && $(MAKE) testsetup
 	$(CP) testtarget.mk $*/target.mk || $(CP) target.mk $*
