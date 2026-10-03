@@ -477,20 +477,12 @@ sourcedir: $(Sources)
 
 %.dirtest: 
 	$(MAKE) $*.testsetup
-	$(MAKE) $*.testtarget
 	cd $* && $(MAKE) target
 
-## Testsetup not working to make makestuff,
-## presumably because Makefile makes it
+## Hacking at this 2026 Oct 02 (Fri)
 %.testsetup: %
-	cd $* && $(MAKE) Makefile && ($(MAKE) testsetup || true) && $(MAKE) makestuff 
-	$(CP) testtarget.mk $*/target.mk || $(CP) target.mk $*
-
-%.makestuff: %
-	cd $* && $(MAKE) Makefile && $(MAKE) makestuff
-
-## Deprecate this rule; it should be part of testsetup
-%.testtarget: %
+	- cd $* && $(MAKE) testsetup
+	cd $* && $(MAKE) Makefile && $(MAKE) makestuff 
 	$(CP) testtarget.mk $*/target.mk || $(CP) target.mk $*
 
 ## To open the dirtest final target when appropriate (and properly set up) 
