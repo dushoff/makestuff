@@ -176,14 +176,17 @@ define merge_files
 	@($(DIFF) $(word 2, $^) $@ && $(MV) $@ $(word 2, $^)) \
 	|| ($(MV) $@ $(word 2, $^) && false)
 	@! (grep MISSING $(word 2, $^))
+	@! (grep Untracked $(word 2, $^))
 endef
  
 ## Track a directory from the parent directory, using <dir>.md
 ## index.md for current directory
+## Seems terrible that we don't have a special rule for index.md
 ## Testing; can filemerge use md or mkd alternatively? Which one is prioritized? 2023 Mar 10 (Fri)
 %.filemerge: %.lsd %.md makestuff/filemerge.pl
 	$(merge_files)
 
+## .mkd version; I tend to avoid this now 2026 Jul 28 (Tue)
 %.filemerge: %.lsd %.mkd makestuff/filemerge.pl
 	$(merge_files)
 
@@ -196,6 +199,9 @@ endef
 	rename "s/[()& ,?!-]+/_/g" $*/*.*
 %.fileversions:
 	cd $* && rename -f "s/ *\([0-9]\)//" *\([0-9]\).*
+
+%.ffnames:
+	perl -pi -e "s/[()& ,?!-]+/_/g" $*.md
 
 ## Temporary 2024 Sep 10 (Tue)
 %.qfiles:
@@ -284,3 +290,6 @@ killserve:
 
 %.wc: %
 	wc $< > $@
+
+%.twc: %.tex
+	texcount -inc -total $< > $@

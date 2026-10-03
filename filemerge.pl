@@ -11,6 +11,9 @@ while(<LS>)
 {
 	chomp;
 	next unless /[.]/;
+	next if /^tmp\./;
+	next if /\.temp$/;
+	next if /\.stamp$/;
 	$ls{$_} = 0;
 }
 ## say "There: " . join "; ", keys %ls;
@@ -40,12 +43,6 @@ while(<>)
 	say;
 	$ll = $_;
 }
-
-## Not working for subdirectories right now? 2022 Nov 22 (Tue)
-
-## say "Here: " . join "; ", keys %ls;
-
-## while (my ($k, $v) = each %ls){ say "$k: $v"; }
 
 ## Print out things not noted as present
 my %untracked;

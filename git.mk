@@ -58,7 +58,7 @@ sourceTouch = touch $(word 1, $(Sources))
 Ignore += commit.time commit.default
 commit.time: $(Sources)
 	$(MAKE) exclude
-	-git add -f $? $(trackedTargets)
+	-git add -f $? $(filter .gitignore, $(Sources))
 	(head -1 ~/.commitnow > $@ && echo " ~/.commitnow" >> $@) || echo Autocommit > $@
 	echo "## $(CURDIR)" >> $@
 	!(git commit --dry-run >> $@) || (perl -pi -e 's/^/#/ unless $$.==1' $@ && $(MSEDIT))
@@ -102,7 +102,7 @@ noreport:
 ######################################################################
 
 ## parallel directories
-## not part of all.time by default because usually updated in parallel
+## not part of all.time by default because sometimes updated in parallel
 $(pardirs):
 	cd .. && $(MAKE) $@
 	- cd ../$@ &&  $(MAKE) Makefile
@@ -127,8 +127,9 @@ parpull: pull pardirpull
 ## haven't been cloned yet
 ## malldirs are alldirs that have already been made
 ## pullall might fill in things that aren't here
+## Changed order 2026 Sep 04 (Fri), does that avoid errors from empty commits?
 malldirs = $(filter $(alldirs), $(wildcard *))
-all.time: exclude up.time $(malldirs:%=%.all)
+all.time: exclude $(malldirs:%=%.all) up.time
 	touch $@
 	git status .
 
@@ -262,15 +263,16 @@ gptargets: $(gptargets)
 
 ## Unify some of these by recipe
 ## use a better touch command
-## 2025 Jul 28 (Mon) Why am I noticing now that this chokes on subdirectories?
 
 ## 2020 Nov 11 (Wed) an alternative name for git_push
-## Not copying the all-update rule here; outputs can have other purposes
+## 2026 Jul 28 (Tue) Updating to handle things taken directly from subdirectories
 %.op: % | outputs
 	- $(CPF) $* outputs
-	git add -f outputs/$*
+	git add -f outputs/$(notdir $*)
 	$(sourceTouch)
 
+## Not used much and I'm not in touch with motivation 2026 Jul 28 (Tue)
+## Apparently meant to copy a whole directory
 %.opdir: % | outputs
 	- $(RMR) outputs/$*
 	- $(CPR) $* outputs
