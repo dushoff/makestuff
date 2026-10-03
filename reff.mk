@@ -6,9 +6,6 @@ Ignore += reff
 reff: | makestuff
 	$(LN) makestuff/$@ .
 
-%.pmlist: %.pmsearch reff/pm.py
-	$(PITH)
-
 Sources += $(wildcard bibdir/*.corr)
 Ignore += $(wildcard bibdir/*.rec)
 bibdir/%: | bibdir
