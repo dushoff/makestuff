@@ -3,13 +3,11 @@
 ### Currently developing together with 3SS/Lectures
 ### Previously used with math_talks
 
+## These will be made automatically if you included mirror.mk, otherwise you can have a Makefile rule for them…
 Ignore += webpix my_images
 
 steps = $(wildcard *.step)
 Sources += $(steps)
-
-webpix:
-	$(mkdir)
 
 Ignore += $(steps:%=%.mk)
 %.step.mk: %.step makestuff/webmk.pl | webpix
@@ -37,6 +35,7 @@ all.html: $(htmls)
 ## Violently deprecating imageDrop in wake of Dropbox catastrophe 2024 Sep 22 (Sun)
 
 ## This seems fine, but don't manually add these to mirrors if using this file
+## Also, doesn't do anything unless you add mirror.mk, which seems good.
 mirrors += webpix my_images
 
 ## jd.local: jd.local.mk
@@ -61,8 +60,9 @@ webpix/%: | allsteps.mk
 	$(MAKE) webpix
 	$(MAKE) -f $| $@
 
+## Fiddled 2026 Sep 09 (Wed)
 my_images/%: | my_images
-	(cd $< && $(MAKE) $*) || convert $(word 2, $^) $@
+	(cd $| && $(MAKE) $*) || convert $< $@
 
 ## Make things that programs need?
 %.gif.jpg: %.gif

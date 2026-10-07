@@ -9,6 +9,7 @@
 \usepackage{hyperref,url}
 \usepackage[margin=1in]{geometry}
 \usepackage{wallpaper}
+\newcommand{\chinese}[1]{}
 
 \InputIfFileExists{./localcomm.tex}{}{}
 

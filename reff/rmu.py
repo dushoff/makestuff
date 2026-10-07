@@ -12,9 +12,9 @@ Entrez.email = "jdushoff@gmail.com"
 maxRecords = 1000
 script, filename = argv
 
-pmid_pattern  = r'^[\s\*\#]*PMID:\s*(\S+)'
-pmcid_pattern = r'^[\s\*\#]*PMCID:\s*(\S+)'
-doi_pattern   = r'^[\s\*\#]*DOI:\s*(\S+)'
+pmid_pattern  = r'^[\s\*]*PMID:\s*(\S+)'
+pmcid_pattern = r'^[\s\*]*PMCID:\s*(\S+)'
+doi_pattern   = r'^[\s\*]*DOI:\s*(\S+)'
 
 def resolve_pmid(term, label):
 	handle = Entrez.esearch(db="pubmed", term=term, retmax=1)
@@ -22,7 +22,7 @@ def resolve_pmid(term, label):
 	ids = result["IdList"]
 	if ids:
 		return ids[0]
-	print(f"ERROR: could not resolve PMID for {label}")
+	print(f"ERROR: could not resolve PMID for {label}", file=sys.stderr)
 	return None
 
 entries = []
