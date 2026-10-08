@@ -28,8 +28,8 @@ PMCID: PMC1234567
 DOI: 10.1371/journal.pmed.0050074
 ```
 
-* A directive is `PMID:`, `PMCID:` or `DOI:` followed by the identifier. Leading whitespace, `*` and `#` are allowed, so a directive inside a Markdown bullet or heading still counts.
-  * This means `## PMID: …` does **not** comment a directive out. To drop an entry, delete it or break the keyword (e.g., `xPMID:`).
+* A directive is `PMID:`, `PMCID:` or `DOI:` followed by the identifier. Leading whitespace and `*` are allowed, so a directive in a Markdown bullet still counts.
+* A leading `#` comments a directive out (e.g., `# PMID: 12345`).
 * Every other line is ignored, so you can annotate freely.
 * PMCIDs and DOIs are resolved to PMIDs by a PubMed search. Papers that aren't in PubMed can't be used.
 * If two directives resolve to the same PMID, a `DUPLICATE PMID` warning goes to stderr. The record still appears twice in the output.
@@ -89,7 +89,7 @@ It lowercases the key and strips non-word characters, e.g. `mossong2008social`. 
 
 ## PDF library
 
-PDFs live in `library/<TAG>.pdf`. An optional supplement goes in `library/<TAG>Supp.pdf`. You manage `library/` yourself (local directory, rclone, git, or a symlink to a shared location), and `reff.mk` doesn't create it.
+PDFs live in `library/<TAG>.pdf`. An optional supplement goes in `library/<TAG>Supp.pdf`. You create and sync the library/ directory yourself (local directory, rclone, git, or a symlink to a shared location).mk` doesn't create it.
 
 `name.downloads` runs `download.py` over `name.tags.pgr`. For each paper whose PDF isn't already there it tries, in order:
 1. PMC (`/articles/<PMC>/pdf/`)
@@ -98,12 +98,14 @@ PDFs live in `library/<TAG>.pdf`. An optional supplement goes in `library/<TAG>S
 
 The `.downloads` file logs which source worked and lists the URLs that failed. Many publishers block automated downloads, so expect to fetch some PDFs by hand: open `name.reff.html` (or `name.gfm`), follow the PubMed/PMC/doi links, and save the file as `library/<TAG>.pdf`.
 
+The `.gfm` is designed for browsing (including clicking on PDFs), and also for getting PDFs that don't arrive automatically (using vim).
+
 `name.gfm` depends on `name.downloads`, so building the HTML tries downloads first. To retry after adding PDFs or changing access, remove `name.downloads` and rebuild.
 
 ## Caveats
 
 * medRxiv records are skipped (with a warning) when making `.reff.pgr`.
-* An identifier that can't be resolved prints `ERROR: could not resolve PMID …` into `.recs`, not to stderr. Check for that line in `.recs`.
+* An identifier that can't be resolved is skipped with an `ERROR: could not resolve PMID …` message on stderr.
 * Within `.recs`, records come in the order cached first, then newly fetched, not in `.rmu` order.
 * `.reff.bib` only writes `@article`, with title, author, journal, volume, pages and year.
 * Some scripts for looking up DOIs exist, but they're not part of this pipeline.

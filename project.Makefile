@@ -1,4 +1,5 @@
 ## This is [project.Makefile] …
+## Make sure you are tracking the way you want before working here.
 
 ## This section is for Dushoff-style vim-setup and vim targeting
 ## You can delete it if you don't want it
@@ -21,9 +22,9 @@ Ignore += makestuff
 msrepo = https://github.com/dushoff
 
 ## ln -s ../makestuff . ## Do this first if you want a linked makestuff
-Makefile: makestuff/00.stamp
-makestuff/%.stamp: | makestuff
-	- $(RM) makestuff/*.stamp
+Makefile: makestuff00.stamp
+makestuff%.stamp: | makestuff
+	- $(RM) makestuff*.stamp
 	cd makestuff && $(MAKE) pull
 	touch $@
 makestuff:
