@@ -13,7 +13,6 @@ Entrez.email = "jdushoff@gmail.com"
 maxRecords = 1000
 script, filename = argv
 
-<<<<<<< HEAD
 pmid_pattern  = r'^[\s\*\#]*PMID:\s*(\S+)'
 pmcid_pattern = r'^[\s\*\#]*PMCID:\s*(\S+)'
 doi_pattern   = r'^[\s\*\#]*DOI:\s*(\S+)'
@@ -45,11 +44,6 @@ def arxiv_rec(arxiv):
 	reclist.append(f"AID: 10.48550/arXiv.{arxiv} [doi]")
 	reclist.append(f"AB: {' '.join(entry.find(atom + 'summary').text.split())}")
 	return "\n".join(reclist) + "\n\n"
-=======
-pmid_pattern  = r'^[\s\*]*PMID:\s*(\S+)'
-pmcid_pattern = r'^[\s\*]*PMCID:\s*(\S+)'
-doi_pattern   = r'^[\s\*]*DOI:\s*(\S+)'
->>>>>>> a0607080081b6aea925418b1b168334f49306b1f
 
 def resolve_pmid(term, label):
 	handle = Entrez.esearch(db="pubmed", term=term, retmax=1)
