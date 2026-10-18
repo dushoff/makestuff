@@ -61,8 +61,8 @@ commit.time: $(Sources)
 	-git add -f $? $(filter .gitignore, $(Sources))
 	(head -1 ~/.commitnow > $@ && echo " ~/.commitnow" >> $@) || echo Autocommit > $@
 	echo "## $(CURDIR)" >> $@
-	!(git commit --dry-run >> $@) || (perl -pi -e 's/^/#/ unless $$.==1' $@ && $(MSEDIT))
-	$(git_check) || (perl -ne 'print unless /^#/' $@ | git commit -F -)
+	!(git commit --dry-run >> $@) || (perl -pi -e 's/^/#/ unless $$.==1' $@ && $(MSEDIT)) || ($(RM) $@; false)
+	$(git_check) || (perl -ne 'print unless /^#/' $@ | git commit -F -) || ($(RM) $@; false)
 	date >> $@
 
 pull: commit.time
