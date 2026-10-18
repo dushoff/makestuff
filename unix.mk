@@ -81,6 +81,9 @@ linkexisting = ls $< > /dev/null && $(ln)
 
 linkelsewhere = cd $(dir $@) && $(LNF) $(CURDIR)/$< $(notdir $@) 
 
+%.parentlink:
+	ls ../$* > /dev/null && /bin/ln -sfn ../$* $*
+
 ## This will make directory if it doesn't exist
 ## Possibly good for shared projects. Problematic if central user makes two 
 ## redundant dropboxes because of sync problems
@@ -176,6 +179,7 @@ define merge_files
 	@($(DIFF) $(word 2, $^) $@ && $(MV) $@ $(word 2, $^)) \
 	|| ($(MV) $@ $(word 2, $^) && false)
 	@! (grep MISSING $(word 2, $^))
+	@! (grep Untracked $(word 2, $^))
 endef
  
 ## Track a directory from the parent directory, using <dir>.md
@@ -198,6 +202,9 @@ endef
 	rename "s/[()& ,?!-]+/_/g" $*/*.*
 %.fileversions:
 	cd $* && rename -f "s/ *\([0-9]\)//" *\([0-9]\).*
+
+%.ffnames:
+	perl -pi -e "s/[()& ,?!-]+/_/g" $*.md
 
 ## Temporary 2024 Sep 10 (Tue)
 %.qfiles:
