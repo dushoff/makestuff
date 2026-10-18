@@ -25,10 +25,7 @@ Ignore += makestuff
 msrepo = https://github.com/dushoff
 
 ## ln -s ../makestuff . ## Do this first if you want a linked makestuff
-<<<<<<< HEAD
 Ignore += makestuff*.stamp
-=======
->>>>>>> 4b15e9d927a637fbfbb5f8eefeaf4dfc12497649
 Makefile: makestuff00.stamp
 makestuff%.stamp: | makestuff
 	- $(RM) makestuff*.stamp
