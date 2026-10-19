@@ -61,8 +61,8 @@ commit.time: $(Sources)
 	-git add -f $? $(filter .gitignore, $(Sources))
 	(head -1 ~/.commitnow > $@ && echo " ~/.commitnow" >> $@) || echo Autocommit > $@
 	echo "## $(CURDIR)" >> $@
-	!(git commit --dry-run >> $@) || (perl -pi -e 's/^/#/ unless $$.==1' $@ && $(MSEDIT))
-	$(git_check) || (perl -ne 'print unless /^#/' $@ | git commit -F -)
+	!(git commit --dry-run >> $@) || (perl -pi -e 's/^/#/ unless $$.==1' $@ && $(MSEDIT)) || ($(RM) $@; false)
+	$(git_check) || (perl -ne 'print unless /^#/' $@ | git commit -F -) || ($(RM) $@; false)
 	date >> $@
 
 pull: commit.time
@@ -477,20 +477,13 @@ sourcedir: $(Sources)
 
 %.dirtest: 
 	$(MAKE) $*.testsetup
-	$(MAKE) $*.testtarget
 	cd $* && $(MAKE) target
 
-## Testsetup not working to make makestuff,
-## presumably because Makefile makes it
+## Hacking at this 2026 Oct 02 (Fri)
 %.testsetup: %
-	cd $* && $(MAKE) Makefile && ($(MAKE) testsetup || true) && $(MAKE) makestuff 
-	$(CP) testtarget.mk $*/target.mk || $(CP) target.mk $*
-
-%.makestuff: %
-	cd $* && $(MAKE) Makefile && $(MAKE) makestuff
-
-## Deprecate this rule; it should be part of testsetup
-%.testtarget: %
+	- cd $* && $(MAKE) pretest
+	cd $* && $(MAKE) Makefile && $(MAKE) makestuff 
+	- cd $* && $(MAKE) testsetup
 	$(CP) testtarget.mk $*/target.mk || $(CP) target.mk $*
 
 ## To open the dirtest final target when appropriate (and properly set up) 
@@ -670,7 +663,7 @@ endef
 
 ## Needs more work, low priority
 hashClip:
-	printf '%s' "$$(git rev-parse --short=8 HEAD)" | xclip -selection clipboard -in -quiet
+	printf '%s' "$$(git rev-parse --short=8 HEAD)" | xclip -selection clipboard -in > /dev/null 2>&1
 
 currHash:
 	printf '%s\n' "$$(git rev-parse --short=8 HEAD)"

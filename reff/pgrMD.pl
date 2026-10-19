@@ -20,7 +20,9 @@ while(<>){
 	next unless $count;
 
 	say "$at$fields{TAG}";
-	print "$fields{TI} ";
+	my $ti = $fields{TI};
+	$ti .= "." unless $ti =~ /[.?!]$/;
+	print "$ti ";
 	my @au = split /\s*[|]+\s*/, $fields{AU};
 	print join "; ", @au;
 	say ".";
