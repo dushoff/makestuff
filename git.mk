@@ -9,6 +9,7 @@
 ## Use <name>.newrepo to create and vscreen in the directory (from listdir or topdir)
 ## THEN use ghrepo_private or ghrepo_public to make a repo named after directory BEFORE trying anything else
 
+# ghrepo_private ghrepo_public
 ghrepo_%: | .git commit.time
 	gh repo create $(repoName) --$* --source=. --remote=origin --push
 
