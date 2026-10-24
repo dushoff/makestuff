@@ -13,13 +13,14 @@ Entrez.email = "jdushoff@gmail.com"
 maxRecords = 1000
 script, filename = argv
 
-pmid_pattern  = r'^[\s\*\#]*PMID:\s*(\S+)'
-pmcid_pattern = r'^[\s\*\#]*PMCID:\s*(\S+)'
-doi_pattern   = r'^[\s\*\#]*DOI:\s*(\S+)'
-arxiv_pattern = r'^[\s\*\#]*ARXIV:\s*(\S+)'
+pmid_pattern  = r'^[\s\*]*PMID:\s*(\S+)'
+pmcid_pattern = r'^[\s\*]*PMCID:\s*(\S+)'
+doi_pattern   = r'^[\s\*]*DOI:\s*(\S+)'
+arxiv_pattern = r'^[\s\*]*ARXIV:\s*(\S+)'
 arxivdoi = "10.48550/arxiv."
 arxivapi = "https://export.arxiv.org/api/query?id_list="
 atom = "{http://www.w3.org/2005/Atom}"
+crossrefapi = "https://api.crossref.org/works/"
 
 ## Make a MEDLINE-style record from the arXiv API, so that arXiv-only papers go through the pipeline
 def arxiv_rec(arxiv):
@@ -45,13 +46,60 @@ def arxiv_rec(arxiv):
 	reclist.append(f"AB: {' '.join(entry.find(atom + 'summary').text.split())}")
 	return "\n".join(reclist) + "\n\n"
 
-def resolve_pmid(term, label):
+## Make a MEDLINE-style record from Crossref, for DOIs that aren't in PubMed
+def doi_rec(doi):
+	try:
+		r = requests.get(crossrefapi + doi, timeout=30)
+		msg = r.json()["message"]
+	except Exception:
+		print(f"ERROR: could not fetch Crossref record for {doi}", file=sys.stderr)
+		return None
+	reclist = []
+	for author in msg.get("author", []):
+		if "family" in author:
+			reclist.append(f"FAU: {author['family']}, {author.get('given', '')}".rstrip(", "))
+		elif "name" in author:
+			reclist.append(f"FAU: {author['name']}")
+	reclist.append(f"TI: {' '.join(msg['title'][0].split())}")
+	source = msg.get("short-container-title") or msg.get("container-title") or [""]
+	reclist.append(f"TA: {source[0]}")
+	## Prefer the print year (online-first dates can be a year early)
+	date = msg.get("published-print") or msg["issued"]
+	reclist.append(f"DP: {date['date-parts'][0][0]}")
+	if "volume" in msg:
+		reclist.append(f"VI: {msg['volume']}")
+	page = msg.get("page") or msg.get("article-number")
+	if page:
+		reclist.append(f"PG: {page}")
+	reclist.append(f"AID: {msg['DOI']} [doi]")
+	if "abstract" in msg:
+		ab = re.sub(r"<[^>]+>", " ", msg["abstract"])
+		reclist.append(f"AB: {' '.join(ab.split())}")
+	return "\n".join(reclist) + "\n\n"
+
+## Use a cached (or corrected) record if there is one; otherwise make and cache one
+def cached_rec(base, make, ident):
+	rec  = base + ".rec"
+	corr = base + ".corr"
+	if os.path.exists(corr):
+		os.system(f"cat {corr}")
+	elif os.path.exists(rec):
+		os.system(f"cat {rec}")
+	else:
+		text = make(ident)
+		if text:
+			with open(rec, "w") as recfile:
+				recfile.write(text)
+			print(text, end="")
+
+def resolve_pmid(term, label, quiet=False):
 	handle = Entrez.esearch(db="pubmed", term=term, retmax=1)
 	result = Entrez.read(handle)
 	ids = result["IdList"]
 	if ids:
 		return ids[0]
-	print(f"ERROR: could not resolve PMID for {label}", file=sys.stderr)
+	if not quiet:
+		print(f"ERROR: could not resolve PMID for {label}", file=sys.stderr)
 	return None
 
 entries = []
@@ -85,19 +133,7 @@ for entry in entries:
 	call = entry["call"]
 	if "ARXIV" in entry:
 		arxiv = entry["ARXIV"]
-		base = f"{bib}ARXIV{arxiv.replace('/', '_')}"
-		rec  = base + ".rec"
-		corr = base + ".corr"
-		if os.path.exists(corr):
-			os.system(f"cat {corr}")
-		elif os.path.exists(rec):
-			os.system(f"cat {rec}")
-		else:
-			text = arxiv_rec(arxiv)
-			if text:
-				with open(rec, "w") as recfile:
-					recfile.write(text)
-				print(text, end="")
+		cached_rec(f"{bib}ARXIV{arxiv.replace('/', '_')}", arxiv_rec, arxiv)
 		continue
 	if "PMID" in entry:
 		pmid = entry["PMID"]
@@ -108,8 +144,10 @@ for entry in entries:
 			continue
 	elif "DOI" in entry:
 		doi = entry["DOI"]
-		pmid = resolve_pmid(f"{doi}[DOI]", f"DOI:{doi}")
+		pmid = resolve_pmid(f"{doi}[DOI]", f"DOI:{doi}", quiet=True)
 		if pmid is None:
+			## Not in PubMed: fall back to Crossref
+			cached_rec(f"{bib}DOI{re.sub(r'[^A-Za-z0-9.-]', '_', doi)}", doi_rec, doi)
 			continue
 
 	pmid_calls.setdefault(pmid, []).append(call)
