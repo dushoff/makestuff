@@ -9,6 +9,7 @@
 ## Use <name>.newrepo to create and vscreen in the directory (from listdir or topdir)
 ## THEN use ghrepo_private or ghrepo_public to make a repo named after directory BEFORE trying anything else
 
+# ghrepo_private ghrepo_public
 ghrepo_%: | .git commit.time
 	gh repo create $(repoName) --$* --source=. --remote=origin --push
 
@@ -61,8 +62,8 @@ commit.time: $(Sources)
 	-git add -f $? $(filter .gitignore, $(Sources))
 	(head -1 ~/.commitnow > $@ && echo " ~/.commitnow" >> $@) || echo Autocommit > $@
 	echo "## $(CURDIR)" >> $@
-	!(git commit --dry-run >> $@) || (perl -pi -e 's/^/#/ unless $$.==1' $@ && $(MSEDIT))
-	$(git_check) || (perl -ne 'print unless /^#/' $@ | git commit -F -)
+	!(git commit --dry-run >> $@) || (perl -pi -e 's/^/#/ unless $$.==1' $@ && $(MSEDIT)) || ($(RM) $@; false)
+	$(git_check) || (perl -ne 'print unless /^#/' $@ | git commit -F -) || ($(RM) $@; false)
 	date >> $@
 
 pull: commit.time
