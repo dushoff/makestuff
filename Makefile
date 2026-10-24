@@ -143,6 +143,10 @@ Sources += $(wildcard reff/*.pl reff/*.py)
 
 ######################################################################
 
+Sources += $(wildcard latex/*.tex latex/*.sty)
+
+######################################################################
+
 # wrapR scripts
 ## Deprecated 2021 May 03 (Mon)
 
