@@ -11,7 +11,8 @@ import xml.etree.ElementTree as ET
 bib = "bibdir/"
 Entrez.email = "jdushoff@gmail.com"
 maxRecords = 1000
-script, filename = argv
+## Extra arguments (e.g., .corr prerequisites) are ignored
+filename = argv[1]
 
 pmid_pattern  = r'^[\s\*]*PMID:\s*(\S+)'
 pmcid_pattern = r'^[\s\*]*PMCID:\s*(\S+)'
