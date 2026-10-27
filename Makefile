@@ -145,6 +145,9 @@ Sources += $(wildcard reff/*.pl reff/*.py)
 
 Sources += $(wildcard latex/*.tex latex/*.sty)
 
+## latex/previous.tex A copy of deprecated ./style.tex
+## latex/Rx.tex reproductive-number related commands (interpret broadly?)
+
 ######################################################################
 
 # wrapR scripts
