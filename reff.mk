@@ -19,7 +19,7 @@ reff/%: | reff ;
 Sources += *.rmu
 Ignore += *.reff.bib *.recs
 %.recs: %.rmu reff/rmu.py | Bio.pip bibdir
-	$(PITH)
+	$(python) reff/rmu.py $< > $(hiddentarget) && $(unhidetarget)
 
 Ignore += *.gfm
 .PRECIOUS: %.gfm
