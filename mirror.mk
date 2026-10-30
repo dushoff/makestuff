@@ -64,12 +64,12 @@ gmirror.ls:
 .PRECIOUS: gdrive/%
 ## Upload first; the local copy is the stamp, so make it only after the upload succeeds
 gdrive/%: % | gdrive
-	rclone copy -u $< $(gmirror)
+	rclone copyto -u $@ $(gmirror)/$(notdir $@)
 	$(copy)
 
 gdtargets = $(addprefix gdrive/, $(notdir $(gdsub)))
 $(gdtargets): | gdrive
-	rclone copy -u $< $(gmirror)
+	rclone copyto -u $@ $(gmirror)/$(notdir $@)
 	$(copy)
 
 define gdsub_dep
@@ -94,6 +94,10 @@ gdcheck: | gdrive
 
 %.glink: %
 	echo $(open) `rclone link $(gmirror)/$(notdir $*)` | bash
+
+## Make this directory's Drive folder readable by anyone with the link, and open it
+gdlink:
+	echo $(open) `rclone link $(gmirror)` | bash
 
 ######################################################################
 
