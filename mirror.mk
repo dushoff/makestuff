@@ -64,12 +64,12 @@ gmirror.ls:
 .PRECIOUS: gdrive/%
 gdrive/%: % | gdrive
 	$(copy)
-	rclone copy -u $@ $(gmirror)/$(notdir $@)
+	rclone copyto -u $@ $(gmirror)/$(notdir $@)
 
 gdtargets = $(addprefix gdrive/, $(notdir $(gdsub)))
 $(gdtargets): | gdrive
 	$(copy)
-	rclone copy -u $@ $(gmirror)/$(notdir $@)
+	rclone copyto -u $@ $(gmirror)/$(notdir $@)
 
 define gdsub_dep
 gdrive/$(notdir $(1)): $(1) | gdrive
@@ -83,6 +83,10 @@ gdrive:
 
 %.glink: %
 	echo $(open) `rclone link $(gmirror)/$(notdir $*)` | bash
+
+## Make this directory's Drive folder readable by anyone with the link, and open it
+gdlink:
+	echo $(open) `rclone link $(gmirror)` | bash
 
 ######################################################################
 
