@@ -62,14 +62,15 @@ gmirror.ls:
 %.gd: gdrive/$(notdir %) ;
 
 .PRECIOUS: gdrive/%
+## Upload first; the local copy is the stamp, so make it only after the upload succeeds
 gdrive/%: % | gdrive
+	rclone copy -u $< $(gmirror)
 	$(copy)
-	rclone copy -u $@ $(gmirror)/$(notdir $@)
 
 gdtargets = $(addprefix gdrive/, $(notdir $(gdsub)))
 $(gdtargets): | gdrive
+	rclone copy -u $< $(gmirror)
 	$(copy)
-	rclone copy -u $@ $(gmirror)/$(notdir $@)
 
 define gdsub_dep
 gdrive/$(notdir $(1)): $(1) | gdrive
@@ -78,6 +79,16 @@ $(foreach f,$(gdsub),$(eval $(call gdsub_dep,$(f))))
 
 gdrive:
 	$(mkdir)
+
+## Dangerous: empty this directory's gmirror folder (Drive keeps the folder and its link;
+## files go to Drive trash), and clear the local gdrive/ stamps so .gd re-uploads
+gdclear:
+	rclone delete --rmdirs $(gmirror)
+	$(RM) gdrive/*
+
+## Report local gdrive/ stamps whose files are missing or different on Drive
+gdcheck: | gdrive
+	rclone check --one-way ./gdrive $(gmirror)
 
 ######################################################################
 
