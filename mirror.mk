@@ -59,7 +59,11 @@ gmirror.ls:
 	rclone copy -u $* $(gmirror)/$(notdir $*)
 
 ## This way is supposed to do less slow uploading
-%.gd: gdrive/$(notdir %) ;
+## Two passes: build the source first, so that gdrive/% (rather than some other
+## pattern rule, like %.md.pdf: %.md, chaining inside gdrive/) makes the stamp
+%.gd:
+	$(MAKE) $(or $(filter %/$*,$(gdsub)),$*)
+	$(MAKE) gdrive/$(notdir $*)
 
 .PRECIOUS: gdrive/%
 ## Upload first; the local copy is the stamp, so make it only after the upload succeeds
