@@ -64,12 +64,12 @@ gmirror.ls:
 .PRECIOUS: gdrive/%
 ## Upload first; the local copy is the stamp, so make it only after the upload succeeds
 gdrive/%: % | gdrive
-	rclone copyto -u $@ $(gmirror)/$(notdir $@)
+	rclone copyto -u $< $(gmirror)/$(notdir $@)
 	$(copy)
 
 gdtargets = $(addprefix gdrive/, $(notdir $(gdsub)))
 $(gdtargets): | gdrive
-	rclone copyto -u $@ $(gmirror)/$(notdir $@)
+	rclone copyto -u $< $(gmirror)/$(notdir $@)
 	$(copy)
 
 define gdsub_dep
