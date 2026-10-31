@@ -1,4 +1,5 @@
 ## Ignoring
+## Included from git.mk
 
 ## Find the git directory and make an exclude file here
 ## Subdirectories compete (overwrite each others' exclude files)
@@ -24,7 +25,8 @@ $(git_dir)/info/exclude: Makefile $(Sources)
 	$(CP) $@ .gitignore
 	$(touch)
 
-export Ignore += local.mk target.mk make.log go.log tmp.scr background.log
+## Unlike global ignore.config, these files could be suppressed by fiddling Ignore in the Makefile
+export Ignore += local.mk target.mk make.log go.log tmp.scr dump.txt background.log
 
 ## Make global ignore file on a new machine
 ## Experimenting with boldness 2025 Dec 08 (Mon). Maybe worried about jekyll?

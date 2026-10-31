@@ -11,4 +11,4 @@
 %.newrepo:
 	mkdir -p dirs/$*
 	$(MAKE) dirs/$*.defmake
-	$(MAKE) launch/$*.bashwindow.view
+	$(MAKE) hot/$*.bashwindow.view
