@@ -659,6 +659,29 @@ endef
 	-$(DIFF) $^ > $*.datediff
 	$(RO) $*.datediff
 
+######################################################################
+
+## Old versions as ordinary targets, named by a commit or a date
+## gitversions += txt:old.TXT makes <base>.<rev>.old.TXT from <base>.txt at <rev>
+## <rev> is a commit (d697b6e, HEAD~3) or YYYY-MM-DD for the last commit
+## to the file by the end of that day; it can't contain a dot
+## Set gitversions before git.mk is included
+## Never remade, so delete the file to refresh a moving target like HEAD
+
+define gitversions_t
+Ignore += *.$(2)
+%.$(2):
+	$$(call gitversion_r,$$(basename $$*).$(1),$$(patsubst .%,%,$$(suffix $$*)))
+endef
+
+$(foreach v,$(gitversions),$(eval $(call gitversions_t,$(word 1,$(subst :, ,$(v))),$(word 2,$(subst :, ,$(v))))))
+
+gitversion_r = rev=$$(git rev-parse -q --verify "$2^{commit}" || \
+	(echo "$2" | grep -qE '^[0-9]{4}-[0-9]{2}-[0-9]{2}$$' \
+	&& git rev-list -1 --before="$2 23:59:59" HEAD -- $1)); \
+	test -n "$$rev" || (echo "No version of $1 for '$2'" >&2; false) && \
+	git show $$rev:./$1 > $(hiddentarget) && $(unhidetarget)
+
 ## Needs more work, low priority
 hashClip:
 	printf '%s' "$$(git rev-parse --short=8 HEAD)" | xclip -selection clipboard -in > /dev/null 2>&1
