@@ -19,4 +19,4 @@ Ignore += *.pip *.lpip
 ## Probably want an .lpip rule with just ./$*…
 
 venvclean:
-	$(RMRF) *.pip pyvenv pyenv
+	$(RMRF) *.pip *.lpip pyvenv pyenv
