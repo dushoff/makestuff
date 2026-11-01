@@ -687,6 +687,25 @@ gitversion_r = rev=$$(case "$2" in \
 	test -n "$$rev" || (echo "No version of $1 for '$2'" >&2; false) && \
 	git show $$rev:./$1 > $(hiddentarget) && $(unhidetarget)
 
+## Commit, then tag HEAD (annotated) and push the tag: make submitted.gittag
+## Tags work as <rev> above (and in .oldfile etc.), so the name
+## can't contain a dot, start with prev, or look like a date
+%.gittag: commit.time
+	@echo "$*" | grep -qE '^[A-Za-z][A-Za-z0-9_-]*$$' || (echo "Bad tag name '$*'" >&2; false)
+	@case "$*" in (prev*) echo "Tag name '$*' starts with prev" >&2; false;; esac
+	git tag -a $* -m "$*"
+	git push origin $*
+
+## Move an existing tag to HEAD (after committing), force-push it, and delete
+## ignored files built from the old tag (*.<tag>.*, like proposal.submitted.TXT)
+## Other clones keep the old tag until they git fetch --tags --force
+%.retag: commit.time
+	@echo "$*" | grep -qE '^[A-Za-z][A-Za-z0-9_-]*$$' || (echo "Bad tag name '$*'" >&2; false)
+	@case "$*" in (prev*) echo "Tag name '$*' starts with prev" >&2; false;; esac
+	git tag -fa $* -m "$*"
+	git push -f origin $*
+	for f in *.$*.*; do test -f "$$f" && git check-ignore -q "$$f" && $(RM) "$$f"; done; true
+
 ## Needs more work, low priority
 hashClip:
 	printf '%s' "$$(git rev-parse --short=8 HEAD)" | xclip -selection clipboard -in > /dev/null 2>&1
