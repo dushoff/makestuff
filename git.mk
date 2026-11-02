@@ -659,6 +659,53 @@ endef
 	-$(DIFF) $^ > $*.datediff
 	$(RO) $*.datediff
 
+######################################################################
+
+## Old versions as ordinary targets, named by a commit or a date
+## gitversions += txt:old.TXT makes <base>.<rev>.old.TXT from <base>.txt at <rev>
+## <rev> is a commit (d697b6e, HEAD~3); YYYY-MM-DD for the last commit
+## to the file by the end of that day; or prev<n> (prev2, prev02) for the
+## nth-latest commit to the file, like .prevfile (prev1 matches HEAD)
+## <rev> can't contain a dot
+## Set gitversions before git.mk is included
+## Never remade, so delete the file to refresh a moving target like HEAD
+
+define gitversions_t
+Ignore += *.$(2)
+%.$(2):
+	$$(call gitversion_r,$$(basename $$*).$(1),$$(patsubst .%,%,$$(suffix $$*)))
+endef
+
+$(foreach v,$(gitversions),$(eval $(call gitversions_t,$(word 1,$(subst :, ,$(v))),$(word 2,$(subst :, ,$(v))))))
+
+gitversion_r = rev=$$(case "$2" in \
+	(prev*) git rev-list HEAD -- $1 | sed -n "$(patsubst prev%,%,$2)p" ;; \
+	([0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]) \
+		git rev-list -1 --before="$2 23:59:59" HEAD -- $1 ;; \
+	(*) git rev-parse -q --verify "$2^{commit}" ;; \
+	esac); \
+	test -n "$$rev" || (echo "No version of $1 for '$2'" >&2; false) && \
+	git show $$rev:./$1 > $(hiddentarget) && $(unhidetarget)
+
+## Commit, then tag HEAD (annotated) and push the tag: make submitted.gittag
+## Tags work as <rev> above (and in .oldfile etc.), so the name
+## can't contain a dot, start with prev, or look like a date
+%.gittag: commit.time
+	@echo "$*" | grep -qE '^[A-Za-z][A-Za-z0-9_-]*$$' || (echo "Bad tag name '$*'" >&2; false)
+	@case "$*" in (prev*) echo "Tag name '$*' starts with prev" >&2; false;; esac
+	git tag -a $* -m "$*"
+	git push origin $*
+
+## Move an existing tag to HEAD (after committing), force-push it, and delete
+## ignored files built from the old tag (*.<tag>.*, like proposal.submitted.TXT)
+## Other clones keep the old tag until they git fetch --tags --force
+%.retag: commit.time
+	@echo "$*" | grep -qE '^[A-Za-z][A-Za-z0-9_-]*$$' || (echo "Bad tag name '$*'" >&2; false)
+	@case "$*" in (prev*) echo "Tag name '$*' starts with prev" >&2; false;; esac
+	git tag -fa $* -m "$*"
+	git push -f origin $*
+	for f in *.$*.*; do test -f "$$f" && git check-ignore -q "$$f" && $(RM) "$$f"; done; true
+
 ## Needs more work, low priority
 hashClip:
 	printf '%s' "$$(git rev-parse --short=8 HEAD)" | xclip -selection clipboard -in > /dev/null 2>&1

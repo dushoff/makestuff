@@ -59,17 +59,22 @@ gmirror.ls:
 	rclone copy -u $* $(gmirror)/$(notdir $*)
 
 ## This way is supposed to do less slow uploading
-%.gd: gdrive/$(notdir %) ;
+## Two passes: build the source first, so that gdrive/% (rather than some other
+## pattern rule, like %.md.pdf: %.md, chaining inside gdrive/) makes the stamp
+%.gd:
+	$(MAKE) $(or $(filter %/$*,$(gdsub)),$*)
+	$(MAKE) gdrive/$(notdir $*)
 
 .PRECIOUS: gdrive/%
+## Upload first; the local copy is the stamp, so make it only after the upload succeeds
 gdrive/%: % | gdrive
+	rclone copyto -u $< $(gmirror)/$(notdir $@)
 	$(copy)
-	rclone copy -u $@ $(gmirror)/$(notdir $@)
 
 gdtargets = $(addprefix gdrive/, $(notdir $(gdsub)))
 $(gdtargets): | gdrive
+	rclone copyto -u $< $(gmirror)/$(notdir $@)
 	$(copy)
-	rclone copy -u $@ $(gmirror)/$(notdir $@)
 
 define gdsub_dep
 gdrive/$(notdir $(1)): $(1) | gdrive
@@ -79,10 +84,24 @@ $(foreach f,$(gdsub),$(eval $(call gdsub_dep,$(f))))
 gdrive:
 	$(mkdir)
 
+## Dangerous: empty this directory's gmirror folder (Drive keeps the folder and its link;
+## files go to Drive trash), and clear the local gdrive/ stamps so .gd re-uploads
+gdclear:
+	rclone delete --rmdirs $(gmirror)
+	$(RM) gdrive/*
+
+## Report local gdrive/ stamps whose files are missing or different on Drive
+gdcheck: | gdrive
+	rclone check --one-way ./gdrive $(gmirror)
+
 ######################################################################
 
 %.glink: %
 	echo $(open) `rclone link $(gmirror)/$(notdir $*)` | bash
+
+## Make this directory's Drive folder readable by anyone with the link, and open it
+gdlink:
+	echo $(open) `rclone link $(gmirror)` | bash
 
 ######################################################################
 
