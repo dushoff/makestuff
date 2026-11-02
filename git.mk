@@ -238,7 +238,7 @@ Ignore += *.setbranch
 %.push: %
 	cd $< && $(MAKE) up.time
 
-git_check = git diff-index --quiet HEAD --
+git_check = git diff-index --quiet HEAD -- .
 
 ######################################################################
 
