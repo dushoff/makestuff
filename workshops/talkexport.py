@@ -25,6 +25,9 @@ import shutil
 import subprocess
 import sys
 import tempfile
+import zipfile
+from xml.etree import ElementTree as ET
+from xml.sax.saxutils import escape
 
 warnings = set()
 
@@ -94,14 +97,148 @@ SYMBOLS = {"ldots": "…", "dots": "…", "%": "%", "&": "&", "_": "_",
 	"#": "#", "$": "\\$", "{": "{", "}": "}", "times": "×", "to": "→",
 	"implies": "⇒", "pm": "±", "LaTeX": "LaTeX", "TeX": "TeX", " ": " ",
 	",": " ", "\\": " "}
-## User macros (talkdir/commands.sty)
-MATHMACROS = {"Ro": r"\mathcal{R}_0", "Ri": r"\mathcal{R}_i",
-	"Rc": r"\mathcal{R}_c"}
+## User macros, read by load_macros() from the files the talk \usepackage's
+## and \input's (e.g., talkdir/commands.sty) and from the document itself.
+## name -> (nargs, default for an optional first arg or None, body)
+USERMACROS = {}
+
+## Read files the way latex would find them locally; system packages
+## (which aren't found locally) are skipped
+def _read_local(path):
+	try:
+		with open(path) as f:
+			return f.read()
+	except OSError:
+		return None
+
+def _strip_comments(s):
+	return re.sub(r"(?<!\\)%.*", "", s)
+
+DEFPAT = re.compile(r"\\(?:re|provide)?newcommand\*?\s*(?:\{\s*\\([a-zA-Z]+)\s*\}|\\([a-zA-Z]+))"
+	r"|\\(usepackage|RequirePackage|input|include)\s*(?:\[[^\]]*\])?\s*\{([^}]*)\}")
+
+def _scan_defs(tex, texdir, seen):
+	tex = _strip_comments(tex)
+	for m in DEFPAT.finditer(tex):
+		if m.group(3):
+			names = [n.strip() for n in m.group(4).split(",")]
+			ext = ".sty" if "Package" in m.group(3) or m.group(3) == "usepackage" else ".tex"
+			for n in names:
+				f = n if os.path.splitext(n)[1] else n + ext
+				f = os.path.normpath(os.path.join(texdir, f))
+				if f in seen:
+					continue
+				seen.add(f)
+				t = _read_local(f)
+				if t is not None:
+					_scan_defs(t, texdir, seen) ## latex paths are relative to the main file
+			continue
+		name = m.group(1) or m.group(2)
+		opts, reqs, j = command_args(tex, m.end(), 2, 0)
+		nargs = int(opts[0]) if opts and opts[0].strip().isdigit() else 0
+		default = opts[1] if len(opts) > 1 else None
+		j = skip_ws(tex, j)
+		if j < len(tex) and tex[j] == "{":
+			body, _ = group(tex, j)
+			if "providecommand" in m.group(0) and name in USERMACROS:
+				continue
+			USERMACROS[name] = (nargs, default, body)
+
+def load_macros(tex, texdir):
+	"""Collect user macro definitions, in the order latex would see them."""
+	USERMACROS.clear()
+	_scan_defs(tex, texdir or ".", set())
+
+def _macro_arg(s, i):
+	"""One macro argument at s[i]: a braced group or a single token."""
+	i = skip_ws(s, i)
+	if i >= len(s):
+		return "", i
+	if s[i] == "{":
+		return group(s, i)
+	m = re.match(r"\\[a-zA-Z]+|\\.|.", s[i:], re.S)
+	return m.group(0), i + m.end()
+
+def _macro_end(s, name, i):
+	"""Index after the arguments of user macro name, used at s[i]."""
+	nargs, default, _ = USERMACROS[name]
+	if default is not None:
+		k = skip_ws(s, i)
+		if k < len(s) and s[k] == "[":
+			_, i = group(s, k, "[", "]")
+	for _ in range(nargs - (default is not None)):
+		_, i = _macro_arg(s, i)
+	return i
+
+MACROPAT = re.compile(r"\\([a-zA-Z]+)")
+
+def expand(s, ok=lambda name: True, depth=0):
+	"""Expand user macros (for which ok(name)) in s, recursively."""
+	if depth > 20:
+		warn("macros nested too deep (recursive definition?) in: " + s[:40])
+		return s
+	out = []
+	i = 0
+	while True:
+		m = MACROPAT.search(s, i)
+		if not m:
+			out.append(s[i:]); break
+		name = m.group(1)
+		out.append(s[i:m.start()])
+		i = m.end()
+		if name not in USERMACROS or not ok(name):
+			out.append(m.group(0)); continue
+		nargs, default, body = USERMACROS[name]
+		args = []
+		if nargs:
+			if default is not None:
+				j = skip_ws(s, i)
+				if j < len(s) and s[j] == "[":
+					a, i = group(s, j, "[", "]")
+				else:
+					a = default
+				args.append(a)
+			while len(args) < nargs:
+				a, i = _macro_arg(s, i)
+				args.append(a)
+		for k in range(nargs, 0, -1):
+			body = body.replace("#%d" % k, args[k-1])
+		## A macro ending in a letter mustn't run into following letters
+		out.append(expand(body, ok, depth+1))
+		if re.search(r"\\[a-zA-Z]+$", out[-1]) and re.match(r"[a-zA-Z]", s[i:i+1]):
+			out.append(" ")
+	return "".join(out)
+
+def _unwrap(s, cmd):
+	"""Replace \\cmd{X} with X."""
+	while True:
+		m = re.search(r"\\" + cmd + r"(?![a-zA-Z])\s*", s)
+		if not m:
+			return s
+		if m.end() < len(s) and s[m.end()] == "{":
+			body, j = group(s, m.end())
+		else:
+			body, j = _macro_arg(s, m.end())
+		s = s[:m.start()] + body + s[j:]
+
+def _mathable(name):
+	## Macros that can't go inside math: they make their own, or are layout
+	return not re.search(r"\$|\\begin|\\end|\\par\b|skip|space|psfig|\\special|font|obeylines",
+		USERMACROS[name][2])
 
 def fix_math(m):
-	for k, v in MATHMACROS.items():
-		m = re.sub(r"\\" + k + r"(?![a-zA-Z])", lambda _: v, m)
+	"""Expand user macros in math, then fix up what pandoc doesn't read."""
+	m = expand(m, _mathable)
+	m = _unwrap(m, "ensuremath")
+	m = re.sub(r"\{\\cal\s*([^{}]*)\}", r"\\mathcal{\1}", m)
+	m = re.sub(r"\\cal\s*(\\[a-zA-Z]+|[A-Za-z])", r"\\mathcal{\1}", m)
+	m = re.sub(r"\{\\rm\s*([^{}]*)\}", r"\\mathrm{\1}", m)
 	return m
+
+def is_math_macro(name):
+	"""A user macro meant for text and math alike: it uses \\ensuremath."""
+	return (name in USERMACROS and _mathable(name)
+		and "ensuremath" in expand("\\" + name, _mathable))
 
 def inline(s):
 	"""Convert a run of inline LaTeX to pandoc Markdown."""
@@ -137,13 +274,17 @@ def inline(s):
 			j = s.find("\n", i)
 			i = len(s) if j < 0 else j
 		elif c == "\\":
+			m_start = i
 			m = re.match(r"\\([a-zA-Z]+)\*?|\\(.)", s[i:])
 			name = m.group(1) or m.group(2)
 			i += m.end()
 			if name in SYMBOLS:
 				out.append(SYMBOLS[name])
-			elif name in MATHMACROS:
-				out.append("$" + MATHMACROS[name] + "$")
+			elif is_math_macro(name):
+				## Re-read the macro with its arguments, as math
+				j = _macro_end(s, name, i)
+				out.append("$" + fix_math(s[m_start:j]).strip() + "$")
+				i = j
 			elif name in DROP0:
 				pass
 			elif name in DROP1:
@@ -160,6 +301,11 @@ def inline(s):
 				out.append("[" + inline(reqs[1]) + "](" + reqs[0] + ")")
 			elif name == "color":
 				_, _, i = command_args(s, i, 0, 1)
+			elif name in USERMACROS and _mathable(name):
+				## A text macro: expand it (with its arguments) and read the result
+				j = _macro_end(s, name, i)
+				out.append(inline(expand(s[m_start:j], _mathable)))
+				i = j
 			else:
 				_, reqs, i = command_args(s, i, 0, 1)
 				warn("unknown command \\%s (kept its argument)" % name)
@@ -387,8 +533,11 @@ def macros(tex):
 		d[m.group(1)] = body
 	return d
 
-def parse(tex):
-	"""Return (meta, items) where items are ('sec', level, title) or ('frame', body)."""
+def parse(tex, texdir=None):
+	"""Return (meta, items) where items are ('sec', level, title) or ('frame', body).
+
+	texdir is where latex runs, for finding the user's macro files."""
+	load_macros(tex, texdir)
 	m = re.search(r"\\begin\{document\}(.*?)\\end\{document\}", tex, re.S)
 	body = m.group(1) if m else tex
 	defs = macros(body)
@@ -515,6 +664,162 @@ def pandoc(args, md, cwd):
 	subprocess.run(["pandoc", "-f", "markdown"] + args, input=md.encode(),
 		cwd=cwd, check=True)
 
+######################################################################
+
+## pptx math fallback
+
+## pandoc puts any text box with an equation inside
+## <mc:AlternateContent><mc:Choice Requires="a14">, with no <mc:Fallback>, so
+## viewers without Office 2010 math (LibreOffice, Google Slides, Keynote ...)
+## drop the whole box. We add a Fallback: the same box, with each equation
+## written as ordinary text runs (sub/superscripts as baseline shifts).
+
+OMML = "http://schemas.openxmlformats.org/officeDocument/2006/math"
+A14 = "http://schemas.microsoft.com/office/drawing/2010/main"
+
+def _m(tag):
+	return "{%s}%s" % (OMML, tag)
+
+def _prop(el, prop, attr="val", default=None):
+	"""The m:val of el's m:xxxPr/m:prop child, if any."""
+	for pr in el:
+		if pr.tag.endswith("Pr"):
+			c = pr.find(_m(prop))
+			if c is not None:
+				return c.get(_m(attr), default)
+	return default
+
+## Unicode math alphabets (\mathcal etc.): capital A, small a, exceptions
+ALPHABETS = {
+	"script": (0x1D49C, 0x1D4B6, {"B": "ℬ", "E": "ℰ", "F": "ℱ", "H": "ℋ", "I": "ℐ",
+		"L": "ℒ", "M": "ℳ", "R": "ℛ", "e": "ℯ", "g": "ℊ", "o": "ℴ"}),
+	"double-struck": (0x1D538, 0x1D552, {"C": "ℂ", "H": "ℍ", "N": "ℕ", "P": "ℙ",
+		"Q": "ℚ", "R": "ℝ", "Z": "ℤ"}),
+	"fraktur": (0x1D504, 0x1D51E, {"C": "ℭ", "H": "ℌ", "I": "ℑ", "R": "ℜ", "Z": "ℨ"}),
+}
+
+RELATIONS = set("=<>≤≥≈≠→⇒∝")
+
+def _letter(alphabet, c):
+	cap, small, exc = ALPHABETS[alphabet]
+	if c in exc:
+		return exc[c]
+	if "A" <= c <= "Z":
+		return chr(cap + ord(c) - ord("A"))
+	if "a" <= c <= "z":
+		return chr(small + ord(c) - ord("a"))
+	return c
+
+def _omml_runs(el, base=0):
+	"""Linearize an OMML element to [(text, baseline, italic)]."""
+	tag = el.tag.split("}")[-1]
+	kids = lambda name: [c for c in el if c.tag == _m(name)]
+	sub = lambda name, b: [x for c in kids(name) for x in _omml_runs(c, b)]
+	def plain(t):
+		return [(t, base, False)]
+	def wrap(runs):
+		## Parenthesize a fraction part with more than one character
+		t = "".join(r[0] for r in runs)
+		return plain("(") + runs + plain(")") if len(t) > 1 else runs
+	if tag == "r":
+		t = "".join(x.text or "" for x in el.iter(_m("t")))
+		sty = _prop(el, "sty", default="i")
+		scr = _prop(el, "scr")
+		if scr in ALPHABETS:
+			return [("".join(_letter(scr, c) for c in t), base, False)]
+		if t in RELATIONS:
+			t = " " + t + " "
+		return [(t, base, sty in ("i", "bi") and t.isalpha())]
+	if tag in ("sSub", "sSup", "sSubSup", "sPre"):
+		lo, hi = base - 25000, base + 30000
+		scripts = sub("sub", lo) + sub("sup", hi)
+		return (scripts + sub("e", base)) if tag == "sPre" else (sub("e", base) + scripts)
+	if tag == "f":
+		return wrap(sub("num", base)) + plain("/") + wrap(sub("den", base))
+	if tag == "d":
+		beg = _prop(el, "begChr", default="(")
+		end = _prop(el, "endChr", default=")")
+		sep = _prop(el, "sepChr", default=",")
+		out = plain(beg)
+		for k, e in enumerate(kids("e")):
+			if k:
+				out += plain(sep)
+			out += _omml_runs(e, base)
+		return out + plain(end)
+	if tag == "rad":
+		return plain("√(") + sub("e", base) + plain(")")
+	if tag == "nary":
+		return (plain(_prop(el, "chr", default="∫")) + sub("sub", base - 25000)
+			+ sub("sup", base + 30000) + sub("e", base))
+	if tag in ("acc", "bar"):
+		mark = _prop(el, "chr", default="̂") if tag == "acc" else "̅"
+		e = sub("e", base)
+		if e:
+			t, b, i = e[-1]
+			e[-1] = (t + mark, b, i)
+		return e
+	if tag in ("limLow", "limUpp"):
+		return sub("e", base) + sub("lim", base + (-25000 if tag == "limLow" else 30000))
+	if tag == "eqArr":
+		out = []
+		for k, e in enumerate(kids("e")):
+			out += (plain("; ") if k else []) + _omml_runs(e, base)
+		return out
+	if tag.endswith("Pr"):
+		return []
+	return [x for c in el for x in _omml_runs(c, base)]
+
+def _runs_xml(runs):
+	out = []
+	for t, b, i in runs:
+		if not t:
+			continue
+		if out and out[-1][1:] == (b, i):
+			out[-1] = (out[-1][0] + t, b, i)
+		else:
+			out.append((t, b, i))
+	xml = []
+	for t, b, i in out:
+		attrs = (' baseline="%d"' % b if b else "") + (' i="1"' if i else "")
+		xml.append('<a:r><a:rPr%s/><a:t>%s</a:t></a:r>' % (attrs, escape(t)))
+	return "".join(xml)
+
+def _math_to_runs(m):
+	frag = m.group(0)
+	wrapped = '<w xmlns:a14="%s" xmlns:m="%s">%s</w>' % (A14, OMML, frag)
+	try:
+		root = ET.fromstring(wrapped)
+	except ET.ParseError:
+		return ""
+	return _runs_xml(_omml_runs(root))
+
+ALTPAT = re.compile(r'<mc:AlternateContent\b[^>]*>\s*(<mc:Choice\b[^>]*Requires="a14"[^>]*>)(.*?)</mc:Choice>\s*</mc:AlternateContent>', re.S)
+MATHPAT = re.compile(r"<a14:m>.*?</a14:m>", re.S)
+
+def _add_fallback(m):
+	fallback = MATHPAT.sub(_math_to_runs, m.group(2))
+	return m.group(0).replace("</mc:AlternateContent>",
+		"<mc:Fallback>" + fallback + "</mc:Fallback></mc:AlternateContent>")
+
+def pptx_fallback(path):
+	"""Add text Fallbacks for a14 math to every slide of the pptx at path."""
+	tmp = path + ".tmp"
+	with zipfile.ZipFile(path) as zin, zipfile.ZipFile(tmp, "w", zipfile.ZIP_DEFLATED) as zout:
+		for item in zin.infolist():
+			data = zin.read(item.filename)
+			if re.match(r"ppt/slides/slide\d+\.xml$", item.filename):
+				x = data.decode("utf-8")
+				if "<mc:Fallback" not in x:
+					x = ALTPAT.sub(_add_fallback, x)
+				## pandoc also puts bare a14 math (in titles, with the namespace
+				## undeclared, which isn't valid XML); make it text
+				parts = re.split(r"(<mc:AlternateContent\b.*?</mc:AlternateContent>)", x, flags=re.S)
+				x = "".join(q if q.startswith("<mc:Alt") else MATHPAT.sub(_math_to_runs, q)
+					for q in parts)
+				data = x.encode("utf-8")
+			zout.writestr(item, data)
+	os.replace(tmp, path)
+
 def write(path, s):
 	with open(path, "w") as f:
 		f.write(s)
@@ -543,7 +848,7 @@ def main():
 	os.makedirs(outdir, exist_ok=True)
 	with open(a.tex) as f:
 		tex = f.read()
-	meta, items = parse(tex)
+	meta, items = parse(tex, os.path.dirname(os.path.abspath(a.tex)))
 	images = Images(os.path.dirname(os.path.abspath(a.tex)), outdir)
 	formats = a.formats.split(",")
 
@@ -555,6 +860,7 @@ def main():
 		ref = ["--reference-doc", os.path.abspath(a.reference_doc)] if a.reference_doc else []
 		pandoc(["-t", "pptx", "--slide-level", "2", "-o", stem + ".pptx"] + ref,
 			md, outdir)
+		pptx_fallback(os.path.join(outdir, stem + ".pptx"))
 		if a.pdf:
 			pix = os.path.join(outdir, "pages")
 			shutil.rmtree(pix, ignore_errors=True)

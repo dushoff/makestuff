@@ -3,9 +3,16 @@
 
 ## Editable pptx, in this directory
 ## evaluation.slides.pptx:
-Ignore += *.pptx
-%.pptx: %.tex makestuff/workshops/talkpptx.py makestuff/workshops/talkexport.py
+## Like %.pdf in texk.mk, a sub-make reads the dependencies (pictures,
+## macro files like talkdir/commands.sty) from %.texk.mk
+Ignore += *.pptx *.pptxmade
+.PRECIOUS: %.pptx
+%.pptx: %.tex phony
+	$(MAKE) -f $*.texk.mk -f Makefile $*.pptxmade
+
+%.pptxmade: %.tex %.tex.deps makestuff/workshops/talkpptx.py makestuff/workshops/talkexport.py
 	python3 makestuff/workshops/talkpptx.py $<
+	$(touch)
 
 ## Everything (pptx, pixel pptx, qmd, Rmd, typst), in a folder and a zip
 ## evaluation.slides.export:

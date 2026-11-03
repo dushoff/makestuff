@@ -1,7 +1,8 @@
 use strict;
 use 5.10.0;
 
-## Scan a top-level .tex file, following \input and \include recursively,
+## Scan a top-level .tex file, following \input, \include and local
+## \usepackage's (.sty files that exist) recursively,
 ## and write a single flat set of make rules for the whole tree
 ## See texk.md
 
@@ -36,6 +37,7 @@ sub scan {
 	my @found;
 	while ($f =~ /\\(input|include|includegraphics|bibliography|addbibresource)\s*(?:\[[^\]]*\])?\s*\{(.*?)\}/g){
 		my ($cmd, $arg) = ($1, $2);
+		next if $arg =~ /#/; ## A macro parameter, inside a definition
 		if ($cmd eq "includegraphics"){
 			add(\@graphics, $arg);
 		} elsif ($cmd =~ /^(?:bibliography|addbibresource)$/){
@@ -48,6 +50,16 @@ sub scan {
 			$arg .= ".tex" unless $arg =~ m|\.[^/]*$|;
 			add(\@inputs, $arg);
 			push @found, $arg if $arg =~ /\.tex$/;
+		}
+	}
+	## Local packages (e.g., talkdir/commands.sty); system packages aren't
+	## found here, and are skipped
+	while ($f =~ /\\(?:usepackage|RequirePackage)\s*(?:\[[^\]]*\])?\s*\{(.*?)\}/g){
+		foreach (split /,\s*/, $1){
+			my $sty = /\.sty$/ ? $_ : "$_.sty";
+			next unless -e $sty;
+			add(\@inputs, $sty);
+			push @found, $sty;
 		}
 	}
 	scan($_) foreach @found;

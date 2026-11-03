@@ -11,7 +11,7 @@ import os
 import sys
 import tempfile
 
-from talkexport import Images, header, markdown, pandoc, parse
+from talkexport import Images, header, markdown, pandoc, parse, pptx_fallback
 
 def main():
 	if len(sys.argv) != 2 or not sys.argv[1].endswith(".tex"):
@@ -19,11 +19,12 @@ def main():
 	tex = os.path.abspath(sys.argv[1])
 	out = tex[:-4] + ".pptx"
 	with open(tex) as f:
-		meta, items = parse(f.read())
+		meta, items = parse(f.read(), os.path.dirname(tex))
 	with tempfile.TemporaryDirectory() as tmp:
 		images = Images(os.path.dirname(tex), tmp)
 		md = header(meta, []) + markdown(meta, items, images, "pptx")
 		pandoc(["-t", "pptx", "--slide-level", "2", "-o", out], md, tmp)
+	pptx_fallback(out)
 	print("talkpptx: wrote " + out)
 
 if __name__ == "__main__":
