@@ -20,6 +20,10 @@ Ignore += *.mg.dot
 %.mg.dot: %.log
 	make2graph $< > $@
 
+## Drop slow/slowtarget directory nodes and merge slow/X into slowtarget/X
+%.ns.mg.dot: %.mg.dot makestuff/noslow.pl
+	perl makestuff/noslow.pl $< > $@
+
 Ignore += *.mg.pdf
 %.mg.pdf: %.mg.dot
 	dot -Tpdf -o $@ $<
