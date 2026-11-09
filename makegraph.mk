@@ -16,7 +16,7 @@ Ignore += *.mg.dot
 	make2graph $< > $@
 
 Ignore += *.mg.pdf
-%.pdf: %.dot
+%.mg.pdf: %.mg.dot
 	dot -Tpdf -o $@ $<
 
 ## Does not chain through wildcard; also, the graph has unexplained orphanism
