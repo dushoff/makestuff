@@ -29,6 +29,10 @@ Ignore += *.mg.dot
 %.ns.mg.dot: %.mg.dot makestuff/mgFilter.pl
 	perl makestuff/mgFilter.pl ns $< > $@
 
+## mf: both of the above, in one pass
+%.mf.mg.dot: %.mg.dot makestuff/mgFilter.pl
+	perl makestuff/mgFilter.pl mf $< > $@
+
 Ignore += *.mg.pdf
 %.mg.pdf: %.mg.dot
 	dot -Tpdf -o $@ $<
