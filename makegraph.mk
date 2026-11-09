@@ -4,6 +4,11 @@ Ignore += *.nd.log
 %.nd.log: Makefile
 	make -nd $* > $@
 
+## Graph through saved slow targets (like .final, but without the recursive make,
+## which make2graph can't follow); shorter stem beats %.nd.log
+%.final.nd.log: Makefile
+	make -nd makeSlow=defined $* > $@
+
 Ignore += *.nom.log
 %.nom.log: %.nd.log
 	cat $< | grep -v makestuff | grep -v "\.mk" > $@
