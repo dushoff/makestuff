@@ -19,7 +19,7 @@ endef
 ## @-$(RM) $@ $@.* $*.rd* -- this breaks things!
 ## Redo with a manipulation of $@; $* not to be trusted here.
 define pipeR
-	@-$(RM) $@ $@.*
+	@-$(RM) $@ $@.* Rplots.pdf
 	@$(makeArgs)
 	@echo pipeR: Making $@ using $^
 	@(($(rrun) --args $@ shellpipes $*.pipestar $^ < $(word 1, $(filter %.R, $^)) > $@) 2> $(@:%.Rout=%.Rlog) && cat $(@:%.Rout=%.Rlog)) || (sleep 1 && touch $(word 1, $(filter %.R, $^)) && cat $(@:%.Rout=%.Rlog) && false)

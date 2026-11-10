@@ -81,6 +81,9 @@ linkexisting = ls $< > /dev/null && $(ln)
 
 linkelsewhere = cd $(dir $@) && $(LNF) $(CURDIR)/$< $(notdir $@) 
 
+%.parentlink:
+	ls ../$* > /dev/null && /bin/ln -sfn ../$* $*
+
 ## This will make directory if it doesn't exist
 ## Possibly good for shared projects. Problematic if central user makes two 
 ## redundant dropboxes because of sync problems

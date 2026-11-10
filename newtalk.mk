@@ -24,7 +24,9 @@ local.txt.format:
 ## localcomm.TEX: ; $(touch)
 
 ## tmp files should be de-protected and sourced if you want to change locally
-%.tmp: 
+## make 4.4 no longer treats explicitly named pattern prerequisites as intermediate
+.INTERMEDIATE: beamer.tmp outline.tmp notes.tmp
+%.tmp:
 	$(MAKE) talkdir
 	$(CP) $(talkdir)/$@ .
 	$(readonly)

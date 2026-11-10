@@ -12,6 +12,8 @@ script, filename, *other = argv
 bib = "library/"
 doibase = "https://doi.org/"
 pmcbase = "https://pmc.ncbi.nlm.nih.gov/articles/"
+arxivbase = "https://arxiv.org/pdf/"
+arxivdoi = "10.48550/arxiv."
 
 headers = {'User-Agent': 'Mozilla/5.0'}
 
@@ -19,10 +21,28 @@ def try_unpaywall(doi, fn):
 	try:
 		Unpywall.download_pdf_file(doi=doi, filename=fn)
 		if os.path.exists(fn):
-			print(f"{fn} downloaded via Unpaywall")
+			with open(fn, 'rb') as f:
+				if f.read(4) == b'%PDF':
+					print(f"{fn} downloaded via Unpaywall")
+					return True
+			os.remove(fn)
+			print(f"{fn} from Unpaywall was not a PDF; removed")
+	except:
+		pass
+	return False
+
+def try_arxiv(arxiv, fn):
+	url = f"{arxivbase}{arxiv}"
+	try:
+		r = requests.get(url, headers=headers, allow_redirects=True, timeout=30)
+		if r.status_code == 200 and r.content[:4] == b'%PDF':
+			with open(fn, 'wb') as f:
+				f.write(r.content)
+			print(f"{fn} downloaded from arXiv")
 			return True
 	except:
 		pass
+	print(f"{fn} COULD NOT BE downloaded from\n* {url}")
 	return False
 
 def try_pmc(pmc, fn):
@@ -76,12 +96,17 @@ for record in records:
 
 	doi = record.get('DOI')
 	pmc = record.get('PMC')
+	arxiv = record.get('ARXIV')
+	if not arxiv and doi and doi.lower().startswith(arxivdoi):
+		arxiv = doi[len(arxivdoi):]
 
 	if pmc and try_pmc(pmc, fn):
 		continue
 	if doi and try_unpaywall(doi, fn):
 		continue
 	if doi and try_doi(doi, fn):
+		continue
+	if arxiv and try_arxiv(arxiv, fn):
 		continue
 
 	print(f"{fn} COULD NOT BE downloaded from any source")

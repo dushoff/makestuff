@@ -118,6 +118,10 @@ Sources += $(wildcard newtalk/*.format newtalk/*.pl newtalk/*.sty newtalk/*.tex 
 
 Sources += $(wildcard lect/*.*)
 
+## Exporting talks for workshop people (see workshops.md)
+# Sources += workshops.mk workshops.md
+Sources += $(wildcard workshops/*.py)
+
 # Sources += pandoc.mk compare.mk render.mk
 
 ######################################################################
@@ -140,6 +144,13 @@ Sources += mkfiles.Makefile mkfiles.wrap
 ######################################################################
 
 Sources += $(wildcard reff/*.pl reff/*.py)
+
+######################################################################
+
+Sources += $(wildcard latex/*.tex latex/*.sty)
+
+## latex/previous.tex A copy of deprecated ./style.tex
+## latex/Rx.tex reproductive-number related commands (interpret broadly?)
 
 ######################################################################
 
