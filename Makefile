@@ -118,6 +118,10 @@ Sources += $(wildcard newtalk/*.format newtalk/*.pl newtalk/*.sty newtalk/*.tex 
 
 Sources += $(wildcard lect/*.*)
 
+## Exporting talks for workshop people (see workshops.md)
+# Sources += workshops.mk workshops.md
+Sources += $(wildcard workshops/*.py)
+
 # Sources += pandoc.mk compare.mk render.mk
 
 ######################################################################
