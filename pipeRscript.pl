@@ -19,6 +19,9 @@ while (<>){
 		say "\n######################################################################";
 		say "## Making $target";
 		print `perl -npe "last unless /^#/" $script` if -e $script;
+		if ($target =~ m|^(.*)/[^/]+$|){
+			say "dir.create(\"$1\", showWarnings=FALSE, recursive=TRUE)";
+		}
 		say 'rm(list=ls(all.names=TRUE))';
 		say "rpcall(\"$target $rest\")";
 		say "source(\"$script\")";
