@@ -24,8 +24,8 @@ sub mkdirOnce {
 while (<>){
 	chomp;
 
-	if (/^echo (pipeR: Making .*)/){
-		$making = $1;
+	if (/^echo pipeR: Making (.*)/){
+		$making = "Make $1";
 		next;
 	}
 
@@ -36,7 +36,6 @@ while (<>){
 		my $wrapper = "$dir/$target.R";
 		say "";
 		say "## $making" if defined $making;
-		say "## rpcall(\"$call\")";
 		print `perl -npe "last unless /^#/" $script` if -e $script;
 		mkdirOnce($1) if $target =~ m|^(.*)/[^/]+$|;
 		say "R --vanilla < $wrapper > $target";
@@ -55,11 +54,6 @@ while (<>){
 		next;
 	}
 
-	## make wanted a pdf from a pipeR target
-	if (/^\/bin\/ls (\S+\.Rout)\.pdf > \/dev\/null \|\| \(ls \S+\.pdf\.tmp/){
-		say "[ -f $1.pdf ] || { echo \"ERROR: $1 did not make $1.pdf (startGraphics() missing?)\" >&2; exit 1; }";
-		next;
-	}
 }
 
 sub writeWrapper {
