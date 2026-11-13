@@ -1,4 +1,4 @@
-**DEPRECATED** (wrapR only). For pipeR, use `make <target>.Rscript` (see pipeR.mk), e.g. `foo.Rout.Rscript`, `foo.Rout.final.Rscript`, `targets.Rscript`.
+**DEPRECATED** (wrapR only). For pipeR, use `make <goal>.pipeWrap` (see pipeR.mk), e.g. `foo.Rout.pipeWrap`, `foo.Rout.final.pipeWrap`, `targets.pipeWrap`.
 
 Make master scripts so people without unix can run wrapR stuff. Ish.
 

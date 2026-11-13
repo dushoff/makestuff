@@ -214,21 +214,17 @@ $(foreach stem,$(pngDesc),$(eval $(call pngDesc_r,$(stem))))
 ## Disentangle how things work, and empower people who don't use make
 ## Won't work in directories that need non-automatic setup
 
-## make <target>.Rscript makes an R script that does what make <target> would do
-## (pipeR steps only, plus simple mkdir/cp), working from a fresh clone (dotdir)
-## e.g., foo.Rout.Rscript, foo.Rout.final.Rscript, targets.Rscript
-## Replaces masterR.mk
-Ignore += *.Rscript *.Rscript.log
-%.Rscript: makestuff/pipeRscript.pl
+## make <goal>.pipeWrap makes pipeWrap/<goal>.sh, a shell script that does
+## what make <goal> would do (pipeR steps, plus simple mkdir/cp), without make,
+## plus an R wrapper pipeWrap/<target>.R for each pipeR target
+## e.g., foo.Rout.pipeWrap, foo.Rout.final.pipeWrap, targets.pipeWrap
+## Works from a fresh clone (dotdir); replaces masterR.mk
+%.pipeWrap: makestuff/pipeWrap.pl
 	$(MAKE) dotdir.localdir
 	cd dotdir && $(MAKE) Makefile && $(MAKE) makestuff
-	cd dotdir && $(MAKE) -n $* > ../$@.log
-	perl -wf $< $@.log > $@
-
-## Run a generated script
-Ignore += *.Rscript.Rout
-%.Rscript.Rout: %.Rscript
-	$(rrun) < $< > $@
+	cd dotdir && $(MAKE) -n $* > make.log
+	mkdir -p pipeWrap
+	perl -wf $< $* dotdir/make.log > pipeWrap/$*.sh
 
 ######################################################################
 
