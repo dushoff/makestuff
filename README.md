@@ -28,7 +28,7 @@ If you uncomment the -include line for pipeR.mk, you should be able to [use the 
 ### Documented
 * [autorefs.mk](autorefs.mk) ([Documentation](autorefs.md))
 * [git.mk](git.mk) ([Documentation](git.md))
-* [masterR.mk](masterR.mk) ([Documentation](masterR.md)) — DEPRECATED; see %.pipeWrap in pipeR.mk
+* [masterR.mk](masterR.mk) ([Documentation](masterR.md)) — DEPRECATED; see %.pipeR.sh in pipeR.mk
 * [newtalk.mk](newtalk.mk) ([Documentation](newtalk.md))
 * [webpix.mk](webpix.mk) ([Documentation](webpix.md))
 
