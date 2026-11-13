@@ -214,21 +214,21 @@ $(foreach stem,$(pngDesc),$(eval $(call pngDesc_r,$(stem))))
 ## Disentangle how things work, and empower people who don't use make
 ## Won't work in directories that need non-automatic setup
 
-%.pipeR.script:
-	$(MAKE) dotdir.mslink
+## make <target>.Rscript makes an R script that does what make <target> would do
+## (pipeR steps only, plus simple mkdir/cp), working from a fresh clone (dotdir)
+## e.g., foo.Rout.Rscript, foo.Rout.final.Rscript, targets.Rscript
+## Replaces masterR.mk
+Ignore += *.Rscript *.Rscript.log
+%.Rscript: makestuff/pipeRscript.pl
 	$(MAKE) dotdir.localdir
-	$(MAKE) dotdir.testsetup
-	cd dotdir && $(MAKE) -n $*.Rout > make.log
-	perl -wf makestuff/pipeRscript.pl dotdir/make.log > $@
+	cd dotdir && $(MAKE) Makefile && $(MAKE) makestuff
+	cd dotdir && $(MAKE) -n $* > ../$@.log
+	perl -wf $< $@.log > $@
 
-Ignore += $(wildcard *.pipeR.script)
-
-%.Rscript: %.pipeR.script makestuff/allR.pl
-	$(PUSH)
-
-Ignore += $(wildcard *.allR)
-%.allR: %.Rscript
-	$(rrun)  < $< | tee $@
+## Run a generated script
+Ignore += *.Rscript.Rout
+%.Rscript.Rout: %.Rscript
+	$(rrun) < $< > $@
 
 ######################################################################
 
