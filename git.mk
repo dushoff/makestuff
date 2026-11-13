@@ -685,12 +685,16 @@ endef
 
 $(foreach v,$(gitversions),$(eval $(call gitversions_t,$(word 1,$(subst :, ,$(v))),$(word 2,$(subst :, ,$(v))))))
 
-gitversion_r = rev=$$(case "$2" in \
+## Shell code printing the commit for <rev> $2, with dates and prev<n>
+## counted over commits touching the path(s) $1; also used by lddiff.mk
+gitrev_r = case "$2" in \
 	(prev*) git rev-list HEAD -- $1 | sed -n "$(patsubst prev%,%,$2)p" ;; \
 	([0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]) \
 		git rev-list -1 --before="$2 23:59:59" HEAD -- $1 ;; \
 	(*) git rev-parse -q --verify "$2^{commit}" ;; \
-	esac); \
+	esac
+
+gitversion_r = rev=$$($(call gitrev_r,$1,$2)); \
 	test -n "$$rev" || (echo "No version of $1 for '$2'" >&2; false) && \
 	git show $$rev:./$1 > $(hiddentarget) && $(unhidetarget)
 
