@@ -10,6 +10,13 @@
 ghrepo_%: | .git commit.time
 	gh repo create $(repoName) --$* --source=. --remote=origin --push
 
+## Change visibility of the current (origin) repo
+## Making a repo private loses its stars and watchers
+gh_publicize:
+	gh repo edit --visibility public
+gh_privatize:
+	gh repo edit --visibility private
+
 initBranch ?= main
 .git:
 	git init -b $(initBranch)

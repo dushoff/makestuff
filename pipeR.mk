@@ -72,7 +72,8 @@ define wrapR
 	$(MVF) $(@:%.Rout=%.rtmp) $@
 endef
 
-run-R = $(wrapR)
+## run-R = $(wrapR)
+## This was a legacy thing that's not needed now
 
 define scriptR
 	cd $(dir $<) && $(rrun) < $(notdir $<) > $(notdir $@)
