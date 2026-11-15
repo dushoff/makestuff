@@ -84,9 +84,9 @@ if (%inputs){
 	my $idep = join " ", @ifiles;
 	say "$target: $idep";
 	say "$ftarget: $idep";
-	my $iddep = join " ", map {s/$/.deps/; $_} @iifiles;
+	my $iddep = join " ", map {"$_.deps"} @iifiles;
 	say "$target: $iddep";
-	my $ifdep = join " ", map {s/$/.files/; $_} @iifiles;
+	my $ifdep = join " ", map {"$_.files"} @iifiles;
 	say "$ftarget: $ifdep";
 	say"";
 }

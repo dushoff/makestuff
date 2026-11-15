@@ -17,5 +17,9 @@ PITHOUT = $(pyscr) $@ $(pydep) > $(hiddentarget) && $(unhidetarget)
 # Adds $*
 PITHSTAR = $(pyscr) $* $(pydep) > $(hiddentarget) && $(unhidetarget)
 
+# Read-only versions (mv -f from the hidden file overwrites a read-only target)
+PITHRO = $(PITH) && $(readonly)
+PITHSTARRO = $(PITHSTAR) && $(readonly)
+
 # Appends (pushes onto the file that's already there)
 # PPITH = $python -00 $(filter %.py, $^) $(filter-out %.py, $^) > $@

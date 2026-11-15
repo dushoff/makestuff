@@ -31,4 +31,4 @@ If you want things to Just Work, with shellpipes hidden, for a simple project:
 * Change any legacy `.Rout` dependencies to `.rda`
 	* `.R` dependencies should also work, but are less recommended
 
-It also generally works to combine `$(wrapR)` recipes (for simple scripts) fnd `$(pipeR)` recipes in the same project. It seems more beautiful to just embrace the less-magic approach, though. 
+It also generally works to combine `$(wrapR)` recipes (for simple scripts) and `$(pipeR)` recipes in the same project. It seems more beautiful to just embrace the less-magic approach, though. 

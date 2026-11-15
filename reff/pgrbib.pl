@@ -21,6 +21,8 @@ while(<>){
 	say "\t, author={$aulist}";
 	say "\t, journal = {$fields{SO}}";
 	say "\t, volume = {$fields{VI}}" if defined $fields{VI};
+	## arXiv papers have no pages; use the arXiv identifier instead
+	$fields{PG} //= $1 if defined $fields{DOI} and $fields{DOI} =~ m|^10\.48550/arxiv\.(.*)|i;
 	say "\t, pages = {$fields{PG}}" if defined $fields{PG};
 	say "\t, year = $fields{PUB}";
 	say "}\n";
