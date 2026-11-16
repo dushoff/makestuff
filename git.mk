@@ -57,6 +57,8 @@ Ignore += commit.time commit.default
 commit.time: $(Sources)
 	$(MAKE) exclude
 	-git add -f $? $(filter .gitignore, $(Sources))
+	## Archive: tracked and committed, but not prerequisites (no remaking)
+	-git add -f $(wildcard $(Archive))
 	(head -1 ~/.commitnow > $@ && echo " ~/.commitnow" >> $@) || echo Autocommit > $@
 	echo "## $(CURDIR)" >> $@
 	!(git commit --dry-run >> $@) || (perl -pi -e 's/^/#/ unless $$.==1' $@ && $(MSEDIT)) || ($(RM) $@; false)
