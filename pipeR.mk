@@ -72,7 +72,8 @@ define wrapR
 	$(MVF) $(@:%.Rout=%.rtmp) $@
 endef
 
-run-R = $(wrapR)
+## run-R = $(wrapR)
+## This was a legacy thing that's not needed now
 
 define scriptR
 	cd $(dir $<) && $(rrun) < $(notdir $<) > $(notdir $@)
@@ -213,21 +214,19 @@ $(foreach stem,$(pngDesc),$(eval $(call pngDesc_r,$(stem))))
 ## Disentangle how things work, and empower people who don't use make
 ## Won't work in directories that need non-automatic setup
 
-%.pipeR.script:
-	$(MAKE) dotdir.mslink
+## make <goal>.pipeR.sh makes a shell script that does
+## what make <goal> would do (pipeR steps, plus simple mkdir/cp), without make,
+## plus an R wrapper pipeWrap/<target>.R for each pipeR target
+## e.g., foo.Rout.pipeR.sh, foo.Rout.final.pipeR.sh, targets.pipeR.sh
+## Works from a fresh clone (dotdir); replaces masterR.mk
+## No prerequisites: if the .sh is in Sources (so dotdir depends on it),
+## any out-of-date prerequisite makes building dotdir rebuild the .sh: infinite loop
+## To regenerate: make <goal>.pipeR.sh.rmk (see unix.mk)
+%.pipeR.sh:
 	$(MAKE) dotdir.localdir
-	$(MAKE) dotdir.testsetup
-	cd dotdir && $(MAKE) -n $*.Rout > make.log
-	perl -wf makestuff/pipeRscript.pl dotdir/make.log > $@
-
-Ignore += $(wildcard *.pipeR.script)
-
-%.Rscript: %.pipeR.script makestuff/allR.pl
-	$(PUSH)
-
-Ignore += $(wildcard *.allR)
-%.allR: %.Rscript
-	$(rrun)  < $< | tee $@
+	cd dotdir && $(MAKE) Makefile && $(MAKE) makestuff
+	cd dotdir && $(MAKE) -n $* > make.log
+	perl -wf makestuff/pipeWrap.pl $* dotdir/make.log > $@
 
 ######################################################################
 
