@@ -39,7 +39,6 @@ gmirror.ls:
 ## Dangerous rules
 %.syncup:
 	rclone sync --skip-links -u $*/ $(mirror)/$*
-	touch $*.puttime
 %.syncdown:
 	rclone sync -u $(mirror)/$* $*/ 
 
@@ -110,23 +109,36 @@ gdlink:
 %.put: | % %.mirror
 	rclone copy --skip-links -u $* $(mirror)/$* --exclude ".*"
 
+## puttime stamps retired 2026 Nov 16 (Mon): the dependency only saw the
+## directory's mtime, so in-place edits were missed. Now we always put
+## (rclone copy -u skips unchanged files, and it runs in the background)
 Ignore += *.puttime
-%.puttime: % $(wildcard %/*)
-	$(MAKE) $*.put
-	$(touch)
 
 ## Allow file deletions to propagate
-## But only if nothing here has changed since last sync
-%.get: %.puttime
+## But put first, so local changes aren't clobbered
+%.get: %.put
 	rclone sync -u $(mirror)/$* $*/ 
 
 mirrorGet: $(mirrors:%=%.get)
-mirrorPut: $(mirrors:%=%.puttime)
+mirrorPut: $(mirrors:%=%.put)
 
 $(mirrors): ; $(mkdir)
-pushup: mirrorPut
-pullup: mirrorGet
-report.autoup: mirrorPut
+## Background mirroring, so push/pull don't wait for rclone 2026 Nov 16 (Mon)
+## Both directions share one lock: a second request waits its turn
+## setsid: survive closing the terminal; MAKEFLAGS dropped so the child
+## doesn't look for the parent's (gone) jobserver
+## Check mirror.log if something seems not to have arrived
+Ignore += mirror.log .mirror.lock
+bgmirror = setsid sh -c '{ echo "== $$(date) $(1)"; flock .mirror.lock env -u MAKEFLAGS -u MFLAGS $(MAKE) --no-print-directory $(1) || echo "!! $(1) FAILED"; } >> mirror.log 2>&1 < /dev/null' &
+
+mirrorBP:
+	$(call bgmirror,mirrorPut)
+mirrorBG:
+	$(call bgmirror,mirrorGet)
+
+pushup: mirrorBP
+pullup: mirrorBG
+report.autoup: mirrorBP
 
 ## syncup never finishes (make-wise), but it does put $(mirrorPut) up to date
 mirrorUp = $(mirrors:%=%.syncup)
