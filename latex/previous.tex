@@ -1,0 +1,23 @@
+%% Probably don't use this for long but instead break it up into logical chunks??
+
+%% Needs xcolor 
+\newcommand{\comment}{RENEW the comment command}
+\renewcommand{\comment}[3]{}
+\renewcommand{\comment}[3]{\textcolor{#1}{\textbf{[#2: }\textit{#3}\textbf{]}}}
+
+%% Some colors chosen by people
+% blue JD
+% Violet SS
+% OliveGreen DE
+% Cerulean IP
+% RubineRed BB
+% cyan JD
+
+\newcommand{\RR}{\ensuremath{{\mathcal R}}}
+\newcommand{\Rx}[1]{\ensuremath{\RR_{\mathrm{#1}}}}
+\newcommand{\Ro}{\Rx{0}}
+
+\newcommand{\flab}[1]{\label{fig:#1}}
+\newcommand{\fref}[1]{Figure~\ref{fig:#1}}
+\newcommand{\Fref}[1]{Figure~\ref{fig:#1}}
+

@@ -6,9 +6,6 @@ Ignore += reff
 reff: | makestuff
 	$(LN) makestuff/$@ .
 
-%.pmlist: %.pmsearch reff/pm.py
-	$(PITH)
-
 Sources += $(wildcard bibdir/*.corr)
 Ignore += $(wildcard bibdir/*.rec)
 bibdir/%: | bibdir
@@ -22,7 +19,7 @@ reff/%: | reff ;
 Sources += *.rmu
 Ignore += *.reff.bib *.recs
 %.recs: %.rmu reff/rmu.py | Bio.pip bibdir
-	$(PITH)
+	$(python) reff/rmu.py $< > $(hiddentarget) && $(unhidetarget)
 
 Ignore += *.gfm
 .PRECIOUS: %.gfm

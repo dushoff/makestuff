@@ -19,3 +19,4 @@ Ignore += *.pip *.lpip
 
 pyenvclean venvclean:
 	$(RMRF) *.pip pyvenv pyenv
+	$(RMRF) *.pip *.lpip pyvenv pyenv

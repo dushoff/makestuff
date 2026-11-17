@@ -1,3 +1,5 @@
+## DEPRECATED: works only with wrapR. For pipeR use %.pipeR.sh in pipeR.mk
+
 
 ## Make a master.R script, but not run files (safer to do after making .Rout)
 %.masterscript: 

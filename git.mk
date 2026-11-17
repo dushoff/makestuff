@@ -5,12 +5,17 @@
 ######################################################################
 
 ## github
-## Directory stuff is in mkfiles.mk 
-## Use <name>.newrepo to create and vscreen in the directory (from listdir or topdir)
-## THEN use ghrepo_private or ghrepo_public to make a repo named after directory BEFORE trying anything else
 
+# ghrepo_private ghrepo_public
 ghrepo_%: | .git commit.time
 	gh repo create $(repoName) --$* --source=. --remote=origin --push
+
+## Change visibility of the current (origin) repo
+## Making a repo private loses its stars and watchers
+gh_publicize:
+	gh repo edit --visibility public
+gh_privatize:
+	gh repo edit --visibility private
 
 initBranch ?= main
 .git:
@@ -59,10 +64,12 @@ Ignore += commit.time commit.default
 commit.time: $(Sources)
 	$(MAKE) exclude
 	-git add -f $? $(filter .gitignore, $(Sources))
+	## Archive: tracked and committed, but not prerequisites (no remaking)
+	-git add -f $(wildcard $(Archive))
 	(head -1 ~/.commitnow > $@ && echo " ~/.commitnow" >> $@) || echo Autocommit > $@
 	echo "## $(CURDIR)" >> $@
-	!(git commit --dry-run >> $@) || (perl -pi -e 's/^/#/ unless $$.==1' $@ && $(MSEDIT))
-	$(git_check) || (perl -ne 'print unless /^#/' $@ | git commit -F -)
+	!(git commit --dry-run >> $@) || (perl -pi -e 's/^/#/ unless $$.==1' $@ && $(MSEDIT)) || ($(RM) $@; false)
+	$(git_check) || (perl -ne 'print unless /^#/' $@ | git commit -F -) || ($(RM) $@; false)
 	date >> $@
 
 pull: commit.time
@@ -240,7 +247,7 @@ Ignore += *.setbranch
 %.push: %
 	cd $< && $(MAKE) up.time
 
-git_check = git diff-index --quiet HEAD --
+git_check = git diff-index --quiet HEAD -- .
 
 ######################################################################
 
@@ -477,20 +484,13 @@ sourcedir: $(Sources)
 
 %.dirtest: 
 	$(MAKE) $*.testsetup
-	$(MAKE) $*.testtarget
 	cd $* && $(MAKE) target
 
-## Testsetup not working to make makestuff,
-## presumably because Makefile makes it
+## Hacking at this 2026 Oct 02 (Fri)
 %.testsetup: %
-	cd $* && $(MAKE) Makefile && ($(MAKE) testsetup || true) && $(MAKE) makestuff 
-	$(CP) testtarget.mk $*/target.mk || $(CP) target.mk $*
-
-%.makestuff: %
-	cd $* && $(MAKE) Makefile && $(MAKE) makestuff
-
-## Deprecate this rule; it should be part of testsetup
-%.testtarget: %
+	- cd $* && $(MAKE) pretest
+	cd $* && $(MAKE) Makefile && $(MAKE) makestuff 
+	- cd $* && $(MAKE) testsetup
 	$(CP) testtarget.mk $*/target.mk || $(CP) target.mk $*
 
 ## To open the dirtest final target when appropriate (and properly set up) 
@@ -668,9 +668,60 @@ endef
 	-$(DIFF) $^ > $*.datediff
 	$(RO) $*.datediff
 
+######################################################################
+
+## Old versions as ordinary targets, named by a commit or a date
+## gitversions += txt:old.TXT makes <base>.<rev>.old.TXT from <base>.txt at <rev>
+## <rev> is a commit (d697b6e, HEAD~3); YYYY-MM-DD for the last commit
+## to the file by the end of that day; or prev<n> (prev2, prev02) for the
+## nth-latest commit to the file, like .prevfile (prev1 matches HEAD)
+## <rev> can't contain a dot
+## Set gitversions before git.mk is included
+## Never remade, so delete the file to refresh a moving target like HEAD
+
+define gitversions_t
+Ignore += *.$(2)
+%.$(2):
+	$$(call gitversion_r,$$(basename $$*).$(1),$$(patsubst .%,%,$$(suffix $$*)))
+endef
+
+$(foreach v,$(gitversions),$(eval $(call gitversions_t,$(word 1,$(subst :, ,$(v))),$(word 2,$(subst :, ,$(v))))))
+
+## Shell code printing the commit for <rev> $2, with dates and prev<n>
+## counted over commits touching the path(s) $1; also used by lddiff.mk
+gitrev_r = case "$2" in \
+	(prev*) git rev-list HEAD -- $1 | sed -n "$(patsubst prev%,%,$2)p" ;; \
+	([0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]) \
+		git rev-list -1 --before="$2 23:59:59" HEAD -- $1 ;; \
+	(*) git rev-parse -q --verify "$2^{commit}" ;; \
+	esac
+
+gitversion_r = rev=$$($(call gitrev_r,$1,$2)); \
+	test -n "$$rev" || (echo "No version of $1 for '$2'" >&2; false) && \
+	git show $$rev:./$1 > $(hiddentarget) && $(unhidetarget)
+
+## Commit, then tag HEAD (annotated) and push the tag: make submitted.gittag
+## Tags work as <rev> above (and in .oldfile etc.), so the name
+## can't contain a dot, start with prev, or look like a date
+%.gittag: commit.time
+	@echo "$*" | grep -qE '^[A-Za-z][A-Za-z0-9_-]*$$' || (echo "Bad tag name '$*'" >&2; false)
+	@case "$*" in (prev*) echo "Tag name '$*' starts with prev" >&2; false;; esac
+	git tag -a $* -m "$*"
+	git push origin $*
+
+## Move an existing tag to HEAD (after committing), force-push it, and delete
+## ignored files built from the old tag (*.<tag>.*, like proposal.submitted.TXT)
+## Other clones keep the old tag until they git fetch --tags --force
+%.retag: commit.time
+	@echo "$*" | grep -qE '^[A-Za-z][A-Za-z0-9_-]*$$' || (echo "Bad tag name '$*'" >&2; false)
+	@case "$*" in (prev*) echo "Tag name '$*' starts with prev" >&2; false;; esac
+	git tag -fa $* -m "$*"
+	git push -f origin $*
+	for f in *.$*.*; do test -f "$$f" && git check-ignore -q "$$f" && $(RM) "$$f"; done; true
+
 ## Needs more work, low priority
 hashClip:
-	printf '%s' "$$(git rev-parse --short=8 HEAD)" | xclip -selection clipboard -in -quiet
+	printf '%s' "$$(git rev-parse --short=8 HEAD)" | xclip -selection clipboard -in > /dev/null 2>&1
 
 currHash:
 	printf '%s\n' "$$(git rev-parse --short=8 HEAD)"

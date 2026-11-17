@@ -16,10 +16,6 @@ while(<>){
 		$rec{$tag} = join " | ", @{$rec{$tag}};
 	}
 	my $source = $rec{TA};
-	if ($source =~ /medRxiv/){
-		warn "SKIPPING medRxiv $rec{TI}";
-		next;
-	}
 
 	my $pub = $rec{DP};
 	$pub =~ s/\s.*//;
