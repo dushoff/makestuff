@@ -17,6 +17,39 @@ gh_publicize:
 gh_privatize:
 	gh repo edit --visibility private
 
+## Rename the current (origin) repo on github; gh also resets origin url
+## Does not rename the local directory; old URL redirects
+%.rrename:
+	gh repo rename $* --yes
+	git remote get-url origin
+
+## Point a stale clone at a renamed repo (keeps https/ssh form and .git)
+## setrepo replaces owner/repo in origin url with shell variable $new
+setrepo = git remote set-url origin `git remote get-url origin | new=$$new perl -pe 's|[^/:]+/[^/]+?(\.git)?$$|$$ENV{new}$$1|'` && git remote get-url origin
+
+## newname.rset: same owner, new name
+%.rset:
+	new=`git remote get-url origin | perl -ne 'print $$1 if m|([^/:]+)/[^/]+$$|'`/$* && $(setrepo)
+
+## v1.0.rrelease: github release (and tag) of the pushed default branch
+## Triggers zenodo archive/DOI if the repo is switched on there
+## Refuses if there are unpushed commits (github would release without them)
+%.rrelease:
+	git fetch -q && test -z "`git log --oneline @{u}..`" || (echo "Unpushed commits; push first" && false)
+	gh release create $* --generate-notes
+	git fetch --tags
+
+## zdoi: zenodo DOIs (latest version and concept/all-versions) for this repo
+## Uses the github repo id (survives renames) via zenodo's badge redirect
+zdoi:
+	@rec=`curl -sI https://zenodo.org/badge/latestdoi/\`gh api 'repos/{owner}/{repo}' --jq .id\` | perl -ne 'print $$1 if /^location:.*zenodo\.(\d+)/i'`; \
+	test -n "$$rec" || (echo "No zenodo record found" && false) && \
+	curl -s https://zenodo.org/api/records/$$rec | jq -r '"\(.metadata.title)\nversion:  https://doi.org/\(.doi)\nconcept:  https://doi.org/\(.conceptdoi)\nrecord:   \(.links.self_html)"'
+
+## rtrace: ask github where the repo lives now (follows redirects; handles transfers too)
+rtrace:
+	new=`gh api 'repos/{owner}/{repo}' --jq .full_name` && $(setrepo)
+
 initBranch ?= main
 .git:
 	git init -b $(initBranch)
